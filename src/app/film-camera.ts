@@ -19,9 +19,12 @@ export function filmCamera(u:number,w:number,h:number){
  const a=SHOTS[Math.max(0,i-1)],b=SHOTS[i],c=SHOTS[i+1],d=SHOTS[Math.min(SHOTS.length-1,i+2)];
  const focal=h*1.42,step=h*1.56;
  const x=spline(a.x,b.x,c.x,d.x,t)*w,y=spline(a.y,b.y,c.y,d.y,t)*h;
- const roll=Math.sin(t*Math.PI)*((i%2===0)?-.075:.075);
+ // Art-directed camera arcs: lateral sweep, diving orbit, reverse turn, quiet finale.
+ const arcs=[[.10,-.12,-.10],[-.08,.16,.13],[.14,-.11,-.055],[-.16,-.04,.14],[.12,.13,-.09],[.035,-.16,.05],[-.12,.075,-.11],[.16,-.08,.15],[-.055,.10,-.035]];
+ const [ax,ay,ar]=arcs[i],arc=Math.sin(t*Math.PI)**2;
+ const roll=arc*ar;
  const mix=smooth(.30,.73,t);
  const color=b.palette.map((n,j)=>(n+(c.palette[j]-n)*mix)/255) as [number,number,number];
- return {x,y,z:u*step,roll,focal,step,color};
+ return {x:x+ax*w*arc,y:y+ay*h*arc,z:u*step,roll,focal,step,color};
 }
 export type FilmCamera=ReturnType<typeof filmCamera>;

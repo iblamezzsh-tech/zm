@@ -5,10 +5,12 @@ import {SHOTS,filmCamera,clamp,smooth} from "./film-camera";
 import {createRibbonGPU,createRibbonCPU} from "./film-ribbon";
 import {subscribeMotion,requestMotionFrame,scrollToFilm} from "./motion-clock";
 
+// Independent editorial edit windows: no one-size-fits-all crossfade.
+const EDITS=[[-1,-.3,.04,.46],[-1.05,-.16,.12,.60],[-1.2,-.22,.15,.55],[-.95,-.25,.08,.44],[-1.08,-.24,.06,.50],[-1.15,-.10,.17,.58],[-1.25,-.28,.12,.60],[-1.02,-.18,.11,.54],[-.94,-.20,.06,.48],[-1.15,-.16,.20,.65]] as const;
 export default function FilmStage({children}:{children:ReactNode}){
  const root=useRef<HTMLDivElement>(null),viewport=useRef<HTMLDivElement>(null),world=useRef<HTMLDivElement>(null);
  const gpuCanvas=useRef<HTMLCanvasElement>(null),cpuCanvas=useRef<HTMLCanvasElement>(null);
- const [enabled,setEnabled]=useState(false),[active,setActive]=useState(0);
+ 
  const current=useRef(0),manual=useRef(false),recenter=useRef<number|null>(null);
  const [normal,setNormal]=useState(false);
  function jump(i:number,instant=false){
@@ -36,8 +38,9 @@ export default function FilmStage({children}:{children:ReactNode}){
    space!.style.transform="rotateZ("+(-cam.roll)+"rad) translate3d("+(-cam.x)+"px,"+(-cam.y)+"px,"+cam.z+"px)";
    const n=clamp(Math.round(u),0,shots.length-1);
    for(let i=0;i<shots.length;i++){
-    const shot=shots[i],local=u-i,near=local>-1.10&&local<.67;
-    const fadeIn=smooth(-.90,-.28,local),fadeOut=1-smooth(.10,.46,local);
+    const shot=shots[i],local=u-i,near=local>-1.32&&local<.78;
+    const edit=EDITS[i];
+    const fadeIn=smooth(edit[0],edit[1],local),fadeOut=1-smooth(edit[2],edit[3],local);
     const artAlpha=(i===0?1:smooth(-1.10,-.28,local))*(1-smooth(.20,.63,local));
     const alpha=i===0?fadeOut:fadeIn*fadeOut;
     shot.style.transform="translate3d("+(SHOTS[i].x*w)+"px,"+(SHOTS[i].y*h)+"px,"+(-i*cam.step)+"px)";
@@ -46,16 +49,19 @@ export default function FilmStage({children}:{children:ReactNode}){
     shot.style.setProperty("--shot-art-opacity",String(artAlpha));
     shot.style.setProperty("--shot-relative",String(clamp(local,-1,1)));
     shot.style.setProperty("--shot-arrival",String(fadeIn));
+    shot.style.setProperty("--edit-in",String(smooth(edit[0],edit[1],local)));
+    shot.style.setProperty("--edit-out",String(smooth(edit[2],edit[3],local)));
     shot.style.setProperty("--shot-exit",String(smooth(.02,.55,local)));
     shot.style.setProperty("--art-motion",String(fadeIn));
     shot.style.setProperty("--art-travel",String(clamp(local+.5)));
-    shot.inert=i!==n;shot.setAttribute("aria-hidden",String(i!==n));
+    if(i!==n&&shot.contains(document.activeElement)) (document.activeElement as HTMLElement)?.blur();
+    if(shot.inert!==(i!==n)){shot.inert=i!==n;shot.setAttribute("aria-hidden",String(i!==n))}
    }
    // Preserve the exact portrait interaction at frame zero, then open it like a film aperture.
    shots[0].style.setProperty("--hero-aperture",String(smooth(.015,.52,u)));
    v!.style.setProperty("--film-position",String(u/(shots.length-1)));
    main!.classList.toggle("film-after-portrait",u>.22);
-   if(n!==current.current){current.current=n;setActive(n)}
+   current.current=n;
    if(gpu&&gpu.draw(cam,w,h)===false){gpu.dispose();gpu=null;if(cpuCanvas.current)cpu=createRibbonCPU(cpuCanvas.current);v!.dataset.renderer=cpu?"canvas":"css"}
    if(cpu)cpu.draw(cam,w,h);
   }
@@ -76,9 +82,9 @@ export default function FilmStage({children}:{children:ReactNode}){
   }
   function sync(){
    const next=mq.matches&&!manual.current;
-   if(next===live){if(!next)setEnabled(false);return}
-   if(!next){clean();setEnabled(false);return}
-   live=true;el!.dataset.live="true";main!.classList.add("cinematic-live");setEnabled(true);
+   if(next===live)return
+   if(!next){clean();return}
+   live=true;el!.dataset.live="true";main!.classList.add("cinematic-live");
    previous=-1;
    if(gpuCanvas.current)gpu=createRibbonGPU(gpuCanvas.current);
    if(!gpu&&cpuCanvas.current)cpu=createRibbonCPU(cpuCanvas.current);
@@ -100,15 +106,15 @@ export default function FilmStage({children}:{children:ReactNode}){
   if(recenter.current!==null){const n=recenter.current;recenter.current=null;requestAnimationFrame(()=>{if(alive)jump(n,true)})}else if(location.hash)requestAnimationFrame(()=>{if(alive)hash()});
   return()=>{alive=false;timeline.kill();un();ro.disconnect();mq.removeEventListener("change",sync);document.removeEventListener("click",anchor,true);window.removeEventListener("hashchange",hash);clean()};
  },[normal]);
- function switchMode(){recenter.current=current.current;manual.current=!normal;setNormal(!normal)}
+ useEffect(()=>{const change=()=>{recenter.current=current.current;manual.current=!manual.current;setNormal(manual.current)};window.addEventListener("zm-film-mode",change);return()=>window.removeEventListener("zm-film-mode",change)},[]);
  return <div ref={root} className="cinematic-reel" style={{"--film-shots":SHOTS.length-1} as React.CSSProperties}>
   <div ref={viewport} className="cinematic-viewport">
    <canvas ref={gpuCanvas} className="cinematic-ribbon ribbon-gpu" aria-hidden="true"/>
    <canvas ref={cpuCanvas} className="cinematic-ribbon ribbon-cpu" aria-hidden="true"/>
    <div className="cinematic-grain" aria-hidden="true"/>
    <div ref={world} className="cinematic-world">{children}</div>
-   {enabled&&<div className="cinematic-hud" aria-label="Film navigation"><div className="cinematic-track" aria-hidden="true"><i/></div><span className="cinematic-frame"><b>{String(active+1).padStart(2,"0")}</b><span>/ {String(SHOTS.length).padStart(2,"0")}</span></span><span className="cinematic-chapter">{SHOTS[active].label}</span><div className="cinematic-actions"><button type="button" onClick={()=>jump(active-1)} disabled={active===0} aria-label="Previous chapter">←</button><button type="button" onClick={()=>jump(active+1)} disabled={active===SHOTS.length-1} aria-label="Next chapter">→</button><button type="button" onClick={switchMode} className="cinematic-mode">Read normally</button></div></div>}
+
   </div>
-  {normal&&<button className="cinematic-return" type="button" onClick={switchMode}>Return to cinematic mode ↗</button>}
+
  </div>
 }

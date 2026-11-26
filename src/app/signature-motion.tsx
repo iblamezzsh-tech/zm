@@ -51,6 +51,8 @@ export function RouteSignature(){
    const href=url.pathname+url.search+url.hash;
    clear();pending.current=href;started.current=performance.now();resetScrollMomentum();
    router.prefetch(href);
+   const dest=url.pathname;
+   curtain.current.dataset.edit=dest==="/about"?"paper":dest==="/achievements"?"archive":dest==="/off-the-record"?"notebook":dest.startsWith("/projects")?"project":"signature";
    curtain.current.dataset.phase="cover";
    const label=curtain.current.querySelector<HTMLElement>("[data-destination]");if(label)label.textContent=names[url.pathname];
    coverTimer.current=setTimeout(()=>{router.push(href);coverTimer.current=null},COVER_MS);
@@ -73,5 +75,5 @@ export function RouteSignature(){
    holdTimer.current=setTimeout(reveal,remaining);
   }
  },[path]);
- return <div className="zm-route-curtain" ref={curtain} data-phase="idle" aria-hidden="true"><div className="zm-route-curtain-inner"><span>ZM / THE JOURNEY CONTINUES</span><Signature/><span className="route-destination" data-destination>NOW &amp; NEXT</span></div></div>;
+ return <div className="zm-route-curtain" ref={curtain} data-phase="idle" aria-hidden="true"><div className="zm-route-curtain-inner"><span>ZM / THE JOURNEY CONTINUES</span><div className="route-motif" aria-hidden="true"><i/><i/><i/></div><Signature/><span className="route-destination" data-destination>NOW &amp; NEXT</span></div></div>;
 }

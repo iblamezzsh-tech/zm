@@ -29,3 +29,38 @@ html.lenis{scroll-behavior:auto!important}
 .zm-menu-letter{display:inline-block;transition:transform .42s cubic-bezier(.2,.75,.2,1);transition-delay:calc(var(--letter)*12ms)}
 .zm-menu-links a:hover .zm-menu-letter,.zm-menu-links a:focus-visible .zm-menu-letter{transform:translateY(-.045em)}
 @media(prefers-reduced-motion:reduce){.zm-route-curtain{display:none!important}.zm-word>span,.zm-menu-letter{transform:none!important;opacity:1!important;transition:none!important}}
+
+/* Distinct route edits, same verified cover/hold/reveal timing. */
+.zm-route-curtain .route-motif{display:none}
+.zm-route-curtain[data-edit=paper] .zm-route-curtain-inner,.zm-route-curtain[data-edit=archive] .zm-route-curtain-inner{background:#f4f1e8;color:#24291e}
+.zm-route-curtain[data-edit=notebook] .zm-route-curtain-inner{background:#ffda24;color:#24291e}
+.zm-route-curtain[data-edit=project] .zm-route-curtain-inner{background:#24291e;color:#ffda24}
+.zm-route-curtain[data-edit]:not([data-edit=signature]) .signature{display:none}
+.zm-route-curtain[data-edit]:not([data-edit=signature]) .route-destination{font-size:clamp(40px,10vw,145px)!important;line-height:.88;text-align:center;max-width:90%;overflow-wrap:anywhere;letter-spacing:-.075em!important}
+.zm-route-curtain[data-edit]:not([data-edit=signature]) .route-motif{display:flex;align-items:center;justify-content:center;gap:9px;width:min(220px,35vw);height:70px}
+.zm-route-curtain .route-motif i{display:block;width:45px;height:60px;border:1px solid currentColor}
+.zm-route-curtain[data-edit=paper] .route-motif i:nth-child(1){transform:rotate(-20deg)}
+.zm-route-curtain[data-edit=paper] .route-motif i:nth-child(3){transform:rotate(20deg)}
+.zm-route-curtain[data-edit=archive] .route-motif i{width:75px;height:48px}
+.zm-route-curtain[data-edit=archive] .route-motif i:nth-child(2){transform:translateY(-15px)}
+.zm-route-curtain[data-edit=project] .route-motif i{width:60px;height:60px;border-radius:50%}
+.zm-route-curtain[data-edit=project] .route-motif i:nth-child(2){background:currentColor}
+.zm-route-curtain[data-edit=notebook] .route-motif i{height:2px;width:60px;transform:rotate(-24deg);background:currentColor}
+.zm-route-curtain[data-edit=paper][data-phase=cover]{animation:edit-paper-in .6s cubic-bezier(.76,0,.24,1) both}
+.zm-route-curtain[data-edit=paper][data-phase=reveal]{animation:edit-paper-out .7s cubic-bezier(.76,0,.24,1) both}
+@keyframes edit-paper-in{from{transform:translate3d(101%,0,0)}to{transform:translate3d(0,0,0)}}
+@keyframes edit-paper-out{from{transform:translate3d(0,0,0)}to{transform:translate3d(-101%,0,0)}}
+.zm-route-curtain[data-edit=project][data-phase=cover]{animation:edit-lens-in .6s cubic-bezier(.76,0,.24,1) both}
+.zm-route-curtain[data-edit=project][data-phase=reveal]{animation:edit-lens-out .7s cubic-bezier(.76,0,.24,1) both}
+@keyframes edit-lens-in{from{transform:none;clip-path:circle(0% at 50% 50%)}to{transform:none;clip-path:circle(76% at 50% 50%)}}
+@keyframes edit-lens-out{from{transform:none;clip-path:circle(76% at 50% 50%)}to{transform:none;clip-path:circle(0% at 50% 50%)}}
+.zm-route-curtain[data-edit=archive][data-phase=cover]{animation:edit-archive-in .6s cubic-bezier(.76,0,.24,1) both}
+.zm-route-curtain[data-edit=archive][data-phase=reveal]{animation:edit-archive-out .7s cubic-bezier(.76,0,.24,1) both}
+@keyframes edit-archive-in{from{transform:none;clip-path:inset(50% 0)}to{transform:none;clip-path:inset(0)}}
+@keyframes edit-archive-out{from{transform:none;clip-path:inset(0)}to{transform:none;clip-path:inset(0 50%)}}
+.zm-route-curtain[data-edit=notebook][data-phase=cover]{animation:edit-notebook-in .6s cubic-bezier(.76,0,.24,1) both}
+.zm-route-curtain[data-edit=notebook][data-phase=reveal]{animation:edit-notebook-out .7s cubic-bezier(.76,0,.24,1) both}
+@keyframes edit-notebook-in{from{transform:none;clip-path:polygon(0 0,0 0,0 100%,0 100%)}to{transform:none;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}}
+@keyframes edit-notebook-out{from{transform:none;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}to{transform:none;clip-path:polygon(100% 0,100% 0,100% 100%,100% 100%)}}
+.zm-route-curtain[data-edit]:not([data-edit=signature])[data-phase=cover] .route-destination{animation:edit-title-in .65s .23s cubic-bezier(.16,1,.3,1) both}
+@keyframes edit-title-in{from{transform:translateY(45px);opacity:0}to{transform:none;opacity:1}}
