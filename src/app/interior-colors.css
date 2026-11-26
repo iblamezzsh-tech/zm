@@ -1,0 +1,91 @@
+/* V71 — interior color system. Surface and foreground tokens travel together.
+   All rules exclude the homepage; original project covers and photos are untouched. */
+main.studio54:not(.home-page){
+ --zm-dark:#24291e;--zm-olive:#354431;--zm-paper:#f4f1e8;--zm-white:#fffdf4;
+ --zm-sage:#dce0d2;--zm-yellow:#ffda24;--zm-muted:#525b46;
+ --zm-muted-dark:#dce0d2;--zm-light-line:#a9afa0;--zm-dark-line:#89927d;
+ --paper:var(--zm-paper);--ink:var(--zm-dark);--muted:var(--zm-muted);
+ --line:var(--zm-light-line);--accent:var(--zm-yellow);color:var(--zm-dark);
+}
+main.studio54:not(.home-page) :is(.story-body,.project-directory,.exhibition-directory,.case-introduction,.case-experience,.archive-section,.personal-questions,.personal-books,.contact-letter,.home-footer,.case-breadcrumb,.case-next){
+ --surface-ink:var(--zm-dark);--surface-muted:var(--zm-muted);--surface-line:var(--zm-light-line);--surface-accent:#49573c;color:var(--surface-ink);
+}
+main.studio54:not(.home-page) :is(.story-ending,.projects-ending,.milestone-hero,.archive-desk,.personal-music,.contact-opening),
+main.studio54.case-world-think :is(.case-opening,.case-details),
+main.studio54.case-world-earth :is(.case-opening,.case-details){
+ --surface-ink:var(--zm-paper);--surface-muted:var(--zm-muted-dark);--surface-line:var(--zm-dark-line);--surface-accent:var(--zm-yellow);color:var(--surface-ink);
+}
+main.studio54:not(.home-page) :is(.story-opening,.projects-opening,.archive-ending,.personal-opening,.personal-end,.contact-ending,.case-future),
+main.studio54.case-world-finance :is(.case-opening,.case-details){
+ --surface-ink:var(--zm-dark);--surface-muted:var(--zm-muted);--surface-line:var(--zm-light-line);--surface-accent:#49573c;color:var(--surface-ink);
+}
+main.studio54:not(.home-page) :is(.projects-opening,.archive-ending,.personal-opening,.contact-ending),
+main.studio54.case-world-think .case-future{
+ --surface-muted:#3e442e;--surface-line:#786b28;--surface-accent:var(--zm-dark);
+}
+main.studio54:not(.home-page) :is(.story-edition,.entry-top,.projects-rule,.archive-rule,.personal-rule,.contact-rule){color:var(--surface-muted,var(--zm-muted));border-color:var(--surface-line,var(--zm-light-line))}
+main.studio54:not(.home-page) :is(.story-ending,.projects-ending,.milestone-hero,.personal-music,.contact-opening,.case-details,.case-opening) :is(h2 em,.story-end-row a,.case-link,.archive-hero-link,.contact-text-link){color:var(--surface-accent)}
+main.studio54:not(.home-page) :is(.story-ending,.projects-ending,.milestone-hero,.personal-music,.contact-opening,.case-details) :is(.entry-top,.projects-rule,.archive-rule,.personal-rule,.contact-rule){color:var(--surface-accent);border-color:var(--surface-line)}
+main.studio54:not(.home-page) :is(.story-ending,.projects-ending,.milestone-hero,.personal-music,.contact-opening,.case-details,.case-opening) p{color:var(--surface-muted)}
+/* Intentional yellow surfaces use dark type, including the handwritten mark. */
+main.studio54:not(.home-page) :is(.projects-opening,.personal-opening,.archive-ending,.contact-ending) :is(h1,h2,h1 em,h2 em,.signature,.personal-link,.contact-text-link,.projects-rule,.archive-rule,.personal-rule,.contact-rule){color:var(--zm-dark)}
+main.studio54:not(.home-page) :is(.story-autograph,.letter-signature,.personal-end-row) .signature{color:#49573c}
+main.studio54:not(.home-page) .story-end-row .signature{color:var(--zm-yellow)}
+main.studio54:not(.home-page) .contact-ending-row .signature{color:var(--zm-dark)}
+main.studio54:not(.home-page) :is(.studio54-unwritten,.studio54-marginalia,.projects-intro) .signature{color:var(--zm-dark)}
+main.studio54:not(.home-page) :is(.story-index-nav a,.story-inline-link,.story-continue,.exhibit-link,.case-introduction .case-link,.personal-end .personal-link){color:var(--zm-dark)}
+main.studio54:not(.home-page) :is(.story-index-nav a,.story-inline-link,.story-continue,.exhibit-link,.case-introduction .case-link,.personal-end .personal-link):hover{color:#49573c}
+main.studio54:not(.home-page) .exhibition-index nav a{color:var(--zm-muted);border-color:var(--zm-light-line)}
+main.studio54:not(.home-page) .exhibition-index nav a[aria-current=location]{background:var(--zm-yellow);color:var(--zm-dark)}
+/* Project experiments share the same accent rather than the legacy lime. */
+main.studio54.case-page .quiz-panel{background:var(--zm-dark);color:var(--zm-paper)}
+main.studio54.case-page .quiz-coin{color:var(--zm-yellow);border-color:var(--zm-yellow);outline-color:var(--zm-yellow)}
+main.studio54.case-page .quiz-answers button{color:var(--zm-paper);background:transparent;border-color:var(--zm-dark-line)}
+main.studio54.case-page .quiz-answers button:is(:hover,:focus-visible,[aria-pressed=true]){background:var(--zm-yellow);color:var(--zm-dark)}
+main.studio54.case-page .finance-panel{background:var(--zm-sage);color:var(--zm-dark)}
+main.studio54.case-page .earth-panel{background:#e2e5d9;color:var(--zm-olive)}
+main.studio54.case-page :is(.experiment-range,.earth-actions label){border-color:#89927d}
+main.studio54.case-page :is(.experiment-range input,.earth-actions input){accent-color:var(--zm-olive)}
+main.studio54.case-page .case-details .case-focus>div{border-color:var(--surface-line)}
+/* Archive: paper stays paper; never invert a certificate on hover. */
+main.studio54.milestones-page .archive-tabs button{color:var(--zm-dark);border-color:transparent}
+main.studio54.milestones-page .archive-tabs button:not([aria-pressed=true]):hover{background:var(--zm-sage);color:var(--zm-dark)}
+main.studio54.milestones-page .archive-tabs button[aria-pressed=true]{background:var(--zm-yellow);color:var(--zm-dark);border-color:var(--zm-dark)}
+main.studio54.milestones-page .archive-grid .archive-record{color:var(--zm-dark)}
+main.studio54.milestones-page .archive-grid .record-has-document .record-cover,
+main.studio54.milestones-page .archive-grid .record-has-document:hover .record-cover{background:var(--zm-white)!important;color:var(--zm-dark)!important}
+main.studio54.milestones-page .archive-grid .record-experience .record-cover{background:var(--zm-dark);color:var(--zm-yellow)}
+main.studio54.milestones-page .archive-grid .record-experience:hover .record-cover{background:var(--zm-yellow);color:var(--zm-dark)}
+main.studio54.milestones-page .archive-dialog{background:var(--zm-paper);color:var(--zm-dark)}
+main.studio54.milestones-page .archive-close{background:var(--zm-paper);color:var(--zm-dark);border-color:var(--zm-light-line)}
+main.studio54.milestones-page .archive-close:hover{background:var(--zm-yellow);color:var(--zm-dark)}
+main.studio54.milestones-page .desk-paper{background:var(--zm-white);color:var(--zm-dark)}
+main.studio54.milestones-page .desk-copy h3{color:var(--zm-paper)}
+main.studio54.milestones-page .desk-controls button:disabled{color:#a5ab9c;border-color:#737a6c;opacity:.75}
+main.studio54.milestones-page .desk-controls button:disabled:hover{background:transparent;color:#a5ab9c}
+/* Notebook: stable colors for closed, expanded, hover and keyboard states. */
+main.studio54.personal-page .personal-note:nth-child(1){background:var(--zm-yellow);color:var(--zm-dark)}
+main.studio54.personal-page .personal-note:nth-child(2){background:var(--zm-sage);color:var(--zm-dark)}
+main.studio54.personal-page .personal-note:nth-child(3){background:var(--zm-dark);color:var(--zm-paper);border-color:var(--zm-dark-line)}
+main.studio54.personal-page .personal-note:nth-child(-n+2) :is(.note-number,.note-question,p,.note-topic,.note-plus){color:var(--zm-dark)}
+main.studio54.personal-page .personal-note:nth-child(3) :is(.note-number,.note-question,p){color:var(--zm-muted-dark)}
+main.studio54.personal-page .personal-note:nth-child(3) :is(.note-topic,.note-plus){color:var(--zm-paper)}
+main.studio54.personal-page .personal-note:nth-child(3) summary:is(:hover,:focus-visible) .note-topic{color:var(--zm-yellow)}
+main.studio54.personal-page .music-art{background:var(--zm-olive);color:var(--zm-yellow)}
+main.studio54.personal-page .spine-one{background:var(--zm-sage);color:var(--zm-dark)}
+main.studio54.personal-page .spine-two{background:var(--zm-olive);color:var(--zm-paper)}
+main.studio54.personal-page .spine-three{background:var(--zm-yellow);color:var(--zm-dark)}
+/* CTA foreground must change with its background. */
+main.studio54:not(.home-page) :is(.desk-open,.contact-direct,.minimal-connect){background:var(--zm-yellow);color:var(--zm-dark);border-color:var(--zm-yellow)}
+main.studio54:not(.home-page) :is(.desk-open,.contact-direct):is(:hover,:focus-visible){background:var(--zm-paper);color:var(--zm-dark);border-color:var(--zm-paper)}
+main.studio54:not(.home-page) .minimal-header .minimal-connect:hover{background:var(--zm-dark);color:var(--zm-paper);border-color:var(--zm-dark)}
+main.studio54.contact-page .contact-channel{color:var(--zm-dark);border-color:var(--zm-light-line)}
+main.studio54.contact-page .contact-channel:is(:hover,:focus-visible) :is(small,strong,span,b){color:var(--zm-dark)}
+main.studio54.contact-page .contact-channel:is(:hover,:focus-visible) b{background:var(--zm-yellow);border-color:var(--zm-dark)}
+main.studio54.contact-page .letter-paper{background:var(--zm-white);color:var(--zm-dark)}
+main.studio54:not(.home-page) :is(a,button,summary):focus-visible{outline:2px solid var(--surface-accent,#49573c);outline-offset:4px}
+main.studio54.milestones-page .archive-desk :is(a,button):focus-visible,
+main.studio54.personal-page .personal-note:nth-child(3) summary:focus-visible,
+main.studio54.contact-page .contact-opening :is(a,button):focus-visible{outline-color:var(--zm-yellow)}
+/* Keep shared fullscreen menu palette independent of route surface variables. */
+main.studio54:not(.home-page) .zm-menu-dialog{--surface-ink:var(--zm-paper);--surface-accent:var(--zm-yellow);color:var(--zm-paper)}
