@@ -32,7 +32,7 @@ export default function FilmStage({children}:{children:ReactNode}){
    const u=proxy.u,cam=filmCamera(u,w,h);
    if(Math.abs(previous-u)<.00005&&w===w0&&h===h0)return;previous=u;w0=w;h0=h;
    v!.style.setProperty("--film-focal",cam.focal+"px");
-   v!.style.backgroundColor="rgb("+cam.color.map(x=>Math.round(x*255)).join(",")+")";
+   const paper="rgb("+cam.color.map(x=>Math.round(x*255)).join(",")+")";v!.style.backgroundColor=paper;v!.style.setProperty("--film-paper",paper);
    space!.style.transform="rotateZ("+(-cam.roll)+"rad) translate3d("+(-cam.x)+"px,"+(-cam.y)+"px,"+cam.z+"px)";
    const n=clamp(Math.round(u),0,shots.length-1);
    for(let i=0;i<shots.length;i++){
@@ -64,7 +64,7 @@ export default function FilmStage({children}:{children:ReactNode}){
   const timeline=gsap.timeline({paused:true,onUpdate:paint}).to(proxy,{u:shots.length-1,duration:shots.length-1,ease:"none"},0);
   function clean(){
    live=false;gpu?.dispose();cpu?.dispose();gpu=null;cpu=null;
-   delete el!.dataset.live;delete v!.dataset.renderer;space!.style.removeProperty("transform");v!.style.removeProperty("background-color");
+   delete el!.dataset.live;delete v!.dataset.renderer;space!.style.removeProperty("transform");v!.style.removeProperty("background-color");v!.style.removeProperty("--film-paper");
    main!.classList.remove("cinematic-live","film-after-portrait");
    for(const s of shots){s.inert=false;s.removeAttribute("aria-hidden");s.removeAttribute("style")}
   }

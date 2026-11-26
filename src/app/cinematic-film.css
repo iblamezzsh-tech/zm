@@ -121,3 +121,6 @@
 .film-home.cinematic-live:not(.film-after-portrait) .cinematic-hud .cinematic-track,.film-home.cinematic-live:not(.film-after-portrait) .cinematic-hud .cinematic-frame,.film-home.cinematic-live:not(.film-after-portrait) .cinematic-hud .cinematic-chapter,.film-home.cinematic-live:not(.film-after-portrait) .cinematic-hud .cinematic-actions button:not(.cinematic-mode){display:none}
 .film-home.cinematic-live:not(.film-after-portrait) .cinematic-hud .cinematic-mode{background:#eeece3d9;border-color:#24291e55;font-size:9px;min-height:32px}
 .film-home.film-after-portrait .film-shot-hero .toolbar{visibility:hidden}
+
+/* Keep the world-space ribbon legible as a sculptural backdrop, not text noise. */
+.cinematic-reel[data-live=true] .cinematic-grain{mix-blend-mode:normal;background:linear-gradient(90deg,color-mix(in srgb,var(--film-paper,#eeece3) 75%,transparent) 0%,color-mix(in srgb,var(--film-paper,#eeece3) 55%,transparent) 36%,transparent 68%),radial-gradient(ellipse at 42% 47%,transparent 44%,#24291e16 100%)}
