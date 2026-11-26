@@ -1,27 +1,54 @@
 "use client";
-
 import Link from "next/link";
 import {useEffect,useRef,useState,useId} from "react";
+import Signature from "./signature";
 import "./site-menu.css";
 
 const pages=[
- {href:"/",label:"Home",number:"01",note:"The present"},
- {href:"/about",label:"My story",number:"02",note:"Where it began"},
- {href:"/projects",label:"Projects",number:"03",note:"Ideas in action"},
- {href:"/achievements",label:"Milestones",number:"04",note:"The journey"},
- {href:"/off-the-record",label:"Off the record",number:"05",note:"Beyond the portfolio"},
- {href:"/contact",label:"Let's connect",number:"06",note:"Say hello"},
+ {href:"/",label:"Home",number:"01",note:"The present",visual:"present"},
+ {href:"/about",label:"My story",number:"02",note:"Where it began",visual:"future"},
+ {href:"/projects",label:"Projects",number:"03",note:"Ideas in action",visual:"project"},
+ {href:"/achievements",label:"Milestones",number:"04",note:"The journey",visual:"mun"},
+ {href:"/off-the-record",label:"Off the record",number:"05",note:"Beyond the portfolio",visual:"sport"},
+ {href:"/contact",label:"Let's connect",number:"06",note:"Say hello",visual:"signature"},
+] as const;
+type Tile={id:string;label:string;image?:string;kind:"portrait"|"future"|"document"|"project"|"signature"};
+const columns:Tile[][]=[
+ [
+ {id:"present",label:"01 / The present",image:"/images/portrait-present.webp",kind:"portrait"},
+ {id:"sport",label:"02 / On the court",image:"/documents/handball-first-place-2022.webp",kind:"document"},
+ {id:"project",label:"03 / OverThink",kind:"project"},
+ ],
+ [
+ {id:"mun",label:"04 / Model United Nations",image:"/documents/namangan-mun-2026.webp",kind:"document"},
+ {id:"future",label:"05 / The next chapter",image:"/images/portrait-present.webp",kind:"future"},
+ {id:"signature",label:"06 / Z.M.",kind:"signature"},
+ ]
 ];
-
+function GalleryTile({tile,active}:{tile:Tile;active:boolean}){
+ return <div className={"zm-gallery-tile tile-"+tile.kind+(active?" is-highlighted":"")}>
+  {tile.image&&<img src={tile.image} alt="" draggable={false}/>}
+  {tile.kind==="future"&&<img className="tile-attire" src="/images/portrait-academic-attire.svg" alt="" draggable={false}/>}
+  {tile.kind==="project"&&<div className="tile-project-mark"><b>?</b><span>OverThink.</span></div>}
+  {tile.kind==="signature"&&<div className="tile-signature-mark"><Signature/></div>}
+  <span className="zm-tile-label">{tile.label}</span>
+ </div>
+}
 export default function SiteHeader({about=false,projects=false,achievements=false,personal=false,contact=false}:{about?:boolean;projects?:boolean;achievements?:boolean;personal?:boolean;contact?:boolean}){
  const current=about?"/about":projects?"/projects":achievements?"/achievements":personal?"/off-the-record":contact?"/contact":"/";
  const dialog=useRef<HTMLDialogElement>(null);
  const trigger=useRef<HTMLButtonElement>(null);
+ const timer=useRef<ReturnType<typeof setTimeout>|null>(null);
  const [open,setOpen]=useState(false);
+ const [closing,setClosing]=useState(false);
+ const [hovered,setHovered]=useState<string|null>(null);
  const menuId=useId();
- function show(){const el=dialog.current;if(el&&!el.open){el.showModal();setOpen(true)}}
- function close(){dialog.current?.close()}
+ const selected=hovered??pages.find(p=>p.href===current)?.visual??"present";
+ function show(){const el=dialog.current;if(el&&!el.open){setClosing(false);setHovered(null);el.showModal();setOpen(true)}}
+ function finish(){if(timer.current){clearTimeout(timer.current);timer.current=null}dialog.current?.close()}
+ function close(animated=true){if(!dialog.current?.open)return;if(!animated||matchMedia("(prefers-reduced-motion: reduce)").matches){finish();return}if(timer.current)return;setClosing(true);timer.current=setTimeout(finish,320)}
  useEffect(()=>{if(!open)return;const previous=document.body.style.overflow;document.body.style.overflow="hidden";return()=>{document.body.style.overflow=previous}},[open]);
+ useEffect(()=>()=>{if(timer.current)clearTimeout(timer.current)},[]);
  return <>
  <a className="skip-link" href="#main-content">Skip to content</a>
  <header className="site-header minimal-header">
@@ -31,14 +58,21 @@ export default function SiteHeader({about=false,projects=false,achievements=fals
    <button ref={trigger} className="minimal-menu-trigger" type="button" onClick={show} aria-label="Open navigation menu" aria-haspopup="dialog" aria-expanded={open} aria-controls={menuId}><span className="minimal-menu-glyph" aria-hidden="true"><i/><i/></span></button>
   </div>
  </header>
- <dialog ref={dialog} id={menuId} className="zm-menu-dialog" aria-label="Navigation menu" onClose={()=>{setOpen(false);trigger.current?.focus({preventScroll:true})}}>
+ <dialog ref={dialog} id={menuId} className={"zm-menu-dialog"+(closing?" is-closing":"")} aria-label="Navigation menu" onCancel={e=>{e.preventDefault();close()}} onClose={()=>{setOpen(false);setClosing(false);setHovered(null);trigger.current?.focus({preventScroll:true})}}>
   <div className="zm-menu-shell">
-   <div className="zm-menu-top"><Link href="/" onClick={close} aria-label="ZiyoMuhammad home"><img src="/icon.svg" alt="" width="50" height="50"/></Link><span>ZIYOMUHAMMAD / INDEX</span><button className="zm-menu-close" type="button" aria-label="Close navigation menu" onClick={close} autoFocus><span aria-hidden="true">×</span></button></div>
-   <div className="zm-menu-body">
-    <aside className="zm-menu-aside" aria-hidden="true"><div className="zm-menu-monogram">Z<span>M</span></div><p>The distance<br/>between now &amp; next.</p></aside>
-    <nav className="zm-menu-links" aria-label="Primary navigation">{pages.map(page=><Link key={page.href} href={page.href} onClick={close} aria-current={current===page.href?"page":undefined}><span className="zm-menu-num">{page.number}</span><span className="zm-menu-label">{page.label}</span><span className="zm-menu-note">{page.note}</span><span className="zm-menu-link-arrow" aria-hidden="true">↗</span></Link>)}</nav>
+   <div className="zm-menu-top">
+    <Link className="zm-menu-logo" href="/" onClick={()=>close(false)} aria-label="ZiyoMuhammad home"><img src="/icon.svg" alt="" width="50" height="50"/></Link>
+    <div className="minimal-actions"><Link className="minimal-connect zm-menu-connect" href="/contact" onClick={()=>close(false)}>Let's Connect <span aria-hidden="true">↗</span></Link><button className="zm-menu-close" type="button" aria-label="Close navigation menu" onClick={()=>close()} autoFocus><span aria-hidden="true">×</span></button></div>
    </div>
-   <div className="zm-menu-bottom"><span>PERSONAL PORTFOLIO</span><span>UZBEKISTAN / NOW &amp; NEXT</span></div>
+   <div className="zm-menu-gallery" aria-hidden="true">
+    {open&&columns.map((tiles,i)=><div className={"zm-gallery-column column-"+i} key={i}><div className="zm-gallery-reel">{[0,1].map(copy=><div className="zm-gallery-set" key={copy}>{tiles.map(tile=><GalleryTile key={tile.id} tile={tile} active={selected===tile.id}/>)}</div>)}</div></div>)}
+   </div>
+   <div className="zm-menu-right">
+    <div className="zm-menu-index"><span>ZM / INDEX</span><span>01—06</span></div>
+    <nav className="zm-menu-links" aria-label="Primary navigation" onMouseLeave={()=>setHovered(null)}>{pages.map((page,i)=><Link key={page.href} href={page.href} onClick={()=>close(false)} onMouseEnter={()=>setHovered(page.visual)} onFocus={()=>setHovered(page.visual)} onBlur={()=>setHovered(null)} aria-current={current===page.href?"page":undefined} style={{"--item":i} as React.CSSProperties}><span className="zm-menu-label">{page.label}<svg className="zm-menu-strike" viewBox="0 0 240 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10H45Q52 10 58 15H101Q108 15 115 5H163Q170 5 178 15H240" fill="none" stroke="currentColor" strokeWidth="2.8" vectorEffect="non-scaling-stroke" pathLength="1"/></svg></span></Link>)}</nav>
+    <div className="zm-menu-signoff"><Signature/><span>Curious by nature. / Uzbekistan</span></div>
+    <div className="zm-menu-social"><Link href="/contact" onClick={()=>close(false)}>Get in touch ↗</Link><div><a href="https://t.me/Shoxruxbekovich" target="_blank" rel="noreferrer">Telegram</a><a href="https://www.instagram.com/the_zzsh/" target="_blank" rel="noreferrer">Instagram</a><a href="https://github.com/iblamezzsh-tech/zm" target="_blank" rel="noreferrer">GitHub</a></div></div>
+   </div>
   </div>
  </dialog>
  <div id="main-content" tabIndex={-1}/>
