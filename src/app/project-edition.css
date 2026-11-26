@@ -73,3 +73,35 @@
  main.site-motion-ready .edition56-answer-sheet{transform:translateY(calc((1 - var(--site-in,1))*2cqw)) rotate(calc(3deg + (1 - var(--site-in,1))*5deg))}
  main.site-motion-ready .edition56-fieldnote{transform:translateY(calc((1 - var(--site-in,1))*3cqw)) rotate(calc(-2.5deg - (1 - var(--site-in,1))*5deg))}
 }
+
+/* Browser-tested density correction: keep the artifacts between the two rules. */
+.edition56-main{align-items:center}
+.edition56-quiz-title>strong{font-size:17cqw}
+.edition56-earth-copy>strong{font-size:13cqw}
+.edition56-finance-copy>strong{font-size:10.5cqw}
+.edition56-answer-sheet{padding:2.5cqw;transform:rotate(1.5deg)}
+.edition56-answer-sheet>strong{font-size:3.05cqw;margin-bottom:1.3cqw}
+.edition56-sheet-meta{padding-bottom:1cqw;margin-bottom:1.4cqw}
+.edition56-sheet-meta b{font-size:5cqw}
+.edition56-answer{padding:.85cqw 0;font-size:2.35cqw}
+.edition56-fieldnote{padding:2.5cqw;transform:rotate(-1.5deg)}
+.edition56-fieldnote>strong{font-size:5.7cqw;margin-bottom:1.5cqw}
+.edition56-task{padding:1.15cqw 0}
+.edition56-task span{font-size:2.4cqw}
+.edition56-chart{padding:2cqw}
+.edition56-chart svg{max-height:19cqw;margin-top:1cqw}
+.edition56-chart-caption{gap:1cqw}
+.edition56-chart-caption>strong{font-size:7.8cqw}
+.edition56-answer-sheet>small,.edition56-fieldnote>small,.edition56-chart>small{margin-top:1.2cqw}
+.edition56-main>div>span:first-child{margin-bottom:1.8cqw}
+@container(max-width:360px){.edition56-answer-sheet>strong{font-size:3cqw}.edition56-answer{font-size:2.35cqw}.edition56-quiz-title>span:last-child{margin-top:1.4cqw}}
+@container(max-width:235px){.edition56-quiz-title>strong{font-size:22cqw}.edition56-finance-copy>strong{font-size:14cqw}.edition56-earth-copy>strong{font-size:17cqw}}
+/* Use the tested frame proportion for full cards, regardless of old poster variants. */
+.ed-work-item .ed-work-image .studio54-edition.edition56,.next-project-art .studio54-edition.edition56{aspect-ratio:1.52}
+.ed-fan-card .studio54-edition.edition56{height:100%;aspect-ratio:auto}
+.zm-menu-filmstrip-item .studio54-edition.edition56{height:100%;aspect-ratio:auto;padding:5%;display:flex}
+.zm-menu-feature-frame .studio54-edition.edition56{height:100%;aspect-ratio:auto}
+@media(prefers-reduced-motion:no-preference){
+ main.site-motion-ready .edition56-answer-sheet{transform:translateY(calc((1 - var(--site-in,1))*2cqw)) rotate(calc(1.5deg + (1 - var(--site-in,1))*3deg))}
+ main.site-motion-ready .edition56-fieldnote{transform:translateY(calc((1 - var(--site-in,1))*2cqw)) rotate(calc(-1.5deg - (1 - var(--site-in,1))*3deg))}
+}
