@@ -117,7 +117,7 @@ main.site-motion-ready .case-opening .studio-poster.art-v32,main.site-motion-rea
 .milestones-page .archive-emblem{color:#ffda24}
 .milestones-page .archive-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(14px,2vw,32px);align-items:start}
 .milestones-page .archive-record{grid-column:span 4;border:0;background:transparent;padding:0;box-shadow:none;min-width:0}
-.milestones-page .archive-record:nth-child(7n+1),.milestones-page .archive-record:nth-child(7n+2){grid-column:span 6}
+.milestones-page .archive-record:nth-child(5n+1),.milestones-page .archive-record:nth-child(5n+2){grid-column:span 6}
 .milestones-page .record-cover{aspect-ratio:1.35;min-height:0;clip-path:none}
 .milestones-page .record-has-document .record-cover{background:#e1e0d5!important;box-shadow:inset 0 0 0 1px #c5c8b8;padding:clamp(10px,2vw,28px)}
 .milestones-page .record-has-document .record-cover img{object-fit:contain;filter:drop-shadow(0 8px 10px #24291e22);background:transparent}
@@ -168,7 +168,7 @@ main.site-motion-ready .case-opening .studio-poster.art-v32,main.site-motion-rea
 /* Short screens and touch layouts: no desktop-sized type or forced pinning. */
 @media(max-width:900px){
 .projects-page .exhibition-directory{grid-template-columns:minmax(130px,.28fr) minmax(0,1fr);gap:20px}
-.milestones-page .archive-record,.milestones-page .archive-record:nth-child(7n+1),.milestones-page .archive-record:nth-child(7n+2){grid-column:span 6}
+.milestones-page .archive-record,.milestones-page .archive-record:nth-child(5n+1),.milestones-page .archive-record:nth-child(5n+2){grid-column:span 6}
 .personal-page .personal-note-list{grid-template-columns:1fr}
 .personal-page .personal-note summary{min-height:150px}
 .story-page .story-entry:nth-child(even) .entry-copy{grid-template-columns:1fr}
@@ -191,10 +191,33 @@ main:not(.home-page) .story-index-nav,main:not(.home-page) .exhibition-index{pos
 .studio-poster.art-v32 .think-word{font-size:clamp(23px,11cqw,84px)}
 .studio-poster.art-v32 .finance-word,.studio-poster.art-v32 .earth-word{font-size:clamp(21px,8.6cqw,65px)}
 .milestones-page .milestone-hero h1{font-size:clamp(43px,10.8vw,100px)}
-.milestones-page .archive-record,.milestones-page .archive-record:nth-child(7n+1),.milestones-page .archive-record:nth-child(7n+2){grid-column:span 12}
+.milestones-page .archive-record,.milestones-page .archive-record:nth-child(5n+1),.milestones-page .archive-record:nth-child(5n+2){grid-column:span 12}
 .milestones-page .record-cover{aspect-ratio:1.5}
 .personal-page .personal-title-wrap h1{font-size:clamp(55px,15vw,120px)}
 .contact-page .contact-title-grid h1{font-size:clamp(72px,19vw,160px)}
 .home-page .work-heading h2,.home-page .personal-grid h2{font-size:clamp(49px,11vw,95px)}
 }
 @media(prefers-reduced-motion:reduce){.story-evidence-paper{translate:none!important}.story-evidence-paper.paper-0{transform:rotate(-8deg)}.story-evidence-paper.paper-1{transform:rotate(8deg)}}
+
+/* Final fit pass: use the title column, not viewport width, for long names. */
+main:not(.home-page) h1 .zm-words,main:not(.home-page) h1 .zm-words span{font-style:inherit}
+.case-title-group>div{container-type:inline-size;min-width:0}
+.case-title-group h1{font-size:clamp(36px,18cqw,158px)!important}
+.case-world-finance .case-title-group h1{font-size:clamp(30px,12.5cqw,120px)!important}
+.case-world-finance .case-title-group h1 .zm-word{display:inline;white-space:normal}
+.case-world-finance .case-title-group h1 .zm-word>span{max-width:100%;overflow-wrap:anywhere}
+.story-page .entry-top>span,.projects-page .projects-rule>span,.milestones-page .archive-rule>span,.personal-page .personal-rule>span,.contact-page .contact-rule>span{min-width:0;overflow-wrap:anywhere}
+.milestones-page .archive-record .record-cover>svg{max-height:65%;width:auto;max-width:75%}
+main.site-motion-ready .archive-record .record-cover{clip-path:none}
+main:not(.home-page) a:focus-visible,main:not(.home-page) button:focus-visible{outline-offset:3px}
+@media(max-width:760px){
+.case-title-group h1{font-size:clamp(36px,18cqw,100px)!important}
+.case-world-finance .case-title-group h1{font-size:clamp(29px,12.5cqw,80px)!important}
+main:not(.home-page) .zm-word{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+main:not(.home-page) .zm-word>span{max-width:100%;overflow-wrap:anywhere}
+.story-page .story-portrait{max-width:100%}
+.contact-page .contact-ending-row{flex-wrap:wrap}
+.projects-page .projects-intro{flex-wrap:wrap}
+.home-page .work-heading p{max-width:100%}
+}
+@media(prefers-reduced-motion:reduce){main:not(.home-page) .zm-word>span{transform:none!important;opacity:1!important}}

@@ -20,7 +20,7 @@ export default function Archive({records}:{records:RecordEntry[]}){
  const dialog=useRef<HTMLDialogElement>(null);
  const trigger=useRef<HTMLButtonElement|null>(null);
  const items=records.filter(item=>category==="All"||(category==="Certificates"?Boolean(item.document):item.category===category));
- useEffect(()=>{const el=dialog.current;if(selected&&el&&!el.open)el.showModal()},[selected]);
+ useEffect(()=>{const el=dialog.current;if(!selected||!el)return;if(!el.open)el.showModal();const previous=document.body.style.overflow;document.body.style.overflow="hidden";return()=>{document.body.style.overflow=previous}},[selected]);
  function open(entry:RecordEntry,button:HTMLButtonElement){trigger.current=button;setSelected(entry)}
  function close(){dialog.current?.close()}
  return <section className="archive-section" aria-labelledby="archive-title">
