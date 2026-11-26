@@ -2,6 +2,7 @@
 import {useEffect,useRef,useState} from "react";
 import Link from "next/link";
 import ProjectArt from "./project-art";
+import ProjectEdition from "./project-edition";
 import {projects} from "./projects/data";
 import "./exhibition.css";
 const captions=["One question. Six minds.","Make the numbers make sense.","Start with the place you live."];
@@ -22,7 +23,7 @@ export default function ProjectExhibition({directory=false}:{directory?:boolean}
  </aside>
  <div className="exhibition-window"><div className="exhibition-scenes">
  {projects.map((p,i)=><article className={"exhibit-scene exhibit-"+p.kind+(active===i?" is-current":"")} key={p.slug} id={"exhibit-"+p.slug} data-exhibit-scene data-flow-scene="project">
- <Link className="exhibit-visual" href={"/projects/"+p.slug} aria-label={"Explore "+p.name}><ProjectArt kind={p.kind}/><span className="exhibit-badge" aria-hidden="true">OPEN<br/>PROJECT <b>↗</b></span></Link>
+ <Link className="exhibit-visual" href={"/projects/"+p.slug} aria-label={"Explore "+p.name}>{directory?<ProjectEdition project={p}/>:<ProjectArt kind={p.kind}/>}<span className="exhibit-badge" aria-hidden="true">OPEN<br/>PROJECT <b>↗</b></span></Link>
  <div className="exhibit-caption"><div><span className="exhibit-kicker">{p.number} / {p.category} — {p.role}</span><h3>{captions[i]}</h3></div><div><p>{p.summary}</p><Link className="exhibit-link" href={"/projects/"+p.slug}>Inside {p.name} <span aria-hidden="true">↗</span></Link></div></div>
  </article>)}
  </div></div>

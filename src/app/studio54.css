@@ -1,0 +1,193 @@
+/* V54: interior studio edition. All selectors scoped; approved homepage untouched. */
+main.studio54{--s54-ink:#24291e;--s54-paper:#f4f1e8;--s54-yellow:#ffda24;--s54-sage:#dce0d2;--s54-muted:#525b46;--s54-gutter:clamp(20px,5vw,90px);color:var(--s54-ink)}
+main.studio54 :is(h1,h2,h3){min-width:0;text-wrap:balance}
+main.studio54 :is(.story-edition,.entry-top,.projects-rule,.archive-rule,.personal-rule,.contact-rule){letter-spacing:.09em}
+main.studio54 .home-footer{border-top:1px solid #24291e38;margin-top:0}
+main.studio54 :is(.story-opening,.projects-opening,.case-opening,.milestone-hero,.personal-opening,.contact-opening){margin-top:12px}
+main.studio54 :is(.story-opening,.projects-opening,.case-opening,.milestone-hero,.personal-opening,.contact-opening) h1{overflow-wrap:normal;word-break:normal}
+main.studio54 .zm-word>span{overflow-wrap:normal}
+main.studio54 a:focus-visible,main.studio54 button:focus-visible,main.studio54 summary:focus-visible{outline:2px solid #8b6b00;outline-offset:4px}
+/* My Story: portrait-led cover, then real archival paper instead of ornaments. */
+main.studio54.story-page .story-opening{display:grid;grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);grid-template-rows:auto 1fr;gap:clamp(18px,3vw,48px);align-items:center;background:#eeece3;color:#24291e;padding:var(--s54-gutter);min-height:0}
+main.studio54.story-page .story-edition{grid-column:1/-1;color:#525b46}
+main.studio54.story-page .story-opening h1{font:800 clamp(55px,10.8vw,174px)/.86 var(--studio-sans);letter-spacing:-.095em;margin:0;align-self:center}
+main.studio54.story-page .story-opening h1 em{font:400 1.06em/.9 var(--studio-serif);color:#49573c;letter-spacing:-.04em}
+main.studio54.story-page .story-opening-grid{padding:0;display:grid;grid-template-rows:auto auto;gap:20px;min-width:0}
+main.studio54.story-page .story-portrait{height:clamp(240px,36vw,490px);max-width:none;width:100%;background:radial-gradient(ellipse at 50% 55%,#77836a,#354431 75%);border:0;padding:0;clip-path:none!important}
+main.studio54.story-page .story-portrait img{object-fit:contain;object-position:bottom center;height:100%;width:100%}
+main.studio54.story-page .story-opening-copy h2{font-size:clamp(34px,4vw,64px);line-height:1.02;margin:10px 0;color:#24291e}
+main.studio54.story-page .story-opening-copy p{color:#525b46;margin:12px 0}
+main.studio54.story-page .story-body{display:block;padding:clamp(38px,6vw,90px) 0}
+main.studio54.story-page .story-index-nav{position:relative;top:auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 16px;margin:0 0 clamp(45px,8vw,120px)}
+main.studio54.story-page .story-index-nav>span{grid-column:1/-1}
+main.studio54.story-page .story-index-nav a{border-block:1px solid #24291e30}
+main.studio54.story-page .story-entry{padding-bottom:clamp(60px,9vw,145px)}
+main.studio54.story-page .entry-spread{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(22px,5vw,80px);align-items:center;padding-top:28px}
+main.studio54.story-page .entry-spread .entry-copy{display:flex;flex-direction:column;gap:22px;min-width:0}
+main.studio54.story-page .entry-spread .entry-copy h2{font:400 clamp(43px,6vw,98px)/.98 var(--studio-serif);letter-spacing:-.04em}
+main.studio54.story-page .entry-spread .entry-copy p{max-width:46ch;color:#525b46;line-height:1.65}
+main.studio54.story-page .entry-spread .studio54-story-plate{height:auto;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:18px;padding:clamp(18px,3vw,45px);overflow:hidden;clip-path:none!important;transform:none;background:#e1e3d7;color:#24291e}
+main.studio54.story-page .story-entry-learning .entry-spread{grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr)}
+main.studio54.story-page .story-entry-learning .studio54-story-plate{order:2;background:#dcd5c2}
+.studio54-document-pair{display:grid;grid-template-columns:1fr;gap:12px;align-items:center;min-width:0}
+.studio54-document{margin:0;background:#fffdf4;padding:clamp(9px,1.1vw,18px);min-width:0;box-shadow:0 9px 25px #24291e20}
+.studio54-document.doc-0{width:88%;transform:rotate(-3deg)}
+.studio54-document.doc-1{width:82%;justify-self:end;transform:rotate(3deg);margin-top:-4%}
+.studio54-document img{display:block;width:100%;height:clamp(130px,19vw,270px);object-fit:contain}
+.studio54-document figcaption{font-size:10px;line-height:1.4;letter-spacing:.05em;padding-top:8px;color:#525b46}
+main.studio54.story-page .studio54-plate-caption{position:static;font-size:10px;letter-spacing:.12em}
+main.studio54.story-page .story-entry-building .entry-spread{grid-template-columns:1fr}
+main.studio54.story-page .story-entry-building .studio54-story-plate{background:#24291e;color:#f4f1e8}
+.studio54-story-projects{display:grid;gap:0}
+main.studio54 .studio54-story-projects>span,.studio54-unwritten>span{position:static;font-size:10px;letter-spacing:.11em;margin-bottom:18px}
+.studio54-story-projects a{display:flex;justify-content:space-between;gap:12px;align-items:center;min-width:0;font:750 clamp(25px,7.5vw,110px)/1.12 var(--studio-sans);letter-spacing:-.075em;text-decoration:none;color:#f4f1e8;border-top:1px solid #f4f1e840;padding:12px 0}
+.studio54-story-projects a small{font:400 .45em/1 Arial,sans-serif;color:#ffda24}
+.studio54-story-projects a:hover{color:#ffda24}
+main.studio54.story-page .story-entry-building .entry-copy{display:grid;grid-template-columns:1fr 1fr}
+main.studio54.story-page .story-entry-future .studio54-story-plate{background:#ffda24;color:#24291e}
+.studio54-unwritten strong{display:block;font:750 clamp(40px,6vw,98px)/.94 var(--studio-sans);letter-spacing:-.075em}
+.studio54-unwritten strong em{font:400 1em/.94 var(--studio-serif)}
+.studio54-unwritten>div{width:clamp(100px,15vw,230px);margin-top:24px}
+/* Three project worlds: typographic quiz poster, financial lesson, field notebook. */
+.studio54-edition{container-type:inline-size;position:relative;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:4cqw;min-width:0;padding:5cqw;aspect-ratio:1.45;overflow:hidden;font-family:var(--studio-sans);isolation:isolate}
+.edition-top,.edition-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;font:650 clamp(8px,1.5cqw,13px)/1.3 Arial,sans-serif;letter-spacing:.07em;border-bottom:1px solid currentColor;padding-bottom:1.7cqw}
+.edition-bottom{border-bottom:0;border-top:1px solid currentColor;padding:1.7cqw 0 0}
+.edition-think{background:#24291e;color:#ffda24}
+.edition-think-main{display:grid;grid-template-columns:1.3fr .7fr;gap:4cqw;align-items:end}
+.edition-think-type{display:flex;flex-direction:column;font:850 17cqw/.77 var(--studio-sans);letter-spacing:-.11em}
+.edition-think-type span:nth-child(2){color:#f4f1e8}.edition-think-type span:nth-child(3){font-size:12.5cqw}
+.edition-think-note{display:flex;flex-direction:column;gap:2.6cqw;border-left:1px solid #ffda24;padding-left:3cqw;align-self:stretch;justify-content:flex-end}
+.edition-think-note span,.edition-finance-title>span,.edition-earth-title>span,.edition-finance-sheet>span,.edition-earth-list>span{font:650 clamp(7px,1.4cqw,13px)/1.3 Arial,sans-serif;letter-spacing:.08em}
+.edition-think-note strong{font:400 7cqw/.93 var(--studio-serif);color:#f4f1e8}
+.edition-finance{background:#e2e5d9;color:#24291e;aspect-ratio:1.65}
+.edition-finance-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4cqw;align-items:center}
+.edition-finance-title strong,.edition-earth-title strong{display:block;font:750 10cqw/.87 var(--studio-sans);letter-spacing:-.08em;margin-top:3cqw}
+.edition-finance-title em,.edition-earth-title em{font:400 .98em/.92 var(--studio-serif);letter-spacing:-.04em}
+.edition-finance-sheet{background:#fffdf4;color:#24291e;padding:3.8cqw;box-shadow:0 2cqw 4cqw #24291e20;transform:rotate(-2deg);min-width:0}
+.edition-finance-sheet>strong{display:block;font:400 5.6cqw/1.1 var(--studio-serif);white-space:nowrap;margin:3cqw 0}
+.edition-finance-sheet dl{margin:0 0 2cqw}
+.edition-finance-sheet dl>div{display:grid;grid-template-columns:1fr 3fr;gap:1.2cqw;border-top:1px solid #24291e35;padding:1.3cqw 0;font-size:2cqw;line-height:1.25}
+.edition-finance-sheet dd{margin:0}.edition-finance-sheet dt{font-weight:750}
+.edition-earth{background:#354431;color:#f4f1e8;aspect-ratio:1.45}
+.edition-earth-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.82fr);align-items:center;gap:5cqw}
+.edition-earth-title strong{font:400 12cqw/.86 var(--studio-serif);letter-spacing:-.04em}
+.edition-earth-title strong em{color:#d5dfbe}
+.edition-earth-list{display:grid;gap:2cqw;min-width:0}
+.edition-earth-list>div{display:grid;grid-template-columns:2.4cqw minmax(0,1fr);gap:2cqw;align-items:baseline;border-bottom:1px solid #f4f1e850;padding:2cqw 0}
+.edition-earth-list>div small{font-size:1.4cqw;color:#ffda24}
+.edition-earth-list>div span{font-size:3.3cqw;font-weight:650;line-height:1.17;overflow-wrap:normal}
+main.studio54 .exhibit-visual .studio54-edition{transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+main.studio54 .exhibit-visual:hover .studio54-edition{transform:scale(1.025)}
+main.studio54 .exhibit-scene .exhibit-badge{display:none}
+main.studio54.projects-page:not(.case-page) .projects-opening{background:#ffda24;color:#24291e}
+main.studio54.projects-page:not(.case-page) .projects-opening h1{font:800 clamp(55px,11vw,170px)/.92 var(--studio-sans);letter-spacing:-.09em;margin:clamp(24px,5vw,70px) 0}
+main.studio54.projects-page:not(.case-page) .projects-opening h1 em{font:400 1em/.92 var(--studio-serif);letter-spacing:-.035em}
+main.studio54 .exhibit-think .exhibit-caption h3{font-family:var(--studio-sans);font-weight:750;letter-spacing:-.07em}
+main.studio54 .exhibit-finance .exhibit-caption h3{font-family:var(--studio-serif);letter-spacing:-.04em}
+main.studio54 .exhibit-earth .exhibit-caption h3{font-family:var(--studio-serif);font-style:italic}
+main.studio54.case-world-think .case-opening{grid-template-columns:minmax(0,.76fr) minmax(0,1.24fr);gap:clamp(16px,4vw,56px);background:#24291e;color:#f4f1e8}
+main.studio54.case-world-think .case-title-group>div{container-type:inline-size}
+main.studio54.case-world-think .case-title-group h1{font-size:min(17cqw,124px)!important;white-space:nowrap;color:#ffda24}
+main.studio54.case-world-finance .case-opening{background:#e3e6d9;color:#24291e}
+main.studio54.case-world-finance .case-title-group h1{font-size:min(11cqw,158px)!important}
+main.studio54.case-world-earth .case-opening{display:grid;grid-template-columns:minmax(0,1fr);background:#354431;color:#f4f1e8}
+main.studio54.case-world-earth .case-title-group>div{container-type:inline-size}
+main.studio54.case-world-earth .case-title-group h1{font:400 min(26cqw,180px)/.98 var(--studio-serif)!important;white-space:nowrap;letter-spacing:-.055em}
+main.studio54 .case-feature-art{min-width:0;clip-path:none!important}
+main.studio54 .case-intro-grid h2{font-size:clamp(38px,5.3vw,85px);line-height:1.02}
+main.studio54 .case-world-finance .case-details h2{color:#24291e}
+main.studio54 .case-focus>div{min-width:0}
+main.studio54 .case-next .next-project-title h2{font-size:min(10.8cqw,96px);white-space:nowrap}
+/* Milestones: a single reading room, with the index and filter below the cover. */
+main.studio54.milestones-page .milestone-hero{background:#24291e;color:#f4f1e8}
+main.studio54.milestones-page .milestone-hero h1{font:750 clamp(44px,11vw,172px)/.93 var(--studio-sans);letter-spacing:-.08em;margin:clamp(20px,4vw,58px) 0}
+.studio54-archive-index{display:flex;flex-direction:column;align-items:flex-start;gap:13px;border-left:1px solid #f4f1e84d;padding-left:clamp(18px,4vw,60px);min-width:0;color:#f4f1e8}
+.studio54-archive-index span{font:650 10px/1.3 Arial,sans-serif;letter-spacing:.12em}
+.studio54-archive-index strong{font:750 clamp(80px,15vw,240px)/.78 var(--studio-sans);letter-spacing:-.1em;color:#ffda24}
+.studio54-archive-index>div{width:clamp(95px,14vw,200px);color:#ffda24}
+main.studio54.milestones-page .archive-section{padding-block:clamp(35px,6vw,90px)}
+main.studio54 .archive-desk{background:#24291e;color:#f4f1e8;margin-bottom:clamp(32px,5vw,75px)}
+main.studio54 .archive-desk .desk-paper{transform:none}
+main.studio54 .archive-desk .desk-paper-back{transform:rotate(-4deg)}
+main.studio54 .archive-grid.studio54-index{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,3vw,42px)}
+main.studio54 .archive-grid.studio54-index .archive-record{grid-column:auto;background:transparent;display:flex;flex-direction:column;border:0;border-top:1px solid #24291e50;padding:14px 0 0;box-shadow:none}
+main.studio54 .archive-grid.studio54-index .record-cover{min-height:0;aspect-ratio:1.35;box-shadow:none}
+main.studio54 .archive-grid.studio54-index .record-info{padding-inline:0}
+main.studio54 .record-title{font-size:clamp(19px,2.1vw,31px);line-height:1.15;overflow-wrap:anywhere}
+/* Personal notebook: margin notes, open index, musical score and book spines. */
+main.studio54.personal-page .personal-opening{background:#ffda24;color:#24291e}
+main.studio54 .personal-title-wrap{grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr)}
+main.studio54 .personal-title-wrap h1{font:800 clamp(55px,13vw,210px)/.83 var(--studio-sans);letter-spacing:-.09em}
+main.studio54 .personal-title-wrap h1 em{font:400 1em/.88 var(--studio-serif);letter-spacing:-.045em}
+.studio54-marginalia{align-self:end;display:grid;gap:18px;border-top:1px solid #24291e65;padding-top:20px}
+.studio54-marginalia>span{font-size:10px;font-weight:650;letter-spacing:.1em}
+.studio54-marginalia strong{font:400 clamp(30px,4.8vw,78px)/.9 var(--studio-serif)}
+.studio54-marginalia>div{width:min(75%,170px)}
+main.studio54 .personal-note-list{display:block}
+main.studio54 .personal-note-list .personal-note{margin:0 0 12px;padding:clamp(10px,1.8vw,22px);border:1px solid #24291e40}
+main.studio54 .personal-note summary{display:grid;grid-template-columns:28px minmax(0,1fr) minmax(0,.8fr) 32px;grid-template-rows:auto;gap:16px;align-items:center}
+main.studio54 .personal-note summary .note-number{grid-column:1;grid-row:1}
+main.studio54 .personal-note summary .note-topic{grid-column:2;grid-row:1;font:700 clamp(24px,5.7vw,90px)/1 var(--studio-sans);letter-spacing:-.075em}
+main.studio54 .personal-note:nth-child(2) summary .note-topic{font-family:var(--studio-serif);font-weight:400;letter-spacing:-.035em}
+main.studio54 .personal-note summary .note-question{grid-column:3;grid-row:1;color:inherit}
+main.studio54 .personal-note summary .note-plus{grid-column:4;grid-row:1;color:inherit}
+main.studio54 .personal-note p{padding:0;margin:14px 0 12px auto;max-width:48ch;color:inherit}
+main.studio54 .personal-music .music-art{min-height:0;background:#354431;border:1px solid #f4f1e840}
+main.studio54 .books-layout{grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr)}
+main.studio54 .book-spine{min-height:clamp(100px,12vw,175px)}
+/* Personal invitation: no competing postmark, a single signature and letter. */
+main.studio54.contact-page .contact-opening{background:#24291e;color:#f4f1e8}
+main.studio54 .contact-title-grid{grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr)}
+main.studio54 .contact-title-grid h1{font:750 clamp(74px,18vw,275px)/.78 var(--studio-sans);letter-spacing:-.11em}
+main.studio54 .contact-title-grid h1 em{font:400 1.04em/.86 var(--studio-serif);letter-spacing:-.05em;color:#ffda24}
+.studio54-correspondence{display:grid;gap:24px;justify-items:start;border-left:1px solid #f4f1e840;padding-left:clamp(20px,4vw,60px);align-self:end;color:#f4f1e8}
+.studio54-correspondence span{font-size:10px;letter-spacing:.1em}
+.studio54-correspondence>div{color:#ffda24;width:100%;max-width:300px}
+main.studio54 .contact-letter-grid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:start}
+main.studio54 .contact-letter .letter-paper{background:#fffdf4;color:#24291e;box-shadow:8px 8px 0 #dce0d2;transform:none}
+main.studio54 .contact-channel strong{font-family:var(--studio-sans);font-weight:700;font-size:clamp(26px,3.7vw,56px);letter-spacing:-.06em}
+main.studio54 .contact-channel{min-height:94px}
+main.studio54 .contact-ending{background:#ffda24;color:#24291e}
+/* Distinct scroll choreography using the existing shared clock. */
+@media(prefers-reduced-motion:no-preference){
+ main.studio54.site-motion-ready .studio54-document.doc-0{transform:translateX(calc((1 - var(--studio-unfold,1))*-35px)) rotate(calc(-3deg - (1 - var(--studio-unfold,1))*6deg))}
+ main.studio54.site-motion-ready .studio54-document.doc-1{transform:translateX(calc((1 - var(--studio-unfold,1))*35px)) rotate(calc(3deg + (1 - var(--studio-unfold,1))*6deg))}
+ main.studio54.site-motion-ready .edition-think-type span{display:block;clip-path:inset(0 calc((1 - var(--site-in,1))*100%) 0 0);transform:translateX(calc((1 - var(--site-in,1))*-4cqw))}
+ main.studio54.site-motion-ready .edition-think-type span:nth-child(2){transform:translateX(calc((1 - var(--site-in,1))*4cqw))}
+ main.studio54.site-motion-ready .edition-finance-sheet{transform:translateY(calc((1 - var(--site-in,1))*5cqw)) rotate(calc(-2deg - (1 - var(--site-in,1))*8deg))}
+ main.studio54.site-motion-ready .edition-earth-list{clip-path:inset(0 0 calc((1 - var(--site-in,1))*100%) 0)}
+ main.studio54.site-motion-ready .studio54-marginalia>div,main.studio54.site-motion-ready .studio54-correspondence>div{animation:s54-ink .85s .12s cubic-bezier(.2,.8,.2,1) both}
+ @keyframes s54-ink{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
+}
+@media(max-width:850px){
+ main.studio54.story-page .story-opening{grid-template-columns:1fr;gap:24px}
+ main.studio54.story-page .story-opening h1{font-size:clamp(58px,17vw,138px)}
+ main.studio54.story-page .story-opening h1 .zm-words{display:inline}
+ main.studio54.story-page .story-portrait{height:clamp(250px,65vw,450px)}
+ main.studio54.story-page .entry-spread,main.studio54.story-page .story-entry-learning .entry-spread,main.studio54.story-page .story-entry-building .entry-copy{grid-template-columns:1fr}
+ main.studio54.story-page .story-entry-learning .studio54-story-plate{order:0}
+ main.studio54.story-page .story-index-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .studio54-document img{height:clamp(140px,40vw,270px)}
+ main.studio54.case-world-think .case-opening{display:block}
+ main.studio54.case-world-think .case-title-group{padding:20px 0}
+ main.studio54.case-world-earth .case-title-group{grid-template-columns:1fr}
+ main.studio54 .archive-grid.studio54-index{grid-template-columns:repeat(2,minmax(0,1fr))}
+ main.studio54 .personal-title-wrap,main.studio54 .contact-title-grid,main.studio54 .contact-letter-grid,main.studio54 .books-layout{grid-template-columns:1fr}
+ .studio54-marginalia,.studio54-correspondence{max-width:420px}
+ main.studio54 .personal-note summary{grid-template-columns:24px minmax(0,1fr) 28px;gap:10px}
+ main.studio54 .personal-note summary .note-topic{font-size:clamp(25px,6.7vw,54px)}
+ main.studio54 .personal-note summary .note-question{grid-column:2;grid-row:2;font-size:14px}
+ main.studio54 .personal-note summary .note-plus{grid-column:3;grid-row:1/3}
+ main.studio54 .contact-title-grid h1{font-size:clamp(80px,23vw,175px)}
+}
+@media(max-width:500px){
+ main.studio54 .archive-grid.studio54-index{grid-template-columns:1fr}
+ .studio54-archive-index{border-left:0;border-top:1px solid #f4f1e84d;padding:20px 0 0}
+ main.studio54.story-page .story-opening{padding:24px 18px}
+ main.studio54 .studio54-edition{aspect-ratio:auto;min-height:210px;gap:6cqw}
+ .edition-finance-main,.edition-earth-main{gap:3cqw}
+ .edition-finance-sheet dl>div{font-size:max(8px,2cqw)}
+ .edition-earth-list>div span{font-size:max(10px,3.3cqw)}
+ main.studio54 .case-next .next-project-title h2{font-size:min(11cqw,50px)}
+ main.studio54 .case-focus>div{padding:12px}
+}

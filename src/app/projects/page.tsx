@@ -5,8 +5,9 @@ import Signature from "../signature";
 import ProjectExhibition from "../project-exhibition";
 import "../chapters.css";
 import "./projects.css";
+import "../studio54.css";
 export const metadata={title:"Projects — ZiyoMuhammad",description:"Explore OverThink, Finance4Youth and ReZamin, three personal initiatives spanning knowledge, finance and the environment."};
-export default function ProjectsPage(){return <main className="projects-page" id="top">
+export default function ProjectsPage(){return <main className="projects-page studio54" id="top">
 <SiteHeader projects/>
 <section className="projects-opening"><div className="projects-rule"><span>ZM / SELECTED INITIATIVES</span><span>01 — 03</span></div><h1><MotionWords text="Ideas into"/> <em><MotionWords text="action."/></em></h1><div className="projects-intro"><p>Three different interests. One desire to turn curiosity into something real.</p><div><Signature/></div></div></section>
 <ProjectExhibition directory/>
