@@ -54,3 +54,7 @@ main>.site-header.minimal-header,main:not(.home-page)>.site-header.minimal-heade
 .zm-menu-note{display:none}
 .zm-menu-top>span,.zm-menu-bottom{font-size:9px;letter-spacing:.07em}
 }
+
+/* V25: yellow contact action, with the original dark hover treatment. */
+.minimal-header .minimal-connect{background:#ffda24;border-color:#ffda24;color:var(--ink)}
+.minimal-header .minimal-connect:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
