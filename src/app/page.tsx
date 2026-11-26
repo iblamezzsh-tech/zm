@@ -1,17 +1,10 @@
-import Link from "next/link";
+import SiteHeader from "./site-header";
 import Portrait from "./portrait";
-import About from "./about";
 
 export default function Home() {
   return (
     <main>
-      <header>
-        <Link className="identity" href="/" aria-label="ZiyoMuhammad home">
-          <img src="/icon.svg" alt="" width="39" height="39" />
-          <span>Personal website</span>
-        </Link>
-        <About />
-      </header>
+      <SiteHeader />
       <div className="mast">
         <div className="eyebrow">
           <i /> Student &amp; founder

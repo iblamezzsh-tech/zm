@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { HeroSignature } from "./signature-motion";
 import { gsap } from "gsap";
 
 export default function Portrait() {
@@ -192,6 +193,7 @@ export default function Portrait() {
             )}
           </h2>
         </div>
+        <HeroSignature />
         <span className="corner tl" />
         <span className="corner tr" />
         <span className="corner bl" />

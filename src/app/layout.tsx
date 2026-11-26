@@ -3,6 +3,7 @@ import "@fontsource-variable/dm-sans/wght.css";
 import "@fontsource/instrument-serif/latin-400.css";
 import "@fontsource/instrument-serif/latin-400-italic.css";
 import "./styles.css";
+import { RouteSignature } from "./signature-motion";
 
 export const metadata: Metadata = {
   title: "ZiyoMuhammad — Portrait",
@@ -14,7 +15,10 @@ export default function Layout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <RouteSignature />
+      </body>
     </html>
   );
 }
