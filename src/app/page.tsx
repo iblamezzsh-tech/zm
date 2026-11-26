@@ -1,16 +1,8 @@
 import Link from "next/link";
-import { existsSync } from "node:fs";
-import { join } from "node:path";
 import Portrait from "./portrait";
 import About from "./about";
 
 export default function Home() {
-  const present = existsSync(
-    join(process.cwd(), "public/images/portrait-present.webp"),
-  );
-  const future = existsSync(
-    join(process.cwd(), "public/images/portrait-future.webp"),
-  );
   return (
     <main>
       <header>
@@ -29,7 +21,7 @@ export default function Home() {
         </h1>
         <div className="location">Based in Uzbekistan</div>
       </div>
-      <Portrait present={present} future={future} />
+      <Portrait />
     </main>
   );
 }

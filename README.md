@@ -6,6 +6,6 @@ Use Node.js 22 or later. Run `npm ci` and `npm run dev` for local development. R
 
 ## Portrait assets
 
-Place the registered photographs at `public/images/portrait-present.webp` and `public/images/portrait-future.webp` before building. Both files need identical canvas dimensions and matching facial landmarks. The second photograph represents a future academic aspiration.
+The two 1070 × 850 WebPs in `public/images` share a canvas, a contour background supplied by CSS, and the original white-shirt facial detail. The academic attire represents a future aspiration. Both images are preloaded. The present image is rendered in HTML and works without JavaScript.
 
-The homepage renders the available present image in HTML. When both images decode in the browser, pointer movement or a touch reveals the future layer locally. The Present/Future control toggles the full layer and supports keyboard input. With reduced motion enabled, the mask tracks directly. When source photos are absent, the page displays a typographic monogram.
+Move the pointer or touch and drag to reveal the future portrait locally. Use the Present/Future button to toggle the whole image, including with Enter or Space. Reduced motion makes the response immediate.

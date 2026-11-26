@@ -2,16 +2,11 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 
-export default function Portrait({
-  present,
-  future,
-}: {
-  present: boolean;
-  future: boolean;
-}) {
+export default function Portrait() {
   const stage = useRef<HTMLDivElement>(null);
   const base = useRef<HTMLImageElement>(null);
   const overlay = useRef<HTMLImageElement>(null);
+  const lens = useRef<HTMLDivElement>(null);
   const switcher = useRef<HTMLButtonElement>(null);
   const [ready, setReady] = useState(false);
   const [pinned, setPinned] = useState(false);
@@ -20,12 +15,14 @@ export default function Portrait({
     const area = stage.current,
       layer = overlay.current,
       original = base.current,
-      button = switcher.current;
+      button = switcher.current,
+      aperture = lens.current;
     if (
       !area ||
       !layer ||
       !original ||
       !button ||
+      !aperture ||
       !CSS.supports("mask-image", "radial-gradient(black, transparent)")
     )
       return;
@@ -36,8 +33,20 @@ export default function Portrait({
     let bounds = area.getBoundingClientRect();
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
     const point = { x: bounds.width / 2, y: bounds.height / 2, r: 0 };
+    // Translate a static feathered mask and counter-transform the photo so
+    // its pixels stay registered to the base image. Only transforms animate.
+    const diameter = 400;
     function paint() {
-      layer!.style.maskImage = `radial-gradient(circle at ${point.x}px ${point.y}px, black ${point.r * 0.77}px, transparent ${Math.max(0.01, point.r)}px)`;
+      if (!point.r) {
+        aperture!.style.visibility = "hidden";
+        return;
+      }
+      const scale = (point.r * 2) / diameter;
+      const left = point.x - point.r;
+      const top = point.y - point.r;
+      aperture!.style.visibility = "visible";
+      aperture!.style.transform = `translate3d(${left}px,${top}px,0) scale(${scale})`;
+      layer!.style.transform = `scale(${1 / scale}) translate3d(${-left}px,${-top}px,0)`;
     }
     const opts = { duration: 0.24, ease: "power3.out", onUpdate: paint };
     const xTo = gsap.quickTo(point, "x", opts),
@@ -102,6 +111,8 @@ export default function Portrait({
     }
     function resize() {
       bounds = area!.getBoundingClientRect();
+      layer!.style.width = bounds.width + "px";
+      layer!.style.height = bounds.height + "px";
       radius();
     }
     const controller = new AbortController();
@@ -110,6 +121,7 @@ export default function Portrait({
     void Promise.all([original.decode(), layer.decode()])
       .then(() => {
         if (!alive) return;
+        resize();
         paint();
         setReady(true);
         area.addEventListener("pointerenter", enter, options);
@@ -135,39 +147,29 @@ export default function Portrait({
       observer.disconnect();
       gsap.killTweensOf(point);
     };
-  }, [present, future]);
+  }, []);
 
   return (
     <section aria-label="Interactive portrait">
-      {present && (
-        <link rel="preload" as="image" href="/images/portrait-present.webp" />
-      )}
-      {future && (
-        <link rel="preload" as="image" href="/images/portrait-future.webp" />
-      )}
+      <link rel="preload" as="image" href="/images/portrait-present.webp" />
+      <link rel="preload" as="image" href="/images/portrait-future.webp" />
       <div className="stage" ref={stage}>
-        {present ? (
+        <img
+          className="photo"
+          ref={base}
+          src="/images/portrait-present.webp"
+          alt="ZiyoMuhammad in a white shirt"
+          fetchPriority="high"
+        />
+        <div className="lens" ref={lens} aria-hidden="true">
           <img
-            className="photo"
-            ref={base}
-            src="/images/portrait-present.webp"
-            alt="ZiyoMuhammad in a white shirt"
-            fetchPriority="high"
-          />
-        ) : (
-          <div aria-hidden="true" className="initials">
-            Zm<span>.</span>
-          </div>
-        )}
-        {future && (
-          <img
-            className="photo mask"
+            className="photo future-photo"
             ref={overlay}
             src="/images/portrait-future.webp"
             alt=""
             aria-hidden="true"
           />
-        )}
+        </div>
         <div className="plate">
           <span className="plate-line" />
           Personal portrait

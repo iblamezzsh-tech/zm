@@ -5,13 +5,13 @@ export default function About() {
   return (
     <>
       <button className="about" onClick={() => dialog.current?.showModal()}>
-        About me <span aria-hidden="true">↗</span>
+        About me <span className="about-arrow" aria-hidden="true" />
       </button>
-      <dialog ref={dialog}>
+      <dialog ref={dialog} aria-labelledby="about-title">
         <form method="dialog">
           <button className="about">Close ×</button>
         </form>
-        <h2>About me</h2>
+        <h2 id="about-title">About me</h2>
         <p>
           I’m ZiyoMuhammad, a student from Uzbekistan. I’m interested in
           economics, entrepreneurship, and education.

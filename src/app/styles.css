@@ -129,32 +129,34 @@ h1 span {
   background: #e9e7dd url("/contours.svg") center/cover;
   touch-action: pan-y;
 }
-.photo,
-.initials {
+.photo {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 .photo {
-  object-fit: cover;
-  object-position: 50% 42%;
+  object-fit: contain;
+  object-position: center bottom;
+  background: #e9e7dd url("/contours.svg") center/cover;
 }
-.mask {
-  mask-image: linear-gradient(transparent, transparent);
+.lens {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  overflow: hidden;
+  visibility: hidden;
   pointer-events: none;
+  mask-image: radial-gradient(circle closest-side, black 77%, transparent 100%);
 }
-.initials {
-  display: grid;
-  place-content: center;
-  grid-auto-flow: column;
-  font: italic clamp(150px, 25vw, 420px)/1 var(--serif);
-  letter-spacing: -0.1em;
-  color: #979b82;
+.lens,
+.future-photo {
+  transform-origin: 0 0;
+  will-change: transform;
 }
-.initials span {
-  color: #444a37;
-}
+
 .plate,
 .caption {
   position: absolute;
@@ -267,18 +269,25 @@ h1 span {
     font-size: 9px;
   }
   .stage {
-    height: clamp(390px, 58svh, 580px);
+    height: clamp(360px, 50svh, 510px);
   }
   .photo {
     object-fit: cover;
   }
   .caption {
-    bottom: 27px;
+    bottom: 14px;
     background: #f8f7f2eb;
     padding: 10px 14px;
   }
   .caption h2 {
-    font-size: 40px;
+    font-size: 27px;
+    margin-top: 5px;
+  }
+  .caption br {
+    display: none;
+  }
+  .caption em::before {
+    content: " ";
   }
   .plate {
     top: 24px;
@@ -290,7 +299,23 @@ h1 span {
   .toolbar {
     min-height: 62px;
   }
-  .initials {
-    font-size: 43vw;
-  }
+}
+
+.about-arrow {
+  width: 9px;
+  height: 9px;
+  position: relative;
+  border-top: 1px solid;
+  border-right: 1px solid;
+}
+.about-arrow::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 12px;
+  height: 1px;
+  background: currentColor;
+  transform-origin: right center;
+  transform: rotate(-45deg);
 }
