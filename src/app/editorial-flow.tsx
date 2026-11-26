@@ -19,6 +19,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   if(!el||!main){document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:false}}));return;}
   const scenes=Array.from(el.querySelectorAll<HTMLElement>("[data-ed-scene]"));
   const reveals=Array.from(el.querySelectorAll<HTMLElement>("[data-ed-reveal],[data-ed-line]"));
+  const shots=Array.from(el.querySelectorAll<HTMLElement>(".ed-project-shot"));
   const reduced=matchMedia("(prefers-reduced-motion: reduce)");
   const desktop=matchMedia("(min-width: 900px) and (min-height: 500px) and (pointer: fine)");
   const collage=el.querySelector<HTMLElement>(".ed-collage"),rail=el.querySelector<HTMLElement>(".ed-collage-grid");
@@ -68,9 +69,21 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     if(s.classList.contains("ed-future")){
      write(s,"--future-think",ease(.03,.44,edge));write(s,"--future-learn",ease(.11,.52,edge));write(s,"--future-build",ease(.19,.60,edge));
     }
-    if(s.classList.contains("ed-work-item")){
-     write(s,"--project-copy",ease(.12,.55,edge));write(s,"--project-body",ease(.20,.63,edge));
+    if(s.classList.contains("ed-project-shot")){
+     if(cinema){
+      write(s,"--shot-in",ease(.10,.90,edge));
+      write(s,"--shot-settle",ease(0,.22,local));
+      write(s,"--shot-out",ease(.68,1,local));
+      write(s,"--shot-progress",local);
+      write(s,"--project-copy",ease(.26,.85,edge));
+      write(s,"--project-body",ease(.40,.98,edge));
+     }else{
+      const item=s.querySelector<HTMLElement>(".ed-work-item");
+      if(item){const ir=item.getBoundingClientRect(),e=clamp((h-ir.top)/h);write(s,"--project-copy",ease(.06,.48,e));write(s,"--project-body",ease(.12,.55,e))}
+     }
     }
+    if(s.classList.contains("zm-worlds"))write(s,"--world-cut",ease(.04,.76,edge));
+    if(s.classList.contains("ed-archive"))write(s,"--archive-cut",ease(.02,.78,edge));
     if(s.classList.contains("ed-social")){
      write(s,"--fan-open",cinema?ease(.03,.54,local):ease(.05,.58,edge));
      write(s,"--fan-away",cinema?ease(.83,1,local):0);
@@ -84,9 +97,13 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    }
    for(const {node,r} of revealBounds){
     const horizontal=cinema&&node.closest(".ed-collage-grid");
+    const shot=cinema?node.closest<HTMLElement>(".ed-project-shot"):null;
     const vertical=clamp((h-r.top)/h);
     let p:number;
-    if(horizontal){
+    if(shot){
+     const b=bounds.find(({s})=>s===shot);
+     p=b?ease(.10,.90,clamp((h-b.r.top)/h)):1;
+    }else if(horizontal){
      const left=r.left+railDelta;
      p=ease(.015,.29,clamp((w-left)/w));
     }else if(cinema&&node.closest(".ed-social-sticky")){
@@ -112,7 +129,14 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   function resize(){layout();requestMotionFrame()}
   // Keyboard focus in the rail must move the native scroll position to the visible item.
   function focus(e:FocusEvent){
-   if(!cinema||!collage||!rail||!(e.target instanceof HTMLElement)||!rail.contains(e.target))return;
+   if(!cinema||!(e.target instanceof HTMLElement))return;
+   const shot=e.target.closest<HTMLElement>(".ed-project-shot");
+   if(shot&&shots.includes(shot)){
+    const sr=shot.getBoundingClientRect();
+    if(sr.top>0||sr.bottom<innerHeight*.95){const top=window.scrollY+sr.top;scrollToFilm(top+Math.max(0,shot.offsetHeight-innerHeight)*.32,true)}
+    return;
+   }
+   if(!collage||!rail||!rail.contains(e.target))return;
    const r=e.target.getBoundingClientRect();if(r.left>=0&&r.right<=innerWidth)return;
    const delta=Math.max(0,Math.min(railDistance,r.left-railX-innerWidth*.2));
    const top=window.scrollY+collage.getBoundingClientRect().top;

@@ -19,6 +19,7 @@ import "./studio55.css";
 import "./studio62.css";
 import "./studio63.css";
 import "./motion-v74.css";
+import "./motion-v75.css";
 
 export default function HomeChapters(){
  const records=getFeaturedRecords();
@@ -67,13 +68,15 @@ export default function HomeChapters(){
    <div className="ed-gutter ed-caption"><span>04 / SELECTED INITIATIVES</span><span>01 — 03</span></div>
    <div className="ed-work-banner" aria-hidden="true"><span>QUESTIONS → ACTION.</span></div><div className="ed-gutter ed-work-heading"><h2 data-ed-reveal>Ideas into <em>action.</em></h2><p>Three different interests. One desire to turn curiosity into something real.</p></div>
    <div className="ed-gutter ed-work-grid">
-    {projects.map((p,i)=><article className={"ed-work-item ed-work-"+p.kind} id={i===0?"exhibit-overthink":"exhibit-"+p.slug} key={p.slug} data-ed-scene data-ed-theme="dark">
+    {projects.map((p,i)=><div className={"ed-project-shot shot-"+p.kind} key={p.slug} data-ed-scene data-ed-theme="dark"><article className={"ed-work-item ed-work-"+p.kind} id={i===0?"exhibit-overthink":"exhibit-"+p.slug}>
+     <div className="ed-shot-decoration" aria-hidden="true"><span className="ed-shot-number">{p.number}</span><span className="ed-shot-index">{p.number} / 03</span><span className="ed-shot-meter"><i/></span></div>
      <Link href={"/projects/"+p.slug} className="ed-work-image" data-ed-reveal aria-label={"Explore "+p.name}><ProjectEdition project={p}/></Link>
      <div className="ed-work-copy"><span className="ed-kicker">{p.number} / {p.category}</span><h3 className="ed-project-name">{p.name}</h3><p>{p.summary}</p><Link href={"/projects/"+p.slug} className="ed-link">Inside the project <span>↗</span></Link></div>
-    </article>)}
+    </article></div>)}
    </div>
   </section>
   <section className="ed-archive" id="milestone-preview" data-ed-scene data-ed-theme="dark">
+   <div className="ed-archive-handoff" aria-hidden="true"><span>THE THINGS I KEEP.</span><i/><span>THE THINGS I KEEP.</span></div>
    <div className="ed-gutter ed-caption"><span>05 / THE ARCHIVE</span><span>DOCUMENTED EXPERIENCES</span></div>
    <div className="ed-gutter ed-archive-heading"><h2 data-ed-reveal>Every step<br/><em>leaves a mark.</em></h2><Link href="/achievements" className="ed-link">All milestones <span>↗</span></Link></div>
    <div className="ed-gutter ed-archive-grid">{archive.map((r,i)=>r.document&&<Link href="/achievements" className="ed-archive-item" key={r.id} data-ed-reveal style={{"--ed-i":i} as React.CSSProperties}><div className="ed-archive-image"><img src={r.document.src} alt={r.document.alt} decoding="async" fetchPriority="low"/></div><div className="ed-archive-label"><span>{r.category} / {String(i+1).padStart(2,"0")}</span><strong>{r.title}</strong></div></Link>)}</div>
