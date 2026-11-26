@@ -49,7 +49,7 @@ main.studio54.story-page .story-entry-future .studio54-story-plate{background:#f
 .studio54-unwritten strong em{font:400 1em/.94 var(--studio-serif)}
 .studio54-unwritten>div{width:clamp(100px,15vw,230px);margin-top:24px}
 /* Three project worlds: typographic quiz poster, financial lesson, field notebook. */
-.studio54-edition{container-type:inline-size;position:relative;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:4cqw;min-width:0;padding:5cqw;aspect-ratio:1.45;overflow:hidden;font-family:var(--studio-sans);isolation:isolate}
+.studio54-edition{container-type:inline-size;position:relative;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:3%;min-width:0;padding:5%;aspect-ratio:1.45;overflow:hidden;font-family:var(--studio-sans);isolation:isolate}
 .edition-top,.edition-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;font:650 clamp(8px,1.5cqw,13px)/1.3 Arial,sans-serif;letter-spacing:.07em;border-bottom:1px solid currentColor;padding-bottom:1.7cqw}
 .edition-bottom{border-bottom:0;border-top:1px solid currentColor;padding:1.7cqw 0 0}
 .edition-think{background:#24291e;color:#ffda24}
@@ -95,7 +95,7 @@ main.studio54.case-world-earth .case-title-group>div{container-type:inline-size}
 main.studio54.case-world-earth .case-title-group h1{font:400 min(26cqw,180px)/.98 var(--studio-serif)!important;white-space:nowrap;letter-spacing:-.055em}
 main.studio54 .case-feature-art{min-width:0;clip-path:none!important}
 main.studio54 .case-intro-grid h2{font-size:clamp(38px,5.3vw,85px);line-height:1.02}
-main.studio54 .case-world-finance .case-details h2{color:#24291e}
+main.studio54.case-world-finance .case-details h2{color:#24291e}
 main.studio54 .case-focus>div{min-width:0}
 main.studio54 .case-next .next-project-title h2{font-size:min(10.8cqw,96px);white-space:nowrap}
 /* Milestones: a single reading room, with the index and filter below the cover. */
@@ -184,10 +184,15 @@ main.studio54 .contact-ending{background:#ffda24;color:#24291e}
  main.studio54 .archive-grid.studio54-index{grid-template-columns:1fr}
  .studio54-archive-index{border-left:0;border-top:1px solid #f4f1e84d;padding:20px 0 0}
  main.studio54.story-page .story-opening{padding:24px 18px}
- main.studio54 .studio54-edition{aspect-ratio:auto;min-height:210px;gap:6cqw}
+ main.studio54 .studio54-edition{aspect-ratio:auto;min-height:210px;gap:12px}
  .edition-finance-main,.edition-earth-main{gap:3cqw}
  .edition-finance-sheet dl>div{font-size:max(8px,2cqw)}
  .edition-earth-list>div span{font-size:max(10px,3.3cqw)}
  main.studio54 .case-next .next-project-title h2{font-size:min(11cqw,50px)}
  main.studio54 .case-focus>div{padding:12px}
 }
+
+/* Preserve useful room for metadata, especially on the narrow OverThink cover. */
+.studio54-edition .edition-top,.studio54-edition .edition-bottom{min-width:0;overflow-wrap:normal;flex-wrap:wrap}
+.edition-think-main,.edition-finance-main,.edition-earth-main{min-height:0;min-width:0}
+@media(max-width:500px){.studio54-edition .edition-top,.studio54-edition .edition-bottom{font-size:8px}.edition-think-note strong{font-size:max(15px,7cqw)}.edition-finance-sheet>strong{font-size:max(14px,5.6cqw)}}
