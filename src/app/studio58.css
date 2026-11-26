@@ -1,0 +1,41 @@
+/* V58 — three editorial compositions, one shared frame.
+   Retain edition56 hooks for the artwork flight and all existing scroll controllers. */
+.studio54-edition.edition58{--edition-ink:#24291e;--edition-paper:#f4f1e8;--edition-accent:#ffda24}
+.edition58 .edition-top,.edition58 .edition-bottom{font-family:"DM Sans Variable",Arial,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.035em}
+.edition58 .edition-bottom span:first-child{font-weight:750}
+/* OverThink: high-impact campaign poster. The question sheet is the counterweight. */
+.edition58.edition-think .edition56-main{grid-template-columns:minmax(0,1.14fr) minmax(0,.86fr);gap:3%}
+.edition58 .edition56-quiz-title>strong{font-size:16cqw;letter-spacing:-.075em;line-height:.85}
+.edition58 .edition56-quiz-title>strong em{font-size:1.02em;letter-spacing:-.045em}
+.edition58 .edition56-answer-sheet{position:relative;border:1px solid #24291e;box-shadow:1cqw 1cqw 0 #b69b2355}
+.edition58 .edition56-answer i{display:grid;place-items:center;width:3.3cqw;height:3.3cqw;flex:none;border:1px solid #ffda2490;border-radius:50%;font-style:normal}
+.edition58 .edition56-answer{font-size:2.15cqw;line-height:1.15}
+.edition58 .edition56-sheet-meta b{font-variant-numeric:tabular-nums}
+/* Finance4Youth: chart-led financial broadsheet, with a narrow editorial headline. */
+.edition58.edition-finance .edition56-main{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:4%}
+.edition58 .edition56-finance-copy>strong{font-size:9.1cqw;letter-spacing:-.055em;line-height:.95}
+.edition58 .edition56-chart{background:transparent;border:0;border-left:1px solid #35443165;padding:1cqw 0 1cqw 3cqw;box-shadow:none}
+.edition58 .edition56-chart-caption>strong{font-size:10.3cqw;font-weight:650;letter-spacing:-.065em}
+.edition58 .edition56-chart svg{max-height:20cqw;margin-top:1.5cqw}
+.edition58 .edition56-chart>small{letter-spacing:0;line-height:1.2}
+/* ReZamin: a field journal, with a lighter typographic voice and open paper detail. */
+.edition58.edition-earth .edition56-main{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:5%}
+.edition58 .edition56-earth-copy>strong{font-size:12.8cqw;line-height:.86;letter-spacing:-.035em}
+.edition58 .edition56-fieldnote{background:repeating-linear-gradient(0deg,#24291e0b 0 1px,transparent 1px 2.6cqw),#e4e4d0;box-shadow:.65cqw 1cqw 0 #17211750}
+.edition58 .edition56-fieldnote>strong{font-size:5.4cqw;line-height:1}
+.edition58 .edition56-task{border-top-color:#24291e35}
+.edition58 .edition56-task i{border-radius:1px}
+@container(max-width:360px){
+ .edition58 .edition56-answer{font-size:2.15cqw}
+ .edition58 .edition56-chart-caption>strong{font-size:9.5cqw}
+}
+@container(max-width:235px){
+ .edition58.edition-think .edition56-main,.edition58.edition-finance .edition56-main,.edition58.edition-earth .edition56-main{grid-template-columns:minmax(0,1fr)}
+ .edition58 .edition56-quiz-title>strong{font-size:22cqw}
+ .edition58 .edition56-finance-copy>strong{font-size:14cqw}
+ .edition58 .edition56-earth-copy>strong{font-size:17cqw}
+}
+.ed-fan-card .edition58.edition56 .edition56-main,.zm-menu-filmstrip-item .edition58.edition56 .edition56-main{grid-template-columns:minmax(0,1fr)}
+.ed-fan-card .edition58 .edition56-quiz-title>strong,.zm-menu-filmstrip-item .edition58 .edition56-quiz-title>strong{font-size:22cqw}
+.ed-fan-card .edition58 .edition56-finance-copy>strong,.zm-menu-filmstrip-item .edition58 .edition56-finance-copy>strong{font-size:14cqw}
+.ed-fan-card .edition58 .edition56-earth-copy>strong,.zm-menu-filmstrip-item .edition58 .edition56-earth-copy>strong{font-size:17cqw}

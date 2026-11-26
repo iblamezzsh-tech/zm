@@ -1,0 +1,1 @@
+V58: distinct OverThink campaign poster, Finance4Youth chart-led broadsheet and ReZamin ruled field journal. Retains V56 frame ratio, responsive thumbnail simplification, colors, shared component and route-match motion hooks. Quiz example clarified. No invented results, no new dependencies. Full rendered QA outstanding.
