@@ -1,0 +1,296 @@
+:root {
+  --ink: #242620;
+  --paper: #f8f7f2;
+  --muted: #595c51;
+  --line: #c8c9bc;
+  --serif: "Instrument Serif", Georgia, serif;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font:
+    16px "DM Sans Variable",
+    Arial,
+    sans-serif;
+}
+main {
+  max-width: 1800px;
+  margin: auto;
+  padding: 0 clamp(18px, 4vw, 72px) 28px;
+}
+header,
+.toolbar,
+.identity,
+.hint,
+.eyebrow,
+.plate {
+  display: flex;
+  align-items: center;
+}
+header,
+.toolbar {
+  justify-content: space-between;
+}
+header {
+  height: 80px;
+  border-bottom: 1px solid var(--line);
+}
+.identity {
+  color: inherit;
+  text-decoration: none;
+  gap: 14px;
+  font-size: 14px;
+}
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.about {
+  display: inline-flex;
+  align-items: center;
+  gap: 19px;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: transparent;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #716025;
+  outline-offset: 4px;
+}
+dialog {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  max-width: min(440px, 90vw);
+  padding: 32px;
+}
+dialog::backdrop {
+  background: #2225;
+}
+dialog form {
+  text-align: right;
+}
+dialog h2 {
+  font: 48px var(--serif);
+  margin: 8px 0;
+}
+dialog p {
+  line-height: 1.55;
+}
+.mast {
+  position: relative;
+  padding: 30px 0 17px;
+}
+.eyebrow,
+.location,
+.plate,
+.hint {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.eyebrow {
+  gap: 9px;
+}
+.eyebrow i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #74805b;
+}
+.location {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  color: var(--muted);
+}
+h1 {
+  font: 400 clamp(58px, 12.3vw, 221px)/0.94 var(--serif);
+  letter-spacing: -0.048em;
+  margin: 12px 0 0;
+}
+h1 span {
+  font-style: italic;
+}
+.stage {
+  isolation: isolate;
+  position: relative;
+  overflow: hidden;
+  height: clamp(360px, 53svh, 680px);
+  background: #e9e7dd url("/contours.svg") center/cover;
+  touch-action: pan-y;
+}
+.photo,
+.initials {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.photo {
+  object-fit: cover;
+  object-position: 50% 42%;
+}
+.mask {
+  mask-image: linear-gradient(transparent, transparent);
+  pointer-events: none;
+}
+.initials {
+  display: grid;
+  place-content: center;
+  grid-auto-flow: column;
+  font: italic clamp(150px, 25vw, 420px)/1 var(--serif);
+  letter-spacing: -0.1em;
+  color: #979b82;
+}
+.initials span {
+  color: #444a37;
+}
+.plate,
+.caption {
+  position: absolute;
+  left: clamp(22px, 4vw, 72px);
+  pointer-events: none;
+}
+.plate {
+  top: 32px;
+  gap: 10px;
+  font-size: 10px;
+}
+.plate-line {
+  width: 23px;
+  height: 1px;
+  background: currentColor;
+}
+.caption {
+  bottom: 35px;
+}
+.caption h2 {
+  font: 400 clamp(46px, 5.4vw, 90px)/0.9 var(--serif);
+  letter-spacing: -0.045em;
+  margin: 13px 0 0;
+}
+.corner {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  color: #555849;
+  pointer-events: none;
+}
+.tl,
+.tr {
+  top: 10px;
+  border-top: 1px solid;
+}
+.bl,
+.br {
+  bottom: 10px;
+  border-bottom: 1px solid;
+}
+.tl,
+.bl {
+  left: 10px;
+  border-left: 1px solid;
+}
+.tr,
+.br {
+  right: 10px;
+  border-right: 1px solid;
+}
+.toolbar {
+  min-height: 67px;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.hint {
+  color: var(--muted);
+  gap: 10px;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  font-size: 12px;
+  font-weight: 450;
+}
+.cross {
+  font: 24px Georgia;
+}
+.touch-hint {
+  display: none;
+}
+.switch {
+  padding: 3px;
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: transparent;
+  font-size: 12px;
+}
+.switch span {
+  padding: 6px 13px;
+  border-radius: 24px;
+}
+.selected {
+  color: white;
+  background: var(--ink);
+}
+[hidden] {
+  display: none !important;
+}
+@media (pointer: coarse) {
+  .touch-hint {
+    display: inline;
+  }
+  .mouse-hint {
+    display: none;
+  }
+}
+@media (max-width: 600px) {
+  header {
+    height: 62px;
+  }
+  .mast {
+    padding-top: 24px;
+  }
+  .location {
+    top: 24px;
+  }
+  .eyebrow,
+  .location {
+    font-size: 9px;
+  }
+  .stage {
+    height: clamp(390px, 58svh, 580px);
+  }
+  .photo {
+    object-fit: cover;
+  }
+  .caption {
+    bottom: 27px;
+    background: #f8f7f2eb;
+    padding: 10px 14px;
+  }
+  .caption h2 {
+    font-size: 40px;
+  }
+  .plate {
+    top: 24px;
+  }
+  .hint {
+    max-width: 53%;
+    font-size: 11px;
+  }
+  .toolbar {
+    min-height: 62px;
+  }
+  .initials {
+    font-size: 43vw;
+  }
+}
