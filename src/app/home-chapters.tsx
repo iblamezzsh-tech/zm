@@ -21,7 +21,7 @@ export default function HomeChapters(){
   </section>
   <section className="film-shot film-shot-memory film-dark" id="film-memory" aria-label="The journey">
    <div className="film-copy"><div className="film-kicker">02 / THE THINGS I KEEP</div><h2><FilmWords text="Small"/><br/><em><FilmWords text="moments."/></em></h2><p>Leading school teams. Finding the answer to a Zakovat question. Learning something new on a court or in a classroom.</p><Link className="film-link" href="/about">Read my journey <span>↗</span></Link></div>
-   <div className="film-art film-paper-cloud film-memory-strip">{archive.map((r,i)=><figure className={"film-paper paper-"+i} key={r.id}><img src={r.document!.src} alt={r.document!.alt} loading="eager" decoding="async"/><figcaption>{r.dateLabel} / {r.chapter}</figcaption></figure>)}</div>
+   <div className="film-art film-paper-cloud film-memory-strip">{archive.map((r,i)=><figure className={"film-paper paper-"+i} key={r.id}><img src={r.document!.src} alt={r.document!.alt} loading="eager" fetchPriority="low" decoding="async"/><figcaption>{r.dateLabel} / {r.chapter}</figcaption></figure>)}</div>
   </section>
   <section className="film-shot film-shot-future" id="film-future" aria-label="The future">
    
@@ -32,7 +32,7 @@ export default function HomeChapters(){
   </section>)}
   <section className="film-shot film-shot-archive" id="milestone-preview" aria-label="Milestones">
    <div className="film-copy"><div className="film-kicker">04 / ORIGINAL RECORDS</div><h2><FilmWords text="Before the"/><br/><em><FilmWords text="next chapter."/></em></h2><p>From the handball court to an Olympiad and a room full of different perspectives. A few moments that made me who I am today.</p><Link className="film-link" href="/achievements">Discover all milestones <span>↗</span></Link></div>
-   <div className="film-art film-paper-cloud archive-cloud film-archive-strip">{records.filter(r=>r.document).slice(3,6).map((r,i)=>r.document&&<figure className={"film-paper paper-"+i} key={r.id}><img src={r.document.src} alt={r.document.alt} loading="eager" decoding="async"/><figcaption>{r.dateLabel} / {r.chapter}</figcaption></figure>)}</div>
+   <div className="film-art film-paper-cloud archive-cloud film-archive-strip">{records.filter(r=>r.document).slice(3,6).map((r,i)=>r.document&&<figure className={"film-paper paper-"+i} key={r.id}><img src={r.document.src} alt={r.document.alt} loading="eager" fetchPriority="low" decoding="async"/><figcaption>{r.dateLabel} / {r.chapter}</figcaption></figure>)}</div>
   </section>
   <section className="film-shot film-shot-personal film-yellow" id="interests" aria-label="Off the record"><div className="film-copy"><div className="film-kicker">05 / OFF THE RECORD</div><h2><FilmWords text="More than"/><br/><em><FilmWords text="one thing."/></em></h2><p>From economics and psychology to the violin: some of the things I enjoy when there is no deadline attached.</p><Link href="/off-the-record" className="film-link">Get to know me <span>↗</span></Link></div><div className="film-art film-interests">{["Economics","Psychology","Politics","Literature","Music"].map((s,i)=><span key={s} style={{"--interest-index":i} as React.CSSProperties}><small>0{i+1}</small>{s}</span>)}</div></section>
   <section className="film-shot film-shot-contact film-dark film-finale-shot" id="next-chapter" aria-label="The next chapter">
@@ -47,8 +47,8 @@ export default function HomeChapters(){
       <a href="#top">Home</a><Link href="/about">My story</Link><Link href="/projects">Projects</Link><Link href="/achievements">Milestones</Link><Link href="/off-the-record">Off the record</Link>
      </nav>
      <div className="finale-portrait" role="img" aria-label="ZiyoMuhammad imagined in graduation attire">
-      <img src="/images/portrait-present.webp" alt="" decoding="async"/>
-      <img src="/images/portrait-academic-attire.svg" alt="" decoding="async"/>
+      <img src="/images/portrait-present.webp" alt="" fetchPriority="low" decoding="async"/>
+      <img src="/images/portrait-academic-attire.svg" alt="" fetchPriority="low" decoding="async"/>
      </div>
      <nav className="finale-nav finale-socials" aria-label="Social links">
       <span>FOLLOW ME</span>

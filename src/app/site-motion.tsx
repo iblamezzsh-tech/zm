@@ -1,5 +1,5 @@
 "use client";
-import {useEffect,useRef} from "react";
+import {useLayoutEffect,useRef} from "react";
 import {usePathname} from "next/navigation";
 import {subscribeMotion,requestMotionFrame} from "./motion-clock";
 
@@ -24,7 +24,7 @@ const assetSelector=".story-portrait,.entry-art,.exhibit-visual,.case-opening .p
 export default function SiteMotion(){
  const path=usePathname();
  const indicator=useRef<HTMLDivElement>(null);
- useEffect(()=>{
+ useLayoutEffect(()=>{
   const main=document.querySelector<HTMLElement>("main");if(!main||main.classList.contains("home-page"))return;
   const reduced=matchMedia("(prefers-reduced-motion: reduce)");
   const fine=matchMedia("(pointer: fine)");

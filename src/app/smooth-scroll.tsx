@@ -1,12 +1,12 @@
 "use client";
-import {useEffect} from "react";
+import {useEffect,useLayoutEffect} from "react";
 import Lenis from "lenis";
 import {usePathname} from "next/navigation";
 import {requestMotionFrame,setScrollEngine,resetScrollMomentum} from "./motion-clock";
 import "lenis/dist/lenis.css";
 export default function SmoothScroll(){
  const pathname=usePathname();
- useEffect(()=>{
+ useLayoutEffect(()=>{
   const query=matchMedia("(min-width: 760px) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
   let instance:Lenis|null=null;
   function sync(){

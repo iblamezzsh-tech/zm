@@ -1,6 +1,5 @@
 "use client";
-import {useEffect,useRef,useState,type ReactNode} from "react";
-import {gsap} from "gsap";
+import {useEffect,useLayoutEffect,useRef,useState,type ReactNode} from "react";
 import {SHOTS,filmCamera,filmEdit,beatProgress,beatOffset,clamp,smooth} from "./film-camera";
 import {subscribeMotion,requestMotionFrame,scrollToFilm} from "./motion-clock";
 
@@ -15,12 +14,12 @@ export default function FilmStage({children}:{children:ReactNode}){
   if(el.dataset.live==="true"){const top=window.scrollY+el.getBoundingClientRect().top;scrollToFilm(top+(el.offsetHeight-v.offsetHeight)*beatOffset(n),instant)}
   else document.getElementById(SHOTS[n].id)?.scrollIntoView({behavior:instant?"instant":"smooth",block:"start"});
  }
- useEffect(()=>{
+ useLayoutEffect(()=>{
   const el=root.current,v=viewport.current,space=world.current,main=el?.closest<HTMLElement>("main");
   if(!el||!v||!space||!main)return;
   const mq=matchMedia("(min-width: 850px) and (min-height: 460px) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
   const shots=Array.from(space.querySelectorAll<HTMLElement>(":scope > .film-shot"));
-  if(shots.length!==SHOTS.length)return;
+  if(shots.length!==SHOTS.length){document.dispatchEvent(new Event("zm-film-ready"));return;}
   let live=false,alive=true,previous=-1,w0=0,h0=0;
   let fitW=0,fitH=0;
   function fitTitles(w:number,h:number){
@@ -36,11 +35,11 @@ export default function FilmStage({children}:{children:ReactNode}){
     }
    }
   }
-  const proxy={u:0};
+  let progress=0;
   function paint(){
    if(!alive||!live)return;
    const w=v!.clientWidth,h=v!.clientHeight;if(!w||!h)return;
-   const u=beatProgress(proxy.u),cam=filmCamera(u,w,h);
+   const u=beatProgress(progress),cam=filmCamera(u,w,h);
    if(Math.abs(previous-u)<.00005&&w===w0&&h===h0)return;previous=u;w0=w;h0=h;
    v!.style.setProperty("--film-focal",cam.focal+"px");fitTitles(w,h);
    const paper="rgb("+cam.color.map(x=>Math.round(x*255)).join(",")+")";v!.style.backgroundColor=paper;v!.style.setProperty("--film-paper",paper);
@@ -78,12 +77,10 @@ export default function FilmStage({children}:{children:ReactNode}){
    main!.classList.toggle("film-after-portrait",u>.22);
    current.current=n;
   }
-  // GSAP is the master timeline; Lenis supplies smooth scroll position. No separate
-  // wheel hijacking, snap points, autoplay, or dwell timers.
-  const timeline=gsap.timeline({paused:true,onUpdate:paint}).to(proxy,{u:1,duration:1,ease:"none"},0);
+  // Linear scroll mapping is direct; no timeline library is required to initialize the camera.
   function clean(){
    live=false;
-   delete el!.dataset.live;space!.style.removeProperty("transform");v!.style.removeProperty("background-color");v!.style.removeProperty("--film-paper");
+   delete el!.dataset.live;delete el!.dataset.motionReady;space!.style.removeProperty("transform");v!.style.removeProperty("background-color");v!.style.removeProperty("--film-paper");
    main!.classList.remove("cinematic-live","film-after-portrait");
    for(const s of shots){s.inert=false;s.removeAttribute("aria-hidden");s.removeAttribute("style");delete s.dataset.textOwner}
   }
@@ -91,7 +88,7 @@ export default function FilmStage({children}:{children:ReactNode}){
    if(!live)return;
    const rect=el!.getBoundingClientRect(),distance=Math.max(1,el!.offsetHeight-v!.offsetHeight);
    const p=clamp(-rect.top/distance);
-   timeline.progress(p);paint();
+   progress=p;paint();
   }
   function sync(){
    const next=mq.matches&&!manual.current;
@@ -113,9 +110,14 @@ export default function FilmStage({children}:{children:ReactNode}){
   const un=subscribeMotion(measure);
   mq.addEventListener("change",sync);document.addEventListener("click",anchor,true);window.addEventListener("hashchange",hash);
   sync();
+  // The first complete projection is calculated synchronously, before the next paint.
+  // Resolve initial deep links while the boot screen still covers the page.
+  if(live&&location.hash&&!recenter.current){const id=location.hash.slice(1);const n=id==="top"?0:SHOTS.findIndex(s=>s.id===id);if(n>=0){jump(n,true);measure()}}
+  el.dataset.motionReady="true";
+  document.dispatchEvent(new Event("zm-film-ready"));
   document.fonts.ready.then(()=>{if(alive){fitW=fitH=0;previous=-1;requestMotionFrame()}});
   if(recenter.current!==null){const n=recenter.current;recenter.current=null;requestAnimationFrame(()=>{if(alive)jump(n,true)})}else if(location.hash)requestAnimationFrame(()=>{if(alive)hash()});
-  return()=>{alive=false;timeline.kill();un();ro.disconnect();mq.removeEventListener("change",sync);document.removeEventListener("click",anchor,true);window.removeEventListener("hashchange",hash);clean()};
+  return()=>{alive=false;un();ro.disconnect();mq.removeEventListener("change",sync);document.removeEventListener("click",anchor,true);window.removeEventListener("hashchange",hash);clean()};
  },[normal]);
  useEffect(()=>{const change=()=>{recenter.current=current.current;manual.current=!manual.current;setNormal(manual.current)};window.addEventListener("zm-film-mode",change);return()=>window.removeEventListener("zm-film-mode",change)},[]);
  return <div ref={root} className="cinematic-reel" style={{"--film-shots":SHOTS.length-1} as React.CSSProperties}>
