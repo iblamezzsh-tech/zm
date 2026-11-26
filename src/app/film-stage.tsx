@@ -1,7 +1,7 @@
 "use client";
 import {useEffect,useRef,useState,type ReactNode} from "react";
 import {gsap} from "gsap";
-import {SHOTS,filmCamera,filmEdit,clamp,smooth} from "./film-camera";
+import {SHOTS,filmCamera,filmEdit,beatProgress,beatOffset,clamp,smooth} from "./film-camera";
 import {subscribeMotion,requestMotionFrame,scrollToFilm} from "./motion-clock";
 
 export default function FilmStage({children}:{children:ReactNode}){
@@ -12,7 +12,7 @@ export default function FilmStage({children}:{children:ReactNode}){
  function jump(i:number,instant=false){
   const el=root.current,v=viewport.current;if(!el||!v)return;
   const n=clamp(i,0,SHOTS.length-1);
-  if(el.dataset.live==="true"){const top=window.scrollY+el.getBoundingClientRect().top;scrollToFilm(top+(el.offsetHeight-v.offsetHeight)*n/(SHOTS.length-1),instant)}
+  if(el.dataset.live==="true"){const top=window.scrollY+el.getBoundingClientRect().top;scrollToFilm(top+(el.offsetHeight-v.offsetHeight)*beatOffset(n),instant)}
   else document.getElementById(SHOTS[n].id)?.scrollIntoView({behavior:instant?"instant":"smooth",block:"start"});
  }
  useEffect(()=>{
@@ -29,7 +29,7 @@ export default function FilmStage({children}:{children:ReactNode}){
     const copy=shot.querySelector<HTMLElement>(".film-copy"),title=copy?.querySelector<HTMLElement>("h2");if(!copy||!title)continue;
     shot.style.removeProperty("--fit-heading");
     const style=getComputedStyle(shot),spaceH=shot.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom);
-    const budget=spaceH*(shot.id==="next-chapter"?.70:shot.id==="exhibit-finance4youth"&&h>=720?.52:.94);
+    const budget=spaceH*(shot.id==="next-chapter"?.72:shot.id==="film-memory"?.42:shot.id==="milestone-preview"?.36:shot.id==="projects"?.43:shot.id==="exhibit-rezamin"?.44:.92);
     let fs=parseFloat(getComputedStyle(title).fontSize);
     for(let attempt=0;attempt<8&&(copy.offsetHeight>budget||title.scrollWidth>copy.clientWidth+2);attempt++){
      fs=Math.max(25,fs*.89);shot.style.setProperty("--fit-heading",fs+"px");if(fs<=25)break;
@@ -40,7 +40,7 @@ export default function FilmStage({children}:{children:ReactNode}){
   function paint(){
    if(!alive||!live)return;
    const w=v!.clientWidth,h=v!.clientHeight;if(!w||!h)return;
-   const u=proxy.u,cam=filmCamera(u,w,h);
+   const u=beatProgress(proxy.u),cam=filmCamera(u,w,h);
    if(Math.abs(previous-u)<.00005&&w===w0&&h===h0)return;previous=u;w0=w;h0=h;
    v!.style.setProperty("--film-focal",cam.focal+"px");fitTitles(w,h);
    const paper="rgb("+cam.color.map(x=>Math.round(x*255)).join(",")+")";v!.style.backgroundColor=paper;v!.style.setProperty("--film-paper",paper);
@@ -55,6 +55,13 @@ export default function FilmStage({children}:{children:ReactNode}){
     shot.style.setProperty("--shot-art-opacity",art.toFixed(4));
     shot.style.setProperty("--shot-relative",String(clamp(local,-1,1)));
     shot.style.setProperty("--shot-arrival",enter.toFixed(4));
+    // Artwork is already present before the title. Let it fill the frame, then settle.
+    const opening=smooth(-.66,-.42,local),settle=smooth(-.40,-.04,local),leave=smooth(.12,.63,local);
+    shot.style.setProperty("--media-open",opening.toFixed(4));
+    shot.style.setProperty("--media-settle",settle.toFixed(4));
+    shot.style.setProperty("--media-leave",leave.toFixed(4));
+    shot.style.setProperty("--copy-settle",smooth(-.30,-.04,local).toFixed(4));
+    shot.style.setProperty("--media-cut",(1-smooth(.36,.63,local)).toFixed(4));
     shot.style.setProperty("--edit-in",enter.toFixed(4));
     shot.style.setProperty("--edit-out",exit.toFixed(4));
     shot.style.setProperty("--art-in",smooth(-.66,-.16,local).toFixed(4));
@@ -62,8 +69,8 @@ export default function FilmStage({children}:{children:ReactNode}){
     shot.style.setProperty("--art-travel",String(clamp(local+.5)));
     shot.dataset.textOwner=String(owner&&text>.001);
     if(!owner&&shot.contains(document.activeElement))(document.activeElement as HTMLElement)?.blur();
-    if(shot.inert!==!owner)shot.inert=!owner;
-    shot.setAttribute("aria-hidden",String(!owner));
+    const interactive=owner&&text>.60;if(shot.inert!==!interactive)shot.inert=!interactive;
+    shot.setAttribute("aria-hidden",String(!interactive));
    }
    // Preserve the exact portrait interaction at frame zero, then open it like a film aperture.
    shots[0].style.setProperty("--hero-aperture",String(smooth(.04,.48,u)));
@@ -73,7 +80,7 @@ export default function FilmStage({children}:{children:ReactNode}){
   }
   // GSAP is the master timeline; Lenis supplies smooth scroll position. No separate
   // wheel hijacking, snap points, autoplay, or dwell timers.
-  const timeline=gsap.timeline({paused:true,onUpdate:paint}).to(proxy,{u:shots.length-1,duration:shots.length-1,ease:"none"},0);
+  const timeline=gsap.timeline({paused:true,onUpdate:paint}).to(proxy,{u:1,duration:1,ease:"none"},0);
   function clean(){
    live=false;
    delete el!.dataset.live;space!.style.removeProperty("transform");v!.style.removeProperty("background-color");v!.style.removeProperty("--film-paper");

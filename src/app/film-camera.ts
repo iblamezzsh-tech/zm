@@ -44,3 +44,8 @@ export function filmEdit(u:number,i:number){
  const art=(i===0?1:smooth(-.66,-.16,local))*(i===SHOTS.length-1?1:1-smooth(.18,.66,local));
  return {local,owner,enter,exit,text,art};
 }
+
+// Reading beats differ by content, and transitions use their own amount of scroll.
+export const BEATS=[0,1.05,2.22,3.34,4.56,5.48,6.35,7.72,8.67,9.8] as const;
+export function beatProgress(progress:number){const distance=clamp(progress)*BEATS[BEATS.length-1];let i=0;while(i<BEATS.length-2&&distance>BEATS[i+1])i++;return i+(distance-BEATS[i])/(BEATS[i+1]-BEATS[i]);}
+export function beatOffset(index:number){return BEATS[Math.round(clamp(index,0,BEATS.length-1))]/BEATS[BEATS.length-1]}
