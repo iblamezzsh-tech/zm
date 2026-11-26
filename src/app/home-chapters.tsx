@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Signature from "./signature";
+import JourneySequence from "./journey-sequence";
 import ChapterMotion from "./chapter-motion";
 import "./chapters.css";
 
@@ -11,23 +11,7 @@ export default function HomeChapters() {
   return (
     <div className="home-chapters">
       <ChapterMotion />
-      <section className="story-chapter" id="introduction" aria-labelledby="intro-title">
-        <div className="chapter-rule"><span>01 / A little about me</span><span>ZM — Personal notes</span></div>
-        <div className="story-grid">
-          <div className="story-left" data-chapter-motion>
-            <p className="story-overline">ANDIJAN, UZBEKISTAN / THE PRESENT</p>
-            <h2 id="intro-title">I started<br/>with a<br/><em>question.</em></h2>
-            <span className="story-asterisk" aria-hidden="true">✳</span>
-          </div>
-          <div className="story-right" data-chapter-motion>
-            <span className="story-index">A NOTE FROM ME / 01</span>
-            <p>In school, I found myself drawn to the things that happened beyond the lesson: leading a team, helping a friend with maths, trying to find the answer to a Zakovat question.</p>
-            <p>Today that curiosity takes me into economics, technology and projects of my own. The person in the graduation portrait is still ahead of me. This is the journey in between.</p>
-            <Link className="chapter-link chapter-link-light" href="/about">Read my story <span aria-hidden="true">↗</span></Link>
-            <div className="story-signature"><Signature/></div>
-          </div>
-        </div>
-      </section>
+      <JourneySequence records={getFeaturedRecords()}/>
       <section className="work-chapter" id="projects" aria-labelledby="projects-title">
         <div className="chapter-rule"><span>02 / Selected initiatives</span><span>From idea to action</span></div>
         <div className="work-heading" data-chapter-motion><h2 id="projects-title">Things I <em>build.</em></h2><p>A quiz tournament, a financial education initiative and an environmental club. Three ways to put an idea to work.</p></div>
