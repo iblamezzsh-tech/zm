@@ -19,11 +19,12 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   if(!el||!main){document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:false}}));return;}
   const scenes=Array.from(el.querySelectorAll<HTMLElement>("[data-ed-scene]"));
   const reveals=Array.from(el.querySelectorAll<HTMLElement>("[data-ed-reveal],[data-ed-line]"));
-  const shots=Array.from(el.querySelectorAll<HTMLElement>(".ed-project-shot"));
   const reduced=matchMedia("(prefers-reduced-motion: reduce)");
   const desktop=matchMedia("(min-width: 900px) and (min-height: 500px) and (pointer: fine)");
   const collage=el.querySelector<HTMLElement>(".ed-collage"),rail=el.querySelector<HTMLElement>(".ed-collage-grid");
   const collageWindow=el.querySelector<HTMLElement>(".ed-collage-sticky");
+  const fan=el.querySelector<HTMLElement>(".ed-fan");
+  const documents=Array.from(el.querySelectorAll<HTMLElement>(".ed-document"));
   let manual=false,enabled=false,cinema=false,railDistance=0,railX=0,alive=true;
   function layout(){
    if(!alive||!collage||!rail||!collageWindow)return;
@@ -35,15 +36,20 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    const h=window.innerHeight,w=window.innerWidth,anchor=Math.min(70,h*.12);
    const bounds=scenes.map(s=>({s,r:s.getBoundingClientRect()}));
    const at=bounds.filter(({r})=>r.top<=anchor&&r.bottom>anchor).at(-1);
-   main!.classList.toggle("ed-dark-header",at?.s.dataset.edTheme==="dark"||Boolean(at?.s.id==="film-present"&&-at.r.top>h*.13));
+   const memory=bounds.find(({s})=>s===collage);
+   const memoryEdge=memory?clamp((h-memory.r.top)/h):1;
+   const memoryLocal=memory?clamp(-memory.r.top/Math.max(1,memory.r.height-h)):1;
+   const memoryLight=cinema?ease(.20,1,memoryEdge)*.58+ease(0,.16,memoryLocal)*.42:1;
+   main!.classList.toggle("ed-dark-header",at?.s.dataset.edTheme==="dark"||Boolean(at?.s.id==="film-present"&&-at.r.top>h*.13)||Boolean(at?.s===collage&&memoryLight<.48));
    main!.classList.toggle("film-at-finale",at?.s.id==="next-chapter");
    if(!enabled)return;
    // All geometry reads precede style writes. Horizontal reveals are projected
    // into the new rail position, not one frame behind the artwork.
    const revealBounds=reveals.map(node=>({node,r:node.getBoundingClientRect()}));
    const archives=Array.from(el!.querySelectorAll<HTMLElement>(".ed-archive-item")).map(node=>({node,r:node.getBoundingClientRect()}));
-   const socialBounds=bounds.find(({s})=>s.classList.contains("ed-social"));
-   const socialLocal=socialBounds?clamp(-socialBounds.r.top/Math.max(1,socialBounds.r.height-h)):0;
+   const fanRect=fan?.getBoundingClientRect();
+   const fanEdge=fanRect?clamp((h-fanRect.top)/h):1;
+   const docBounds=documents.map(node=>({node,r:node.getBoundingClientRect()}));
    const gallery=bounds.find(({s})=>s===collage);
    const railLocal=gallery?clamp(-gallery.r.top/Math.max(1,gallery.r.height-h)):0;
    const nextRailX=cinema?-railDistance*railProgress(railLocal):0;
@@ -55,6 +61,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     const enter=ease(.04,.53,edge);
     write(s,"--ed-pass",pass);write(s,"--ed-enter",enter);write(s,"--ed-travel",(pass-.5)*2);
     write(s,"--ed-local",local);write(s,"--ed-edge",edge);
+    write(s,"--seam-open",ease(.02,.62,edge));
     if(s.id==="film-present"){
      write(s,"--ed-hero-exit",ease(.08,.65,local));
      write(s,"--ed-credit",ease(.22,.66,local));
@@ -64,30 +71,21 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     if(s===collage&&cinema){
      s.style.setProperty("--rail-x",nextRailX.toFixed(2)+"px");
      write(s,"--rail-p",railProgress(railLocal));
+     write(s,"--memory-light",memoryLight);
     }
     if(s.classList.contains("ed-manifesto"))write(s,"--ed-manifesto-pass",clamp((h-r.top)/(r.height+h*.5)));
     if(s.classList.contains("ed-future")){
      write(s,"--future-think",ease(.03,.44,edge));write(s,"--future-learn",ease(.11,.52,edge));write(s,"--future-build",ease(.19,.60,edge));
     }
-    if(s.classList.contains("ed-project-shot")){
-     if(cinema){
-      write(s,"--shot-in",ease(.10,.90,edge));
-      write(s,"--shot-settle",ease(0,.22,local));
-      write(s,"--shot-out",ease(.68,1,local));
-      write(s,"--shot-progress",local);
-      write(s,"--project-copy",ease(.26,.85,edge));
-      write(s,"--project-body",ease(.40,.98,edge));
-     }else{
-      const item=s.querySelector<HTMLElement>(".ed-work-item");
-      if(item){const ir=item.getBoundingClientRect(),e=clamp((h-ir.top)/h);write(s,"--project-copy",ease(.06,.48,e));write(s,"--project-body",ease(.12,.55,e))}
-     }
+    if(s.classList.contains("ed-work-item")){
+     write(s,"--project-copy",ease(.05,.45,edge));write(s,"--project-body",ease(.10,.53,edge));
+     write(s,"--project-float",(pass-.5)*2);
     }
-    if(s.classList.contains("zm-worlds"))write(s,"--world-cut",ease(.04,.76,edge));
-    if(s.classList.contains("ed-archive"))write(s,"--archive-cut",ease(.02,.78,edge));
     if(s.classList.contains("ed-social")){
-     write(s,"--fan-open",cinema?ease(.03,.54,local):ease(.05,.58,edge));
-     write(s,"--fan-away",cinema?ease(.83,1,local):0);
-     write(s,"--social-links",cinema?ease(.24,.56,local):ease(.12,.58,edge));
+     write(s,"--fan-open",ease(.015,.55,fanEdge));
+     write(s,"--fan-away",0);
+     write(s,"--social-links",ease(.10,.58,edge));
+     write(s,"--social-glow",ease(.32,.95,edge));
     }
     if(s.id==="next-chapter"){
      write(s,"--finale-portrait-in",ease(.04,.57,edge));
@@ -97,17 +95,11 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    }
    for(const {node,r} of revealBounds){
     const horizontal=cinema&&node.closest(".ed-collage-grid");
-    const shot=cinema?node.closest<HTMLElement>(".ed-project-shot"):null;
     const vertical=clamp((h-r.top)/h);
     let p:number;
-    if(shot){
-     const b=bounds.find(({s})=>s===shot);
-     p=b?ease(.10,.90,clamp((h-b.r.top)/h)):1;
-    }else if(horizontal){
+    if(horizontal){
      const left=r.left+railDelta;
      p=ease(.015,.29,clamp((w-left)/w));
-    }else if(cinema&&node.closest(".ed-social-sticky")){
-     p=ease(0,.24,Math.max(socialLocal,vertical*.24));
     }else if(node.classList.contains("ed-statement-line")){
      p=ease(.015,.32,vertical);
     }else if(node.classList.contains("ed-work-image")||node.classList.contains("ed-archive-item")){
@@ -118,6 +110,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     write(node,"--ed-reveal",p);
    }
    for(const {node,r} of archives)write(node,"--record-pass",clamp((h-r.top)/(h+r.height)));
+   for(const {node,r} of docBounds){const center=cinema?r.left+r.width*.5+railDelta:r.top+r.height*.5;const extent=cinema?w:h;write(node,"--doc-pass",clamp((extent-center)/extent))}
    railX=nextRailX;
   }
   function mode(){
@@ -129,14 +122,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   function resize(){layout();requestMotionFrame()}
   // Keyboard focus in the rail must move the native scroll position to the visible item.
   function focus(e:FocusEvent){
-   if(!cinema||!(e.target instanceof HTMLElement))return;
-   const shot=e.target.closest<HTMLElement>(".ed-project-shot");
-   if(shot&&shots.includes(shot)){
-    const sr=shot.getBoundingClientRect();
-    if(sr.top>0||sr.bottom<innerHeight*.95){const top=window.scrollY+sr.top;scrollToFilm(top+Math.max(0,shot.offsetHeight-innerHeight)*.32,true)}
-    return;
-   }
-   if(!collage||!rail||!rail.contains(e.target))return;
+   if(!cinema||!collage||!rail||!(e.target instanceof HTMLElement)||!rail.contains(e.target))return;
    const r=e.target.getBoundingClientRect();if(r.left>=0&&r.right<=innerWidth)return;
    const delta=Math.max(0,Math.min(railDistance,r.left-railX-innerWidth*.2));
    const top=window.scrollY+collage.getBoundingClientRect().top;

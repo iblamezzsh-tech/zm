@@ -19,8 +19,11 @@ import "./studio55.css";
 import "./studio62.css";
 import "./studio63.css";
 import "./motion-v74.css";
-import "./motion-v75.css";
+import "./motion-v76.css";
 
+function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
+ return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
+}
 export default function HomeChapters(){
  const records=getFeaturedRecords();
  const archive=certificateRecords.filter(r=>r.document&&existsSync(join(process.cwd(),"public",r.document.src.replace(/^\//,"")))).slice(0,8);
@@ -43,7 +46,7 @@ export default function HomeChapters(){
   <section className="ed-collage ed-paper" id="film-memory" data-ed-scene data-ed-theme="light">
    <div className="ed-collage-sticky"><div className="ed-gutter ed-caption"><span>02 / THE THINGS I KEEP</span><span>ORIGINAL RECORDS</span></div>
    <div className="ed-collage-grid">
-    <div className="ed-collage-intro"><h2 data-ed-reveal>Small<br/><em>moments.</em></h2><p>On a court, around a Zakovat table, in a classroom. Little things that make up a life.</p><Link href="/about" className="ed-link">Read my journey <span>↗</span></Link></div>
+    <div className="ed-collage-intro"><h2 data-ed-reveal><span>Small</span><br/><em>moments.</em></h2><p>On a court, around a Zakovat table, in a classroom. Little things that make up a life.</p><Link href="/about" className="ed-link">Read my journey <span>↗</span></Link></div>
     {records.map((r,i)=>r.document&&<figure className={"ed-document ed-document-"+i} key={r.id} data-ed-drift style={{"--ed-tilt":[-2,2,-1,2,-2][i%5]+"deg","--ed-depth":[.28,-.18,.43,-.28,.20][i%5]} as React.CSSProperties}><div className="ed-document-image" data-ed-reveal><img src={r.document.src} alt={r.document.alt} decoding="async" fetchPriority="low"/></div><figcaption><span>{r.dateLabel} / {r.chapter}</span><strong>{r.headline}</strong></figcaption></figure>)}
    </div></div>
   </section>
@@ -51,7 +54,7 @@ export default function HomeChapters(){
    <div className="ed-gutter ed-future-content"><span className="ed-kicker">03 / STILL BECOMING</span><h2 data-ed-reveal>Ideas worth<br/><em>acting on.</em></h2><p>Economics, technology, education and a desire to turn curiosity into something real.</p><Link href="/projects" className="ed-link">Explore my projects <span>↗</span></Link></div>
    <div className="ed-future-words" aria-hidden="true"><span>THINK.</span><em>LEARN.</em><span>BUILD.</span></div>
   </section>
-  <section className="zm-worlds" aria-label="Two sides of my journey" data-ed-scene data-ed-theme="dark">
+  <section className="zm-worlds" aria-label="Two sides of my journey" data-ed-scene data-ed-theme="dark"><SurfaceSeam tone="ink"/>
    <div className="ed-gutter ed-caption"><span>03 / TWO WORLDS</span><span>ONE CURIOSITY</span></div>
    <div className="zm-worlds-grid">
     <Link href="/projects" className="zm-world zm-world-build" data-ed-reveal>
@@ -68,20 +71,18 @@ export default function HomeChapters(){
    <div className="ed-gutter ed-caption"><span>04 / SELECTED INITIATIVES</span><span>01 — 03</span></div>
    <div className="ed-work-banner" aria-hidden="true"><span>QUESTIONS → ACTION.</span></div><div className="ed-gutter ed-work-heading"><h2 data-ed-reveal>Ideas into <em>action.</em></h2><p>Three different interests. One desire to turn curiosity into something real.</p></div>
    <div className="ed-gutter ed-work-grid">
-    {projects.map((p,i)=><div className={"ed-project-shot shot-"+p.kind} key={p.slug} data-ed-scene data-ed-theme="dark"><article className={"ed-work-item ed-work-"+p.kind} id={i===0?"exhibit-overthink":"exhibit-"+p.slug}>
-     <div className="ed-shot-decoration" aria-hidden="true"><span className="ed-shot-number">{p.number}</span><span className="ed-shot-index">{p.number} / 03</span><span className="ed-shot-meter"><i/></span></div>
+    {projects.map((p,i)=><article className={"ed-work-item ed-work-"+p.kind} id={i===0?"exhibit-overthink":"exhibit-"+p.slug} key={p.slug} data-ed-scene data-ed-theme="dark">
      <Link href={"/projects/"+p.slug} className="ed-work-image" data-ed-reveal aria-label={"Explore "+p.name}><ProjectEdition project={p}/></Link>
-     <div className="ed-work-copy"><span className="ed-kicker">{p.number} / {p.category}</span><h3 className="ed-project-name">{p.name}</h3><p>{p.summary}</p><Link href={"/projects/"+p.slug} className="ed-link">Inside the project <span>↗</span></Link></div>
-    </article></div>)}
+     <span className="ed-project-ghost" aria-hidden="true">{p.number}</span><div className="ed-work-copy"><span className="ed-kicker">{p.number} / {p.category}</span><h3 className="ed-project-name">{p.name}</h3><p>{p.summary}</p><Link href={"/projects/"+p.slug} className="ed-link">Inside the project <span>↗</span></Link></div>
+    </article>)}
    </div>
   </section>
   <section className="ed-archive" id="milestone-preview" data-ed-scene data-ed-theme="dark">
-   <div className="ed-archive-handoff" aria-hidden="true"><span>THE THINGS I KEEP.</span><i/><span>THE THINGS I KEEP.</span></div>
    <div className="ed-gutter ed-caption"><span>05 / THE ARCHIVE</span><span>DOCUMENTED EXPERIENCES</span></div>
    <div className="ed-gutter ed-archive-heading"><h2 data-ed-reveal>Every step<br/><em>leaves a mark.</em></h2><Link href="/achievements" className="ed-link">All milestones <span>↗</span></Link></div>
    <div className="ed-gutter ed-archive-grid">{archive.map((r,i)=>r.document&&<Link href="/achievements" className="ed-archive-item" key={r.id} data-ed-reveal style={{"--ed-i":i} as React.CSSProperties}><div className="ed-archive-image"><img src={r.document.src} alt={r.document.alt} decoding="async" fetchPriority="low"/></div><div className="ed-archive-label"><span>{r.category} / {String(i+1).padStart(2,"0")}</span><strong>{r.title}</strong></div></Link>)}</div>
   </section>
-  <section className="ed-personal ed-paper" id="interests" data-ed-scene data-ed-theme="light">
+  <section className="ed-personal ed-paper" id="interests" data-ed-scene data-ed-theme="light"><SurfaceSeam tone="paper"/>
    <div className="ed-gutter ed-caption"><span>06 / OFF THE RECORD</span><span>MORE THAN ONE THING</span></div>
    <div className="ed-gutter ed-personal-head"><h2 data-ed-reveal>What keeps<br/><em>me curious?</em></h2><p>Not everything I do belongs on a résumé. A few things I enjoy, even without a deadline.</p></div>
    <div className="ed-gutter ed-interest-list">{interests.map((s,i)=><Link href="/off-the-record" data-ed-reveal key={s} style={{"--ed-i":i} as React.CSSProperties}><small>0{i+1}</small><span>{s}</span><b>↗</b></Link>)}</div>
@@ -93,6 +94,7 @@ export default function HomeChapters(){
    <div className="ed-social-links"><a href="https://t.me/Shoxruxbekovich">Telegram ↗</a><a href="https://www.instagram.com/the_zzsh/">Instagram ↗</a><a href="https://github.com/iblamezzsh-tech/zm">GitHub ↗</a></div></div>
   </section>
   <section className="film-shot film-shot-contact film-dark film-finale-shot" id="next-chapter" data-ed-scene data-ed-theme="dark" aria-label="The next chapter">
+   <svg className="ed-finale-tab" viewBox="0 0 1200 50" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50V35Q0 24 14 24H485Q510 24 527 10Q539 0 559 0H641Q661 0 673 10Q690 24 715 24H1186Q1200 24 1200 35V50Z" fill="#24291e"/></svg>
    <div className="film-finale">
     <div className="finale-inner">
      <div className="finale-heading">
