@@ -2,12 +2,10 @@
 import {useEffect,useRef,useState,type ReactNode} from "react";
 import {gsap} from "gsap";
 import {SHOTS,filmCamera,filmEdit,clamp,smooth} from "./film-camera";
-import {createRibbonGPU,createRibbonCPU} from "./film-ribbon";
 import {subscribeMotion,requestMotionFrame,scrollToFilm} from "./motion-clock";
 
 export default function FilmStage({children}:{children:ReactNode}){
  const root=useRef<HTMLDivElement>(null),viewport=useRef<HTMLDivElement>(null),world=useRef<HTMLDivElement>(null);
- const gpuCanvas=useRef<HTMLCanvasElement>(null),cpuCanvas=useRef<HTMLCanvasElement>(null);
  
  const current=useRef(0),manual=useRef(false),recenter=useRef<number|null>(null);
  const [normal,setNormal]=useState(false);
@@ -23,7 +21,6 @@ export default function FilmStage({children}:{children:ReactNode}){
   const mq=matchMedia("(min-width: 850px) and (min-height: 460px) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
   const shots=Array.from(space.querySelectorAll<HTMLElement>(":scope > .film-shot"));
   if(shots.length!==SHOTS.length)return;
-  let gpu:ReturnType<typeof createRibbonGPU>=null,cpu:ReturnType<typeof createRibbonCPU>=null;
   let live=false,alive=true,previous=-1,w0=0,h0=0;
   let fitW=0,fitH=0;
   function fitTitles(w:number,h:number){
@@ -52,7 +49,7 @@ export default function FilmStage({children}:{children:ReactNode}){
    for(let i=0;i<shots.length;i++){
     const shot=shots[i],edit=filmEdit(u,i),{local,owner,enter,exit,text,art}=edit;
     const nearby=art>.001||text>.001;
-    shot.style.transform="translate3d("+(SHOTS[i].x*w)+"px,"+(SHOTS[i].y*h)+"px,"+(-i*cam.step)+"px)";
+    shot.style.transform="translate3d("+(SHOTS[i].x*w)+"px,"+(SHOTS[i].y*h)+"px,"+(-SHOTS[i].z*cam.step)+"px)";
     shot.style.visibility=nearby?"visible":"hidden";
     shot.style.setProperty("--shot-opacity",text.toFixed(4));
     shot.style.setProperty("--shot-art-opacity",art.toFixed(4));
@@ -60,7 +57,7 @@ export default function FilmStage({children}:{children:ReactNode}){
     shot.style.setProperty("--shot-arrival",enter.toFixed(4));
     shot.style.setProperty("--edit-in",enter.toFixed(4));
     shot.style.setProperty("--edit-out",exit.toFixed(4));
-    shot.style.setProperty("--art-in",smooth(-.77,-.17,local).toFixed(4));
+    shot.style.setProperty("--art-in",smooth(-.66,-.16,local).toFixed(4));
     shot.style.setProperty("--art-motion",smooth(-.77,-.17,local).toFixed(4));
     shot.style.setProperty("--art-travel",String(clamp(local+.5)));
     shot.dataset.textOwner=String(owner&&text>.001);
@@ -69,19 +66,17 @@ export default function FilmStage({children}:{children:ReactNode}){
     shot.setAttribute("aria-hidden",String(!owner));
    }
    // Preserve the exact portrait interaction at frame zero, then open it like a film aperture.
-   shots[0].style.setProperty("--hero-aperture",String(smooth(.015,.43,u)));
+   shots[0].style.setProperty("--hero-aperture",String(smooth(.04,.48,u)));
    v!.style.setProperty("--film-position",String(u/(shots.length-1)));
    main!.classList.toggle("film-after-portrait",u>.22);
    current.current=n;
-   if(gpu&&gpu.draw(cam,w,h)===false){gpu.dispose();gpu=null;if(cpuCanvas.current)cpu=createRibbonCPU(cpuCanvas.current);v!.dataset.renderer=cpu?"canvas":"css"}
-   if(cpu)cpu.draw(cam,w,h);
   }
   // GSAP is the master timeline; Lenis supplies smooth scroll position. No separate
   // wheel hijacking, snap points, autoplay, or dwell timers.
   const timeline=gsap.timeline({paused:true,onUpdate:paint}).to(proxy,{u:shots.length-1,duration:shots.length-1,ease:"none"},0);
   function clean(){
-   live=false;gpu?.dispose();cpu?.dispose();gpu=null;cpu=null;
-   delete el!.dataset.live;delete v!.dataset.renderer;space!.style.removeProperty("transform");v!.style.removeProperty("background-color");v!.style.removeProperty("--film-paper");
+   live=false;
+   delete el!.dataset.live;space!.style.removeProperty("transform");v!.style.removeProperty("background-color");v!.style.removeProperty("--film-paper");
    main!.classList.remove("cinematic-live","film-after-portrait");
    for(const s of shots){s.inert=false;s.removeAttribute("aria-hidden");s.removeAttribute("style");delete s.dataset.textOwner}
   }
@@ -97,9 +92,6 @@ export default function FilmStage({children}:{children:ReactNode}){
    if(!next){clean();return}
    live=true;el!.dataset.live="true";main!.classList.add("cinematic-live");
    previous=-1;fitW=fitH=0;
-   if(gpuCanvas.current)gpu=createRibbonGPU(gpuCanvas.current);
-   if(!gpu&&cpuCanvas.current)cpu=createRibbonCPU(cpuCanvas.current);
-   v!.dataset.renderer=gpu?"gpu":cpu?"canvas":"css";
    measure();requestMotionFrame();
   }
   function anchor(e:MouseEvent){
@@ -121,9 +113,6 @@ export default function FilmStage({children}:{children:ReactNode}){
  useEffect(()=>{const change=()=>{recenter.current=current.current;manual.current=!manual.current;setNormal(manual.current)};window.addEventListener("zm-film-mode",change);return()=>window.removeEventListener("zm-film-mode",change)},[]);
  return <div ref={root} className="cinematic-reel" style={{"--film-shots":SHOTS.length-1} as React.CSSProperties}>
   <div ref={viewport} className="cinematic-viewport">
-   <canvas ref={gpuCanvas} className="cinematic-ribbon ribbon-gpu" aria-hidden="true"/>
-   <canvas ref={cpuCanvas} className="cinematic-ribbon ribbon-cpu" aria-hidden="true"/>
-   <div className="cinematic-grain" aria-hidden="true"/>
    <div ref={world} className="cinematic-world">{children}</div>
 
   </div>

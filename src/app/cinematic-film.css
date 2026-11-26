@@ -17,10 +17,7 @@
 .film-link span{font-size:20px;transition:transform .25s}
 .film-link:hover span{transform:translate(4px,-4px)}
 .film-dark .film-link{color:#ffda24}
-.film-super{position:absolute;z-index:0;left:0;bottom:-6%;pointer-events:none;font:800 clamp(180px,45vw,650px)/.8 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.125em;opacity:.055;white-space:nowrap}
 .film-art{position:relative;min-width:0;z-index:1}
-.film-origin-art{color:#24291e}
-.film-origin-art svg{display:block;width:100%;height:auto;opacity:.65}
 .film-future-portrait{aspect-ratio:1.12;align-self:end;overflow:hidden}
 .film-future-portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:bottom center}
 .film-paper-cloud{height:clamp(280px,49vw,690px);perspective:1100px;transform-style:preserve-3d}
@@ -31,7 +28,6 @@
 .film-paper.paper-1{top:20%;right:0;transform:rotate(12deg)}
 .film-paper.paper-2{bottom:0;left:12%;transform:rotate(-5deg)}
 .film-project .film-copy h2{font-size:clamp(49px,6.7vw,105px)}
-.film-project-name{position:absolute;right:5%;bottom:6%;font-size:11px;font-weight:650;letter-spacing:.16em;text-transform:uppercase}
 .film-project-art .studio-poster{width:100%;aspect-ratio:1.5}
 .film-interests{display:flex;flex-direction:column}
 .film-interests>span{display:flex;gap:20px;align-items:center;border-top:1px solid #24291e55;padding:10px 0;font:400 clamp(34px,5.6vw,90px)/1 "Instrument Serif",Georgia,serif;letter-spacing:-.035em}
@@ -40,7 +36,6 @@
 .film-autograph .signature{width:100%;height:auto;display:block}
 
 /* V42: editorial staging. Text always has a dedicated track. */
-.cinematic-ribbon,.cinematic-grain{display:none}
 .zm-reading-option{background:none;border:0;color:inherit;padding:9px 0;text-align:left;font:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
 .film-copy h2{line-height:.98;letter-spacing:-.06em;overflow-wrap:anywhere}
 .film-copy h2 em{line-height:.98}
@@ -48,14 +43,12 @@
 .film-words{white-space:normal}
 .film-word{display:inline-block;vertical-align:baseline;max-width:100%;overflow-wrap:anywhere}
 .film-word>span{display:inline-block;max-width:100%}
-.film-project-name{position:static;justify-self:end;grid-column:1/-1;font-size:10px}
 @media(min-width:850px){
 .film-shot-memory,.film-shot-archive{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}
 .film-shot-future,.film-project-think,.film-shot-archive,.film-shot-personal{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr)}
 .film-shot-future .film-art,.film-project-think .film-art,.film-shot-archive .film-art,.film-shot-personal .film-art{grid-column:1;grid-row:1}
 .film-shot-future .film-copy,.film-project-think .film-copy,.film-shot-archive .film-copy,.film-shot-personal .film-copy{grid-column:2;grid-row:1}
 .film-shot-origin .film-copy{grid-column:1;grid-row:1}
-.film-shot-origin .film-origin-art{grid-column:2;grid-row:1}
 .film-shot-future .film-copy{text-align:right}.film-shot-future .film-copy p{margin-left:auto}
 .film-shot-contact{grid-template-columns:1fr;grid-template-rows:auto auto;text-align:center;gap:16px}
 .film-shot-contact .film-copy{justify-self:center}.film-shot-contact .film-copy p{margin-inline:auto}
@@ -63,9 +56,7 @@
 }
 .cinematic-reel[data-live=true]{height:calc(100svh + var(--film-shots,9)*92svh)}
 .cinematic-reel[data-live=true] .cinematic-viewport{position:sticky;top:0;height:100svh;min-height:0;overflow:hidden;isolation:isolate;perspective:var(--film-focal,1100px);perspective-origin:50% 50%}
-.cinematic-reel[data-live=true] .cinematic-ribbon{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
 .cinematic-viewport[data-renderer=gpu] .ribbon-gpu,.cinematic-viewport[data-renderer=canvas] .ribbon-cpu{display:block}
-.cinematic-reel[data-live=true] .cinematic-grain{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 25%,#24291e12 100%)}
 .cinematic-reel[data-live=true] .cinematic-world{position:absolute;inset:0;z-index:2;transform-style:preserve-3d;transform-origin:center;pointer-events:none}
 .cinematic-reel[data-live=true] .film-shot{position:absolute;inset:0;height:100%;width:100%;min-height:0;overflow:visible;padding:clamp(76px,12vh,112px) clamp(36px,6vw,100px) clamp(30px,6vh,68px);background:transparent!important;transform-style:preserve-3d;visibility:hidden;pointer-events:none;--arr:var(--edit-in,1);--dep:var(--edit-out,0);--art:var(--art-in,1)}
 .cinematic-reel[data-live=true] .film-shot .film-copy{opacity:var(--shot-opacity,0);visibility:hidden;min-width:0;max-width:100%;align-self:center;z-index:4}
@@ -77,8 +68,6 @@
 .cinematic-reel[data-live=true] .film-kicker{font-size:clamp(9px,1vw,12px);letter-spacing:.11em;overflow-wrap:anywhere}
 .cinematic-reel[data-live=true] .film-link{min-height:40px}
 .cinematic-reel[data-live=true] .film-shot .film-art{opacity:var(--shot-art-opacity,0);min-height:0;max-width:100%;backface-visibility:hidden}
-.cinematic-reel[data-live=true] .film-shot .film-super{opacity:calc(var(--shot-art-opacity,0)*.045);transform:translate3d(0,0,-300px);font-size:clamp(140px,37vw,550px)}
-.cinematic-reel[data-live=true] .film-project-name{position:absolute;right:6%;bottom:3%;opacity:var(--shot-opacity,0)}
 /* Text motion lives inside masks, not moving whole overlapping text blocks. */
 .cinematic-reel[data-live=true] .film-word{overflow:clip;padding:.06em 0 .16em;margin:-.06em 0 -.16em}
 .cinematic-reel[data-live=true] .film-word>span{--reveal:clamp(0,calc(var(--arr)*1.45 - var(--word-i,0)*.10),1);transform:translate3d(0,calc((1 - var(--reveal))*115% - var(--dep)*105%),0);opacity:var(--reveal)}
@@ -92,8 +81,6 @@
 .cinematic-reel[data-live=true] .film-shot-hero .hero-composition{height:100svh!important;min-height:0!important}
 .cinematic-reel[data-live=true] .film-shot-hero .film-hero-curtain{display:none!important}
 /* Curiosity: lens opens into a rotating orbital diagram. */
-.cinematic-reel[data-live=true] .film-origin-art{width:100%;max-height:64vh;transform:translate3d(calc((1 - var(--art))*18vw),0,-80px) rotate(calc((1 - var(--art))*-125deg + var(--dep)*70deg)) scale(calc(.40 + var(--art)*.60))}
-.cinematic-reel[data-live=true] .film-origin-art svg{max-height:64vh}
 .cinematic-reel[data-live=true] .film-shot-origin .film-word>span{transform:translate3d(calc((1 - var(--reveal))*-115%),calc(var(--dep)*-100%),0)}
 /* Memory: independently travelling original paper layers, kept in their own grid track. */
 .cinematic-reel[data-live=true] .film-paper-cloud{height:min(56vh,570px);perspective:1400px}
@@ -154,7 +141,6 @@
 .film-shot:not(.film-shot-hero){display:flex;flex-direction:column;align-items:stretch;min-height:0;padding:62px 24px 70px;gap:25px}
 .film-copy h2,.film-project .film-copy h2{font-size:clamp(42px,11vw,85px)}
 .film-copy p{font-size:17px}
-.film-origin-art{max-width:70%;margin-left:auto}
 .film-paper-cloud{height:clamp(300px,85vw,510px)}
 .film-future-portrait{width:100%;max-height:480px;align-self:auto}
 .film-shot-future .film-copy{order:-1}
@@ -162,3 +148,30 @@
 .film-autograph{width:75%;margin-left:auto}
 }
 @media(prefers-reduced-motion:reduce){.film-link span{transition:none}.film-word>span{transform:none!important;opacity:1!important}}
+
+/* V43 / content-led motion: no ribbon, no floating geometric filler. */
+.film-shot-origin{grid-template-columns:minmax(0,1fr);text-align:center}
+.film-shot-origin .film-copy{max-width:100%;justify-self:center;text-align:center}
+.film-shot-origin .film-copy p{margin-inline:auto}
+.film-shot-origin .film-copy h2{font-size:clamp(60px,11vw,170px)}
+.cinematic-reel[data-live=true] .film-shot-origin .film-copy{max-width:90%;grid-column:1;grid-row:1}
+.cinematic-reel[data-live=true] .film-shot-origin .film-copy h2{font-size:var(--fit-heading,clamp(46px,min(10vw,17vh),145px))}
+.cinematic-reel[data-live=true] .film-shot-origin .edit-line{display:block}
+.cinematic-reel[data-live=true] .film-shot-origin .film-word>span{transform:translate3d(0,calc((1 - var(--reveal))*115% - var(--dep)*105%),0)}
+/* Present the designed project posters as artwork, rather than extracting
+   their question marks, graph bars and leaves into meaningless floating shapes. */
+.cinematic-reel[data-live=true] .film-project-art{height:auto;aspect-ratio:1.5;max-height:58vh;overflow:hidden;box-shadow:0 14px 40px #1112}
+.cinematic-reel[data-live=true] .film-project-art .studio-poster{aspect-ratio:1.5;min-height:0;height:100%;width:100%;overflow:hidden}
+.cinematic-reel[data-live=true] .film-project-art .studio-poster.art-think{background:#20241c!important}
+.cinematic-reel[data-live=true] .film-project-art .studio-poster.art-finance{background:#f4f1e8!important}
+.cinematic-reel[data-live=true] .film-project-art .studio-poster.art-earth{background:#364431!important}
+.cinematic-reel[data-live=true] .film-project-art .studio-artwork{transform:none;overflow:hidden}
+.cinematic-reel[data-live=true] .film-project-art .studio-artwork>rect{display:block}
+.cinematic-reel[data-live=true] .film-project-art .think-word,.cinematic-reel[data-live=true] .film-project-art .finance-word,.cinematic-reel[data-live=true] .film-project-art .earth-word,.cinematic-reel[data-live=true] .film-project-art .art-corner,.cinematic-reel[data-live=true] .film-project-art .art-foot{display:block}
+.cinematic-reel[data-live=true] .film-project-think .film-project-art{transform:translate3d(calc((1 - var(--art))*-12vw),0,-30px) rotateY(calc((1 - var(--art))*-48deg))}
+.cinematic-reel[data-live=true] .film-project-finance .film-project-art{transform:translate3d(0,calc((1 - var(--art))*14vh),-15px) rotateX(calc((1 - var(--art))*28deg))}
+.cinematic-reel[data-live=true] .film-project-earth .film-project-art{transform:translate3d(calc((1 - var(--art))*12vw),0,-40px) scale(calc(.72 + var(--art)*.28))}
+.cinematic-reel[data-live=true] .film-shot .film-copy{transform:none}
+.cinematic-reel[data-live=true] .film-paper figcaption{line-height:1.35;overflow-wrap:anywhere}
+.cinematic-reel[data-live=true] .film-shot-contact .film-copy{align-self:end}
+@media(min-width:1100px) and (min-height:720px){.cinematic-reel[data-live=true] .film-project-finance .film-project-art{height:100%;width:auto;max-width:100%;max-height:100%;justify-self:center}}
