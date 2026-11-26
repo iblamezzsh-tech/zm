@@ -1,0 +1,63 @@
+/* V81 — three independent opening layers, with no inherited marquee motion.
+   0: decorative contours, 1: autonomous text, 2: opaque portrait, 3: signature.
+   Scroll controls the stage/credit visibility only, never the marquee position. */
+.zm-opening-marquee{display:none}
+@media(prefers-reduced-motion:no-preference){
+ .editorial-flow[data-ed-cinema=true] #film-present .ed-opening-sticky{isolation:isolate}
+ .editorial-flow[data-ed-cinema=true] #film-present .ed-opening-sticky>.zm-atmosphere{z-index:0}
+ .editorial-flow[data-ed-cinema=true] #film-present .zm-opening-marquee{
+  display:block;position:absolute;inset:0;z-index:1;overflow:hidden;
+  pointer-events:none;opacity:calc(var(--ed-credit,0)*(1 - var(--ed-credit-away,0)*.55));
+ }
+ .editorial-flow[data-ed-cinema=true] #film-present .zm-opening-marquee-track{
+  position:absolute;top:50%;left:0;display:flex;width:max-content;
+  white-space:nowrap;align-items:center;gap:0;
+  transform:translate3d(0,-50%,0);
+  animation:zm-opening-belt-v81 14s linear infinite;
+  animation-play-state:paused;
+  font:750 clamp(42px,min(7.4vw,13vh),118px)/1.12 "DM Sans Variable",Arial,sans-serif;
+  letter-spacing:-.035em;color:#dce0d2;opacity:.82;font-kerning:normal;
+ }
+ .editorial-flow[data-ed-cinema=true] #film-present .zm-opening-marquee[data-running=true] .zm-opening-marquee-track{animation-play-state:running}
+ .editorial-flow[data-ed-cinema=true] #film-present .zm-opening-marquee-unit{
+  display:block;flex:none;box-sizing:border-box;min-width:100vw;
+  padding-right:clamp(40px,6vw,100px);font:inherit;letter-spacing:inherit;color:inherit;
+ }
+ /* Deliberately opaque, independently composited plane; the background
+    text cannot be visible through it, even while the plane scales. */
+ .editorial-flow[data-ed-cinema=true] #film-present .ed-opening-sticky>.zm-opening-portrait{
+  position:relative;z-index:2!important;isolation:isolate;
+  opacity:1!important;mix-blend-mode:normal!important;filter:none!important;
+  background:#eeece3!important;animation:none!important;transition:none!important;
+  transform-origin:center center;
+  transform:translateY(calc(var(--ed-hero-depart,0)*-15vh)) scale(calc(1 - var(--ed-hero-exit,0)*.49));
+  clip-path:inset(0 0 calc(var(--ed-hero-depart,0)*100%) 0);
+ }
+ .editorial-flow[data-ed-cinema=true] #film-present .zm-opening-portrait .hero-composition{
+  opacity:1!important;mix-blend-mode:normal!important;background-color:#eeece3!important;
+ }
+ .editorial-flow[data-ed-cinema=true] #film-present .ed-opening-credits{
+  z-index:3!important;pointer-events:none;
+  opacity:calc(var(--ed-credit,0)*(1 - var(--ed-credit-away,0)*.75));
+ }
+ .editorial-flow[data-ed-cinema=true] #film-present .ed-opening-signature{
+  position:absolute;inset:0;display:grid;place-items:center;width:auto;height:auto;
+  transform:translateY(-2vh);pointer-events:none;
+ }
+ .editorial-flow[data-ed-cinema=true] #film-present .ed-opening-signature .signature{
+  display:block;width:min(60vw,126vh,900px);height:auto;max-height:42vh;
+  color:#ffda24;transform:rotate(-7deg) scale(calc(.75 + var(--ed-credit,0)*.25));
+  transform-origin:center center;
+ }
+ .editorial-flow[data-ed-cinema=true] #film-present .ed-opening-signature .pen{
+  stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--ed-credit,0));
+ }
+ .editorial-flow[data-ed-cinema=true] #film-present .ed-opening-credit-label{
+  bottom:3.5%;font:650 11px/1.4 "DM Sans Variable",Arial,sans-serif;letter-spacing:.13em;color:#dce0d2;
+ }
+}
+@keyframes zm-opening-belt-v81{
+ from{transform:translate3d(0,-50%,0)}
+ to{transform:translate3d(-50%,-50%,0)}
+}
+@media(prefers-reduced-motion:reduce){.zm-opening-marquee{display:none!important}}

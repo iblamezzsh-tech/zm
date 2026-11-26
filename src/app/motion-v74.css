@@ -2,8 +2,7 @@
 @media(prefers-reduced-motion:no-preference){
  .editorial-flow[data-ed-cinema=true] .ed-opening{height:190svh}
  .editorial-flow[data-ed-cinema=true] .ed-opening-credits{opacity:calc(var(--ed-credit,0)*(1 - var(--ed-credit-away,0)*.75))}
- .editorial-flow[data-ed-cinema=true] .ed-opening .home-hero{transform:translateY(calc(var(--ed-hero-depart,0)*-15vh)) scale(calc(1 - var(--ed-hero-exit,0)*.49));opacity:calc(1 - var(--ed-credit,0)*.58 - var(--ed-hero-depart,0)*.42)}
- .editorial-flow[data-ed-cinema=true] .ed-opening-ticker{transform:translateX(calc(-8vw - var(--ed-credit,0)*30vw))}
+
  .editorial-flow[data-ed-cinema=true] .ed-opening-signature .signature{transform:rotate(-7deg) scale(calc(.72 + var(--ed-credit,0)*.28))}
  .editorial-flow[data-ed-motion=true] .ed-statement-line{overflow:visible;padding:.07em .04em .16em}
  .editorial-flow[data-ed-motion=true] .ed-statement-line>span{transform:translate3d(calc((1 - var(--ed-reveal,1))*var(--line-direction,1)*min(7vw,90px)),calc((1 - var(--ed-reveal,1))*35%),0) rotate(calc((1 - var(--ed-reveal,1))*var(--line-direction,1)*2deg));clip-path:none;opacity:var(--ed-reveal,1)}
