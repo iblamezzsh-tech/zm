@@ -1,0 +1,18 @@
+/* V88 — nonblocking, genuine image-loading indicator only. */
+.home-page .hero-composition .zm-portrait-loading{
+ position:absolute;left:50%;top:53%;translate:-50% -50%;
+ z-index:12;display:grid;place-items:center;
+ width:76px;height:76px;pointer-events:none;
+}
+.zm-portrait-loading::before{
+ content:"";position:absolute;inset:0;border:1px solid #35443136;
+ border-top-color:#354431;border-right-color:#ffda24;border-radius:50%;
+}
+.zm-portrait-loading img{
+ width:52px;height:52px;display:block;object-fit:contain;
+ background:transparent;
+}
+@media(prefers-reduced-motion:no-preference){
+ .zm-portrait-loading::before{animation:zm-v88-loading-spin 1.15s linear infinite}
+}
+@keyframes zm-v88-loading-spin{to{transform:rotate(360deg)}}

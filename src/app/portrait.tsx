@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HeroSignature } from "./signature-motion";
 import { LiquidField, heroFields } from "./liquid-field";
 import "./hero-atmosphere.css";
+import "./portrait-loading.css";
 import ContourField from "./contour-field";
 
 export default function Portrait() {
@@ -10,6 +11,23 @@ export default function Portrait() {
   const base = useRef<HTMLImageElement>(null);
   const overlay = useRef<HTMLImageElement>(null);
   const lens = useRef<HTMLCanvasElement>(null);
+  const [showLoading, setShowLoading] = useState(false);
+  // Only an actually pending base image warrants an indicator. Never gate
+  // the page, wait for other assets, or delay a cached/finished portrait.
+  useEffect(() => {
+    const img=base.current;
+    if(!img || img.complete)return;
+    let active=true;
+    const finish=()=>{clearTimeout(timer);if(active)setShowLoading(false)};
+    const timer=window.setTimeout(()=>{
+      if(active&&!img.complete)setShowLoading(true);
+    },220);
+    img.addEventListener("load",finish);
+    img.addEventListener("error",finish);
+    if(img.complete)finish();
+    return()=>{active=false;clearTimeout(timer);img.removeEventListener("load",finish);img.removeEventListener("error",finish)};
+  }, []);
+
 
   useEffect(() => {
     const area=stage.current, original=base.current, attire=overlay.current, output=lens.current;
@@ -170,6 +188,9 @@ export default function Portrait() {
           />
         </div>
         </div>
+        {showLoading && <div className="zm-portrait-loading" role="status" aria-label="Loading portrait">
+          <img src="/icon.svg" alt="" width="52" height="52"/>
+        </div>}
         <div className="plate">
           <span className="plate-line" />
           Portrait / 01
