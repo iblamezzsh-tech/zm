@@ -56,6 +56,10 @@ export default function HomeChapters() {
           </div>
         </div>
       </section>
+      <section className="home-contact" aria-labelledby="home-contact-title">
+        <div className="chapter-rule"><span>04 / Correspondence</span><span>Until next time</span></div>
+        <div className="home-contact-grid"><h2 id="home-contact-title">Let's keep<br/><em>in touch.</em></h2><div><p>Good conversations often start with a simple hello.</p><Link className="chapter-link chapter-link-light" href="/contact">Let’s connect <span aria-hidden="true">↗</span></Link></div></div>
+      </section>
     </div>
   );
 }

@@ -1,0 +1,41 @@
+/* Personal correspondence — scoped to contact route. */
+.contact-page{--contact-pad:clamp(22px,5vw,80px)}
+.contact-page section{scroll-margin-top:24px}
+.contact-rule{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:15px;border-bottom:1px solid currentColor;text-transform:uppercase;letter-spacing:.11em;font-size:10px;font-weight:650}
+.contact-opening{background:var(--ink);color:var(--paper);padding:clamp(24px,4vw,60px) var(--contact-pad);margin-top:12px;overflow:hidden}
+.contact-opening .contact-rule,.contact-ending .contact-rule{color:var(--accent);border-color:#747b5d}
+.contact-title-grid{display:grid;grid-template-columns:1fr minmax(100px,.4fr);align-items:center;gap:20px;padding:clamp(35px,6vw,85px) 0}
+.contact-title-grid h1{font:400 clamp(115px,21vw,320px)/.76 var(--serif);letter-spacing:-.055em;margin:0}
+.contact-title-grid h1 em{color:var(--accent)}
+.contact-postmark{color:var(--accent);width:100%;max-width:300px;justify-self:end;transform:rotate(-12deg);transition:transform .55s cubic-bezier(.2,.7,.3,1)}
+.contact-postmark:hover{transform:rotate(0deg)}
+.contact-postmark svg{display:block;width:100%;height:auto}
+.contact-opening-bottom{display:flex;justify-content:space-between;align-items:end;gap:25px;border-top:1px solid #747b5d;padding-top:25px}
+.contact-opening-bottom p{font-size:clamp(18px,2vw,28px);line-height:1.45;max-width:35ch;margin:0}
+.contact-text-link{display:inline-flex;min-height:44px;align-items:center;color:inherit;text-underline-offset:6px;font-size:14px;font-weight:650}
+.contact-opening .contact-text-link,.contact-ending .contact-text-link{color:var(--accent)}
+.contact-letter{padding:clamp(45px,7vw,100px) 0}
+.contact-letter .contact-rule{color:var(--muted);border-color:var(--line)}
+.contact-letter-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.9fr);gap:clamp(25px,6vw,85px);align-items:center;padding-top:28px}
+.letter-paper{background:#eeece3 url("/contours.svg") center/cover;padding:clamp(25px,5vw,70px);position:relative}
+.letter-date,.letter-signoff,.contact-kicker{font-size:11px;letter-spacing:.12em;color:var(--muted)}
+.letter-paper h2{font:400 clamp(58px,7vw,105px)/.86 var(--serif);letter-spacing:-.04em;margin:28px 0}
+.letter-paper p{font-size:clamp(17px,1.6vw,22px);line-height:1.6;max-width:39ch}
+.letter-signoff{display:block;margin-top:30px;letter-spacing:0;font-size:14px}
+.letter-signature{width:clamp(120px,16vw,235px);color:#66744f;margin-top:16px}
+.contact-kicker{display:block;margin-bottom:22px;font-weight:650}
+.contact-channel{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:116px;border-top:1px solid var(--line);padding:20px 0;color:inherit;text-decoration:none}
+.contact-channel:last-child{border-bottom:1px solid var(--line)}
+.contact-channel>span{display:grid;gap:8px;min-width:0;overflow-wrap:anywhere}
+.contact-channel small{font-size:10px;letter-spacing:.09em;color:var(--muted)}
+.contact-channel strong{font:400 clamp(42px,5vw,74px)/.85 var(--serif);letter-spacing:-.04em}
+.contact-channel>span>span{font-size:14px;color:var(--muted)}
+.contact-channel b{display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;width:44px;height:44px;flex-shrink:0;font-size:23px;font-weight:400;transition:background .2s,transform .2s}
+a.contact-channel:hover b{background:var(--accent);transform:rotate(8deg)}
+.contact-ending{padding:clamp(25px,5vw,72px) var(--contact-pad);background:var(--ink) url("/contours.svg") center/cover;background-blend-mode:multiply;color:var(--paper)}
+.contact-ending h2{font:400 clamp(90px,16vw,240px)/.8 var(--serif);letter-spacing:-.055em;margin:clamp(32px,5vw,75px) 0}
+.contact-ending h2 em{color:var(--accent)}
+.contact-ending-row{display:flex;justify-content:space-between;gap:24px;align-items:center}
+.contact-ending-row>div{width:clamp(105px,18vw,250px);color:var(--accent)}
+@media(max-width:700px){.contact-rule{font-size:9px;letter-spacing:.05em}.contact-title-grid{grid-template-columns:1fr}.contact-title-grid h1{font-size:clamp(110px,26vw,170px)}.contact-postmark{max-width:112px}.contact-opening-bottom,.contact-letter-grid{display:grid;grid-template-columns:1fr}.contact-letter-grid{gap:32px}.contact-ending h2{font-size:clamp(80px,20vw,130px)}.contact-ending-row{align-items:start}}
+@media(prefers-reduced-motion:reduce){.contact-postmark,.contact-channel b{transition:none}.contact-postmark:hover{transform:rotate(-12deg)}a.contact-channel:hover b{transform:none}}
