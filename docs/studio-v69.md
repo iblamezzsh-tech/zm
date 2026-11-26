@@ -1,0 +1,1 @@
+Replace V68 approximated SVG cursors with 24×24 transparent PNG crops derived directly from the supplied 1024×771 WebP reference, retaining its compact pixel geometry, monochrome badges, outline and shadow. Removed the cyan matte and suppressed compression artifacts. Adjusted hotspots; preserved all V68 CSS states and native fallbacks. No other changes.
