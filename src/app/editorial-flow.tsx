@@ -63,11 +63,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    const h=window.innerHeight,w=window.innerWidth,anchor=Math.min(70,h*.12);
    const bounds=scenes.map(s=>({s,r:s.getBoundingClientRect()}));
    const at=bounds.filter(({r})=>r.top<=anchor&&r.bottom>anchor).at(-1);
-   const memory=bounds.find(({s})=>s===collage);
-   const memoryEdge=memory?clamp((h-memory.r.top)/h):1;
-   const memoryLocal=memory?clamp(-memory.r.top/Math.max(1,memory.r.height-h)):1;
-   const memoryLight=cinema?ease(.20,1,memoryEdge)*.58+ease(0,.16,memoryLocal)*.42:1;
-   main!.classList.toggle("ed-dark-header",at?.s.dataset.edTheme==="dark"||Boolean(at?.s.id==="film-present"&&-at.r.top>h*.13)||Boolean(at?.s===collage&&memoryLight<.48));
+   main!.classList.toggle("ed-dark-header",at?.s.dataset.edTheme==="dark"||Boolean(at?.s.id==="film-present"&&-at.r.top>h*.13));
    main!.classList.toggle("film-at-finale",at?.s.id==="next-chapter");
    if(!enabled)return;
    // All geometry reads precede style writes. Horizontal reveals are projected
@@ -99,7 +95,6 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     if(s===collage&&cinema){
      s.style.setProperty("--rail-x",nextRailX.toFixed(2)+"px");
      write(s,"--rail-p",railProgress(railLocal));
-     write(s,"--memory-light",memoryLight);
     }
     if(s.classList.contains("ed-manifesto"))write(s,"--ed-manifesto-pass",clamp((h-r.top)/(r.height+h*.5)));
     if(s.classList.contains("ed-future")){
@@ -156,7 +151,12 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     const x=cinema&&horizontal?railDelta:0;
     const left=r.left+x,right=r.right+x;
     let p=kineticEnvelope(r.top,r.bottom,h,compact);
-    if(cinema&&horizontal)p=Math.min(p,kineticEnvelope(left,right,w,compact));
+    if(cinema&&horizontal){
+     const horizontalProgress=kineticEnvelope(left,right,w,compact);
+     // Captions in the pinned rail do not enter from below: avoid masking
+     // their text simply because the record sits in the lower row.
+     p=compact?horizontalProgress:Math.min(p,horizontalProgress);
+    }
     const outside=r.bottom<0||r.top>h||(cinema&&horizontal&&(right<0||left>w));
     paced(node,"--kt-progress",p,compact?780:1280,outside);
    }

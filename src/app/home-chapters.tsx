@@ -28,6 +28,7 @@ import "./opening-v81.css";
 import KineticText from "./kinetic-text";
 import "./kinetic-v84.css";
 import "./motion-v84.css";
+import "./memory-v89.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>

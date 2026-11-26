@@ -12,7 +12,7 @@
  -webkit-mask-repeat:repeat;-webkit-mask-position:center top;filter:none;
 }
 .editorial-home .editorial-flow .ed-collage-sticky>.zm-atmosphere{
- --contour-ink:color-mix(in srgb,#b7c1a4,#798469 calc(var(--memory-light,1)*100%));--contour-strength:.37;
+ --contour-ink:#798469;--contour-strength:.30;
 }
 .editorial-home .editorial-flow .zm-world-build .zm-atmosphere{--contour-ink:#354431;--contour-strength:.30;--contour-tile:950px}
 .editorial-home .editorial-flow .zm-world-life .zm-atmosphere{--contour-ink:#dce0d2;--contour-strength:.31;--contour-tile:950px}
