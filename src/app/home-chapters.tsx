@@ -50,7 +50,7 @@ export default function HomeChapters() {
       <section className="personal-chapter" id="interests" aria-labelledby="personal-title">
         <div className="chapter-rule"><span>03 / Off the record</span><span>Beyond the projects</span></div>
         <div className="personal-grid">
-          <div data-chapter-motion><h2 id="personal-title">More than<br/><em>one thing.</em></h2><p>The things I’m drawn to don’t fit neatly into a single category. That’s part of what makes learning interesting.</p><Link className="chapter-link" href="/about">Get to know me <span aria-hidden="true">↗</span></Link></div>
+          <div data-chapter-motion><h2 id="personal-title">More than<br/><em>one thing.</em></h2><p>The things I’m drawn to don’t fit neatly into a single category. That’s part of what makes learning interesting.</p><Link className="chapter-link" href="/off-the-record">Get to know me <span aria-hidden="true">↗</span></Link></div>
           <div className="interest-index" data-chapter-motion>
             {["Economics","Psychology","Politics","Literature","Music"].map((interest,i)=><div className="interest-line" key={interest}><span>0{i+1}</span><span>{interest}</span><span aria-hidden="true">✳</span></div>)}
           </div>

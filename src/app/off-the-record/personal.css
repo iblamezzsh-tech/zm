@@ -1,0 +1,50 @@
+/* Personal notebook: scoped to the Off the Record route. */
+.personal-page{--notebook-pad:clamp(20px,5vw,80px)}
+.personal-page section{scroll-margin-top:24px}
+.personal-page .personal-rule{display:flex;justify-content:space-between;gap:14px;padding-bottom:14px;border-bottom:1px solid currentColor;font-size:10px;letter-spacing:.11em;text-transform:uppercase;font-weight:650}
+.personal-opening{margin-top:12px;background:var(--accent);color:var(--ink);padding:clamp(22px,4vw,60px) var(--notebook-pad);overflow:hidden}
+.personal-title-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(100px,.35fr);align-items:center;gap:20px;padding:clamp(28px,5vw,75px) 0}
+.personal-title-wrap h1{font:400 clamp(90px,17vw,255px)/.78 var(--serif);letter-spacing:-.055em;margin:0}
+.personal-stamp{width:100%;max-width:280px;justify-self:end;transform:rotate(11deg)}
+.personal-stamp svg{display:block;width:100%;height:auto}
+.personal-intro{display:flex;justify-content:space-between;align-items:end;gap:24px;border-top:1px solid #687b36;padding-top:24px}
+.personal-intro p,.music-copy p,.books-layout p{font-size:clamp(17px,1.8vw,24px);line-height:1.55;max-width:38ch;margin:0}
+.personal-link{color:inherit;font-size:13px;font-weight:650;display:inline-flex;align-items:center;min-height:44px;text-underline-offset:6px}
+.personal-questions{padding:clamp(45px,7vw,105px) 0}
+.personal-questions .personal-rule,.personal-books .personal-rule{color:var(--muted);border-color:var(--line)}
+.personal-questions h2,.music-copy h2,.books-layout h2,.personal-end h2{font:400 clamp(58px,9vw,145px)/.88 var(--serif);letter-spacing:-.045em;margin:clamp(26px,4vw,58px) 0}
+.personal-note{border-top:1px solid var(--line)}
+.personal-note:last-child{border-bottom:1px solid var(--line)}
+.personal-note summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:35px minmax(0,1fr) minmax(0,1fr) 38px;gap:16px;align-items:center;min-height:88px;padding:16px 0}
+.personal-note summary::-webkit-details-marker{display:none}
+.note-number{font-size:11px;color:var(--muted)}
+.note-topic{font:400 clamp(36px,5.6vw,80px)/.95 var(--serif);letter-spacing:-.04em;overflow-wrap:anywhere}
+.note-question{font-size:clamp(14px,1.5vw,20px);color:var(--muted)}
+.note-plus{font-size:30px;text-align:center;transition:transform .25s}
+.personal-note[open] .note-plus{transform:rotate(45deg)}
+.personal-note summary:hover .note-topic{color:#647137}
+.personal-note p{margin:0 0 24px auto;width:min(100%,52ch);font-size:18px;line-height:1.65;color:var(--muted)}
+.personal-music{padding:clamp(25px,5vw,72px) var(--notebook-pad);background:var(--ink);color:var(--paper)}
+.personal-music .personal-rule{color:var(--accent);border-color:#747b5d}
+.music-layout,.books-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,85px);align-items:center}
+.music-art{position:relative;min-width:0;color:var(--accent)}
+.music-art svg{display:block;width:100%;height:auto;max-height:480px}
+.music-art span{font-size:10px;letter-spacing:.12em}
+.music-copy h2{margin:30px 0}
+.music-copy h2 em{color:var(--accent)}
+.music-copy p{color:#d4d6c7}
+.personal-books{padding:clamp(45px,7vw,105px) 0}
+.books-layout p{color:var(--muted)}
+.book-stack{display:grid;gap:7px;align-self:center;padding:35px 0}
+.book-spine{min-height:105px;padding:20px 24px 20px 36px;display:flex;flex-direction:column;justify-content:center;position:relative;border-left:8px double currentColor;box-shadow:0 4px 8px #24291e14}
+.book-spine>span{font-size:9px;letter-spacing:.12em;margin-bottom:8px}
+.book-spine strong{font:400 clamp(32px,4.5vw,66px)/.95 var(--serif);letter-spacing:-.03em}
+.spine-one{background:#dcd5c2;color:#584b39;margin-right:7%;transform:rotate(-2deg)}
+.spine-two{background:#49573c;color:var(--paper);margin-left:5%;transform:rotate(2deg)}
+.spine-three{background:#e1e4ce;color:var(--ink);margin-right:4%;transform:rotate(-1deg)}
+.personal-end{padding:clamp(22px,5vw,70px) var(--notebook-pad);background:#eeece3 url("/contours.svg") center/cover}
+.personal-end h2{font-size:clamp(70px,13vw,190px)}
+.personal-end-row{display:flex;justify-content:space-between;align-items:center;gap:24px}
+.personal-end-row>div{width:clamp(100px,18vw,250px);color:#66744f}
+@media(max-width:700px){.personal-title-wrap{grid-template-columns:1fr}.personal-title-wrap h1{font-size:clamp(83px,19vw,150px)}.personal-stamp{max-width:104px}.personal-intro{display:grid;gap:12px}.personal-page .personal-rule{font-size:9px;letter-spacing:.06em}.personal-note summary{grid-template-columns:25px minmax(0,1fr) 28px;gap:8px}.note-question{grid-column:2;grid-row:2}.note-plus{grid-column:3;grid-row:1/3}.personal-note p{font-size:16px;margin:0 0 22px;padding-left:33px}.music-layout,.books-layout{grid-template-columns:1fr;gap:12px}.music-art{max-width:360px;margin:auto}.music-copy h2,.books-layout h2{font-size:clamp(58px,14vw,96px)}.book-stack{padding:20px 8px}.personal-end h2{font-size:clamp(62px,15vw,115px)}}
+@media(prefers-reduced-motion:reduce){.note-plus{transition:none}}
