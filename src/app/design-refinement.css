@@ -1,0 +1,117 @@
+/* V16: visual direction only. The locked homepage portrait, content and behavior are untouched.
+   System: editorial precision, tactile surfaces, distinct page compositions. */
+:root{--studio-paper:#f4f1e8;--studio-ink:#24291e;--studio-line:#b9beb0;--studio-acid:#d5ed73}
+main:not(.home-page){padding-inline:clamp(18px,3.3vw,60px)}
+main:not(.home-page)>.site-header{border-bottom:1px solid var(--studio-line);height:80px}
+main:not(.home-page) .header-action{border-radius:100px;padding-inline:22px}
+main:not(.home-page) .primary-nav a{font-size:12px;letter-spacing:.015em}
+main:not(.home-page) .primary-nav a[aria-current=page]::after{height:1px}
+.home-chapters .chapter-rule,.projects-page .projects-rule,.story-page .story-edition,.story-page .entry-top,.milestones-page .archive-rule,.personal-page .personal-rule,.contact-page .contact-rule{letter-spacing:.12em;font-size:10px}
+.home-chapters .work-chapter{padding-block:clamp(70px,10vw,150px)}
+.home-chapters .work-heading{grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr);gap:clamp(20px,7vw,120px);padding-block:clamp(24px,5vw,68px)}
+.home-chapters .work-heading h2{font-size:clamp(70px,11vw,170px);line-height:.82;letter-spacing:-.055em}
+.home-chapters .work-heading p{max-width:30ch;justify-self:end;line-height:1.6}
+.home-chapters .personal-chapter{background:radial-gradient(ellipse at 96% 8%,#ecf7ad 0%,transparent 48%),var(--accent);position:relative}
+.home-chapters .personal-grid{align-items:center;gap:clamp(20px,8vw,125px)}
+.home-chapters .interest-line{min-height:clamp(60px,6.5vw,95px)}
+.home-chapters .interest-line span:nth-child(2){letter-spacing:-.04em}
+.home-chapters .home-contact{margin-top:clamp(35px,7vw,110px);background:radial-gradient(ellipse at 90% 5%,#424c32,transparent 50%),var(--ink)}
+/* Poster art: composition rather than another flat icon. */
+.studio-poster{container-type:inline-size;isolation:isolate;position:relative;overflow:hidden}
+.studio-poster.art-think{background:radial-gradient(ellipse at 78% 48%,#3d492e,#24291e 63%);color:#d5ed73}
+.studio-poster.art-finance{background:radial-gradient(ellipse at 72% 45%,#e7eacb,#cbd7ad 65%);color:#263a29}
+.studio-poster.art-earth{background:radial-gradient(ellipse at 78% 45%,#ebe5cf,#d5d0bb 72%);color:#334d36}
+.studio-poster .studio-artwork{z-index:0;width:100%;height:100%;position:absolute;inset:0}
+.studio-poster .think-word,.studio-poster .finance-word,.studio-poster .earth-word{z-index:2;left:6%;top:43%;font-size:clamp(32px,10.2cqw,128px);line-height:.82;letter-spacing:-.055em;text-shadow:0 0 24px #e0ebbb26}
+.studio-poster .finance-word,.studio-poster .earth-word{font-size:clamp(28px,8.3cqw,110px);max-width:57%}
+.studio-poster .art-foot,.studio-poster .art-corner{font-size:clamp(8px,1.25cqw,12px);letter-spacing:.13em}
+.exhibit-visual .studio-poster{aspect-ratio:1.53}
+.exhibit-visual .exhibit-badge{width:clamp(52px,6vw,86px);top:auto;bottom:6%;right:5%;font-size:9px;box-shadow:0 5px 16px #24291e28}
+.exhibit-caption h3{font-size:clamp(36px,5vw,77px);line-height:.95}
+.project-exhibition .exhibition-index{padding:22px 18px 18px;background:#e9e8dd;border-top:2px solid var(--ink)}
+.project-exhibition .exhibition-count{font-size:clamp(70px,8.5vw,135px)}
+.project-exhibition .exhibition-index nav a{padding-inline:10px}
+.projects-page .projects-opening{background:radial-gradient(ellipse at 95% 0%,#d5ed7366,transparent 55%),#e8e7db url("/contours.svg") center/cover;padding-bottom:clamp(36px,5vw,75px)}
+.projects-page .projects-opening h1{max-width:10ch;font-size:clamp(76px,15vw,232px);line-height:.8}
+.projects-page .projects-intro{border-top:1px solid var(--line);padding-top:26px}
+.projects-page .case-opening{padding:clamp(24px,4vw,62px);background:#e8e7dc}
+.projects-page .case-opening h1{font-size:clamp(62px,12vw,180px);line-height:.85}
+.projects-page .case-opening .studio-poster{aspect-ratio:1.8}
+.projects-page .case-intro-grid{gap:clamp(25px,8vw,120px)}
+.projects-page .case-intro-grid .case-question{font-size:clamp(32px,4vw,56px)}
+.projects-page .case-details{background:radial-gradient(ellipse at 100% 0%,#46513a,transparent 70%),var(--ink)}
+/* My Story: a portrait-led journal, with chapter labels treated as annotations. */
+.story-page .story-opening{background:radial-gradient(ellipse at 10% 10%,#faf7ed,transparent 65%),#e1e3d5 url("/contours.svg") center/cover}
+.story-page .story-opening h1{font-size:clamp(90px,15vw,235px);line-height:.78}
+.story-page .story-opening-grid{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(20px,6vw,100px)}
+.story-page .story-portrait{background:radial-gradient(ellipse at 50% 55%,#f4f1e8 0%,transparent 70%);border:1px solid #b9beb0;border-bottom:0;padding:clamp(10px,2vw,30px) 0 0}
+.story-page .story-portrait>span{left:14px;bottom:15px;border:1px solid var(--line)}
+.story-page .story-opening-copy h2{font-size:clamp(54px,7vw,110px);line-height:.84}
+.story-page .story-body{grid-template-columns:minmax(150px,.22fr) minmax(0,1fr);gap:clamp(24px,6vw,90px)}
+.story-page .story-index-nav{border-top:2px solid var(--ink);padding-top:15px}
+.story-page .entry-art{height:clamp(240px,32vw,460px);box-shadow:inset 0 0 0 1px #24291e1c}
+.story-page .entry-art::after{content:"";position:absolute;inset:12px;border:1px solid currentColor;opacity:.22;pointer-events:none}
+.story-page .entry-copy{padding-top:clamp(24px,4vw,60px);gap:clamp(20px,5vw,76px)}
+.story-page .entry-copy p{font-size:clamp(17px,1.5vw,22px);line-height:1.65}
+/* A museum-like archive: readable labels and original documents as the focal point. */
+.milestones-page .milestone-hero{background:radial-gradient(ellipse at 85% 65%,#48543a,transparent 65%),var(--ink)}
+.milestones-page .milestone-hero h1{font-size:clamp(68px,14vw,215px);letter-spacing:-.055em}
+.milestones-page .archive-grid{gap:clamp(15px,2.5vw,35px)}
+.milestones-page .archive-record{background:#eae8de;padding:clamp(10px,1.35vw,20px);border:1px solid #cbcbbf}
+.milestones-page .record-cover{min-height:0;aspect-ratio:1.45}
+.milestones-page .record-cover-photo{background:#f4f1e8!important;padding:10px;box-shadow:inset 0 0 0 1px #c3c4b6}
+.milestones-page .record-cover-photo img{filter:drop-shadow(0 4px 5px #24291e24)}
+.milestones-page .record-info{padding:16px 2px 4px;border-bottom:0}
+.milestones-page .record-info .record-title{font-size:clamp(28px,2.9vw,46px);line-height:1}
+.milestones-page .record-open{padding-top:13px;border-top:1px solid #c8c9bc}
+.milestones-page .archive-tabs button[aria-pressed=true]{background:var(--accent);color:var(--ink);border-color:var(--ink)}
+.milestones-page .archive-tabs{gap:4px}
+.milestones-page .archive-tabs button{border-radius:100px}
+.field-notes .field-stage{background:radial-gradient(ellipse at 72% 50%,#48563b,#24291e 65%);border:1px solid #24291e}
+.field-notes .field-print{box-shadow:0 30px 60px #0b100b77,0 0 0 1px #d5d8c7}
+.field-notes .field-print-top,.field-notes .field-print-bottom{font-size:9px}
+.field-notes .field-index strong{font-size:clamp(22px,3vw,42px)}
+/* Off the Record: a quieter reading room, not another identical hero. */
+.personal-page .personal-opening{background:radial-gradient(ellipse at 84% 30%,#f2f9c2 0%,transparent 52%),var(--accent)}
+.personal-page .personal-title-wrap h1{font-size:clamp(86px,15vw,236px);line-height:.8}
+.personal-page .personal-stamp{max-width:230px}
+.personal-page .personal-note summary{min-height:104px}
+.personal-page .personal-note[open]{background:#eae9de;padding-inline:clamp(10px,2vw,25px)}
+.personal-page .personal-music{background:radial-gradient(ellipse at 28% 50%,#48563b,transparent 62%),var(--ink)}
+.personal-page .music-art{border:1px solid #768461;padding:clamp(14px,3vw,40px)}
+.personal-page .book-spine{box-shadow:3px 8px 15px #24291e20,inset 0 0 0 1px #24291e17;min-height:clamp(100px,10vw,155px);border-left-width:12px}
+.personal-page .book-stack{gap:3px}
+.personal-page .personal-end{background:#e4e7d4 url("/contours.svg") center/cover}
+.contact-page .contact-opening{background:radial-gradient(ellipse at 80% 48%,#46533a,transparent 62%),var(--ink)}
+.contact-page .letter-paper{box-shadow:0 12px 28px #24291e13;border:1px solid #cfcec0;background:#e9e7dd url("/contours.svg") center/cover}
+.contact-page .contact-channel strong{font-size:clamp(34px,4.2vw,62px)}
+.contact-page .contact-channel{min-height:100px}
+@media(max-width:850px){
+main:not(.home-page)>.site-header{height:auto;min-height:74px}
+.story-page .story-body{grid-template-columns:minmax(120px,.25fr) minmax(0,1fr);gap:22px}
+}
+@media(max-width:700px){
+.home-chapters .work-heading{grid-template-columns:1fr;gap:20px}.home-chapters .work-heading h2{font-size:clamp(62px,14vw,105px)}.home-chapters .work-heading p{justify-self:start}
+.home-chapters .personal-grid{gap:24px}
+.project-exhibition .exhibition-index{padding:16px 10px 12px}
+.project-exhibition .exhibition-count{font-size:50px}
+.exhibit-visual .studio-poster{aspect-ratio:1.18}
+.exhibit-visual .exhibit-badge{width:52px;font-size:7px}
+.studio-poster .think-word{font-size:clamp(35px,12cqw,72px)}.studio-poster .finance-word,.studio-poster .earth-word{font-size:clamp(26px,9.7cqw,60px)}
+.projects-page .projects-opening h1{font-size:clamp(66px,15vw,115px)}
+.projects-page .case-opening .studio-poster{aspect-ratio:1.23}
+.projects-page .case-opening h1{font-size:clamp(54px,12.4vw,98px)}
+.story-page .story-opening-grid,.story-page .story-body,.story-page .entry-copy{grid-template-columns:1fr}
+.story-page .story-opening h1{font-size:clamp(80px,18vw,128px)}
+.story-page .story-opening-copy h2{font-size:clamp(52px,12vw,80px)}
+.story-page .entry-art{height:clamp(205px,58vw,320px)}
+.story-page .story-index-nav{position:static}
+.milestones-page .milestone-hero h1{font-size:clamp(62px,15vw,100px)}
+.milestones-page .record-info .record-title{font-size:35px}
+.field-notes .field-index strong{font-size:clamp(19px,5vw,30px)}
+.personal-page .personal-title-wrap h1{font-size:clamp(78px,18vw,145px)}
+.personal-page .personal-stamp{max-width:108px}
+.personal-page .personal-note summary{min-height:88px}
+.personal-page .music-art{padding:18px}
+.contact-page .contact-channel strong{font-size:40px}
+}

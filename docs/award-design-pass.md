@@ -1,0 +1,2 @@
+# V16 — Design-only pass
+Scope: composition, art direction, material depth, typographic hierarchy and responsive visual styling. Keep approved hero, palette, fonts, signature, text, features, routes, and interactions. Existing project illustrations are upgraded as original conceptual SVG artwork (not photographs or actual project outcomes). All other changes are CSS. No content rewrite or new functional features. Browser visual verification is still required; production unchanged.
