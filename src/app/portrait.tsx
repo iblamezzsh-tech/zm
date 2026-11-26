@@ -41,6 +41,7 @@ export default function Portrait() {
     let demo: gsap.core.Timeline | null = null;
     const depth = { x: 0, y: 0 };
     let bounds = area.getBoundingClientRect();
+    let portraitScale = 1;
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
     const point = { x: bounds.width / 2, y: bounds.height / 2, r: 0 };
     // The overlay contains only academic attire; the original face stays on the base layer.
@@ -52,9 +53,11 @@ export default function Portrait() {
         aperture!.style.visibility = "hidden";
         return;
       }
-      const scale = (point.r * 2) / diameter;
-      const left = point.x - depth.x - point.r;
-      const top = point.y - depth.y - point.r;
+      const localRadius=point.r/portraitScale;
+      const scale = (localRadius * 2) / diameter;
+      // Convert stage coordinates to the shared, enlarged portrait plane.
+      const left = (point.x-depth.x-bounds.width*(1-portraitScale)/2)/portraitScale-localRadius;
+      const top = (point.y-depth.y-bounds.height*(1-portraitScale))/portraitScale-localRadius;
       aperture!.style.visibility = "visible";
       aperture!.style.transform = `translate3d(${left}px,${top}px,0) scale(${scale})`;
       layer!.style.transform = `scale(${1 / scale}) translate3d(${-left}px,${-top}px,0)`;
@@ -86,7 +89,7 @@ export default function Portrait() {
     }
     function motionChanged() {
       if(motion.matches||stopped){cancelDemo();resetDepth(true)}
-      radius();
+      resize();
     }
     function toggleMotion(){
       stopped=!stopped;setPaused(stopped);
@@ -167,6 +170,7 @@ export default function Portrait() {
     }
     function resize() {
       refreshBounds();
+      portraitScale=Number.parseFloat(getComputedStyle(area!).getPropertyValue("--portrait-scale"))||1;
       layer!.style.width = bounds.width + "px";
       layer!.style.height = bounds.height + "px";
       radius();

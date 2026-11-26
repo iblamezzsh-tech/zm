@@ -3,9 +3,9 @@ import {useEffect,useRef} from "react";
 
 const TAU=Math.PI*2;
 const families=[
- {x:-.025,y:.63,stretch:1.16,tilt:-.23,phase:.3,rings:12,side:0},
- {x:1.045,y:.34,stretch:1.08,tilt:.32,phase:2.4,rings:12,side:1},
- {x:.49,y:-.57,stretch:1.65,tilt:-.12,phase:4.1,rings:8,side:2}
+ {x:-.025,y:.63,stretch:1.16,tilt:-.23,phase:.3,rings:6,side:0},
+ {x:1.045,y:.34,stretch:1.08,tilt:.32,phase:2.4,rings:6,side:1},
+ {x:.49,y:-.57,stretch:1.65,tilt:-.12,phase:4.1,rings:5,side:2}
 ];
 type Point={x:number;y:number};
 export default function ContourField({paused}:{paused:boolean}){
@@ -38,7 +38,7 @@ export default function ContourField({paused}:{paused:boolean}){
   function ring(f:typeof families[number],j:number,t:number,unit:number,samples:number){
    const points:Point[]=[];
    const phase=f.phase;
-   const size=unit*(.11+j*.071);
+   const size=unit*(.16+j*.155);
    const cx=w*f.x+unit*.047*Math.sin(t*.42+phase);
    const cy=h*f.y+unit*.037*Math.cos(t*.35+phase);
    const cr=Math.cos(f.tilt),sr=Math.sin(f.tilt);
@@ -83,12 +83,12 @@ export default function ContourField({paused}:{paused:boolean}){
     for(let j=0;j<f.rings;j++){
      const pts=ring(f,j,t,unit,count);
      // Wide transparent contour ribbons provide depth, like translucent paper layers.
-     if(j===3||j===8){
-      ctx.globalAlpha=.22;stroke(pts,g,unit*.033);ctx.globalAlpha=1;
+     if(j===2||j===4){
+      ctx.globalAlpha=.20;stroke(pts,g,unit*.105);ctx.globalAlpha=1;
      }
-     stroke(pts,g,j%4===0?1.55:.9);
+     stroke(pts,g,j%3===0?1.15:.85);
      // A travelling segment of ink draws its way around select contours.
-     if(j===5||j===10){
+     if(j===3){
       const start=Math.floor((t*.061+f.phase*.14+j*.071)%1*count);
       const n=Math.max(8,Math.floor(count*.17));
       for(let k=0;k<n-1;k++){
@@ -108,7 +108,7 @@ export default function ContourField({paused}:{paused:boolean}){
     const y=h*(.18+.13*Math.sin(x/w*4.2+t*.42)+.055*Math.sin(x/w*9-t*.29));
     path.push({x,y});
    }
-   ctx.globalAlpha=.11;stroke(path,"#a6b48a",unit*.064,false);
+   ctx.globalAlpha=.15;stroke(path,"#a6b48a",unit*.115,false);
    ctx.globalAlpha=.25;stroke(path,"#7b8c5f",.85,false);ctx.globalAlpha=1;
    // Fine accents are intentionally restrained; the portrait remains the focal point.
    const focus=ctx.createRadialGradient(w*.5,h*.37,0,w*.5,h*.37,unit*.56);
