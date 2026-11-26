@@ -9,9 +9,9 @@ export default function SiteHeader({ about = false }: { about?: boolean }) {
       </Link>
       <nav className="primary-nav" aria-label="Primary navigation">
         <Link href="/" aria-current={!about ? "page" : undefined}>Home</Link>
-        <Link href="/about" aria-current={about ? "page" : undefined}>About</Link>
+        <Link href="/about" aria-current={about ? "page" : undefined}>My story</Link>
         <Link href="/#projects">Projects</Link>
-        <Link href="/#interests">Interests</Link>
+        <Link href="/#interests">Off the record</Link>
       </nav>
       <Link className="about header-action" href={about ? "/" : "/about"}>
         {about ? "Back to portrait" : "Get to know me"} <span className="about-arrow" aria-hidden="true" />

@@ -15,11 +15,6 @@ export default function Home() {
       <a className="skip-link" href="#introduction">Skip to introduction</a>
       <SiteHeader />
       <div className="home-hero">
-        <div className="mast">
-          <div className="eyebrow"><i /> Student &amp; founder</div>
-          <div className="location">Uzbekistan / Personal archive</div>
-          <h1>Ziyo<span>Muhammad</span></h1>
-        </div>
         <Portrait />
       </div>
       <section id="introduction" className="intro-chapter" aria-labelledby="intro-title">

@@ -536,3 +536,54 @@ html { scroll-padding-top: 24px; }
   .project-link { grid-column:2; }
   .route-sweep .signature { width:88vw; }
 }
+
+/* Hero V2: single editorial canvas, layered wordmark and aligned portraits. */
+.home-page { padding-inline: clamp(16px, 2.6vw, 48px); }
+.home-page > .site-header { position:relative; z-index:2; margin-top: clamp(12px, 2vw, 25px); padding: 0 clamp(16px, 3vw, 48px); border:0; background:#eeece3; height:74px; }
+.home-page .identity-wordmark { display:none; }
+.home-page .primary-nav a { text-transform:uppercase; font-size:11px; letter-spacing:.035em; }
+.home-page .header-action { font-size:11px; text-transform:uppercase; padding-inline:16px; }
+.home-hero { margin-top:0; background:#eeece3 url("/contours.svg") left center/cover no-repeat; }
+.home-hero .hero-composition { height:clamp(470px, calc(100svh - 160px), 880px); min-height:470px; }
+.home-hero .hero-name { position:absolute; inset: 3% 1.8% auto; margin:0; z-index:0; color:var(--ink); pointer-events:none; }
+.hero-name svg { display:block; width:100%; height:auto; overflow:visible; }
+.hero-name text { font-family:Georgia,"Times New Roman",serif; font-size:132px; font-weight:700; letter-spacing:-4px; fill:currentColor; }
+.home-hero .photo { z-index:1; object-fit:contain; object-position:center bottom; background:transparent; }
+.home-hero .lens { z-index:2; }
+.home-hero .caption,.home-hero .hero-note,.home-hero .hero-signature,.home-hero .hero-scroll { z-index:3; }
+.home-hero .caption { bottom:24%; left:4.2%; max-width:28%; background:none; padding:0; }
+.home-hero .caption h2 { font-size:clamp(36px,4.5vw,78px); line-height:.9; letter-spacing:-.045em; }
+.home-hero .caption .eyebrow { color:var(--muted); }
+.hero-note { position:absolute; right:4.2%; bottom:31%; text-align:right; pointer-events:none; }
+.hero-note span { font-size:10px; text-transform:uppercase; letter-spacing:.15em; color:var(--muted); }
+.hero-note p { font-size:clamp(13px,1.35vw,20px); line-height:1.45; margin:10px 0 0; }
+.home-hero .hero-signature { bottom:14%; right:4.2%; width:clamp(112px,19vw,300px); color:#66744f; }
+.hero-scroll { position:absolute; left:4.2%; bottom:5%; display:inline-flex; align-items:center; gap:8px; color:var(--ink); text-decoration:none; font-size:10px; letter-spacing:.09em; text-transform:uppercase; min-height:44px; }
+.hero-scroll span { display:grid; place-items:center; width:28px; height:28px; background:var(--ink); color:var(--paper); border-radius:50%; font-size:17px; }
+.hero-scroll:hover span { background:var(--accent); color:var(--ink); }
+.home-hero .toolbar { min-height:62px; padding-inline: clamp(4px,1.4vw,22px); }
+.home-hero .hint { max-width:65%; }
+@media (max-width:900px) {
+  .home-page .primary-nav a { font-size:11px; }
+  .home-page .identity-wordmark { display:inline; }
+  .home-hero .caption { max-width:31%; }
+  .home-hero .caption h2 { font-size:clamp(30px,4.8vw,48px); }
+  .hero-note { bottom:28%; }
+}
+@media (max-width:600px) {
+  .home-page > .site-header { height:auto; padding:10px 12px 3px; }
+  .home-page .primary-nav { justify-content:space-between; }
+  .home-page .primary-nav a { font-size:10px; letter-spacing:0; }
+  .home-hero .hero-composition { height:clamp(430px,65svh,600px); min-height:430px; }
+  .home-hero .hero-name { inset:4% 2% auto; }
+  .hero-name text { font-size:132px; }
+  .home-hero .photo { object-fit:contain; object-position:center bottom; }
+  .home-hero .caption { max-width:66%; bottom:12%; left:4%; padding:9px 12px; background:#eeece3eb; }
+  .home-hero .caption h2 { font-size:30px; line-height:.94; }
+  .hero-note { top:18%; bottom:auto; right:5%; }
+  .hero-note p { font-size:11px; }
+  .hero-note span { font-size:9px; }
+  .home-hero .hero-signature { bottom:13%; width:90px; right:4%; }
+  .hero-scroll { bottom:1%; left:4%; font-size:9px; }
+  .home-hero .hint { max-width:58%; font-size:10px; }
+}

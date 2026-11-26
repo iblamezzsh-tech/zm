@@ -154,7 +154,12 @@ export default function Portrait() {
     <section aria-label="Interactive portrait">
       <link rel="preload" as="image" href="/images/portrait-present.webp" />
       <link rel="preload" as="image" href="/images/portrait-future.webp" />
-      <div className="stage" ref={stage}>
+      <div className="stage hero-composition" ref={stage}>
+        <h1 className="hero-name" aria-label="ZiyoMuhammad">
+          <svg viewBox="0 0 1200 164" role="presentation" aria-hidden="true">
+            <text x="10" y="124" textLength="1180" lengthAdjust="spacingAndGlyphs">ZiyoMuhammad</text>
+          </svg>
+        </h1>
         <img
           className="photo"
           ref={base}
@@ -176,7 +181,7 @@ export default function Portrait() {
           Portrait / 01
         </div>
         <div className="caption">
-          <div className="eyebrow">{pinned ? "Future" : "Present"}</div>
+          <div className="eyebrow">{pinned ? "02 / The future" : "01 / The present"}</div>
           <h2>
             {pinned ? (
               <>
@@ -186,14 +191,19 @@ export default function Portrait() {
               </>
             ) : (
               <>
-                Who
+                Curious by
                 <br />
-                <em>I am.</em>
+                <em>nature.</em>
               </>
             )}
           </h2>
         </div>
+        <aside className="hero-note" aria-label="Personal introduction">
+          <span>Uzbekistan</span>
+          <p>Student. Founder.<br />Always learning.</p>
+        </aside>
         <HeroSignature />
+        <a className="hero-scroll" href="#introduction"><span aria-hidden="true">↓</span> Scroll to discover</a>
         <span className="corner tl" />
         <span className="corner tr" />
         <span className="corner bl" />
