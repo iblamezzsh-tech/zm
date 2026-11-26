@@ -605,3 +605,14 @@ summary:focus-visible{outline:3px solid #716025;outline-offset:4px} .site-header
 @media(prefers-reduced-motion:reduce){.route-sweep{display:none!important}html{scroll-behavior:auto}}
 
 #main-content{height:0;outline:none;scroll-margin-top:12px}
+
+/* V41: hide scrollbar chrome only; preserve native scrolling and Lenis. */
+html, body, .lenis, [data-lenis], .zm-menu-dialog, .archive-dialog {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar, .lenis::-webkit-scrollbar, [data-lenis]::-webkit-scrollbar, .zm-menu-dialog::-webkit-scrollbar, .archive-dialog::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}

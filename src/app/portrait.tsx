@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { HeroSignature } from "./signature-motion";
 import { LiquidField, heroFields } from "./liquid-field";
 import "./hero-atmosphere.css";
@@ -10,15 +10,10 @@ export default function Portrait() {
   const base = useRef<HTMLImageElement>(null);
   const overlay = useRef<HTMLImageElement>(null);
   const lens = useRef<HTMLCanvasElement>(null);
-  const switcher = useRef<HTMLButtonElement>(null);
-  const pauseButton = useRef<HTMLButtonElement>(null);
-  const [paused, setPaused] = useState(false);
-  const [ready, setReady] = useState(false);
-  const [pinned, setPinned] = useState(false);
 
   useEffect(() => {
-    const area=stage.current, original=base.current, attire=overlay.current, output=lens.current, button=switcher.current, pause=pauseButton.current;
-    if(!area||!original||!attire||!output||!button||!pause)return;
+    const area=stage.current, original=base.current, attire=overlay.current, output=lens.current;
+    if(!area||!original||!attire||!output)return;
     const ctx=output.getContext("2d");
     if(!ctx)return;
     const mask=document.createElement("canvas");
@@ -27,23 +22,22 @@ export default function Portrait() {
     const motion=matchMedia("(prefers-reduced-motion: reduce)");
     const field=new LiquidField();
     heroFields.set(area,field);
-    let bounds=area.getBoundingClientRect(), scale=1, dpr=1, alive=true, loaded=false, visible=false, stopped=false, full=false;
+    let bounds=area.getBoundingClientRect(), scale=1, dpr=1, alive=true, loaded=false, visible=false;
     let pointer:number|null=null, lastPoint:{x:number;y:number}|null=null;
     let raf=0,last=0,acc=0,age=0,lastInput=-1.5;
     let idlePoint:{x:number;y:number}|null=null;
     let targetX=0,targetY=0,dx=0,dy=0;
     let imageData:ImageData|null=null;
-    const canMove=()=>visible&&!stopped&&!motion.matches&&!document.hidden;
+    const canMove=()=>visible&&!motion.matches&&!document.hidden;
     function paint(){
       if(!loaded||!ctx||!maskCtx||!output||!attire||!imageData)return;
       const w=bounds.width,h=bounds.height;
       ctx.setTransform(dpr,0,0,dpr,0,0);
       ctx.globalCompositeOperation="source-over";ctx.clearRect(0,0,w,h);
-      if(!full&&!field.hasInk)return;
+      if(!field.hasInk)return;
       const fit=Math.min(w/attire.naturalWidth,h/attire.naturalHeight);
       const iw=attire.naturalWidth*fit,ih=attire.naturalHeight*fit;
       ctx.drawImage(attire,(w-iw)/2,h-ih,iw,ih);
-      if(full)return;
       // Alpha comes from the evolving density field, not a circular CSS mask.
       field.writeMask(imageData.data);
       maskCtx.putImageData(imageData,0,0);
@@ -61,7 +55,7 @@ export default function Portrait() {
       const dt=last?Math.min(.05,(now-last)/1000):1/60;last=now;age+=dt;acc+=dt;
       const ease=1-Math.exp(-dt*6);
       dx+=(targetX-dx)*ease;dy+=(targetY-dy)*ease;depth();
-      if(!full&&age>lastInput+2.5){
+      if(age>lastInput+2.5){
         // A slow figure-eight gives the opening scene life even without input.
         const t=(age-lastInput-2.5)*.65;
         const next={x:.5+.12*Math.sin(t),y:.32+.15*Math.sin(t*2)};
@@ -97,24 +91,21 @@ export default function Portrait() {
       if(canMove()){
         if(e.pointerType==="mouse"){targetX=(x*2-1)*13;targetY=(y*2-1)*6}
         if(prev)field.splat(x,y,prev.x,prev.y,1);
-      }else if(!full){field.clear();field.splat(x,y,prev?.x??x-.012,prev?.y??y,1);paint()}
+      }else{field.clear();field.splat(x,y,prev?.x??x-.012,prev?.y??y,1);paint()}
     }
     function enter(e:PointerEvent){refresh();track(e)}
     function leave(){lastPoint=null;targetX=targetY=0;if(!canMove()){field.clear();paint()}}
     function down(e:PointerEvent){if(!e.isPrimary||e.pointerType==="mouse"||(e.target instanceof Element&&e.target.closest("a,button")))return;pointer=e.pointerId;area!.setPointerCapture(e.pointerId);enter(e)}
     function up(e:PointerEvent){if(e.pointerId===pointer){pointer=null;leave()}}
-    function toggle(){lastInput=age;idlePoint=null;full=!full;setPinned(full);field.clear();paint()}
-    function toggleMotion(){stopped=!stopped;setPaused(stopped);lastInput=age;idlePoint=null;sync()}
     const controller=new AbortController(),options={signal:controller.signal,passive:true};
     const ro=new ResizeObserver(resize);
     const io=new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting??false;sync()},{threshold:.03});
     Promise.all([original.decode(),attire.decode()]).then(()=>{
       if(!alive)return;
-      loaded=true;resize();setReady(true);ro.observe(area);io.observe(area);
+      loaded=true;resize();ro.observe(area);io.observe(area);
       area.addEventListener("pointerenter",enter,options);area.addEventListener("pointermove",track,options);area.addEventListener("pointerleave",leave,options);
       area.addEventListener("pointerdown",down,options);area.addEventListener("pointerup",up,options);area.addEventListener("pointercancel",up,options);area.addEventListener("lostpointercapture",up,options);
       window.addEventListener("scroll",refresh,{...options,capture:true});
-      button.addEventListener("click",toggle,options);pause.addEventListener("click",toggleMotion,options);
       motion.addEventListener("change",sync,options);document.addEventListener("visibilitychange",sync,options);
     }).catch(()=>{/* Keep the original portrait if the attire cannot be decoded. */});
     return()=>{alive=false;controller.abort();ro.disconnect();io.disconnect();if(raf)cancelAnimationFrame(raf);heroFields.delete(area)};
@@ -124,8 +115,8 @@ export default function Portrait() {
     <section aria-label="Interactive portrait">
       <link rel="preload" as="image" href="/images/portrait-present.webp" />
       <link rel="preload" as="image" href="/images/portrait-academic-attire.svg" />
-      <div className={"stage hero-composition hero-atmosphere"+(paused?" hero-motion-paused":"")} ref={stage}>
-        <div className="hero-world" aria-hidden="true"><ContourField paused={paused}/></div>
+      <div className="stage hero-composition hero-atmosphere" ref={stage}>
+        <div className="hero-world" aria-hidden="true"><ContourField paused={false}/></div>
         <h1 className="hero-name" aria-label="ZiyoMuhammad">
           <svg viewBox="0 0 1200 164" role="presentation" aria-hidden="true">
             <text x="10" y="124" textLength="1180" lengthAdjust="spacingAndGlyphs">ZiyoMuhammad</text>
@@ -155,22 +146,8 @@ export default function Portrait() {
           Portrait / 01
         </div>
         <div className="caption">
-          <div className="eyebrow">{pinned ? "02 / The future" : "01 / The present"}</div>
-          <h2>
-            {pinned ? (
-              <>
-                Who I aspire
-                <br />
-                <em>to become.</em>
-              </>
-            ) : (
-              <>
-                Curious by
-                <br />
-                <em>nature.</em>
-              </>
-            )}
-          </h2>
+          <div className="eyebrow">01 / The present</div>
+          <h2>Curious by<br /><em>nature.</em></h2>
         </div>
         <aside className="hero-note" aria-label="Personal introduction">
           <span>Uzbekistan</span>
@@ -183,34 +160,6 @@ export default function Portrait() {
         <span className="corner bl" />
         <span className="corner br" />
         <div className="film-hero-curtain" aria-hidden="true"><div className="film-curtain-top"><span>ZM / 01—02</span><span>THE DISTANCE BETWEEN</span></div><svg className="film-curtain-engraving" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="currentColor" strokeWidth=".8">{Array.from({length:18},(_,i)=><ellipse key={i} cx="965" cy="380" rx={55+i*24} ry={40+i*16} transform={`rotate(${i*9-30} 965 380)`}/>)}</g></svg><div className="film-curtain-word"><span>NOW.</span><span>NEXT.</span></div><span className="film-curtain-bottom">KEEP SCROLLING ↓</span></div>
-      </div>
-      <div className="toolbar">
-        <div className="hint">
-          {ready ? (
-            <>
-              <span className="cross" aria-hidden="true">
-                ⌖
-              </span>
-              <span className="mouse-hint">Move across the portrait to reveal the future</span>
-              <span className="touch-hint">Touch and drag to reveal the future</span>
-            </>
-          ) : (
-            <span>Personal portrait of ZiyoMuhammad</span>
-          )}
-        </div>
-        <div className="hero-toolbar-actions">
-        <button ref={pauseButton} type="button" className="hero-motion-toggle" hidden={!ready} aria-label={paused?"Resume ambient motion":"Pause ambient motion"} title={paused?"Resume ambient motion":"Pause ambient motion"}>{paused?<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 9 6-9 6Z" fill="currentColor"/></svg>:<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4v12m6-12v12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>}</button>
-        <button
-          hidden={!ready}
-          ref={switcher}
-          className="switch"
-          aria-pressed={pinned}
-          aria-label="Show future portrait"
-        >
-          <span className={!pinned ? "selected" : ""}>Present</span>
-          <span className={pinned ? "selected" : ""}>Future</span>
-        </button>
-        </div>
       </div>
     </section>
   );

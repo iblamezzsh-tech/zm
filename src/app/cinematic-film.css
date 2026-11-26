@@ -60,8 +60,6 @@
 .cinematic-reel[data-live=true] .film-shot-hero:not([inert]) .film-hero-layer{pointer-events:auto}
 .cinematic-reel[data-live=true] .film-shot-hero .home-hero{margin:0;height:100%;background:#eeece3}
 .cinematic-reel[data-live=true] .film-shot-hero .hero-composition{height:100svh!important;min-height:0!important}
-.cinematic-reel[data-live=true] .film-shot-hero .toolbar{position:absolute;bottom:4%;right:3.3%;min-height:0;padding:5px 8px;background:#eeece3c9;gap:0;border:1px solid #24291e25;border-radius:8px;z-index:8}
-.cinematic-reel[data-live=true] .film-shot-hero .toolbar .hint{display:none}
 .cinematic-reel[data-live=true] .film-shot-hero .hero-scroll{bottom:4%}
 .cinematic-reel[data-live=true] .film-shot-hero .film-hero-curtain{display:none!important}
 .cinematic-reel[data-live=true] .film-origin-art{transform:translate3d(calc(var(--shot-relative,0)*16vw),calc(var(--shot-relative,0)*-8vh),-80px) rotateZ(calc(var(--shot-relative,0)*80deg));width:110%;max-height:70vh}
@@ -103,8 +101,6 @@
 /* Final projection / legibility pass. Future artwork may enter depth before its text. */
 .cinematic-reel[data-live=true] .film-shot .film-art{opacity:var(--shot-art-opacity,var(--shot-opacity,0))}
 .cinematic-reel[data-live=true] .film-shot .film-copy h2{overflow-wrap:break-word}
-.cinematic-reel[data-live=true] .film-shot-hero .toolbar{bottom:3%;right:3.3%}
-.film-home.film-after-portrait .film-shot-hero .toolbar{visibility:hidden}
 
 /* Keep the world-space ribbon legible as a sculptural backdrop, not text noise. */
 .cinematic-reel[data-live=true] .cinematic-grain{mix-blend-mode:normal;background:linear-gradient(90deg,color-mix(in srgb,var(--film-paper,#eeece3) 75%,transparent) 0%,color-mix(in srgb,var(--film-paper,#eeece3) 55%,transparent) 36%,transparent 68%),radial-gradient(ellipse at 42% 47%,transparent 44%,#24291e16 100%)}
