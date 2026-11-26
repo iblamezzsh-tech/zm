@@ -41,8 +41,7 @@ export default function ScrollDirector(){
    main!.classList.toggle("film-nav-floating",past);
    if(reduced.matches)return;
    if(hero&&stage&&frame){
-    const travel=Math.max(1,hero.offsetHeight-frame.offsetHeight);
-    const p=q.matches?clamp(-hero.getBoundingClientRect().top/travel):clamp(-hero.getBoundingClientRect().top/(h*.8));
+    const p=clamp(-hero.getBoundingClientRect().top/(h*.95));
     write(stage,"--film-exit",smooth(.02,.94,p));
     write(stage,"--film-curtain",smooth(.12,.83,p));
     write(stage,"--film-title",smooth(.28,.82,p));
@@ -64,7 +63,7 @@ export default function ScrollDirector(){
   }
   const schedule=requestMotionFrame;
   function mode(){
-   main!.classList.toggle("film-pinned-hero",q.matches);
+   main!.classList.remove("film-pinned-hero");
    main!.classList.toggle("film-motion-enabled",!reduced.matches);
    if(reduced.matches){items.forEach(el=>{el.style.removeProperty("--scene-pass");el.style.removeProperty("--scene-reveal");el.style.removeProperty("--interest-in");el.style.removeProperty("--paper-fan");el.style.removeProperty("--finale-write");el.style.removeProperty("--notebook-flow")});headings.forEach(g=>g.words.forEach(word=>word.style.removeProperty("--word-reveal")))}
    schedule();

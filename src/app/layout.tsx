@@ -7,6 +7,8 @@ import "./design-refinement.css";
 import { RouteSignature } from "./signature-motion";
 import SmoothScroll from "./smooth-scroll";
 import SiteMotion from "./site-motion";
+import FlowMotion from "./flow-motion";
+import "./flow-motion.css";
 import "./site-motion.css";
 import "./motion-polish.css";
 import "./art-direction.css";
@@ -27,6 +29,7 @@ export default function Layout({
         {children}
         <SmoothScroll />
         <SiteMotion />
+        <FlowMotion />
         <RouteSignature />
       </body>
     </html>
