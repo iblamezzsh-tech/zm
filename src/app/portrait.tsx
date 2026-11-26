@@ -173,7 +173,7 @@ export default function Portrait() {
         </div>
         <div className="plate">
           <span className="plate-line" />
-          Personal portrait
+          Portrait / 01
         </div>
         <div className="caption">
           <div className="eyebrow">{pinned ? "Future" : "Present"}</div>
@@ -206,8 +206,8 @@ export default function Portrait() {
               <span className="cross" aria-hidden="true">
                 ⌖
               </span>
-              <span className="mouse-hint">Move your cursor to explore</span>
-              <span className="touch-hint">Touch and drag to explore</span>
+              <span className="mouse-hint">Move across the portrait to reveal the future</span>
+              <span className="touch-hint">Touch and drag to reveal the future</span>
             </>
           ) : (
             <span>Personal portrait of ZiyoMuhammad</span>
@@ -218,7 +218,7 @@ export default function Portrait() {
           ref={switcher}
           className="switch"
           aria-pressed={pinned}
-          aria-label="Show future portrait"
+          aria-label={pinned ? "Show present portrait" : "Show future portrait"}
         >
           <span className={!pinned ? "selected" : ""}>Present</span>
           <span className={pinned ? "selected" : ""}>Future</span>

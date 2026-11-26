@@ -1,0 +1,3 @@
+# ZM editorial identity / iteration 01
+
+Working direction, subject to owner review. Warm paper, deep olive ink, and a restrained acid-leaf accent for contrast. Instrument Serif and DM Sans retained. ZiyoMuhammad is the full wordmark; ZM is the compact monogram; the supplied Z.M signature is a distinct handwritten brand asset. Preserve the aligned present/future portraits and existing cursor engine. The future portrait depicts aspiration. The homepage develops a continuous visual story with selected initiatives and interests. Copy and logo treatment are proposals; no invented outcomes or credentials. The fullscreen route sweep is decorative and preserves reduced motion. Visual browser review, contrast checks and mobile testing remain required before release.

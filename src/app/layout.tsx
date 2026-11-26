@@ -6,9 +6,9 @@ import "./styles.css";
 import { RouteSignature } from "./signature-motion";
 
 export const metadata: Metadata = {
-  title: "ZiyoMuhammad — Portrait",
+  title: "ZiyoMuhammad — Personal Portfolio",
   description:
-    "A personal portrait of ZiyoMuhammad, a student from Uzbekistan, and his academic aspirations.",
+    "Meet ZiyoMuhammad, a student and founder from Uzbekistan. Explore his projects, interests and academic aspirations.",
 };
 export default function Layout({
   children,
