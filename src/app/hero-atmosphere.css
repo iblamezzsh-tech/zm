@@ -1,0 +1,23 @@
+/* V18: one spatial scene, not separate moving portrait images. */
+.home-hero .hero-atmosphere{--hero-dx:0px;--hero-dy:0px;background:#eeece3;isolation:isolate}
+.hero-world{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:#eeece3}
+.hero-contour-drift{position:absolute;inset:-13%;background:url("/contours.svg") center/cover no-repeat;opacity:.95;transform:translate3d(calc(var(--hero-dx)*-3.2),calc(var(--hero-dy)*-3.6),0);will-change:transform}
+.hero-contour-drift::after{content:"";position:absolute;inset:0;background:url("/contours.svg") center/cover no-repeat;opacity:.18;transform:scale(1.07);animation:hero-contour-breathe 18s ease-in-out infinite alternate}
+.hero-light-drift{position:absolute;inset:-16%;background:radial-gradient(ellipse at 28% 35%,#ffffff9c,transparent 40%),radial-gradient(ellipse at 76% 70%,#c1cb9a30,transparent 48%);transform:translate3d(calc(var(--hero-dx)*-2),calc(var(--hero-dy)*-2.5),0);will-change:transform}
+.hero-light-drift::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,#fff9,transparent 40%);animation:hero-light-breathe 12s ease-in-out infinite alternate}
+.hero-world-trace{position:absolute;width:145%;height:26%;top:12%;left:-24%;border-block:1px solid #9ba28822;background:#b7bea016;transform:translate3d(calc(var(--hero-dx)*-1.5),calc(var(--hero-dy)*-2),0) rotate(-13deg);will-change:transform}
+.hero-world-trace::after{content:"";position:absolute;inset:-70% -5%;border-radius:50%;border:1px solid #a4ad8a35;animation:hero-trace-breathe 20s ease-in-out infinite alternate}
+.home-hero .hero-atmosphere .hero-name{transform:translate3d(calc(var(--hero-dx)*-.65),calc(var(--hero-dy)*-.7),0);will-change:transform}
+.hero-portrait-plane{position:absolute;inset:0;z-index:1;pointer-events:none;transform:translate3d(var(--hero-dx),var(--hero-dy),0);will-change:transform}
+.home-hero .hero-portrait-plane .photo{z-index:1}
+.home-hero .hero-portrait-plane .lens{z-index:2}
+.hero-toolbar-actions{display:flex;align-items:center;gap:9px;flex-shrink:0}
+.hero-motion-toggle{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:transparent}
+.hero-motion-toggle:hover{background:var(--accent);border-color:var(--ink)}
+.hero-motion-toggle svg{width:17px;height:17px}
+@keyframes hero-contour-breathe{from{transform:translate3d(-18px,-10px,0) scale(1.07)}to{transform:translate3d(26px,18px,0) scale(1.13)}}
+@keyframes hero-light-breathe{from{transform:translate3d(-10%,1%,0);opacity:.35}to{transform:translate3d(14%,-4%,0);opacity:.85}}
+@keyframes hero-trace-breathe{from{transform:translate3d(-4%,0,0) rotate(-7deg)}to{transform:translate3d(8%,16%,0) rotate(8deg)}}
+.hero-atmosphere:not(.hero-in-view) .hero-world *::after,.hero-motion-paused .hero-world *::after,.hero-tab-hidden .hero-world *::after{animation-play-state:paused}
+@media(max-width:600px){.hero-toolbar-actions{gap:5px}.hero-motion-toggle{width:44px;height:44px}.home-hero .toolbar .hint{max-width:45%}.home-hero .switch span{padding:8px 7px}.hero-world-trace{height:19%;top:17%}}
+@media(prefers-reduced-motion:reduce){.hero-world *::after{animation:none!important}.hero-portrait-plane,.home-hero .hero-atmosphere .hero-name,.hero-contour-drift,.hero-light-drift{transform:none!important;will-change:auto}.hero-world-trace{transform:rotate(-13deg);will-change:auto}}
