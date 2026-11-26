@@ -30,6 +30,7 @@ import "./kinetic-v84.css";
 import "./motion-v84.css";
 import "./memory-v89.css";
 import "./work-marquee-v90.css";
+import "./archive-v91.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -91,7 +92,17 @@ export default function HomeChapters(){
   <section className="ed-archive" id="milestone-preview" data-ed-scene data-ed-theme="dark"><PageAtmosphere kind="archive" dark/>
    <div className="ed-gutter ed-caption"><span>05 / THE ARCHIVE</span><span>DOCUMENTED EXPERIENCES</span></div>
    <div className="ed-gutter ed-archive-heading"><h2 className="kt-heading" aria-label="Every step leaves a mark."><KineticText text="Every step" kind="press"/><br/><em><KineticText text="leaves a mark." kind="engrave" index={1}/></em></h2><Link href="/achievements" className="ed-link">All milestones <span>↗</span></Link></div>
-   <div className="ed-gutter ed-archive-grid">{archive.map((r,i)=>r.document&&<Link href="/achievements" className="ed-archive-item" key={r.id} data-ed-reveal style={{"--ed-i":i} as React.CSSProperties}><div className="ed-archive-image"><img src={r.document.src} alt={r.document.alt} decoding="async" fetchPriority="low"/></div><div className="ed-archive-label"><span><KineticText text={r.category+" / "+String(i+1).padStart(2,"0")} kind="stamp"/></span><strong><KineticText text={r.title} kind="caption" index={1}/></strong></div></Link>)}</div>
+   <div className="ed-gutter ed-archive-grid">{archive.map((r,i)=>r.document&&<Link href="/achievements" className="ed-archive-item" key={r.id} data-ed-reveal style={{"--ed-i":i} as React.CSSProperties}>
+    <div className="ed-record-display">
+     <svg className="ed-record-outline" viewBox="0 0 360 310" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M9 1H351Q359 1 359 9V252Q359 260 351 260H227Q215 260 207 270L181 298Q171 309 157 309H9Q1 309 1 301V9Q1 1 9 1Z" vectorEffect="non-scaling-stroke"/>
+     </svg>
+     <div className="ed-record-index" aria-hidden="true">{String(i+1).padStart(2,"0")}</div>
+     <div className="ed-archive-image"><img src={r.document.src} alt={r.document.alt} decoding="async" fetchPriority="low"/></div>
+     <div className="ed-record-tab"><span>{r.category}</span><b>{r.period?.match(/(?:19|20)\d{2}/g)?.at(-1)??String(i+1).padStart(2,"0")}</b></div>
+    </div>
+    <div className="ed-archive-label"><strong>{r.title}</strong><span className="ed-record-arrow" aria-hidden="true">↗</span></div>
+   </Link>)}</div>
   </section>
   <section className="ed-personal ed-paper" id="interests" data-ed-scene data-ed-theme="light"><SurfaceSeam tone="paper"/><PageAtmosphere kind="notebook"/>
    <div className="ed-gutter ed-caption"><span>06 / OFF THE RECORD</span><span>MORE THAN ONE THING</span></div>
