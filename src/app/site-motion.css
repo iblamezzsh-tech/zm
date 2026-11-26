@@ -56,10 +56,10 @@ main.site-motion-ready .contact-channel:hover b{transform:translate(3px,-3px)}
 main.site-motion-ready [data-motion-kind] .signature .pen{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--site-draw,1))}
 main:not(.home-page) .story-autograph,main:not(.home-page) .letter-signature,main:not(.home-page) .story-end-row .signature,main:not(.home-page) .personal-end-row .signature,main:not(.home-page) .contact-ending-row .signature{color:#d8ac00}
 .route-destination{font-size:clamp(21px,4vw,54px)!important;letter-spacing:-.035em!important;text-transform:uppercase}
-.zm-route-curtain[data-phase=cover] .pen{stroke-dasharray:1;animation:route-ink .65s .10s both}
-.zm-route-curtain[data-phase=cover] .pen-dot{animation-delay:.26s}
-.zm-route-curtain[data-phase=cover] .pen-m{animation-delay:.31s}
-.zm-route-curtain[data-phase=cover] .pen-tail{animation-delay:.45s}
+.zm-route-curtain[data-phase=cover] .pen{stroke-dasharray:1;animation:route-ink .72s .22s both}
+.zm-route-curtain[data-phase=cover] .pen-dot{animation-delay:.36s}
+.zm-route-curtain[data-phase=cover] .pen-m{animation-delay:.43s}
+.zm-route-curtain[data-phase=cover] .pen-tail{animation-delay:.58s}
 @keyframes route-ink{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 /* Keep menu reels lightweight: tint without a per-frame blur or saturation filter. */
 .zm-menu-dialog .zm-gallery-tile{filter:none}
