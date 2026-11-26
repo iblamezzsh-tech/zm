@@ -1,0 +1,72 @@
+/* V53: surface and foreground are a pair. Keep these declarations scoped
+   so the existing motion and intentional artwork remain independent. */
+main:not(.home-page){color:#24291e}
+.story-page .story-opening{color:#24291e;background:#eeece3 url("/contours.svg") center/cover}
+.story-page .story-opening h1,.story-page .story-opening-copy h2{color:#24291e}
+.story-page .story-opening h1 em,.story-page .story-opening-copy h2 em{color:#49573c}
+.story-page .story-opening .story-edition,.story-page .story-opening-copy p{color:#525b46}
+.story-page .story-opening .story-edition{border-color:#b9beb0}
+.story-page .story-opening .story-tag,.story-page .story-opening .story-autograph,.story-page .story-opening .story-autograph .signature{color:#6b5400}
+.story-page .story-opening .story-continue{color:#24291e}
+.story-page .story-ending{background:#24291e;color:#f4f1e8}
+.story-page .story-ending .entry-top,.story-page .story-ending h2 em,.story-page .story-ending a,.story-page .story-ending .signature{color:#ffda24}
+/* Yellow, ivory and sage surfaces never inherit the dark-scene yellow labels. */
+.projects-page:not(.case-page) .projects-opening{background:#ffda24;color:#24291e}
+.projects-page:not(.case-page) .projects-opening h1,.projects-page:not(.case-page) .projects-opening h1 em,.projects-page:not(.case-page) .projects-opening .projects-rule,.projects-page:not(.case-page) .projects-intro p,.projects-page:not(.case-page) .projects-intro .signature{color:#24291e}
+.projects-page .projects-ending{background:#24291e;color:#f4f1e8}
+.projects-page .projects-ending h2 em,.projects-page .projects-ending .case-link{color:#ffda24}
+.projects-page.case-world-think .case-opening{background:#24291e;color:#f4f1e8}
+.projects-page.case-world-think .case-opening h1{color:#ffda24}
+.projects-page.case-world-think .case-opening .projects-rule,.projects-page.case-world-think .case-title-group p{color:#f4f1e8}
+.projects-page.case-world-earth .case-opening,.projects-page.case-world-earth .case-details{background:#354431;color:#f4f1e8}
+.projects-page.case-world-earth .case-opening h1,.projects-page.case-world-earth .case-opening .projects-rule,.projects-page.case-world-earth .case-title-group p{color:#f4f1e8}
+.projects-page.case-world-think .case-details{background:#24291e;color:#f4f1e8}
+.projects-page.case-world-think .case-details :is(.projects-rule,h2 em,.case-focus>span,.case-focus small),.projects-page.case-world-earth .case-details :is(.projects-rule,h2 em,.case-focus>span,.case-focus small){color:#ffda24}
+.projects-page.case-world-think .case-detail-grid p,.projects-page.case-world-earth .case-detail-grid p{color:#e1e4d8}
+.projects-page.case-world-finance .case-opening,.projects-page.case-world-finance .case-details{background:#e3e6d9;color:#24291e}
+.projects-page.case-world-finance .case-opening :is(h1,.projects-rule,.case-title-group p),.projects-page.case-world-finance .case-details :is(h2,h2 em,.projects-rule,.case-detail-grid p,.case-focus>span,.case-focus small){color:#24291e}
+.projects-page.case-world-finance .case-details .projects-rule{border-color:#7e8970}
+.projects-page.case-world-think .case-future{background:#ffda24;color:#24291e}
+.projects-page.case-world-finance .case-future{background:#f4f1e8;color:#24291e}
+.projects-page.case-world-earth .case-future{background:#dce0d2;color:#24291e}
+.projects-page .case-future :is(h2,h2 em,p,.projects-rule){color:#24291e}
+.projects-page .case-future .projects-rule{border-color:#24291e55}
+/* Archive: light index, dark feature, light document viewer, yellow ending. */
+.milestones-page .milestone-hero{background:#24291e;color:#f4f1e8}
+.milestones-page .milestone-hero :is(.archive-rule,h2 em,.archive-hero-link,.archive-emblem),.milestones-page .milestone-hero-bottom>div:first-child>span{color:#ffda24}
+.milestones-page .milestone-hero-bottom p{color:#e1e4d8}
+.milestones-page .archive-ending{background:#ffda24;color:#24291e}
+.milestones-page .archive-ending :is(.archive-rule,h2,h2 em,a){color:#24291e}
+.milestones-page .archive-ending .archive-rule{border-color:#24291e55}
+.milestones-page .archive-tabs button[aria-pressed=true]{background:#ffda24;color:#24291e;border-color:#24291e}
+.milestones-page .record-has-document .record-cover{color:#24291e}
+.milestones-page .record-experience .record-cover{color:#ffda24;background:#24291e}
+.milestones-page .record-experience:hover .record-cover{color:#24291e;background:#ffda24}
+.milestones-page .archive-dialog{background:#f4f1e8;color:#24291e}
+/* Notebook: each note retains its own surface even when expanded. */
+.personal-page .personal-opening{background:#ffda24;color:#24291e}
+.personal-page .personal-opening :is(h1,h1 em,.personal-rule,.personal-link,.personal-intro p,.personal-stamp){color:#24291e}
+.personal-page .personal-note:nth-child(1){background:#ffda24;color:#24291e}
+.personal-page .personal-note:nth-child(2){background:#f4f1e8;color:#24291e}
+.personal-page .personal-note:nth-child(3),.personal-page .personal-note:nth-child(3)[open]{background:#24291e;color:#f4f1e8}
+.personal-page .personal-note:nth-child(3) :is(.note-number,.note-question,p){color:#e1e4d8}
+.personal-page .personal-note:nth-child(3) summary:hover .note-topic,.personal-page .personal-note:nth-child(3) summary:focus-visible .note-topic{color:#ffda24}
+.personal-page .personal-music{background:#24291e;color:#f4f1e8}
+.personal-page .personal-music .personal-rule,.personal-page .music-copy h2 em,.personal-page .music-art{color:#ffda24}
+.personal-page .music-copy p{color:#e1e4d8}
+.personal-page .personal-end{background:#dce0d2;color:#24291e}
+.personal-page .personal-end :is(.personal-rule,h2 em,.personal-link,.signature){color:#24291e}
+/* Correspondence: dark opening; paper letter; yellow ending. */
+.contact-page .contact-opening{background:#24291e;color:#f4f1e8}
+.contact-page .contact-opening :is(.contact-rule,.contact-title-grid h1 em,.contact-postmark,.contact-text-link){color:#ffda24}
+.contact-page .contact-opening .contact-direct{background:#ffda24;color:#24291e}
+.contact-page .contact-ending{background:#ffda24;color:#24291e}
+.contact-page .contact-ending :is(.contact-rule,h2,h2 em,.contact-text-link,.signature){color:#24291e}
+.contact-page .contact-ending .contact-rule{border-color:#24291e55}
+.contact-page .letter-paper{background:#fffdf4;color:#24291e}
+.contact-page .letter-paper :is(.letter-date,.letter-signoff){color:#525b46}
+.contact-page .letter-paper .signature{color:#6b5400}
+/* Readable hover/focus states on both surfaces. */
+main:not(.home-page)>.site-header.minimal-header{background:#f4f1e8;color:#24291e}
+main:not(.home-page) .minimal-header .minimal-connect{background:#ffda24;color:#24291e}
+main:not(.home-page) .minimal-header .minimal-connect:hover{background:#24291e;color:#f4f1e8}

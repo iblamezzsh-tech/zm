@@ -54,3 +54,9 @@
 .case-next:hover>span{transform:translate(5px,-5px)}
 @media(max-width:700px){.projects-rule{font-size:9px;letter-spacing:.06em}.projects-opening h1{font-size:clamp(65px,15vw,120px)}.directory-item,.directory-finance,.case-intro-grid,.case-detail-grid{grid-template-columns:1fr;gap:20px}.directory-finance .directory-art{order:0}.directory-info h2{margin-top:16px}.case-opening h1{font-size:clamp(54px,13vw,100px)}.case-opening .project-art{aspect-ratio:1.4}.case-opening .think-word{font-size:clamp(45px,12vw,90px)}.case-opening .finance-word,.case-opening .earth-word{font-size:clamp(34px,9vw,70px)}.case-opening .think-question{font-size:220px}.case-introduction h2,.case-details h2{font-size:clamp(50px,12vw,90px)}.case-next h2{font-size:clamp(40px,11vw,70px)}.projects-intro{align-items:start}.projects-intro>div{flex-shrink:0}}
 @media(prefers-reduced-motion:reduce){.directory-art .project-art,.directory-arrow,.case-next>span{transition:none}.directory-art:hover .project-art,.case-next:hover>span{transform:none}}
+
+/* Long project names must fit their own column, not split inside a word. */
+.case-title-group>div,.next-project-title{container-type:inline-size;min-width:0}
+main.case-world-finance .case-title-group h1{font-size:min(11cqw,158px)!important;overflow-wrap:normal;word-break:normal;white-space:nowrap}
+main.case-world-finance .case-title-group h1 .zm-word,main.case-world-finance .case-title-group h1 .zm-word>span{white-space:nowrap;overflow-wrap:normal;word-break:normal}
+main.case-page .case-next .next-project-title h2{font-size:min(10.8cqw,96px);white-space:nowrap;overflow-wrap:normal;word-break:normal;line-height:1.05}

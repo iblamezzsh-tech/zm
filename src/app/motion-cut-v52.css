@@ -90,3 +90,18 @@
 .editorial-flow[data-ed-motion=false] .ed-opening{height:auto}
 .editorial-flow[data-ed-motion=false] .ed-opening-sticky{position:relative}
 @media(max-width:899px){.ed-opening-credits{display:none}.ed-collage-sticky,.ed-social-sticky{position:relative}.editorial-flow[data-ed-motion=true] .ed-future-words>span:first-child{transform:translateX(calc((1 - var(--ed-enter,1))*18vw))}.editorial-flow[data-ed-motion=true] .ed-future-words>em{transform:translateX(calc((1 - var(--ed-enter,1))*-14vw))}.editorial-flow[data-ed-motion=true] .ed-future-words>span:last-child{transform:translateX(calc((1 - var(--ed-enter,1))*22vw))}}
+
+/* V53: preserve the project name as a whole word; fit the actual copy column. */
+.editorial-home .ed-work-copy{container-type:inline-size;min-width:0}
+.editorial-home .ed-work-copy h3.ed-project-name{font-size:min(4vw,62px,11.8cqw);white-space:nowrap;overflow-wrap:normal;word-break:normal;line-height:1.08}
+.editorial-home .ed-work-copy h3.ed-project-name:focus-within{clip-path:none}
+.editorial-home .ed-work-finance .ed-work-copy h3.ed-project-name{font-size:min(4vw,62px,10.8cqw)}
+/* Four original artwork/document cards, no repeated center portrait.
+   Keep the inner two at equal height and let the remaining cards frame them. */
+.ed-fan-without-portrait .ed-fan-card{height:76%;width:clamp(100px,22vw,285px);z-index:1}
+.ed-fan-without-portrait .ed-fan-1,.ed-fan-without-portrait .ed-fan-2{height:94%;z-index:3}
+.ed-fan-without-portrait .ed-fan-0,.ed-fan-without-portrait .ed-fan-3{height:72%;z-index:1}
+.ed-fan-without-portrait .ed-fan-card img{object-fit:contain;object-position:center}
+.editorial-flow[data-ed-cinema=true] .ed-fan-without-portrait .ed-fan-card{transform:translateX(calc(-50% + var(--fan-i)*81%*var(--fan-open,0))) translateY(calc((1 - var(--fan-open,0))*28%)) rotate(calc(var(--fan-i)*13deg*var(--fan-open,0))) rotateY(calc(var(--fan-i)*(1 - var(--fan-open,0))*18deg))}
+@media(max-width:899px){.editorial-home .ed-work-copy h3.ed-project-name,.editorial-home .ed-work-finance .ed-work-copy h3.ed-project-name{font-size:min(10vw,62px,10.8cqw)}}
+@media(max-width:520px){.ed-fan-without-portrait .ed-fan-card{width:clamp(84px,29vw,125px)}}

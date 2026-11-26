@@ -46,15 +46,15 @@ main.site-motion-ready .case-opening .studio-poster.art-v32,main.site-motion-rea
 .home-page .home-chapters .work-heading p{color:#e5e4d9}
 .home-page .finale-signature{color:#ffda24}
 /* My Story: original documents appear as annotations beside the authored diagrams. */
-.story-page .story-opening{background:#24291e;color:#f4f1e8}
+.story-page .story-opening{background:#eeece3 url("/contours.svg") center/cover;color:#24291e}
 .story-page .story-opening h1{font-family:"DM Sans Variable",Arial,sans-serif;font-weight:800;font-size:clamp(76px,13.6vw,210px);letter-spacing:-.085em;line-height:.85}
-.story-page .story-opening h1 em{font:400 1.06em/.84 var(--serif);color:#ffda24;letter-spacing:-.05em}
-.story-page .story-tag{color:#ffda24}
+.story-page .story-opening h1 em{font:400 1.06em/.84 var(--serif);color:#49573c;letter-spacing:-.05em}
+.story-page .story-tag{color:#6b5400}
 .story-page .story-portrait{background:radial-gradient(ellipse at 50% 65%,#788367,#3d4834 65%);border:0}
 .story-page .story-portrait>span{background:#ffda24;color:#24291e;border:0}
 .story-page .story-opening-copy h2{font-size:clamp(48px,6.5vw,104px)}
-.story-page .story-opening-copy p{color:#e4e4d7}
-.story-page .story-autograph{color:#ffda24}
+.story-page .story-opening-copy p{color:#525b46}
+.story-page .story-autograph{color:#6b5400}
 .story-page .story-entry{position:relative}
 .story-page .entry-art{height:clamp(260px,36vw,520px);box-shadow:none;clip-path:none}
 .story-page .entry-art::after{inset:0;border:0}
