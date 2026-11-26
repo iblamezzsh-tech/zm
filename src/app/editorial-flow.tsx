@@ -25,6 +25,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   const collageWindow=el.querySelector<HTMLElement>(".ed-collage-sticky");
   const fan=el.querySelector<HTMLElement>(".ed-fan");
   const documents=Array.from(el.querySelectorAll<HTMLElement>(".ed-document"));
+  const kinetic=Array.from(el.querySelectorAll<HTMLElement>("[data-kinetic]")).map(node=>({node,horizontal:Boolean(node.closest(".ed-collage-grid")),compact:node.dataset.kinetic==="stamp"||node.dataset.kinetic==="caption"}));
   let manual=false,enabled=false,cinema=false,railDistance=0,railX=0,alive=true;
   function layout(){
    if(!alive||!collage||!rail||!collageWindow)return;
@@ -50,6 +51,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    const fanRect=fan?.getBoundingClientRect();
    const fanEdge=fanRect?clamp((h-fanRect.top)/h):1;
    const docBounds=documents.map(node=>({node,r:node.getBoundingClientRect()}));
+   const kineticBounds=kinetic.map(item=>({...item,r:item.node.getBoundingClientRect()}));
    const gallery=bounds.find(({s})=>s===collage);
    const railLocal=gallery?clamp(-gallery.r.top/Math.max(1,gallery.r.height-h)):0;
    const nextRailX=cinema?-railDistance*railProgress(railLocal):0;
@@ -111,6 +113,18 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    }
    for(const {node,r} of archives)write(node,"--record-pass",clamp((h-r.top)/(h+r.height)));
    for(const {node,r} of docBounds){const center=cinema?r.left+r.width*.5+railDelta:r.top+r.height*.5;const extent=cinema?w:h;write(node,"--doc-pass",clamp((extent-center)/extent))}
+   // A reversible visibility envelope, with a long fully legible center hold.
+   // Measure the untouched phrase, not its animated glyphs. The rail projection
+   // keeps text synchronized with the incoming horizontal frame.
+   for(const {node,r,horizontal,compact} of kineticBounds){
+    const range=compact ? .25:.39;
+    let p=Math.min(ease(0,range,(h-r.top)/h),ease(0,compact ? .15:.24,r.bottom/h));
+    if(cinema&&horizontal){
+     const left=r.left+railDelta,right=r.right+railDelta;
+     p=Math.min(p,ease(0,compact ? .20:.35,(w-left)/w),ease(0,compact ? .14:.23,right/w));
+    }
+    write(node,"--kt-progress",p);
+   }
    railX=nextRailX;
   }
   function mode(){
@@ -131,24 +145,12 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    let lo=0,hi=1;for(let i=0;i<16;i++){const m=(lo+hi)/2;if(railProgress(m)<target)lo=m;else hi=m}
    scrollToFilm(top+(collage.offsetHeight-innerHeight)*(lo+hi)/2,true);
   }
-  // Time-based typography: scroll merely triggers entry. Once visible, words
-  // finish their own choreography even when the visitor stops scrolling.
-  const kinetic=Array.from(el.querySelectorAll<HTMLElement>("[data-kinetic]"));
-  const played=new WeakSet<HTMLElement>();
-  const typeObserver=typeof IntersectionObserver==="undefined"?null:new IntersectionObserver(entries=>{
-   for(const entry of entries){
-    const node=entry.target as HTMLElement;
-    if(!entry.isIntersecting||entry.intersectionRatio<.12||played.has(node))continue;
-    played.add(node);node.dataset.kineticPlay="true";typeObserver?.unobserve(node);
-   }
-  },{threshold:[.12]});
-  if(typeObserver){for(const node of kinetic){node.dataset.kineticReady="true";typeObserver.observe(node)}}
   const unsub=subscribeMotion(render),ro=new ResizeObserver(resize);ro.observe(el);if(rail)ro.observe(rail);
   reduced.addEventListener("change",mode);desktop.addEventListener("change",mode);window.addEventListener("zm-film-mode",change);el.addEventListener("focusin",focus);
   document.addEventListener("zm-boot-prepare",resize);
   mode();document.fonts.ready.then(()=>{if(alive)resize()});
   document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:true}}));
-  return()=>{alive=false;typeObserver?.disconnect();for(const node of kinetic){delete node.dataset.kineticReady;delete node.dataset.kineticPlay}unsub();ro.disconnect();reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);main.classList.remove("ed-dark-header","film-at-finale");delete el.dataset.edMotion;delete el.dataset.edCinema};
+  return()=>{alive=false;for(const {node} of kinetic)node.style.removeProperty("--kt-progress");unsub();ro.disconnect();reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);main.classList.remove("ed-dark-header","film-at-finale");delete el.dataset.edMotion;delete el.dataset.edCinema};
  },[]);
  return <div ref={root} className="editorial-flow" id="main-content" tabIndex={-1}>{children}</div>
 }
