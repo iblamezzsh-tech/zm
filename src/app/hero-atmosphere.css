@@ -21,3 +21,8 @@
 .hero-atmosphere:not(.hero-in-view) .hero-world *::after,.hero-motion-paused .hero-world *::after,.hero-tab-hidden .hero-world *::after{animation-play-state:paused}
 @media(max-width:600px){.hero-toolbar-actions{gap:5px}.hero-motion-toggle{width:44px;height:44px}.home-hero .toolbar .hint{max-width:45%}.home-hero .switch span{padding:8px 7px}.hero-world-trace{height:19%;top:17%}}
 @media(prefers-reduced-motion:reduce){.hero-world *::after{animation:none!important}.hero-portrait-plane,.home-hero .hero-atmosphere .hero-name,.hero-contour-drift,.hero-light-drift{transform:none!important;will-change:auto}.hero-world-trace{transform:rotate(-13deg);will-change:auto}}
+
+/* V19: continuously redrawn topographic field replaces translated background images. */
+.hero-world{background:#eeece3 url("/contours.svg") center/cover no-repeat}
+.hero-contour-field{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;opacity:0}
+.hero-contour-field[data-ready=true]{opacity:1}

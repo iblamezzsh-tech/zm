@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { HeroSignature } from "./signature-motion";
 import { gsap } from "gsap";
 import "./hero-atmosphere.css";
+import ContourField from "./contour-field";
 
 export default function Portrait() {
   const stage = useRef<HTMLDivElement>(null);
@@ -223,7 +224,7 @@ export default function Portrait() {
       <link rel="preload" as="image" href="/images/portrait-present.webp" />
       <link rel="preload" as="image" href="/images/portrait-academic-attire.svg" />
       <div className={"stage hero-composition hero-atmosphere"+(paused?" hero-motion-paused":"")} ref={stage}>
-        <div className="hero-world" aria-hidden="true"><div className="hero-contour-drift"/><div className="hero-light-drift"/><div className="hero-world-trace"/></div>
+        <div className="hero-world" aria-hidden="true"><ContourField paused={paused}/></div>
         <h1 className="hero-name" aria-label="ZiyoMuhammad">
           <svg viewBox="0 0 1200 164" role="presentation" aria-hidden="true">
             <text x="10" y="124" textLength="1180" lengthAdjust="spacingAndGlyphs">ZiyoMuhammad</text>
