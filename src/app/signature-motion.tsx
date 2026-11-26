@@ -56,7 +56,7 @@ export function RouteSignature(){
   const m=match.current;if(!m)return;
   const target=document.querySelector<HTMLElement>("main.case-page .case-feature-art .studio54-edition");
   const from=m.clone.getBoundingClientRect(),to=target?.getBoundingClientRect();
-  if(!target||!to||to.width<100||to.height<70||to.top>=innerHeight){m.animation?.cancel();Object.assign(m.clone.style,artFrame(from));return;}
+  if(!target||!to||to.width<100||to.height<70||to.top>=innerHeight||!["think","finance","earth"].some(k=>target.classList.contains("edition-"+k)&&m.clone.classList.contains("edition-"+k))){m.animation?.cancel();Object.assign(m.clone.style,artFrame(from));return;}
   m.destination=target;target.style.opacity="0";m.animation?.cancel();
   Object.assign(m.clone.style,artFrame(from));
   m.animation=m.clone.animate([artFrame(from),artFrame(to)],{duration:REVEAL_MS,easing:"cubic-bezier(.22,1,.36,1)",fill:"forwards"});

@@ -1,0 +1,75 @@
+/* V56. Three distinct physical artifacts, using a shared responsive frame.
+   The frame is a container; the contents adapt to the actual component width. */
+.studio54-edition.edition56{box-sizing:border-box;container-type:inline-size;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:3%;padding:5%;position:relative;min-width:0;aspect-ratio:1.52;isolation:isolate;overflow:hidden;font-family:"DM Sans Variable",Arial,sans-serif}
+.edition56 .edition-top,.edition56 .edition-bottom{display:flex;justify-content:space-between;gap:6px;align-items:center;min-width:0;font:650 clamp(8px,1.6cqw,12px)/1.25 Arial,sans-serif;letter-spacing:.08em;padding:0 0 1.7cqw;border-bottom:1px solid currentColor;border-top:0}
+.edition56 .edition-bottom{border-bottom:0;border-top:1px solid currentColor;padding:1.7cqw 0 0}
+.edition56 .edition-bottom span:first-child{font-weight:800;letter-spacing:0}
+.edition56-main{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:4%;min-height:0;min-width:0;align-items:center}
+.edition56-main>div{min-width:0}
+.edition56-main>div>span:first-child{display:block;font:650 clamp(8px,1.4cqw,12px)/1.2 Arial,sans-serif;letter-spacing:.06em;margin-bottom:2.8cqw}
+.edition56.edition-think{background:#ffda24;color:#24291e}
+.edition56-quiz-title>strong{display:block;font:850 20cqw/.79 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.11em}
+.edition56-quiz-title>strong em{font:400 1.02em/.88 "Instrument Serif",Georgia,serif;letter-spacing:-.07em}
+.edition56-quiz-title>span:last-child{display:block;font:700 clamp(7px,1.55cqw,12px)/1.25 Arial,sans-serif;letter-spacing:.06em;margin-top:3cqw}
+.edition56-answer-sheet{background:#24291e;color:#f4f1e8;align-self:center;padding:3.2cqw;box-shadow:1.2cqw 1.5cqw 0 #8c782b40;transform:rotate(3deg)}
+.edition56-sheet-meta{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f4f1e860;padding-bottom:1.5cqw;gap:1cqw;margin-bottom:2.1cqw}
+.edition56-sheet-meta b{font:750 6.6cqw/.85 "DM Sans Variable",Arial,sans-serif;color:#ffda24;letter-spacing:-.08em}
+.edition56-sheet-meta span{font:650 1.5cqw/1.15 Arial,sans-serif;text-align:right;letter-spacing:.08em}
+.edition56-answer-sheet>strong{display:block;font:650 3.6cqw/1.12 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.035em;margin-bottom:1.8cqw}
+.edition56-answer{display:flex;align-items:center;gap:1.6cqw;padding:1.2cqw 0;border-top:1px solid #f4f1e840;font-size:2.5cqw;font-weight:600;line-height:1.1}
+.edition56-answer i{font:650 1.8cqw/1 Arial,sans-serif;color:#ffda24}
+.edition56-answer-sheet>small,.edition56-chart>small,.edition56-fieldnote>small{display:block;font:650 clamp(6px,1.15cqw,10px)/1.2 Arial,sans-serif;letter-spacing:.03em;margin-top:2cqw}
+.edition56.edition-finance{background:#e2e5d9;color:#24291e}
+.edition56-finance{grid-template-columns:minmax(0,.96fr) minmax(0,1.04fr);gap:4%}
+.edition56-finance-copy>strong{display:block;font:800 11.5cqw/.88 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.08em}
+.edition56-finance-copy>strong em{font:400 1.1em/.9 "Instrument Serif",Georgia,serif;color:#4a5a39;letter-spacing:-.05em}
+.edition56-chart{padding:2.7cqw;background:#f4f1e8;border:1px solid #24291e35;color:#354431}
+.edition56-chart-caption{display:flex;flex-direction:column;gap:1.6cqw}
+.edition56-chart-caption>span{font:650 1.6cqw/1.2 Arial,sans-serif;letter-spacing:.065em}
+.edition56-chart-caption>strong{font:750 8.6cqw/.9 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.09em}
+.edition56-chart-caption>strong small{font-size:.5em;letter-spacing:-.03em}
+.edition56-chart svg{display:block;width:100%;height:auto;margin-top:2cqw}
+.edition56.edition-earth{background:#354431;color:#f4f1e8}
+.edition56-earth-copy>strong{display:block;font:400 15cqw/.83 "Instrument Serif",Georgia,serif;letter-spacing:-.055em}
+.edition56-earth-copy>strong em{font-style:italic;color:#d5dfbe}
+.edition56-fieldnote{position:relative;padding:3cqw;background:#e4e4d0;color:#24291e;transform:rotate(-2.5deg);box-shadow:1cqw 1.7cqw 0 #17211755}
+.edition56-fieldnote::before{content:"";position:absolute;top:-1cqw;left:35%;width:30%;height:2cqw;background:#ffda24cc;transform:rotate(4deg)}
+.edition56-fieldnote>strong{display:block;font:400 6.5cqw/.94 "Instrument Serif",Georgia,serif;margin-bottom:2.3cqw}
+.edition56-task{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:1.2cqw;align-items:center;border-top:1px solid #24291e40;padding:1.9cqw 0}
+.edition56-task b{font:650 1.65cqw/1 Arial,sans-serif;color:#525b46}
+.edition56-task span{font-size:2.65cqw;line-height:1.15;font-weight:650}
+.edition56-task i{width:2.5cqw;height:2.5cqw;border:1px solid #525b46}
+@container (max-width:360px){
+ .edition56-main{gap:3%}
+ .edition56 .edition-top,.edition56 .edition-bottom{font-size:7px;letter-spacing:0}
+ .edition56-main>div>span:first-child{font-size:7px;margin-bottom:2cqw}
+ .edition56-quiz-title>span:last-child,.edition56-answer-sheet>small,.edition56-fieldnote>small,.edition56-chart>small{font-size:6px}
+ .edition56-answer-sheet{padding:2.4cqw}
+ .edition56-answer-sheet>strong{font-size:3.8cqw}
+ .edition56-answer{font-size:2.9cqw}
+}
+@container (max-width:235px){
+ .edition56-main{grid-template-columns:1fr}
+ .edition56-answer-sheet,.edition56-chart,.edition56-fieldnote{display:none}
+ .edition56-main>div>span:first-child,.edition56-quiz-title>span:last-child{display:none}
+ .edition56-quiz-title>strong{font-size:29cqw}
+ .edition56-finance-copy>strong{font-size:17cqw}
+ .edition56-earth-copy>strong{font-size:22cqw}
+ .edition56 .edition-bottom span:last-child{display:none}
+}
+.ed-fan-card .edition56 .edition-top,.ed-fan-card .edition56 .edition-bottom{font-size:7px}
+.ed-fan-card .edition56-main,.zm-menu-filmstrip-item .edition56-main{display:grid;grid-template-columns:1fr}
+.ed-fan-card .edition56-answer-sheet,.ed-fan-card .edition56-chart,.ed-fan-card .edition56-fieldnote,.zm-menu-filmstrip-item .edition56-answer-sheet,.zm-menu-filmstrip-item .edition56-chart,.zm-menu-filmstrip-item .edition56-fieldnote{display:none}
+.ed-fan-card .edition56-main>div>span:first-child,.ed-fan-card .edition56-quiz-title>span:last-child,.zm-menu-filmstrip-item .edition56-main>div>span:first-child,.zm-menu-filmstrip-item .edition56-quiz-title>span:last-child{display:none}
+.ed-fan-card .edition56-quiz-title>strong,.zm-menu-filmstrip-item .edition56-quiz-title>strong{font-size:29cqw}
+.ed-fan-card .edition56-earth-copy>strong{font-size:24cqw}
+.zm-menu-filmstrip-item .edition56{display:flex;align-items:center;padding:5%;width:100%;height:100%}
+.zm-menu-filmstrip-item .edition56 .edition-top,.zm-menu-filmstrip-item .edition56 .edition-bottom{display:none}
+.zm-menu-feature-frame .edition56{height:100%;width:100%;aspect-ratio:auto}
+.zm-menu-feature-frame .edition56-main{align-items:center}
+.next-project-art .edition56 .edition-top,.next-project-art .edition56 .edition-bottom{font-size:7px}
+@media(prefers-reduced-motion:no-preference){
+ main.site-motion-ready .edition56-chart svg path[pathLength]{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--site-in,1))}
+ main.site-motion-ready .edition56-answer-sheet{transform:translateY(calc((1 - var(--site-in,1))*2cqw)) rotate(calc(3deg + (1 - var(--site-in,1))*5deg))}
+ main.site-motion-ready .edition56-fieldnote{transform:translateY(calc((1 - var(--site-in,1))*3cqw)) rotate(calc(-2.5deg - (1 - var(--site-in,1))*5deg))}
+}
