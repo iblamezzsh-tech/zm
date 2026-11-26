@@ -101,7 +101,7 @@ main.studio-scroll .personal-note .note-topic{display:block;translate:0 calc((1 
 main.studio-scroll .personal-note .note-plus{scale:calc(.7 + var(--studio-arrival,1)*.3)}
 main.studio-scroll .music-layout .music-art svg{transform:translate3d(calc(var(--art-x,0)*8px),calc((.5 - var(--studio-travel,.5))*44px + var(--art-y,0)*8px),0) rotate(calc((1 - var(--studio-unfold,1))*-9deg));transition:none}
 main.studio-scroll .books-layout .book-spine{transform:translate3d(calc((1 - var(--studio-unfold,1))*-65px),0,0) rotate(calc(-2deg - (1 - var(--studio-unfold,1))*6deg))}
-main.studio-scroll .books-layout .book-spine:nth-child(2){transform:translate3d(calc((1 - var(--studio-unfold,1))*65px),0,0) rotate(calc(2deg + (1 - var(--studio-unfold,1))*6deg))}
+main.studio-scroll .books-layout .book-spine:nth-child(2){transform:translate3d(calc((1 - var(--studio-unfold,1))*-16px),0,0) rotate(calc(1deg + (1 - var(--studio-unfold,1))*1deg))}
 main.studio-scroll .books-layout .book-spine:nth-child(3){transform:translate3d(calc((1 - var(--studio-unfold,1))*-35px),0,0) rotate(-1deg)}
 main.studio-scroll .letter-paper .signature .pen{stroke-dashoffset:calc(1 - var(--studio-unfold,1))}
 main.studio-scroll .contact-channel b{rotate:calc((1 - var(--studio-arrival,1))*-45deg);scale:calc(.76 + var(--studio-arrival,1)*.24)}

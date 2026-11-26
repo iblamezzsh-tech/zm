@@ -30,7 +30,7 @@ export default function Archive({records}:{records:RecordEntry[]}){
  function close(){dialog.current?.close()}
  return <section className="archive-section" aria-labelledby="archive-title">
  <div className="archive-rule"><span>01 / Personal records</span><span>Experiences &amp; evidence</span></div>
- <div className="archive-heading"><h2 id="archive-title"><MotionWords text="The"/> <em><MotionWords text="archive."/></em></h2><p>School days, competitions, volunteering and the documents I've kept along the way.</p></div>
+ <div className="archive-heading"><h2 id="archive-title"><MotionWords text="The"/> <em><MotionWords text="archive."/></em></h2><p>School days, competitions, volunteering and the documents I’ve kept along the way.</p></div>
  <div className="archive-tabs" role="group" aria-label="Filter archive">{categories.map(c=><button type="button" key={c} aria-pressed={category===c} onClick={()=>{setCategory(c);setFeaturedId("")}}>{c}</button>)}</div>
  <div className="archive-count" aria-live="polite">{String(items.length).padStart(2,"0")} {items.length===1?"record":"records"} / {category}</div>
  {featured&&<div className="archive-desk" aria-label="Selected archive record">

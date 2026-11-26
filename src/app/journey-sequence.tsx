@@ -9,7 +9,7 @@ export default function JourneySequence({records}:{records:FeaturedRecord[]}){
    <div className="flow-type-cloud" aria-hidden="true"><span>NOW.</span><span>NEXT.</span></div>
    <div className="journey-mast"><span>ZM / THE DISTANCE BETWEEN</span><span>01 / THE PRESENT</span></div>
    <div className="flow-orbit" aria-hidden="true"><svg viewBox="0 0 600 600"><g fill="none" stroke="currentColor" strokeWidth="1">{Array.from({length:18},(_,i)=><ellipse key={i} cx="300" cy="300" rx={56+i*13} ry={90+i*11} transform={`rotate(${i*11} 300 300)`}/>)}</g><circle cx="300" cy="300" r="7" fill="currentColor"/></svg></div>
-   <div className="journey-now-main"><span className="journey-overline">ANDIJAN, UZBEKISTAN</span><h2><span className="flow-line"><span>I’m not</span></span><br/><em className="flow-line"><span>there yet.</span></em></h2><p>I'm a student with questions, projects and a long way to go. The future you saw in the portrait is still unwritten.</p></div>
+   <div className="journey-now-main"><span className="journey-overline">ANDIJAN, UZBEKISTAN</span><h2><span className="flow-line"><span>I’m not</span></span><br/><em className="flow-line"><span>there yet.</span></em></h2><p>I’m a student with questions, projects and a long way to go. The future you saw in the portrait is still unwritten.</p></div>
    <div className="flow-scene-index" aria-hidden="true">01 / ORIGIN</div>
   </div>
   <div className="flow-memory journey-scene journey-past" data-flow-scene="memory">

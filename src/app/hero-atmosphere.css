@@ -26,7 +26,7 @@
 /* V20 — Full-bleed, viewport-sized stage. Keep the page's editorial gutters below it. */
 main.home-page{--home-gutter:clamp(16px,2.6vw,48px);max-width:none;padding-inline:var(--home-gutter);position:relative}
 main.home-page>.site-header.minimal-header{position:absolute;z-index:10;top:0;left:0;right:0;height:auto;min-height:0;margin:0;padding:clamp(12px,1.5vw,24px) clamp(14px,1.6vw,26px);background:transparent;border:0}
-.home-page>.home-hero{margin-inline:calc(-1 * var(--home-gutter));margin-top:0;background:#eeece3}
+.opening-spread>.home-hero{margin:0;background:#eeece3}
 .home-page .home-hero .hero-composition{--portrait-scale:1.12;height:100svh;min-height:0;max-height:none;overflow:hidden}
 .home-page .hero-portrait-plane{transform-origin:50% 100%;transform:translate3d(var(--hero-dx),var(--hero-dy),0) scale(var(--portrait-scale))}
 .home-page .home-hero .hero-name{inset:12.5% 5.5% auto;opacity:.94}

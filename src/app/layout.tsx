@@ -8,8 +8,8 @@ import Signature from "./signature";
 import { RouteSignature } from "./signature-motion";
 import SmoothScroll from "./smooth-scroll";
 import SiteMotion from "./site-motion";
-import FlowMotion from "./flow-motion";
-import "./flow-motion.css";
+import "./journal.css";
+
 import "./site-motion.css";
 import "./motion-polish.css";
 import "./art-direction.css";
@@ -21,13 +21,10 @@ import "./editorial-motion.css";
  // No JS = no gate; failed JS = a bounded, readable fallback.
 const bootScript=`(function(){try{
  if(location.pathname!=="/"||!matchMedia("(min-width:850px) and (min-height:460px) and (pointer:fine) and (prefers-reduced-motion:no-preference)").matches)return;
- var html=document.documentElement,done=false,stage=false,portrait=false,grace=0,hard=0;
+ var html=document.documentElement,done=false,hard=0;
  html.dataset.zmBoot="pending";
- function finish(){if(done)return;done=true;clearTimeout(grace);clearTimeout(hard);document.removeEventListener("zm-film-ready",film);document.removeEventListener("zm-portrait-ready",image);html.dataset.zmBoot="ready";}
- function film(){stage=true;if(portrait)finish();else if(!grace)grace=setTimeout(finish,900);}
- function image(){portrait=true;if(stage)finish();}
- document.addEventListener("zm-film-ready",film);
- document.addEventListener("zm-portrait-ready",image);
+ function finish(){if(done)return;done=true;clearTimeout(hard);document.removeEventListener("zm-portrait-ready",finish);html.dataset.zmBoot="ready"}
+ document.addEventListener("zm-portrait-ready",finish);
  hard=setTimeout(finish,4500);
  }catch(e){delete document.documentElement.dataset.zmBoot;}})();`;
 const bootCSS=`
@@ -64,7 +61,7 @@ export default function Layout({
         {children}
         <SmoothScroll />
         <SiteMotion />
-        <FlowMotion />
+
         <RouteSignature />
       </body>
     </html>
