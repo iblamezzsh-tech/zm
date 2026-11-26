@@ -1,0 +1,44 @@
+/* V84 — stronger visual depth with independently paced targets.
+   Never transforms the opening portrait, marquee or ambient backgrounds. */
+@media(prefers-reduced-motion:no-preference){
+ .editorial-home .editorial-flow[data-ed-motion=true] .ed-surface-seam{
+  transform:scaleY(calc(.10 + var(--seam-open,1)*.90));
+ }
+ .editorial-home .editorial-flow[data-ed-motion=true] .ed-document-image{
+  overflow:hidden;
+  clip-path:inset(0 calc((1 - var(--v84-document,1))*12%) calc((1 - var(--v84-document,1))*14%) 0);
+  transform:translateY(calc((1 - var(--v84-document,1))*26px));
+ }
+ .editorial-home .editorial-flow[data-ed-motion=true] .ed-document-image img{
+  transform:scale(calc(1.18 - var(--v84-document,1)*.18));clip-path:none;opacity:1
+ }
+ .editorial-home .editorial-flow[data-ed-motion=true] .ed-work-item .ed-work-image{
+  clip-path:inset(calc((1 - var(--v84-art,1))*6%) calc((1 - var(--v84-art,1))*22%) calc((1 - var(--v84-art,1))*6%) 0);
+ }
+ .editorial-home .editorial-flow[data-ed-motion=true] .ed-work-item.ed-work-finance .ed-work-image{
+  clip-path:inset(calc((1 - var(--v84-art,1))*16%) 0 calc((1 - var(--v84-art,1))*16%) calc((1 - var(--v84-art,1))*12%));
+ }
+ .editorial-home .editorial-flow[data-ed-motion=true] .ed-work-item.ed-work-earth .ed-work-image{
+  clip-path:inset(calc((1 - var(--v84-art,1))*26%) 0 0 0);
+ }
+ .editorial-home .editorial-flow[data-ed-motion=true] .ed-work-item .ed-work-image .studio54-edition{
+  transform:scale(calc(1.20 - var(--v84-art,1)*.20));transition:none
+ }
+ .editorial-home .editorial-flow[data-ed-motion=true] .ed-archive-grid .ed-archive-item .ed-archive-image{
+  clip-path:inset(calc((1 - var(--v84-record,1))*30%) 0 0 0);
+  transform:translateY(calc((1 - var(--v84-record,1))*32px)) scale(calc(.91 + var(--v84-record,1)*.09));
+ }
+ .editorial-home .editorial-flow[data-ed-motion=true] .ed-archive-grid .ed-archive-item:nth-child(even) .ed-archive-image{
+  clip-path:inset(0 0 calc((1 - var(--v84-record,1))*30%) 0);
+  transform:translateY(calc((1 - var(--v84-record,1))*-26px)) scale(calc(.91 + var(--v84-record,1)*.09))
+ }
+ .editorial-home .editorial-flow[data-ed-motion=true] .finale-portrait{
+  transform:translateY(calc((1 - var(--finale-portrait-in,1))*12vh)) scale(calc(1.10 - var(--finale-portrait-in,1)*.10));
+ }
+ .editorial-home .editorial-flow[data-ed-motion=true] .finale-heading .film-word>span{
+  transform:translateY(calc((1 - var(--v74-word,1))*80%));
+  opacity:clamp(0,calc(var(--v74-word,1)*1.6),1)
+ }
+ .editorial-home .editorial-flow[data-ed-motion=true] :is(.ed-work-image,.ed-archive-item):focus-visible,
+ .editorial-home .editorial-flow[data-ed-motion=true] :is(.ed-work-image,.ed-archive-item):focus-visible :is(.studio54-edition,.ed-archive-image){clip-path:none!important;transform:none!important;opacity:1!important}
+}
