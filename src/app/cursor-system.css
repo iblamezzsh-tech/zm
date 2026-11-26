@@ -1,0 +1,25 @@
+/* V68 — compact monochrome contextual cursors, based on the supplied reference.
+   Use native CSS cursors, not a simulated pointer. Keep native fallback and editing behavior. */
+@media (hover:hover) and (pointer:fine) {
+ :root {
+  --zm-cursor-default:url("/cursors/default.svg") 4 3, auto;
+  --zm-cursor-home:url("/cursors/home.svg") 4 3, pointer;
+  --zm-cursor-link:url("/cursors/link.svg") 10 3, pointer;
+  --zm-cursor-alt:url("/cursors/link-alt.svg") 4 3, pointer;
+  --zm-cursor-mail:url("/cursors/mail.svg") 4 3, pointer;
+  --zm-cursor-text:url("/cursors/text.svg") 12 12, text;
+ }
+ html,body{cursor:var(--zm-cursor-default)}
+ :is(p,h1,h2,h3,h4,h5,h6,blockquote,figcaption,dt,dd,li):not(:is(a *,button *,summary *,[role="button"] *)){cursor:var(--zm-cursor-text)}
+ :is(input:not([type]),input[type="text"],input[type="email"],input[type="search"],input[type="password"],input[type="url"],input[type="tel"],textarea,[contenteditable="true"]){cursor:var(--zm-cursor-text)}
+ :is(a[href],button:not(:disabled),summary,[role="button"]:not([aria-disabled="true"]),select,label[for],input[type="checkbox"],input[type="radio"]){cursor:var(--zm-cursor-link)!important}
+ :is(a[href],button:not(:disabled),summary,[role="button"]:not([aria-disabled="true"])) *{cursor:inherit!important}
+ :is(a[href^="http://"],a[href^="https://"]){cursor:var(--zm-cursor-alt)!important}
+ a[href="/"]{cursor:var(--zm-cursor-home)!important}
+ a[href^="mailto:"]{cursor:var(--zm-cursor-mail)!important}
+ :is(button:disabled,input:disabled,[aria-disabled="true"]){cursor:not-allowed!important}
+ input[type="range"]{cursor:ew-resize}
+}
+@media(forced-colors:active){
+ :root{--zm-cursor-default:auto;--zm-cursor-home:pointer;--zm-cursor-link:pointer;--zm-cursor-alt:pointer;--zm-cursor-mail:pointer;--zm-cursor-text:text}
+}
