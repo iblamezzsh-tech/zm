@@ -23,7 +23,7 @@ export default function HomeChapters() {
         <div className="personal-grid">
           <div data-chapter-motion><h2 id="personal-title"><MotionWords text="More than"/><br/><em><MotionWords text="one thing."/></em></h2><p>From economics and psychology to the violin: some of the things I enjoy when there is no deadline attached.</p><Link className="chapter-link" href="/off-the-record">Get to know me <span aria-hidden="true">↗</span></Link></div>
           <div className="interest-index" data-chapter-motion>
-            {["Economics","Psychology","Politics","Literature","Music"].map((interest,i)=><div className="interest-line" key={interest}><span>0{i+1}</span><span>{interest}</span><span aria-hidden="true">✳</span></div>)}
+            {["Economics","Psychology","Politics","Literature","Music"].map((interest,i)=><div className="interest-line" key={interest}><span>0{i+1}</span><span>{interest}</span><span aria-hidden="true">{["↗","◎","◇","≋","♪"][i]}</span></div>)}
           </div>
         </div>
       </section>

@@ -1,4 +1,5 @@
 import MotionWords from "../motion-words";
+import {getFeaturedRecords} from "../featured-records";
 import Link from "next/link";
 import SiteHeader from "../site-header";
 import Signature from "../signature";
@@ -24,6 +25,7 @@ function StoryGraphic({kind}:{kind:typeof chapters[number]["kind"]}) {
   return <svg viewBox="0 0 480 360" aria-hidden="true"><g fill="none" stroke="currentColor" opacity=".6">{Array.from({length:11},(_,i)=><path key={i} d={`M${i*44-90} 360L240 105L${570-i*44} 360`}/>)}<path d="M0 105H480" strokeDasharray="5 7"/><circle cx="240" cy="105" r="54"/></g><circle cx="240" cy="105" r="7" fill="currentColor"/></svg>;
 }
 export default function About(){
+ const records=getFeaturedRecords();
  return <main className="story-page" id="story-top">
    <SiteHeader about />
    <section className="story-opening" aria-labelledby="story-title">
@@ -37,7 +39,7 @@ export default function About(){
    <div className="story-body">
     <nav className="story-index-nav" aria-label="Story chapters"><span>THE CHAPTERS</span>{chapters.map(c=><a href={"#"+c.id} key={c.id}><small>{c.number}</small>{c.id==="curiosity"?"Origins":c.id==="learning"?"School":c.id}<span aria-hidden="true">↘</span></a>)}</nav>
     <div className="story-entries">
-      {chapters.map(c=><section className={"story-entry story-entry-"+c.kind} key={c.id} id={c.id} aria-labelledby={c.id+"-title"}><div className="entry-top"><span>CHAPTER {c.number} / 04</span><span>{c.label}</span></div><div className="entry-art" data-story-motion><StoryGraphic kind={c.kind}/><span>{c.note}</span><b aria-hidden="true">{c.number}</b></div><div className="entry-copy" data-story-motion><h2 id={c.id+"-title"}><MotionWords text={c.title}/><br/><em><MotionWords text={c.emphasis}/></em></h2><p>{c.body}</p>{c.kind==="building"&&<Link href="/projects" className="story-inline-link">Explore my projects ↗</Link>}</div></section>)}
+      {chapters.map(c=><section className={"story-entry story-entry-"+c.kind} key={c.id} id={c.id} aria-labelledby={c.id+"-title"}><div className="entry-top"><span>CHAPTER {c.number} / 04</span><span>{c.label}</span></div><div className="entry-art" data-story-motion><StoryGraphic kind={c.kind}/>{(c.kind==="questions"||c.kind==="learning")&&<div className="story-evidence">{records.filter(r=>c.kind==="questions"?r.id==="handball-first-place-2022"||r.id==="zakovat-best-player-2024":r.id==="informatics-olympiad-third-place"||r.id==="business-studies-2026").map((r,i)=><figure key={r.id} className={"story-evidence-paper paper-"+i}><img src={r.document!.src} alt={r.document!.alt} loading="lazy"/><figcaption>{r.dateLabel} / {r.chapter}</figcaption></figure>)}</div>}<span>{c.note}</span><b aria-hidden="true">{c.number}</b></div><div className="entry-copy" data-story-motion><h2 id={c.id+"-title"}><MotionWords text={c.title}/><br/><em><MotionWords text={c.emphasis}/></em></h2><p>{c.body}</p>{c.kind==="building"&&<Link href="/projects" className="story-inline-link">Explore my projects ↗</Link>}</div></section>)}
     </div>
    </div>
    <section className="story-ending"><div className="entry-top"><span>ZM / END OF THIS CHAPTER</span><span>TO BE CONTINUED</span></div><h2><MotionWords text="There’s more"/><br/><em><MotionWords text="to come."/></em></h2><div className="story-end-row"><Link href="/projects">Discover what I build <span aria-hidden="true">↗</span></Link><div><Signature/></div></div></section>

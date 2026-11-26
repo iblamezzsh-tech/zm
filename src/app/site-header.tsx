@@ -12,15 +12,15 @@ const pages=[
  {href:"/off-the-record",label:"Off the record",number:"05",note:"Beyond the portfolio",visual:"sport"},
  {href:"/contact",label:"Let's connect",number:"06",note:"Say hello",visual:"signature"},
 ] as const;
-type Tile={id:string;label:string;image?:string;kind:"portrait"|"future"|"document"|"project"|"signature"};
+type Tile={id:string;label:string;image?:string;kind:"portrait"|"future"|"document"|"project"|"signature"|"notebook"};
 const columns:Tile[][]=[
  [
  {id:"present",label:"01 / The present",image:"/images/portrait-present.webp",kind:"portrait"},
- {id:"sport",label:"02 / On the court",image:"/documents/handball-first-place-2022.webp",kind:"document"},
+ {id:"sport",label:"02 / Off the record",kind:"notebook"},
  {id:"project",label:"03 / OverThink",kind:"project"},
  ],
  [
- {id:"mun",label:"04 / Model United Nations",image:"/documents/namangan-mun-2026.webp",kind:"document"},
+ {id:"mun",label:"04 / Original records",image:"/documents/namangan-mun-2026.webp",kind:"document"},
  {id:"future",label:"05 / The next chapter",image:"/images/portrait-present.webp",kind:"future"},
  {id:"signature",label:"06 / Z.M.",kind:"signature"},
  ]
@@ -30,7 +30,7 @@ function GalleryTile({tile,active}:{tile:Tile;active:boolean}){
   {tile.image&&<img src={tile.image} alt="" draggable={false}/>}
   {tile.kind==="future"&&<img className="tile-attire" src="/images/portrait-academic-attire.svg" alt="" draggable={false}/>}
   {tile.kind==="project"&&<div className="tile-project-mark"><b>?</b><span>OverThink.</span></div>}
-  {tile.kind==="signature"&&<div className="tile-signature-mark"><Signature/></div>}
+  {tile.kind==="notebook"&&<div className="tile-notebook-mark"><span>FIELD NOTES</span><b>Stay<br/><em>curious.</em></b><span>ZM / PERSONAL NOTEBOOK</span></div>}{tile.kind==="signature"&&<div className="tile-signature-mark"><Signature/></div>}
   <span className="zm-tile-label">{tile.label}</span>
  </div>
 }

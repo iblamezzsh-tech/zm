@@ -9,6 +9,7 @@ import SmoothScroll from "./smooth-scroll";
 import SiteMotion from "./site-motion";
 import "./site-motion.css";
 import "./motion-polish.css";
+import "./art-direction.css";
 
 export const metadata: Metadata = {
   title: "ZiyoMuhammad — Personal Portfolio",

@@ -1,0 +1,200 @@
+/* V32 / The Art of Becoming. Composition-first, not an animation count. */
+:root{--zm-canvas:#f4f1e8;--zm-carbon:#24291e;--zm-signal:#ffda24;--zm-sage:#788367;--studio-acid:#ffda24;--accent:#ffda24}
+main:not(.home-page){--paper:#f4f1e8;--ink:#24291e;--muted:#525b46;--line:#c5c8b8;--accent:#ffda24;--page-pad:clamp(16px,3.5vw,64px)}
+body:has(main:not(.home-page)){background:#f4f1e8}
+main:not(.home-page)>section,main:not(.home-page) .story-entry,main:not(.home-page) .exhibit-scene{scroll-margin-top:90px}
+main:not(.home-page) h1 .zm-word>span{font-style:inherit}
+main:not(.home-page) .zm-word{overflow-wrap:normal;white-space:nowrap}
+main:not(.home-page) h1,main:not(.home-page) h2,main:not(.home-page) h3{min-width:0}
+main:not(.home-page) h1{font-style:normal}
+main:not(.home-page) .site-header.minimal-header{height:clamp(72px,6vw,90px);min-height:72px}
+main.site-controls-floating:not(.home-page)>.site-header.minimal-header{height:clamp(72px,6vw,90px);min-height:72px;padding-block:0}
+main:not(.home-page)>.site-header.minimal-header{position:sticky;top:0;z-index:40;background:#f4f1e8}
+main:not(.home-page) .story-index-nav,main:not(.home-page) .exhibition-index{top:105px}
+main:not(.home-page) .home-footer{border-top:1px solid #b9beb0;padding-block:24px 40px}
+main:not(.home-page) .chapter-rule,main:not(.home-page) .projects-rule,main:not(.home-page) .entry-top,main:not(.home-page) .archive-rule,main:not(.home-page) .personal-rule,main:not(.home-page) .contact-rule{font-size:clamp(10px,.85vw,12px);letter-spacing:.1em}
+.zm-menu-dialog .tile-notebook{background:#ffda24;color:#24291e}
+.tile-notebook-mark{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:9%}
+.tile-notebook-mark>b{font:700 clamp(26px,4.2vw,72px)/.87 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.08em}
+.tile-notebook-mark>b em{font:400 1.05em/.9 var(--serif);letter-spacing:-.04em}
+.tile-notebook-mark>span{font-size:8px;letter-spacing:.12em;font-weight:650}
+.zm-menu-dialog .tile-notebook .zm-tile-label{display:none}
+.zm-menu-dialog .tile-notebook::after{display:none}
+/* Original project art: three different palettes, type and diagram systems. */
+.studio-poster.art-v32{color:#f4f1e8;container-type:inline-size;isolation:isolate;min-width:0}
+.studio-poster.art-v32.art-think{background:#20241c;color:#ffda24}
+.studio-poster.art-v32.art-finance{background:#f4f1e8;color:#24291e;box-shadow:inset 0 0 0 1px #788367}
+.studio-poster.art-v32.art-earth{background:#364431;color:#f4f1e8}
+.art-v32 .art-corner,.art-v32 .art-foot{left:5%;right:5%;display:flex;justify-content:space-between;gap:10px;letter-spacing:.085em;font-size:clamp(8px,1.15cqw,14px)}
+.art-v32 .art-corner{top:6%}.art-v32 .art-foot{bottom:6%}
+.studio-poster.art-v32 .think-word,.studio-poster.art-v32 .finance-word,.studio-poster.art-v32 .earth-word{left:5%;top:48%;max-width:51%;text-shadow:none;transform:translateY(-50%)}
+.studio-poster.art-v32 .think-word{font:850 clamp(28px,11.6cqw,180px)/.79 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.10em;color:#ffda24}
+.art-v32 .think-word>span{color:#f4f1e8}
+.studio-poster.art-v32 .finance-word{font:750 clamp(25px,8.9cqw,145px)/.88 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.075em}
+.studio-poster.art-v32 .finance-word em{font:400 .78em/.97 var(--serif);letter-spacing:-.045em}
+.studio-poster.art-v32 .earth-word{font:400 clamp(28px,10cqw,160px)/.83 var(--serif);letter-spacing:-.055em}
+.art-v32 .finance-word small,.art-v32 .earth-word small{display:block;font:650 clamp(9px,1.3cqw,16px)/1.4 "DM Sans Variable",Arial,sans-serif;letter-spacing:.10em;margin-top:clamp(8px,2cqw,25px)}
+main.site-motion-ready .case-opening .studio-poster.art-v32,main.site-motion-ready .exhibit-visual{clip-path:none}
+.exhibit-visual .exhibit-badge{border-radius:0;background:#ffda24;color:#24291e;transform:none;width:clamp(44px,5.5vw,76px);box-shadow:none;right:3%;bottom:12%;font-size:9px;clip-path:polygon(0 0,82% 0,100% 18%,100% 100%,0 100%)}
+.home-page .home-chapters .work-chapter{background:#24291e}
+.home-page .work-heading h2,.home-page .personal-grid h2{font-family:"DM Sans Variable",Arial,sans-serif;font-weight:750;letter-spacing:-.075em}
+.home-page .work-heading h2 em,.home-page .personal-grid h2 em{font:400 1.1em/.82 var(--serif);letter-spacing:-.055em}
+.home-page .home-chapters .home-contact{margin-top:0}
+.home-page .home-chapters .personal-chapter{background:#ffda24;color:#24291e}
+.home-page .personal-grid p,.home-page .personal-grid h2 em,.home-page .interest-line span:last-child,.home-page .personal-chapter .chapter-link{color:#24291e}
+.home-page .interest-line{border-color:#24291e55}
+.home-page .home-chapters .work-heading p{color:#e5e4d9}
+.home-page .finale-signature{color:#ffda24}
+/* My Story: original documents appear as annotations beside the authored diagrams. */
+.story-page .story-opening{background:#24291e;color:#f4f1e8}
+.story-page .story-opening h1{font-family:"DM Sans Variable",Arial,sans-serif;font-weight:800;font-size:clamp(76px,13.6vw,210px);letter-spacing:-.085em;line-height:.85}
+.story-page .story-opening h1 em{font:400 1.06em/.84 var(--serif);color:#ffda24;letter-spacing:-.05em}
+.story-page .story-tag{color:#ffda24}
+.story-page .story-portrait{background:radial-gradient(ellipse at 50% 65%,#788367,#3d4834 65%);border:0}
+.story-page .story-portrait>span{background:#ffda24;color:#24291e;border:0}
+.story-page .story-opening-copy h2{font-size:clamp(48px,6.5vw,104px)}
+.story-page .story-opening-copy p{color:#e4e4d7}
+.story-page .story-autograph{color:#ffda24}
+.story-page .story-entry{position:relative}
+.story-page .entry-art{height:clamp(260px,36vw,520px);box-shadow:none;clip-path:none}
+.story-page .entry-art::after{inset:0;border:0}
+.story-page .story-entry-questions .entry-art{background:#ffda24;color:#24291e}
+.story-page .story-entry-learning .entry-art{background:#dce0d2;color:#24291e}
+.story-page .story-entry-building .entry-art{background:#24291e;color:#ffda24}
+.story-page .story-entry-future .entry-art{background:#788367;color:#f4f1e8}
+.story-page .story-entry-questions .entry-art>svg,.story-page .story-entry-learning .entry-art>svg{width:48%;left:2%}
+.story-evidence{position:absolute;inset:10% 5% 11% 43%;isolation:isolate}
+.story-evidence-paper{position:absolute;margin:0;width:64%;height:80%;padding:7px 7px 19px;background:#f4f1e8;color:#24291e;box-shadow:0 10px 28px #24291e40;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:4px;transform-origin:center bottom}
+.story-evidence-paper img{display:block;width:100%;height:100%;object-fit:contain;min-height:0}
+.story-evidence-paper figcaption{font-size:clamp(7px,.8vw,10px);line-height:1.25;text-transform:uppercase}
+.story-evidence-paper.paper-0{left:2%;top:8%;transform:rotate(calc(-4deg - var(--site-in,1)*7deg));translate:0 calc((1 - var(--site-in,1))*35px)}
+.story-evidence-paper.paper-1{right:0;bottom:0;transform:rotate(calc(2deg + var(--site-in,1)*8deg));translate:0 calc((1 - var(--site-in,1))*60px)}
+.story-page .entry-copy h2{font-family:"DM Sans Variable",Arial,sans-serif;font-weight:700;font-size:clamp(40px,5vw,86px);letter-spacing:-.065em}
+.story-page .entry-copy h2 em{font:400 1.08em/.92 var(--serif);letter-spacing:-.045em}
+.story-page .story-entry:nth-child(even) .entry-copy{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+.story-page .story-entry:nth-child(even) .entry-copy p{max-width:46ch}
+/* Project exhibition: less header theatre, more room for the work. */
+.projects-page .projects-opening{background:#ffda24;color:#24291e;position:relative;isolation:isolate}
+.projects-page .projects-opening::before{content:"03";font:800 clamp(160px,34vw,600px)/.8 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.13em;position:absolute;right:2%;bottom:0;color:#24291e0d;z-index:-1;pointer-events:none}
+.projects-page .projects-opening h1{font:800 clamp(65px,12vw,190px)/.82 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.085em;max-width:13ch}
+.projects-page .projects-opening h1 em{font:400 1.08em/.84 var(--serif);letter-spacing:-.05em}
+.projects-page .projects-intro{border-color:#24291e55}
+.projects-page .projects-intro>div{color:#24291e}
+.projects-page .exhibition-directory{grid-template-columns:minmax(160px,.24fr) minmax(0,1fr);gap:clamp(22px,4vw,60px)}
+.projects-page .exhibition-directory .exhibition-index{background:transparent;border-top:2px solid #24291e;padding-inline:0}
+.projects-page .exhibition-directory .exhibit-scene{margin-bottom:clamp(60px,9vw,140px)}
+.projects-page .exhibition-directory .exhibit-visual .studio-poster{aspect-ratio:1.7}
+.projects-page .exhibition-directory .exhibit-finance .exhibit-visual{width:89%;margin-left:auto}
+.projects-page .exhibition-directory .exhibit-earth .exhibit-visual{width:94%}
+.projects-page .exhibit-caption h3{font-family:"DM Sans Variable",Arial,sans-serif;font-weight:700;letter-spacing:-.06em}
+.projects-page .projects-ending{background:#24291e;color:#f4f1e8}
+.projects-page .projects-ending h2 em,.projects-page .projects-ending .case-link{color:#ffda24}
+.projects-page.case-world-think .case-opening{background:#24291e;color:#f4f1e8}
+.projects-page.case-world-finance .case-opening{background:#e3e6d9;color:#24291e}
+.projects-page.case-world-earth .case-opening{background:#3c4b35;color:#f4f1e8}
+.case-title-group{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.65fr);gap:clamp(15px,4vw,64px);align-items:end;padding-block:clamp(24px,4vw,60px)}
+.case-title-group h1{margin:12px 0 0!important;line-height:.87!important;font-size:clamp(48px,9.8vw,158px)!important;overflow-wrap:anywhere}
+.case-title-group h1 .zm-word{white-space:normal;overflow-wrap:anywhere}
+.case-title-group h1 .zm-word>span{max-width:100%;overflow-wrap:anywhere}
+.case-title-group p{font-size:clamp(16px,1.7vw,24px);line-height:1.5;margin:0;max-width:34ch}
+.case-edition-number{font-size:clamp(12px,1.4vw,19px);letter-spacing:.15em;font-weight:700;color:inherit}
+.case-world-think .case-title-group h1{font-family:"DM Sans Variable",Arial,sans-serif;font-weight:800;letter-spacing:-.09em;color:#ffda24}
+.case-world-finance .case-title-group h1{font-family:"DM Sans Variable",Arial,sans-serif;font-weight:750;letter-spacing:-.08em}
+.case-world-earth .case-title-group h1{font-style:italic;letter-spacing:-.045em}
+.projects-page.case-page .case-opening .studio-poster{aspect-ratio:1.85}
+.case-world-think .case-introduction h2{font-family:"DM Sans Variable",Arial,sans-serif;font-weight:750;letter-spacing:-.07em}
+.case-world-finance .case-details{background:#e3e6d9;color:#24291e}
+.case-world-finance .case-details .projects-rule,.case-world-finance .case-details h2 em,.case-world-finance .case-detail-grid p,.case-world-finance .case-focus>span,.case-world-finance .case-focus small{color:#24291e}
+.case-world-earth .case-details{background:#3c4b35}
+.case-world-earth .case-future{background:#dce0d2}
+.case-world-think .case-future{background:#ffda24}
+.case-world-finance .case-future{background:#f4f1e8;border:1px solid #788367}
+/* Archive: documents as prints, experience records as labelled index sheets. */
+.milestones-page .milestone-hero{background:#24291e;color:#f4f1e8}
+.milestones-page .milestone-hero h1{font-family:"DM Sans Variable",Arial,sans-serif;font-weight:800;font-size:clamp(54px,12vw,190px);letter-spacing:-.09em;line-height:.9}
+.milestones-page .milestone-hero h1 .zm-word{white-space:normal;overflow-wrap:anywhere}
+.milestones-page .milestone-hero h1 .zm-word>span{max-width:100%;overflow-wrap:anywhere}
+.milestones-page .archive-emblem{color:#ffda24}
+.milestones-page .archive-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(14px,2vw,32px);align-items:start}
+.milestones-page .archive-record{grid-column:span 4;border:0;background:transparent;padding:0;box-shadow:none;min-width:0}
+.milestones-page .archive-record:nth-child(7n+1),.milestones-page .archive-record:nth-child(7n+2){grid-column:span 6}
+.milestones-page .record-cover{aspect-ratio:1.35;min-height:0;clip-path:none}
+.milestones-page .record-has-document .record-cover{background:#e1e0d5!important;box-shadow:inset 0 0 0 1px #c5c8b8;padding:clamp(10px,2vw,28px)}
+.milestones-page .record-has-document .record-cover img{object-fit:contain;filter:drop-shadow(0 8px 10px #24291e22);background:transparent}
+.milestones-page .record-experience .record-cover{background:#24291e;color:#ffda24}
+.milestones-page .record-info{border-top:1px solid #b9beb0;padding-top:13px;margin-top:9px}
+.milestones-page .record-info .record-title{font:650 clamp(20px,2.25vw,37px)/1.12 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.045em}
+.milestones-page .record-info .record-org{font-size:13px}
+.milestones-page .archive-tabs button[aria-pressed=true]{background:#ffda24;color:#24291e;border-color:#24291e}
+.milestones-page .archive-ending{background:#ffda24;color:#24291e}
+.milestones-page .archive-ending a{color:#24291e}
+.milestones-page .archive-ending h2 em{color:#24291e}
+/* Notebook: a different editorial pace, not another portfolio template. */
+.personal-page .personal-opening{background:#ffda24;color:#24291e}
+.personal-page .personal-title-wrap h1{font-family:"DM Sans Variable",Arial,sans-serif;font-weight:800;font-size:clamp(66px,14vw,215px);letter-spacing:-.09em;line-height:.81}
+.personal-page .personal-title-wrap h1 em{font:400 1.1em/.82 var(--serif);letter-spacing:-.055em}
+.personal-page .personal-stamp{max-width:260px}
+.personal-page .personal-note-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,28px);align-items:start}
+.personal-page .personal-note{border:1px solid #b9beb0;background:#e4e5d9;padding:0 18px}
+.personal-page .personal-note:nth-child(2){background:#f4f1e8}
+.personal-page .personal-note:nth-child(3){background:#24291e;color:#f4f1e8}
+.personal-page .personal-note summary{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto 1fr auto;gap:12px;min-height:clamp(180px,24vw,300px);align-content:space-between;align-items:start;padding:18px 0}
+.personal-page .note-number{grid-column:1;grid-row:1;color:inherit}
+.personal-page .note-topic{grid-column:1/-1;grid-row:2;font:650 clamp(28px,3.7vw,58px)/.9 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.07em;align-self:center}
+.personal-page .note-question{grid-column:1/-1;grid-row:3;font-size:clamp(14px,1.35vw,20px);color:inherit}
+.personal-page .note-plus{grid-column:2;grid-row:1;font-size:24px}
+.personal-page .personal-note[open]{padding-inline:18px}
+.personal-page .personal-note:nth-child(3)[open]{background:#24291e;color:#f4f1e8}
+.personal-page .personal-note:nth-child(3) p{color:#f4f1e8}
+.personal-page .personal-note p{width:100%;padding:0;font-size:16px;margin:0 0 18px}
+.personal-page .personal-music{background:#24291e}
+.personal-page .music-art{background:#3c4b35;border:0;color:#ffda24}
+.personal-page .music-copy h2 em{color:#ffda24}
+.personal-page .book-stack{gap:10px}
+.personal-page .book-spine{box-shadow:0 8px 12px #24291e18}
+.personal-page .book-spine.spine-three{background:#ffda24}
+.personal-page .personal-end{background:#dce0d2}
+.contact-page .contact-opening{background:#24291e;color:#f4f1e8}
+.contact-page .contact-title-grid h1{font-family:"DM Sans Variable",Arial,sans-serif;font-weight:800;letter-spacing:-.095em;font-size:clamp(90px,18vw,285px);line-height:.79}
+.contact-page .contact-title-grid h1 em{font:400 1.08em/.79 var(--serif);color:#ffda24;letter-spacing:-.06em}
+.contact-page .contact-postmark{color:#ffda24}
+.contact-page .letter-paper{background:#fffdf4;border:1px solid #c5c8b8;box-shadow:8px 8px 0 #dce0d2;padding:clamp(22px,4vw,64px)}
+.contact-page .letter-signature{color:#b38d00}
+.contact-page .contact-channel strong{font-family:"DM Sans Variable",Arial,sans-serif;font-size:clamp(28px,3.8vw,58px);font-weight:650;letter-spacing:-.065em}
+.contact-page .contact-channel:hover small,.contact-page .contact-channel:hover>span>span{color:#24291e}
+.contact-page .contact-ending{background:#ffda24;color:#24291e;padding-block:clamp(25px,5vw,65px)}
+.contact-page .contact-ending h2{font-size:clamp(64px,9vw,140px)}
+.contact-page .contact-ending .signature{color:#24291e}
+/* Short screens and touch layouts: no desktop-sized type or forced pinning. */
+@media(max-width:900px){
+.projects-page .exhibition-directory{grid-template-columns:minmax(130px,.28fr) minmax(0,1fr);gap:20px}
+.milestones-page .archive-record,.milestones-page .archive-record:nth-child(7n+1),.milestones-page .archive-record:nth-child(7n+2){grid-column:span 6}
+.personal-page .personal-note-list{grid-template-columns:1fr}
+.personal-page .personal-note summary{min-height:150px}
+.story-page .story-entry:nth-child(even) .entry-copy{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+main:not(.home-page) .site-header.minimal-header,main.site-controls-floating:not(.home-page)>.site-header.minimal-header{height:64px;min-height:64px}
+main:not(.home-page) .story-index-nav,main:not(.home-page) .exhibition-index{position:static}
+.story-page .story-opening h1{font-size:clamp(58px,15vw,110px)}
+.story-page .entry-art{height:clamp(210px,65vw,380px)}
+.story-page .entry-copy h2{font-size:clamp(37px,10vw,70px)}
+.story-page .story-evidence{inset:12% 4% 13% 40%}
+.projects-page .projects-opening h1{font-size:clamp(53px,13vw,105px)}
+.projects-page .exhibition-directory{grid-template-columns:1fr}
+.projects-page .exhibition-directory .exhibit-finance .exhibit-visual,.projects-page .exhibition-directory .exhibit-earth .exhibit-visual{width:100%}
+.case-title-group{grid-template-columns:1fr}
+.case-title-group h1{font-size:clamp(45px,12vw,96px)!important}
+.projects-page.case-page .case-opening .studio-poster,.projects-page .exhibition-directory .exhibit-visual .studio-poster{aspect-ratio:1.28}
+.art-v32 .art-foot span,.art-v32 .art-corner span{display:none}
+.art-v32 .studio-artwork{object-position:center}
+.studio-poster.art-v32 .think-word{font-size:clamp(23px,11cqw,84px)}
+.studio-poster.art-v32 .finance-word,.studio-poster.art-v32 .earth-word{font-size:clamp(21px,8.6cqw,65px)}
+.milestones-page .milestone-hero h1{font-size:clamp(43px,10.8vw,100px)}
+.milestones-page .archive-record,.milestones-page .archive-record:nth-child(7n+1),.milestones-page .archive-record:nth-child(7n+2){grid-column:span 12}
+.milestones-page .record-cover{aspect-ratio:1.5}
+.personal-page .personal-title-wrap h1{font-size:clamp(55px,15vw,120px)}
+.contact-page .contact-title-grid h1{font-size:clamp(72px,19vw,160px)}
+.home-page .work-heading h2,.home-page .personal-grid h2{font-size:clamp(49px,11vw,95px)}
+}
+@media(prefers-reduced-motion:reduce){.story-evidence-paper{translate:none!important}.story-evidence-paper.paper-0{transform:rotate(-8deg)}.story-evidence-paper.paper-1{transform:rotate(8deg)}}

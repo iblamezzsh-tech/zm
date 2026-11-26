@@ -442,7 +442,7 @@ h1 span {
   --paper: #f4f1e8;
   --muted: #525b46;
   --line: #c9cabe;
-  --accent: #d5ed73;
+  --accent: #ffda24;
 }
 html { scroll-padding-top: 24px; }
 .site-header { gap: 24px; height: 82px; }

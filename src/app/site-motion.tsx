@@ -35,7 +35,7 @@ export default function SiteMotion(){
   // Use an observer to avoid continually measuring every archive card.
   const cards=new Set<HTMLElement>();
   const cardObserver=new IntersectionObserver(entries=>{for(const e of entries){if(e.isIntersecting){(e.target as HTMLElement).dataset.cardSeen="true";cardObserver.unobserve(e.target)}}},{threshold:.13});
-  function scanCards(){main!.querySelectorAll<HTMLElement>(".archive-record,.personal-note,.contact-channel").forEach(el=>{if(cards.has(el))return;cards.add(el);cardObserver.observe(el)})}
+  function scanCards(){for(const old of cards){if(!old.isConnected){cardObserver.unobserve(old);cards.delete(old)}}main!.querySelectorAll<HTMLElement>(".archive-record,.personal-note,.contact-channel").forEach(el=>{if(cards.has(el))return;cards.add(el);cardObserver.observe(el)})}
   const mutations=new MutationObserver(()=>{scanCards();requestMotionFrame()});
   mutations.observe(main,{childList:true,subtree:true});scanCards();
   // The actual linework is authored SVG, not generic stock animation.

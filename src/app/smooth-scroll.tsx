@@ -20,10 +20,10 @@ export default function SmoothScroll(){
    const link=e.target.closest<HTMLAnchorElement>("a[href]");if(!link||link.target||link.hasAttribute("download"))return;
    const u=new URL(link.href,location.href);
    if(u.origin!==location.origin||u.pathname!==location.pathname||u.search!==location.search||!u.hash||!instance)return;
-   const target=document.getElementById(decodeURIComponent(u.hash.slice(1)));if(!target)return;
+   let hash:string;try{hash=decodeURIComponent(u.hash.slice(1))}catch{return}const target=document.getElementById(hash);if(!target)return;
    if(link.closest(".exhibition-cinematic"))return;
    e.preventDefault();history.pushState(null,"",u.hash);
-   instance.scrollTo(target,{offset:0});target.focus({preventScroll:true});
+   instance.scrollTo(target,{offset:link.classList.contains("skip-link")?0:-82});if(link.classList.contains("skip-link"))target.focus({preventScroll:true});
   }
   sync();query.addEventListener("change",sync);document.addEventListener("click",click);
   return()=>{query.removeEventListener("change",sync);document.removeEventListener("click",click);instance?.destroy();setScrollEngine(null)};

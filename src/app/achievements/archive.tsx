@@ -9,8 +9,8 @@ function Mark({category}:{category:RecordEntry["category"]}){
  </g></svg>
 }
 function EntryCard({entry,onOpen}:{entry:RecordEntry;onOpen:(button:HTMLButtonElement)=>void}){
- return <button type="button" className="archive-record" onClick={event=>onOpen(event.currentTarget)}>
- <span className={"record-cover"+(entry.document?.type==="image"?" record-cover-photo":"")}><span>ZM / ARCHIVE</span>{entry.document?.type==="image"?<img src={entry.document.src} alt={entry.document.alt} loading="lazy" decoding="async"/>:<Mark category={entry.category}/>}<span>{entry.type.toUpperCase()}</span></span>
+ return <button type="button" className={"archive-record"+(entry.document?" record-has-document":" record-experience")} onClick={event=>onOpen(event.currentTarget)}>
+ <span className={"record-cover"+(entry.document?.type==="image"?" record-cover-photo":"")}><span>ZM / ORIGINAL RECORD</span>{entry.document?.type==="image"?<img src={entry.document.src} alt={entry.document.alt} loading="lazy" decoding="async"/>:<Mark category={entry.category}/>}<span>{entry.type.toUpperCase()}</span></span>
  <span className="record-info"><span>{entry.category}{entry.period?" / "+entry.period:""}</span><span className="record-title">{entry.title}</span><span className="record-org">{entry.organization}</span><span className="record-open">Read record <span aria-hidden="true">↗</span></span></span>
  </button>
 }
