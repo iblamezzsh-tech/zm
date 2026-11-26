@@ -60,7 +60,7 @@ export default function SiteMotion(){
     words.forEach((word,i)=>write(word,"--word-reveal",kind==="opening"?1:ease(Math.min(.32,i*.055),Math.min(.98,.62+i*.055),p)));
    }
   }
-  function mode(){enabled=!reduced.matches;main!.classList.toggle("site-motion-ready",enabled);requestMotionFrame()}
+  function mode(){enabled=!reduced.matches;main!.classList.toggle("site-motion-ready",enabled);if(!enabled)nodes.forEach(({words})=>words.forEach(word=>word.style.removeProperty("--word-reveal")));requestMotionFrame()}
   function pointer(e:PointerEvent){
     if(!enabled||!fine.matches||e.pointerType!=="mouse")return;
     const target=e.currentTarget as HTMLElement,r=target.getBoundingClientRect();

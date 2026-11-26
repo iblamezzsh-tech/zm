@@ -17,17 +17,30 @@ function EntryCard({entry,onOpen}:{entry:RecordEntry;onOpen:(button:HTMLButtonEl
 export default function Archive({records}:{records:RecordEntry[]}){
  const [category,setCategory]=useState<Category>("All");
  const [selected,setSelected]=useState<RecordEntry|null>(null);
+ const [featuredId,setFeaturedId]=useState(records[0]?.id??"");
+ const deskTrigger=useRef<HTMLButtonElement>(null);
  const dialog=useRef<HTMLDialogElement>(null);
  const trigger=useRef<HTMLButtonElement|null>(null);
  const items=records.filter(item=>category==="All"||(category==="Certificates"?Boolean(item.document):item.category===category));
+ const featured=items.find(r=>r.id===featuredId)??items[0];
+ const index=items.findIndex(r=>r.id===featured?.id);
+ function move(delta:number){if(items.length)setFeaturedId(items[(index+delta+items.length)%items.length].id)}
  useEffect(()=>{const el=dialog.current;if(!selected||!el)return;if(!el.open)el.showModal();const previous=document.body.style.overflow;document.body.style.overflow="hidden";return()=>{document.body.style.overflow=previous}},[selected]);
  function open(entry:RecordEntry,button:HTMLButtonElement){trigger.current=button;setSelected(entry)}
  function close(){dialog.current?.close()}
  return <section className="archive-section" aria-labelledby="archive-title">
  <div className="archive-rule"><span>01 / Personal records</span><span>Experiences &amp; evidence</span></div>
  <div className="archive-heading"><h2 id="archive-title"><MotionWords text="The"/> <em><MotionWords text="archive."/></em></h2><p>School days, competitions, volunteering and the documents I've kept along the way.</p></div>
- <div className="archive-tabs" role="group" aria-label="Filter archive">{categories.map(c=><button type="button" key={c} aria-pressed={category===c} onClick={()=>setCategory(c)}>{c}</button>)}</div>
+ <div className="archive-tabs" role="group" aria-label="Filter archive">{categories.map(c=><button type="button" key={c} aria-pressed={category===c} onClick={()=>{setCategory(c);setFeaturedId("")}}>{c}</button>)}</div>
  <div className="archive-count" aria-live="polite">{String(items.length).padStart(2,"0")} {items.length===1?"record":"records"} / {category}</div>
+ {featured&&<div className="archive-desk" aria-label="Selected archive record">
+ <div className="desk-top"><span>ZM / READING ROOM</span><span>{String(index+1).padStart(2,"0")} / {String(items.length).padStart(2,"0")}</span></div>
+ <div className="desk-object"><div className="desk-paper-back" aria-hidden="true"/><div className="desk-paper" key={featured.id}>
+ {featured.document?.type==="image"?<img src={featured.document.src} alt={featured.document.alt} decoding="async"/>:<div className="desk-index-sheet"><Mark category={featured.category}/><span>{featured.category} / {featured.type}</span><strong>{featured.title}</strong></div>}
+ <span className="desk-paper-label">ORIGINAL RECORD / {featured.period??featured.category}</span></div></div>
+ <div className="desk-copy" key={featured.id}><span className="desk-kicker">{featured.category} / {featured.type}</span><h3>{featured.title}</h3><p>{featured.organization}</p><button ref={deskTrigger} type="button" className="desk-open" onClick={e=>open(featured,e.currentTarget)}>Inspect record <span aria-hidden="true">↗</span></button></div>
+ <div className="desk-controls"><button type="button" onClick={()=>move(-1)} disabled={items.length<2} aria-label="Previous archive record">←</button><span>TURN THE PAGE</span><button type="button" onClick={()=>move(1)} disabled={items.length<2} aria-label="Next archive record">→</button></div>
+ </div>}
  {items.length?<div className="archive-grid" key={category}>{items.map(entry=><EntryCard entry={entry} key={entry.id} onOpen={button=>open(entry,button)}/>)}</div>:<div className="archive-empty"><span>ZM / ARCHIVE NOTES</span><h3>{category==="Certificates"?"Documents yet to be added.":"A chapter still unfolding."}</h3><p>{category==="Certificates"?"No certificate files have been published in this archive yet.":"There are no published records in this category yet."}</p><button type="button" onClick={()=>setCategory("All")}>Browse all records ↗</button></div>}
  <dialog data-lenis-prevent className="archive-dialog" ref={dialog} aria-label={selected?.title ?? "Archive record"} onClose={()=>{setSelected(null);trigger.current?.focus();trigger.current=null}} onClick={e=>{if(e.target===e.currentTarget){const rect=e.currentTarget.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)close()}}}>
  <button type="button" autoFocus className="archive-close" aria-label="Close record" onClick={close}>×</button>

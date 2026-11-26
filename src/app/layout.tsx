@@ -10,6 +10,7 @@ import SiteMotion from "./site-motion";
 import "./site-motion.css";
 import "./motion-polish.css";
 import "./art-direction.css";
+import "./studio-v33.css";
 
 export const metadata: Metadata = {
   title: "ZiyoMuhammad — Personal Portfolio",

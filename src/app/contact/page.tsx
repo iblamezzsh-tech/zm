@@ -13,7 +13,7 @@ export default function ContactPage(){
  <section className="contact-opening" aria-labelledby="contact-title">
  <div className="contact-rule"><span>ZM / CORRESPONDENCE</span><span>FROM UZBEKISTAN</span></div>
  <div className="contact-title-grid"><h1 id="contact-title"><MotionWords text="Say"/><br/><em><MotionWords text="hello."/></em></h1><div className="contact-postmark" aria-hidden="true"><svg viewBox="0 0 260 260"><defs><path id="postmark-circle" d="M130 130m-91 0a91 91 0 1 1 182 0a91 91 0 1 1-182 0"/></defs><circle cx="130" cy="130" r="122" fill="none" stroke="currentColor"/><circle cx="130" cy="130" r="72" fill="none" stroke="currentColor"/><text fontSize="13" letterSpacing="2" fill="currentColor"><textPath href="#postmark-circle" textLength="566">GOOD TO MEET YOU · ZM · UZBEKISTAN · LET’S CONNECT · </textPath></text><path d="M130 86l10 34 34 10-34 10-10 34-10-34-34-10 34-10z" fill="currentColor"/></svg></div></div>
- <div className="contact-opening-bottom"><p>A question, an idea, or something worth building together? I’d love to hear about it.</p><a className="contact-text-link" href="#contact-methods">Find me here ↓</a></div>
+ <div className="contact-opening-bottom"><p>A question, an idea, or something worth building together? I’d love to hear about it.</p><a className="contact-direct" href={"mailto:"+email}>Write to me <span aria-hidden="true">↗</span></a><a className="contact-text-link" href="#contact-methods">Other ways to connect ↓</a></div>
  </section>
  <section className="contact-letter" id="contact-methods" aria-labelledby="letter-title">
  <div className="contact-rule"><span>01 / AN OPEN LETTER</span><span>PERSONAL NOTES</span></div>
