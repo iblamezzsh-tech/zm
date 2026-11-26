@@ -24,7 +24,7 @@ export default function Archive({records}:{records:RecordEntry[]}){
  function close(){dialog.current?.close()}
  return <section className="archive-section" aria-labelledby="archive-title">
  <div className="archive-rule"><span>01 / Personal records</span><span>Experiences &amp; evidence</span></div>
- <div className="archive-heading"><h2 id="archive-title">The <em>archive.</em></h2><p>A collection of experiences, responsibilities and milestones. Awards and certificates will be listed only when supporting records are available.</p></div>
+ <div className="archive-heading"><h2 id="archive-title">The <em>archive.</em></h2><p>School days, competitions, volunteering and the documents I've kept along the way.</p></div>
  <div className="archive-tabs" role="group" aria-label="Filter archive">{categories.map(c=><button type="button" key={c} aria-pressed={category===c} onClick={()=>setCategory(c)}>{c}</button>)}</div>
  <div className="archive-count" aria-live="polite">{String(items.length).padStart(2,"0")} {items.length===1?"record":"records"} / {category}</div>
  {items.length?<div className="archive-grid">{items.map(entry=><EntryCard entry={entry} key={entry.id} onOpen={button=>open(entry,button)}/>)}</div>:<div className="archive-empty"><span>ZM / ARCHIVE NOTES</span><h3>{category==="Certificates"?"Documents yet to be added.":"A chapter still unfolding."}</h3><p>{category==="Certificates"?"No certificate files have been published in this archive yet.":"There are no published records in this category yet."}</p><button type="button" onClick={()=>setCategory("All")}>Browse all records ↗</button></div>}
