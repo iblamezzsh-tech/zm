@@ -28,8 +28,9 @@ export default function Portrait() {
     const field=new LiquidField();
     heroFields.set(area,field);
     let bounds=area.getBoundingClientRect(), scale=1, dpr=1, alive=true, loaded=false, visible=false, stopped=false, full=false;
-    let pointer:number|null=null, inside=false, lastPoint:{x:number;y:number}|null=null;
-    let raf=0,last=0,acc=0,age=0,interacted=false, demoDone=false;
+    let pointer:number|null=null, lastPoint:{x:number;y:number}|null=null;
+    let raf=0,last=0,acc=0,age=0,lastInput=-1.5;
+    let idlePoint:{x:number;y:number}|null=null;
     let targetX=0,targetY=0,dx=0,dy=0;
     let imageData:ImageData|null=null;
     const canMove=()=>visible&&!stopped&&!motion.matches&&!document.hidden;
@@ -60,20 +61,20 @@ export default function Portrait() {
       const dt=last?Math.min(.05,(now-last)/1000):1/60;last=now;age+=dt;acc+=dt;
       const ease=1-Math.exp(-dt*6);
       dx+=(targetX-dx)*ease;dy+=(targetY-dy)*ease;depth();
-      if(!interacted&&!demoDone&&age>1.1){
-        const t=(age-1.1)/2.4;
-        if(t>=1){demoDone=true;lastPoint=null}
-        else{const x=bounds.width*(.38+.24*t),y=bounds.height*(.16+.25*Math.sin(t*Math.PI));
-          field.splat(x/bounds.width,y/bounds.height,lastPoint?.x,lastPoint?.y,.73);lastPoint={x:x/bounds.width,y:y/bounds.height}}
-      }
-      if(inside&&lastPoint&&!full)field.splat(lastPoint.x,lastPoint.y,undefined,undefined,.18);
+      if(!full&&age>lastInput+2.5){
+        // A slow figure-eight gives the opening scene life even without input.
+        const t=(age-lastInput-2.5)*.65;
+        const next={x:.5+.12*Math.sin(t),y:.32+.15*Math.sin(t*2)};
+        if(idlePoint)field.splat(next.x,next.y,idlePoint.x,idlePoint.y,.82);
+        idlePoint=next;
+      }else idlePoint=null;
       while(acc>=1/60){field.step();acc-=1/60}
       paint();raf=requestAnimationFrame(frame);
     }
     function sync(){
       if(!alive)return;
       if(canMove()){if(!raf){last=0;raf=requestAnimationFrame(frame)}}
-      else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;depth();field.clear();paint()}
+      else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;lastPoint=null;idlePoint=null;depth();field.clear();paint()}
     }
     function resize(){
       bounds=area!.getBoundingClientRect();
@@ -89,21 +90,21 @@ export default function Portrait() {
     function refresh(){bounds=area!.getBoundingClientRect()}
     function track(e:PointerEvent){
       if(e.pointerType!=="mouse"&&pointer!==e.pointerId)return;
-      if(!interacted){lastPoint=null;interacted=true;demoDone=true}
+      lastInput=age;idlePoint=null;
       const x=Math.max(0,Math.min(1,(e.clientX-bounds.left)/Math.max(1,bounds.width)));
       const y=Math.max(0,Math.min(1,(e.clientY-bounds.top)/Math.max(1,bounds.height)));
-      const prev=lastPoint;inside=true;lastPoint={x,y};
+      const prev=lastPoint;lastPoint={x,y};
       if(canMove()){
         if(e.pointerType==="mouse"){targetX=(x*2-1)*13;targetY=(y*2-1)*6}
-        field.splat(x,y,prev?.x,prev?.y,1);
-      }else if(!full){field.clear();field.splat(x,y,undefined,undefined,1);paint()}
+        if(prev)field.splat(x,y,prev.x,prev.y,1);
+      }else if(!full){field.clear();field.splat(x,y,prev?.x??x-.012,prev?.y??y,1);paint()}
     }
     function enter(e:PointerEvent){refresh();track(e)}
-    function leave(){inside=false;lastPoint=null;targetX=targetY=0;if(!canMove()){field.clear();paint()}}
+    function leave(){lastPoint=null;targetX=targetY=0;if(!canMove()){field.clear();paint()}}
     function down(e:PointerEvent){if(!e.isPrimary||e.pointerType==="mouse"||(e.target instanceof Element&&e.target.closest("a,button")))return;pointer=e.pointerId;area!.setPointerCapture(e.pointerId);enter(e)}
     function up(e:PointerEvent){if(e.pointerId===pointer){pointer=null;leave()}}
-    function toggle(){interacted=true;demoDone=true;full=!full;setPinned(full);field.clear();paint()}
-    function toggleMotion(){stopped=!stopped;setPaused(stopped);interacted=true;demoDone=true;sync()}
+    function toggle(){lastInput=age;idlePoint=null;full=!full;setPinned(full);field.clear();paint()}
+    function toggleMotion(){stopped=!stopped;setPaused(stopped);lastInput=age;idlePoint=null;sync()}
     const controller=new AbortController(),options={signal:controller.signal,passive:true};
     const ro=new ResizeObserver(resize);
     const io=new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting??false;sync()},{threshold:.03});

@@ -1,75 +1,108 @@
-// Low-resolution damped wave + transported reveal density. All coordinates are normalized.
+// Original CPU velocity-field implementation using semi-Lagrangian transport and pressure projection.
+// Units are grid cells per simulation step. No third-party demo source is included.
 export const heroFields=new WeakMap<HTMLElement,LiquidField>();
 const clamp=(x:number,a:number,b:number)=>Math.max(a,Math.min(b,x));
 export class LiquidField{
- width=120;height=65;aspect=1.8;hasInk=false;
- private a=new Float32Array(120*65);
- private b=new Float32Array(120*65);
- private c=new Float32Array(120*65);
- private ink=new Float32Array(120*65);
- private nextInk=new Float32Array(120*65);
- private phase=0;
+ width=120;height=66;aspect=1.8;hasInk=false;
+ private u=new Float32Array(120*66);
+ private v=new Float32Array(120*66);
+ private nextU=new Float32Array(120*66);
+ private nextV=new Float32Array(120*66);
+ private pressure=new Float32Array(120*66);
+ private nextPressure=new Float32Array(120*66);
+ private div=new Float32Array(120*66);
+ private curl=new Float32Array(120*66);
  resize(w:number,h:number){
-  this.aspect=w/Math.max(h,1);
-  this.width=Math.max(40,Math.min(160,Math.round(82*this.aspect)));
-  this.height=82;
+  this.aspect=w/Math.max(h,1);this.height=66;this.width=Math.max(35,Math.min(150,Math.round(this.height*this.aspect)));
   const n=this.width*this.height;
-  this.a=new Float32Array(n);this.b=new Float32Array(n);this.c=new Float32Array(n);this.ink=new Float32Array(n);this.nextInk=new Float32Array(n);this.hasInk=false;
+  this.u=new Float32Array(n);this.v=new Float32Array(n);this.nextU=new Float32Array(n);this.nextV=new Float32Array(n);
+  this.pressure=new Float32Array(n);this.nextPressure=new Float32Array(n);this.div=new Float32Array(n);this.curl=new Float32Array(n);this.hasInk=false;
  }
- clear(){this.a.fill(0);this.b.fill(0);this.c.fill(0);this.ink.fill(0);this.nextInk.fill(0);this.hasInk=false}
+ clear(){for(const a of [this.u,this.v,this.nextU,this.nextV,this.pressure,this.nextPressure,this.div,this.curl])a.fill(0);this.hasInk=false}
+ private read(a:Float32Array,x:number,y:number){
+  const W=this.width,H=this.height;
+  x=clamp(x,0,W-1.001);y=clamp(y,0,H-1.001);
+  const ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy,i=iy*W+ix;
+  return (a[i]*(1-fx)+a[i+1]*fx)*(1-fy)+(a[i+W]*(1-fx)+a[i+W+1]*fx)*fy;
+ }
  splat(x:number,y:number,px?:number,py?:number,strength=1){
-  const vx=px===undefined?0:x-px,vy=py===undefined?0:y-py;
-  const speed=Math.hypot(vx*this.aspect,vy);
-  const count=Math.min(16,Math.max(1,Math.ceil(speed/.035)));
-  const angle=Math.atan2(vy,vx*this.aspect),cs=Math.cos(angle),sn=Math.sin(angle);
-  const radius=.15,stretch=1+Math.min(1.65,speed*10);
+  if(px===undefined||py===undefined)return;
+  const W=this.width,H=this.height;
+  const vx=(x-px)*(W-1),vy=(y-py)*(H-1),speed=Math.hypot(vx,vy);
+  if(speed<.035)return;
+  // No stationary brush: only movement injects momentum, with an upper speed limit.
+  const force=Math.min(3.8,speed*.72)*strength;
+  const fx=vx/speed*force,fy=vy/speed*force;
+  const radius=H*.085;
+  const count=Math.min(12,Math.max(1,Math.ceil(speed/(radius*.68))));
   for(let k=1;k<=count;k++){
-   const cx=x-vx*(1-k/count),cy=y-vy*(1-k/count);
-   const maxR=radius*stretch*1.28;
-   const left=Math.max(1,Math.floor((cx-maxR/this.aspect)*this.width)),right=Math.min(this.width-2,Math.ceil((cx+maxR/this.aspect)*this.width));
-   const top=Math.max(1,Math.floor((cy-maxR)*this.height)),bottom=Math.min(this.height-2,Math.ceil((cy+maxR)*this.height));
-   for(let j=top;j<=bottom;j++)for(let i=left;i<=right;i++){
-    const dx=(i/(this.width-1)-cx)*this.aspect,dy=j/(this.height-1)-cy;
-    const u=(dx*cs+dy*sn)/stretch,v=-dx*sn+dy*cs;
-    const theta=Math.atan2(v,u);
-    // Asymmetric, continuously changing edges: a liquid footprint, never a rigid circle.
-    const shape=1+.23*Math.sin(theta*3+this.phase*2)+.14*Math.cos(theta*5-this.phase*3)+.10*Math.sin(theta*7+angle);
-    const r=Math.hypot(u,v)/(radius*shape);
-    if(r>1.32)continue;
-    const idx=j*this.width+i;
-    const alpha=clamp((1.16-r)/.36,0,1)*strength;
-    this.ink[idx]=Math.min(1,Math.max(this.ink[idx],alpha)+alpha*.19);
-    if(strength>.4){const impulse=Math.exp(-r*r*4.4)*Math.min(.7,.12+speed*4)*strength/count;this.a[idx]=clamp(this.a[idx]+impulse,-1.5,1.5)}
-   }
+   const cx=(px+(x-px)*k/count)*(W-1),cy=(py+(y-py)*k/count)*(H-1);
+   const range=radius*2.1;
+   for(let j=Math.max(1,Math.floor(cy-range));j<=Math.min(H-2,Math.ceil(cy+range));j++)
+    for(let i=Math.max(1,Math.floor(cx-range));i<=Math.min(W-2,Math.ceil(cx+range));i++){
+     const dx=i-cx,dy=j-cy,fall=Math.exp(-(dx*dx+dy*dy)/(radius*radius));
+     const n=j*W+i;
+     // Tangential force seeds organic curl without drawing a circular reveal.
+     const swirl=force*.13*fall/radius;
+     this.u[n]=clamp(this.u[n]+(fx*fall-dy*swirl)/Math.sqrt(count),-5,5);
+     this.v[n]=clamp(this.v[n]+(fy*fall+dx*swirl)/Math.sqrt(count),-5,5);
+    }
   }
   this.hasInk=true;
  }
  step(){
-  const W=this.width,H=this.height,A=this.a,B=this.b,C=this.c,I=this.ink,N=this.nextInk;
-  this.phase+=.0167;
-  let peak=0;
-  for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){
-   const i=y*W+x;
-   const lap=A[i-1]+A[i+1]+A[i-W]+A[i+W]-4*A[i];
-   C[i]=(2*A[i]-B[i]+.24*lap)*.983;
-   // Transport the ink down the local wave slope, then diffuse and dissolve.
-   const sx=clamp(x+(A[i+1]-A[i-1])*1.8+Math.sin(y*.16+this.phase*2)*.21,1,W-2);
-   const sy=clamp(y+(A[i+W]-A[i-W])*1.8+Math.cos(x*.11-this.phase*1.7)*.19,1,H-2);
-   const ix=Math.floor(sx),iy=Math.floor(sy),fx=sx-ix,fy=sy-iy,ii=iy*W+ix;
-   const transported=(I[ii]*(1-fx)+I[ii+1]*fx)*(1-fy)+(I[ii+W]*(1-fx)+I[ii+W+1]*fx)*fy;
-   const value=Math.max(0,(transported*.91+(I[i-1]+I[i+1]+I[i-W]+I[i+W])*.0225)*.982-.0013);
-   N[i]=value;peak=Math.max(peak,value);
+  if(!this.hasInk)return;
+  const W=this.width,H=this.height,U=this.u,V=this.v,NU=this.nextU,NV=this.nextV,D=this.div,C=this.curl;
+  // Transport momentum through itself; slower than the reference feel, with a longer tail.
+  for(let j=1;j<H-1;j++)for(let i=1;i<W-1;i++){
+   const k=j*W+i,sx=i-U[k]*.72,sy=j-V[k]*.72;
+   NU[k]=this.read(U,sx,sy)*.969;NV[k]=this.read(V,sx,sy)*.969;
   }
-  this.a=C;this.b=A;this.c=B;this.ink=N;this.nextInk=I;this.hasInk=peak>.014;
+  for(let j=1;j<H-1;j++)for(let i=1;i<W-1;i++){
+   const k=j*W+i;C[k]=(NV[k+1]-NV[k-1]-NU[k+W]+NU[k-W])*.5;
+  }
+  // Vorticity confinement restores small fluid curls lost during advection.
+  for(let j=1;j<H-1;j++)for(let i=1;i<W-1;i++){
+   const k=j*W+i;
+   const gx=Math.abs(C[k+1])-Math.abs(C[k-1]),gy=Math.abs(C[k+W])-Math.abs(C[k-W]);
+   const l=Math.hypot(gx,gy)+.0001;
+   NU[k]+=gy/l*C[k]*.11;NV[k]-=gx/l*C[k]*.11;
+  }
+  for(let j=1;j<H-1;j++)for(let i=1;i<W-1;i++){
+   const k=j*W+i;D[k]=(NU[k+1]-NU[k-1]+NV[k+W]-NV[k-W])*.5;
+  }
+  let P=this.pressure,Q=this.nextPressure;P.fill(0);Q.fill(0);
+  for(let pass=0;pass<7;pass++){
+   for(let j=1;j<H-1;j++)for(let i=1;i<W-1;i++){
+    const k=j*W+i;Q[k]=(P[k-1]+P[k+1]+P[k-W]+P[k+W]-D[k])*.25;
+   }
+   const swap=P;P=Q;Q=swap;
+  }
+  this.pressure=P;this.nextPressure=Q;
+  let peak=0;
+  for(let j=1;j<H-1;j++)for(let i=1;i<W-1;i++){
+   const k=j*W+i;
+   NU[k]=clamp(NU[k]-(P[k+1]-P[k-1])*.5,-5,5);
+   NV[k]=clamp(NV[k]-(P[k+W]-P[k-W])*.5,-5,5);
+   peak=Math.max(peak,Math.abs(NU[k])+Math.abs(NV[k]));
+  }
+  this.u=NU;this.v=NV;this.nextU=U;this.nextV=V;
+  this.hasInk=peak>.075;
  }
  sample(x:number,y:number){
-  const i=Math.round(clamp(x,0,1)*(this.width-1)),j=Math.round(clamp(y,0,1)*(this.height-1));
-  const k=j*this.width+i;
-  const left=this.a[j*this.width+Math.max(0,i-1)],right=this.a[j*this.width+Math.min(this.width-1,i+1)];
-  const top=this.a[Math.max(0,j-1)*this.width+i],bottom=this.a[Math.min(this.height-1,j+1)*this.width+i];
-  return {x:(right-left)*.5,y:(bottom-top)*.5,height:this.a[k]};
+  const gx=x*(this.width-1),gy=y*(this.height-1);
+  const u=this.read(this.u,gx,gy),v=this.read(this.v,gx,gy);
+  return {x:u*.065,y:v*.065,height:Math.hypot(u,v)*.035};
  }
  writeMask(out:Uint8ClampedArray){
-  for(let i=0;i<this.ink.length;i++){const v=clamp((this.ink[i]-.08)/.57,0,1);out[i*4]=out[i*4+1]=out[i*4+2]=255;out[i*4+3]=Math.round(v*v*(3-2*v)*255)}
+  // Reveal is an iso-surface of moving fluid, with a directional bias and a narrow feather.
+  // This produces separate, flowing ribbons rather than a translucent brush mark.
+  for(let i=0;i<this.u.length;i++){
+   const u=this.u[i],v=this.v[i],speed=Math.hypot(u,v);
+   const directional=.73-.27*Math.tanh(u*.65);
+   const density=speed*directional;
+   const a=clamp((density-.19)/.27,0,1);
+   out[i*4]=out[i*4+1]=out[i*4+2]=255;out[i*4+3]=Math.round(a*a*(3-2*a)*255);
+  }
  }
 }
