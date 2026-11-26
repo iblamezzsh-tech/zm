@@ -1,0 +1,1 @@
+Use the six generated high-resolution cursor designs, cropped to remove stray background artifacts, normalized to 24×24 transparent monochrome PNGs with aligned arrow hotspots (4,3), hand (9,3), and text (12,12). Preserve native cursor behavior and contextual mappings. Versioned asset paths avoid stale cached artwork. No other design changes.
