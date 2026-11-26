@@ -7,7 +7,7 @@ const smooth=(a:number,b:number,x:number)=>{const t=clamp((x-a)/(b-a));return t*
 export default function FlowMotion(){
  const path=usePathname();
  useEffect(()=>{
-  const main=document.querySelector<HTMLElement>("main");if(!main)return;
+  const main=document.querySelector<HTMLElement>("main");if(!main||main.classList.contains("film-home"))return;
   const q=matchMedia("(prefers-reduced-motion: no-preference)");
   const selector="[data-flow-scene],.home-hero,.field-stage,.personal-chapter,.home-contact,.story-entry,.case-feature-art,.case-introduction,.case-details,.case-future,.archive-desk,.personal-music,.personal-books,.contact-letter";
   const nodes=Array.from(main.querySelectorAll<HTMLElement>(selector));
