@@ -87,3 +87,7 @@
 }
 @media(max-width:360px){.finale-edition{letter-spacing:.02em}.finale-line-one{font-size:28px}.finale-line-two{font-size:27px}.finale-inner{column-gap:14px}.finale-nav>a{font-size:13px}.finale-cta a{padding-inline:8px}}
 @media(prefers-reduced-motion:reduce){.finale-nav>a,.finale-cta a,.finale-nav>a>span::after{transition:none}}
+
+/* V50: homepage has an integrated full-bleed footer. Remove the global
+   main element's 28px trailing padding, which pushes the sticky scene up. */
+main.home-page.film-home{padding-bottom:0}
