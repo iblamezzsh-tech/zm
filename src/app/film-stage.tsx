@@ -19,7 +19,7 @@ export default function FilmStage({children}:{children:ReactNode}){
   if(!el||!v||!space||!main)return;
   const mq=matchMedia("(min-width: 850px) and (min-height: 460px) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
   const shots=Array.from(space.querySelectorAll<HTMLElement>(":scope > .film-shot"));
-  if(shots.length!==SHOTS.length){document.dispatchEvent(new Event("zm-film-ready"));return;}
+  if(shots.length!==SHOTS.length){document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:false}}));return;}
   let live=false,alive=true,previous=-1,w0=0,h0=0;
   let fitW=0,fitH=0;
   function fitTitles(w:number,h:number){
@@ -114,10 +114,12 @@ export default function FilmStage({children}:{children:ReactNode}){
   // Resolve initial deep links while the boot screen still covers the page.
   if(live&&location.hash&&!recenter.current){const id=location.hash.slice(1);const n=id==="top"?0:SHOTS.findIndex(s=>s.id===id);if(n>=0){jump(n,true);measure()}}
   el.dataset.motionReady="true";
-  document.dispatchEvent(new Event("zm-film-ready"));
+  function prepareBoot(){fitW=fitH=0;previous=-1;measure()}
+  document.addEventListener("zm-boot-prepare",prepareBoot);
+  document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:!live||Boolean(w0&&h0)}}));
   document.fonts.ready.then(()=>{if(alive){fitW=fitH=0;previous=-1;requestMotionFrame()}});
   if(recenter.current!==null){const n=recenter.current;recenter.current=null;requestAnimationFrame(()=>{if(alive)jump(n,true)})}else if(location.hash)requestAnimationFrame(()=>{if(alive)hash()});
-  return()=>{alive=false;un();ro.disconnect();mq.removeEventListener("change",sync);document.removeEventListener("click",anchor,true);window.removeEventListener("hashchange",hash);clean()};
+  return()=>{alive=false;document.removeEventListener("zm-boot-prepare",prepareBoot);un();ro.disconnect();mq.removeEventListener("change",sync);document.removeEventListener("click",anchor,true);window.removeEventListener("hashchange",hash);clean()};
  },[normal]);
  useEffect(()=>{const change=()=>{recenter.current=current.current;manual.current=!manual.current;setNormal(manual.current)};window.addEventListener("zm-film-mode",change);return()=>window.removeEventListener("zm-film-mode",change)},[]);
  return <div ref={root} className="cinematic-reel" style={{"--film-shots":SHOTS.length-1} as React.CSSProperties}>

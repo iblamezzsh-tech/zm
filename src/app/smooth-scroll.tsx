@@ -25,7 +25,7 @@ export default function SmoothScroll(){
    e.preventDefault();history.pushState(null,"",u.hash);
    instance.scrollTo(target,{offset:link.classList.contains("skip-link")?0:-82});if(link.classList.contains("skip-link"))target.focus({preventScroll:true});
   }
-  sync();query.addEventListener("change",sync);document.addEventListener("click",click);
+  sync();document.dispatchEvent(new Event("zm-scroll-ready"));query.addEventListener("change",sync);document.addEventListener("click",click);
   return()=>{query.removeEventListener("change",sync);document.removeEventListener("click",click);instance?.destroy();setScrollEngine(null)};
  },[]);
  useEffect(()=>{resetScrollMomentum();requestMotionFrame()},[pathname]);

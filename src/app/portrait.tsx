@@ -13,13 +13,13 @@ export default function Portrait() {
 
   useEffect(() => {
     const area=stage.current, original=base.current, attire=overlay.current, output=lens.current;
-    const ready=()=>document.dispatchEvent(new Event("zm-portrait-ready"));
-    if(!area||!original||!attire||!output){ready();return;}
+    const ready=(ok=true)=>document.dispatchEvent(new CustomEvent("zm-portrait-ready",{detail:{ok}}));
+    if(!area||!original||!attire||!output){ready(false);return;}
     const ctx=output.getContext("2d");
-    if(!ctx){ready();return;}
+    if(!ctx){ready(false);return;}
     const mask=document.createElement("canvas");
     const maskCtx=mask.getContext("2d");
-    if(!maskCtx){ready();return;}
+    if(!maskCtx){ready(false);return;}
     const motion=matchMedia("(prefers-reduced-motion: reduce)");
     const field=new LiquidField();
     heroFields.set(area,field);
@@ -109,7 +109,7 @@ export default function Portrait() {
       window.addEventListener("scroll",refresh,{...options,capture:true});
       motion.addEventListener("change",sync,options);document.addEventListener("visibilitychange",sync,options);
       ready();
-    }).catch(()=>{/* Keep the original portrait if the attire cannot be decoded. */if(alive)ready();});
+    }).catch(()=>{/* Keep the original portrait if the attire cannot be decoded. */if(alive)ready(false);});
     return()=>{alive=false;controller.abort();ro.disconnect();io.disconnect();if(raf)cancelAnimationFrame(raf);heroFields.delete(area)};
   }, []);
 

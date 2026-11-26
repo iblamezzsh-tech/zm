@@ -4,7 +4,6 @@ import "@fontsource/instrument-serif/latin-400.css";
 import "@fontsource/instrument-serif/latin-400-italic.css";
 import "./styles.css";
 import "./design-refinement.css";
-import Signature from "./signature";
 import { RouteSignature } from "./signature-motion";
 import SmoothScroll from "./smooth-scroll";
 import SiteMotion from "./site-motion";
@@ -17,34 +16,8 @@ import "./studio-v33.css";
 import "./motion-choreography.css";
 import "./editorial-motion.css";
 
-// Runs before hydration, only for the initial motion-capable homepage.
- // No JS = no gate; failed JS = a bounded, readable fallback.
-const bootScript=`(function(){try{
- if(location.pathname!=="/"||!matchMedia("(min-width:850px) and (min-height:460px) and (pointer:fine) and (prefers-reduced-motion:no-preference)").matches)return;
- var html=document.documentElement,done=false,stage=false,portrait=false,grace=0,hard=0;
- html.dataset.zmBoot="pending";
- function finish(){if(done)return;done=true;clearTimeout(grace);clearTimeout(hard);document.removeEventListener("zm-film-ready",film);document.removeEventListener("zm-portrait-ready",image);html.dataset.zmBoot="ready";}
- function film(){stage=true;if(portrait)finish();else if(!grace)grace=setTimeout(finish,900);}
- function image(){portrait=true;if(stage)finish();}
- document.addEventListener("zm-film-ready",film);
- document.addEventListener("zm-portrait-ready",image);
- hard=setTimeout(finish,4500);
- }catch(e){delete document.documentElement.dataset.zmBoot;}})();`;
-const bootCSS=`
-.zm-boot-screen{display:none}
-html[data-zm-boot=pending] .zm-boot-screen,html[data-zm-boot=ready] .zm-boot-screen{display:flex;position:fixed;inset:0;z-index:9999;background:#24291e;color:#ffda24;align-items:center;justify-content:center;flex-direction:column;gap:22px;pointer-events:auto;visibility:visible;opacity:1}
-html[data-zm-boot=pending] .zm-boot-screen{touch-action:none}
-html[data-zm-boot=pending] .film-home{visibility:hidden}
-html[data-zm-boot=pending] .film-home>.site-header,html[data-zm-boot=pending] .film-home .film-shot{visibility:hidden!important}
-.zm-boot-mark{width:min(58vw,420px)}
-.zm-boot-mark svg{width:100%;height:auto;display:block}
-.zm-boot-screen>span{font:650 10px/1.2 Arial,sans-serif;letter-spacing:.18em}
-html[data-zm-boot=pending] .zm-boot-mark{animation:zm-boot-breathe 1.5s ease-in-out infinite alternate}
-html[data-zm-boot=ready] .zm-boot-screen{pointer-events:none;animation:zm-boot-reveal .45s cubic-bezier(.22,1,.36,1) both}
-@keyframes zm-boot-breathe{from{opacity:.7;transform:translateY(3px)}to{opacity:1;transform:none}}
-@keyframes zm-boot-reveal{from{opacity:1;visibility:visible}to{opacity:0;visibility:hidden}}
-@media(prefers-reduced-motion:reduce){html[data-zm-boot] .zm-boot-screen{display:none!important}html[data-zm-boot=pending] .film-home,html[data-zm-boot=pending] .film-home>.site-header{visibility:visible}html[data-zm-boot=pending] .film-home .film-shot{visibility:visible!important}}
-`;
+import {bootCSS,bootScript} from "./boot-intro";
+
 export const metadata: Metadata = {
   title: "ZiyoMuhammad — Personal Portfolio",
   description:
@@ -60,7 +33,27 @@ export default function Layout({
         <script dangerouslySetInnerHTML={{__html:bootScript}}/>
       </head>
       <body>
-        <div className="zm-boot-screen" aria-hidden="true"><div className="zm-boot-mark"><Signature/></div><span>ZM / THE JOURNEY CONTINUES</span></div>
+        <div className="zm-boot-screen" data-lenis-prevent>
+          <div className="zm-boot-top"><strong>ZIYOMUHAMMAD</strong><span>INTRO / 01</span></div>
+          <div className="zm-boot-center">
+            <div className="zm-boot-editorial"><span>FROM THE PRESENT</span><strong>A portrait<br/><em>in progress.</em></strong></div>
+            <div className="zm-boot-number" aria-hidden="true"><span/> <b>%</b></div>
+            <svg className="zm-boot-ink" viewBox="100 28 478 160" aria-hidden="true">
+              <g fill="none" stroke="currentColor" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round">
+                <path pathLength="1" d="M136 87 C142 77 221 50 258 48 C228 73 127 147 110 174 C151 144 216 119 250 117"/>
+                <path pathLength="1" d="M264 119 l3 -2"/>
+                <path pathLength="1" d="M277 130 Q293 98 333 47 Q318 98 321 107 C332 103 365 59 397 37 C378 67 354 110 365 120"/>
+                <path pathLength="1" d="M127 182 C213 139 479 95 571 131"/>
+              </g>
+            </svg>
+          </div>
+          <div className="zm-boot-bottom">
+            <div className="zm-boot-track" aria-hidden="true"><i/></div>
+            <div className="zm-boot-meta"><span className="zm-boot-stage" aria-hidden="true"/><span>ANDIJAN / UZBEKISTAN</span></div>
+            <div className="zm-boot-access" role="status">Preparing the portfolio.</div>
+            <button type="button" data-boot-skip className="zm-boot-skip">Continue with available assets <span aria-hidden="true">↗</span></button>
+          </div>
+        </div>
         {children}
         <SmoothScroll />
         <SiteMotion />
