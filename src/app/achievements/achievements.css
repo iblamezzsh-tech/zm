@@ -59,3 +59,6 @@
 @media(max-width:850px){.archive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.archive-rule{font-size:9px;letter-spacing:.05em}.milestone-hero-bottom,.archive-heading{grid-template-columns:1fr}.milestone-hero h1{font-size:clamp(64px,15vw,100px)}.archive-emblem{max-width:230px;margin-left:auto}.archive-emblem>svg{max-height:150px}.archive-grid{grid-template-columns:1fr;gap:28px}.record-cover{min-height:170px;aspect-ratio:1.7}.archive-tabs{gap:4px}.archive-tabs button{padding:10px 9px;font-size:12px}.archive-heading h2{font-size:clamp(62px,15vw,100px)}.record-info h3{font-size:38px}}
 @media(prefers-reduced-motion:reduce){.archive-record *,.archive-tabs button{transition:none}.archive-record:hover .record-cover>svg{transform:none}}
+
+/* Real certificates sit inside the existing archive frames without cropping. */
+.record-cover-photo{height:auto;aspect-ratio:1.55;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;background:#eeece3!important;color:var(--ink)!important}.record-cover-photo img{display:block;width:100%;height:100%;min-height:0;object-fit:contain}.archive-record:hover .record-cover-photo{background:#e5e7d5!important}.archive-document img{max-height:65vh;object-fit:contain}

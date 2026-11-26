@@ -1,6 +1,6 @@
 "use client";
 import {useRef,useState} from "react";
-import {categories,milestones,type Category,type RecordEntry} from "./data";
+import {categories,type Category,type RecordEntry} from "./data";
 
 function Mark({category}:{category:RecordEntry["category"]}){
  return <svg viewBox="0 0 100 100" aria-hidden="true"><g stroke="currentColor" strokeWidth="1.2" fill="none">
@@ -9,16 +9,16 @@ function Mark({category}:{category:RecordEntry["category"]}){
 }
 function EntryCard({entry,onOpen}:{entry:RecordEntry;onOpen:()=>void}){
  return <button type="button" className="archive-record" onClick={onOpen}>
- <div className="record-cover"><span>ZM / ARCHIVE</span><Mark category={entry.category}/><span>{entry.type.toUpperCase()}</span></div>
+ <div className={"record-cover"+(entry.document?.type==="image"?" record-cover-photo":"")}><span>ZM / ARCHIVE</span>{entry.document?.type==="image"?<img src={entry.document.src} alt={entry.document.alt} loading="lazy" decoding="async"/>:<Mark category={entry.category}/>}<span>{entry.type.toUpperCase()}</span></div>
  <div className="record-info"><span>{entry.category}{entry.period?" / "+entry.period:""}</span><h3>{entry.title}</h3><p>{entry.organization}</p><span className="record-open">Read record <span aria-hidden="true">↗</span></span></div>
  </button>
 }
-export default function Archive(){
+export default function Archive({records}:{records:RecordEntry[]}){
  const [category,setCategory]=useState<Category>("All");
  const [selected,setSelected]=useState<RecordEntry|null>(null);
  const dialog=useRef<HTMLDialogElement>(null);
  const trigger=useRef<HTMLButtonElement|null>(null);
- const items=milestones.filter(item=>category==="All"||(category==="Certificates"?Boolean(item.document):item.category===category));
+ const items=records.filter(item=>category==="All"||(category==="Certificates"?Boolean(item.document):item.category===category));
  function open(entry:RecordEntry){trigger.current=document.activeElement instanceof HTMLButtonElement?document.activeElement:null;setSelected(entry);dialog.current?.showModal()}
  function close(){dialog.current?.close()}
  return <section className="archive-section" aria-labelledby="archive-title">
