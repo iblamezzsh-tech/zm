@@ -10,8 +10,8 @@ export const metadata = {
 };
 
 const chapters = [
-  { id:"curiosity", number:"01", label:"The starting point", title:"Questions come", emphasis:"first.", body:"Economics, psychology and politics give me different ways to understand the world around me. I enjoy exploring where these subjects meet, and how ideas can help explain everyday decisions.", note:"Understanding before answering.", kind:"questions" },
-  { id:"learning", number:"02", label:"The classroom and beyond", title:"Learning never", emphasis:"ends.", body:"I’m a student with ambitions to study internationally. Education is a chance to challenge my assumptions, meet people with different perspectives and develop the skills to turn curiosity into something useful.", note:"Always a student.", kind:"learning" },
+  { id:"curiosity", number:"01", label:"Past · Public School No. 1", title:"Where I", emphasis:"started.", body:"Looking back, my old school was where everything started for me—from learning my first letters in the 1st grade to finding my stride. I spent my years there as a class leader and part of the school’s leadership community, which taught me a lot about responsibility early on. Whether I was leading our football and Zakovat teams, or helping friends ace English and math, that school wasn’t just a place of learning; it was my second home.", note:"Where it all began.", kind:"questions" },
+  { id:"learning", number:"02", label:"Present · Specialized Boarding School No. 1 · Andijan", title:"School in", emphasis:"Andijan.", body:"I joined Specialized Boarding School No. 1 in seventh grade. I’m in Grade 11 now, and English, maths, football, and Zakovat are still the things I keep coming back to.", note:"Always a student.", kind:"learning" },
   { id:"building", number:"03", label:"From thought to action", title:"Ideas need", emphasis:"a beginning.", body:"Through initiatives such as OverThink, Finance4Youth and ReZamin, I’m exploring how intellectual curiosity, financial education and environmental awareness can become real projects.", note:"Learn by doing.", kind:"building" },
   { id:"future", number:"04", label:"An unwritten chapter", title:"Still", emphasis:"becoming.", body:"I hope to continue my education, build meaningful initiatives and keep learning from the people and experiences I encounter. The graduation portrait on my homepage is an aspiration, not a finished achievement.", note:"The story continues.", kind:"future" }
 ] as const;
@@ -35,7 +35,7 @@ export default function About(){
      </div>
    </section>
    <div className="story-body">
-    <nav className="story-index-nav" aria-label="Story chapters"><span>THE CHAPTERS</span>{chapters.map(c=><a href={"#"+c.id} key={c.id}><small>{c.number}</small>{c.id}<span aria-hidden="true">↘</span></a>)}</nav>
+    <nav className="story-index-nav" aria-label="Story chapters"><span>THE CHAPTERS</span>{chapters.map(c=><a href={"#"+c.id} key={c.id}><small>{c.number}</small>{c.id==="curiosity"?"Origins":c.id==="learning"?"School":c.id}<span aria-hidden="true">↘</span></a>)}</nav>
     <div className="story-entries">
       {chapters.map(c=><section className={"story-entry story-entry-"+c.kind} key={c.id} id={c.id} aria-labelledby={c.id+"-title"}><div className="entry-top"><span>CHAPTER {c.number} / 04</span><span>{c.label}</span></div><div className="entry-art" data-story-motion><StoryGraphic kind={c.kind}/><span>{c.note}</span><b aria-hidden="true">{c.number}</b></div><div className="entry-copy" data-story-motion><h2 id={c.id+"-title"}>{c.title}<br/><em>{c.emphasis}</em></h2><p>{c.body}</p>{c.kind==="building"&&<Link href="/#projects" className="story-inline-link">Explore my projects ↗</Link>}</div></section>)}
     </div>
