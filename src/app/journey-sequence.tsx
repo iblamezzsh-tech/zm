@@ -22,7 +22,12 @@ export default function JourneySequence({records}:{records:FeaturedRecord[]}){
    const distance=rect.height-canvas!.offsetHeight;
    const p=Math.max(0,Math.min(1,-rect.top/Math.max(distance,1)));
    canvas!.style.setProperty("--journey-progress",String(p));
-   const index=Math.min(2,Math.floor(p*3));
+   const index=p<.32?0:p<.68?1:2;
+   const smooth=(a:number,b:number,x:number)=>{const u=Math.max(0,Math.min(1,(x-a)/(b-a)));return u*u*(3-2*u)};
+   const first=smooth(.23,.41,p),second=smooth(.59,.77,p);
+   canvas!.style.setProperty("--journey-first",String(first));
+   canvas!.style.setProperty("--journey-second",String(second));
+   canvas!.style.setProperty("--journey-papers",String(smooth(.25,.48,p)));
    if(index!==current.current){current.current=index;setActive(index)}
   }
   function schedule(){if(!raf)raf=requestAnimationFrame(measure)}
@@ -31,7 +36,7 @@ export default function JourneySequence({records}:{records:FeaturedRecord[]}){
   window.addEventListener("scroll",schedule,{passive:true});window.addEventListener("resize",schedule,{passive:true});
   return()=>{query.removeEventListener("change",sync);window.removeEventListener("scroll",schedule);window.removeEventListener("resize",schedule);if(raf)cancelAnimationFrame(raf)}
  },[]);
- function jump(i:number){if(!enhanced||!root.current||!stage.current)return;const y=window.scrollY+root.current.getBoundingClientRect().top;const distance=root.current.offsetHeight-stage.current.offsetHeight;window.scrollTo({top:y+distance*((i+.35)/3),behavior:"smooth"})}
+ function jump(i:number){if(!enhanced||!root.current||!stage.current)return;const y=window.scrollY+root.current.getBoundingClientRect().top;const distance=root.current.offsetHeight-stage.current.offsetHeight;window.scrollTo({top:y+distance*[.10,.50,.88][i],behavior:"smooth"})}
  const archive=records.filter(r=>r.document).slice(0,3);
  return <section id="introduction" ref={root} className={"journey-sequence"+(enhanced?" journey-enhanced":"")} aria-label="From the present to the future">
  <div ref={stage} className="journey-stage" data-active={active}>

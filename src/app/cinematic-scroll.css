@@ -1,0 +1,82 @@
+/* V28 — continuous film. Native page scroll remains the source of truth. */
+.home-page>.home-chapters{max-width:none}
+.home-page .journey-sequence{--j-accent:#ffda24;margin:0 calc(-1 * var(--home-gutter,24px))}
+.home-page .journey-now .journey-question{-webkit-text-stroke-color:#8d7219}
+.home-page .journey-past .journey-mast,.home-page .journey-past .journey-overline{color:#ffda24}
+.home-page .journey-signature{color:#d8ac00}
+.home-page .journey-navigation{background:#f4f1e8}
+.home-page .journey-enhanced{height:280svh}
+.home-page .journey-enhanced .journey-stage{max-height:none}
+.home-page .journey-enhanced .journey-scene{visibility:visible;opacity:1;transition:none;transform:none}
+.home-page .journey-enhanced .journey-now{z-index:1;opacity:1;transform:translateY(calc(var(--journey-first,0) * -4%))}
+.home-page .journey-enhanced .journey-past{z-index:2;clip-path:inset(calc((1 - var(--journey-first,0))*100%) 0 0 0);transform:none;opacity:1}
+.home-page .journey-enhanced .journey-next{z-index:3;clip-path:inset(calc((1 - var(--journey-second,0))*100%) 0 0 0);transform:none;opacity:1}
+.home-page .journey-enhanced .journey-document-0{transform:translate(calc((1 - var(--journey-papers,0))*-75px),calc((1 - var(--journey-papers,0))*55px)) rotate(calc(-12deg - (1 - var(--journey-papers,0))*10deg))}
+.home-page .journey-enhanced .journey-document-1{transform:translate(calc((1 - var(--journey-papers,0))*65px),calc((1 - var(--journey-papers,0))*80px)) rotate(calc(12deg + (1 - var(--journey-papers,0))*8deg))}
+.home-page .journey-enhanced .journey-document-2{transform:translateY(calc((1 - var(--journey-papers,0))*90px)) rotate(-3deg)}
+.home-page .journey-enhanced .journey-contours{transform:none}
+.home-page .journey-enhanced .journey-navigation{z-index:5}
+.home-page .hero-composition::after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:#ffda24;clip-path:inset(calc(100% - var(--hero-departure,0)*42%) 0 0 0);opacity:calc(var(--hero-departure,0)*.92)}
+/* Header stays exactly as before at the opening. On scroll, just two floating controls. */
+.home-page.film-nav-floating>.site-header.minimal-header{position:fixed;top:0;left:0;right:0;z-index:40;margin:0;padding:12px clamp(14px,2.2vw,32px);height:auto;min-height:0;background:transparent;pointer-events:none}
+.home-page.film-nav-floating>.site-header.minimal-header>*{pointer-events:auto}
+.home-page.film-nav-floating .minimal-menu-trigger{background:#f4f1e8;border:1px solid #24291e45;box-shadow:0 5px 22px #24291e22}
+.home-page.film-nav-floating .minimal-connect{box-shadow:0 5px 22px #24291e22}
+.home-page.film-nav-floating .minimal-identity{filter:drop-shadow(0 3px 12px #24291e22)}
+.film-progress{position:fixed;bottom:12px;right:clamp(14px,2vw,30px);z-index:35;width:min(245px,45vw);padding:9px 12px 10px;display:grid;gap:7px;background:#24291e;color:#f4f1e8;opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .25s,transform .25s}
+.film-progress.film-visible{opacity:1;transform:none}
+.film-progress-label{display:flex;align-items:center;gap:4px;text-transform:uppercase;font-size:9px;letter-spacing:.10em;white-space:nowrap}
+.film-progress-label b{color:#ffda24}.film-progress-label>span{margin-left:auto}
+.film-progress-track{display:block;height:2px;background:#68715a}.film-progress-track i{display:block;height:100%;background:#ffda24;transform-origin:left;transform:scaleX(var(--film-progress,0))}
+.home-page .work-chapter{margin-inline:calc(-1 * var(--home-gutter,24px));padding:clamp(55px,8vw,120px) var(--home-gutter,24px) 0;background:#24291e;color:#f4f1e8;--muted:#c4c9b7;--line:#657054;--ink:#f4f1e8;--paper:#24291e;--accent:#ffda24}
+.home-page .work-heading h2 em{color:#ffda24}
+.home-page .work-chapter .exhibition-index{background:#343c2b;border-top-color:#ffda24}
+.home-page .work-chapter .exhibition-index nav a[aria-current=location]{color:#24291e}
+.home-page .work-chapter .exhibit-badge{background:#ffda24;color:#24291e}
+.exhibition-sticky{display:contents}.exhibition-window{min-width:0}
+.home-page .exhibition-cinematic{display:block;position:relative;height:calc(100svh + 145vw);padding:0;border:0;margin-inline:calc(-1 * var(--home-gutter,24px))}
+.home-page .exhibition-cinematic .exhibition-sticky{position:sticky;top:0;height:100svh;display:grid;grid-template-rows:auto minmax(0,1fr) 3px;gap:10px;padding:85px var(--home-gutter,24px) 22px;overflow:clip}
+.home-page .exhibition-cinematic .exhibition-index{position:static;display:grid;grid-template-columns:minmax(0,.5fr) minmax(0,1fr) minmax(0,.4fr);align-items:center;gap:22px;background:none;padding:0 0 8px;border:0}
+.home-page .exhibition-cinematic .exhibition-index-top{flex-direction:row;align-items:center;padding:0;gap:12px}
+.home-page .exhibition-cinematic .exhibition-count{font-size:clamp(40px,5vw,76px)}
+.home-page .exhibition-cinematic .exhibition-count small{font-size:24px}
+.home-page .exhibition-cinematic .exhibition-index nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+.home-page .exhibition-cinematic .exhibition-index nav a{grid-template-columns:auto 1fr;gap:6px;min-height:44px;border:1px solid #657054;padding:6px 8px}
+.home-page .exhibition-cinematic .exhibition-index nav a span:last-child{display:none}
+.home-page .exhibition-cinematic .exhibition-index-bottom{margin:0;justify-content:flex-end}
+.home-page .exhibition-cinematic .exhibition-window{overflow:clip;min-height:0}
+.home-page .exhibition-cinematic .exhibition-scenes{height:100%;display:flex;align-items:stretch;transform:translate3d(calc(var(--exhibit-shift,0)*-100%),0,0);will-change:transform}
+.home-page .exhibition-cinematic .exhibit-scene{flex:0 0 100%;min-width:0;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:0;margin:0;padding:0 12px 0 0}
+.home-page .exhibition-cinematic .exhibit-visual{min-height:0;height:100%}
+.home-page .exhibition-cinematic .exhibit-visual .studio-poster{height:100%;width:100%;aspect-ratio:auto;min-height:0}
+.home-page .exhibition-cinematic .exhibit-caption{padding:12px 0 8px;gap:24px;grid-template-columns:minmax(0,1fr) minmax(0,.65fr)}
+.home-page .exhibition-cinematic .exhibit-caption h3{font-size:clamp(32px,4.2vw,67px);margin-top:6px}
+.home-page .exhibition-cinematic .exhibit-caption p{font-size:clamp(12px,1.1vw,17px);margin-bottom:3px}
+.home-page .exhibition-cinematic .exhibit-link{min-height:44px}
+.exhibition-film-progress{height:3px;background:#657054;overflow:hidden}
+.exhibition-film-progress span{display:block;height:100%;background:#ffda24;transform-origin:left;transform:scaleX(var(--exhibit-progress,0))}
+.home-page .field-notes{padding:clamp(55px,8vw,120px) 0;--field-accent:#ffda24}
+.home-page .field-art{position:relative;isolation:isolate}
+.home-page .field-print{position:relative;z-index:2}
+.field-paper-stack{position:absolute;inset:9% 7% 12%;pointer-events:none;z-index:0}
+.field-paper-layer{position:absolute;inset:0;background:#e4e1d3;border:1px solid #c7c3ae;padding:10px;box-shadow:0 10px 30px #10150e44;opacity:calc(.25 + var(--paper-fan,1)*.55)}
+.field-paper-layer img{width:100%;height:100%;object-fit:contain}
+.field-paper-layer.layer-0{transform:translate(calc(-9% * var(--paper-fan,1)),calc(-10% * var(--paper-fan,1))) rotate(calc(-10deg * var(--paper-fan,1)))}
+.field-paper-layer.layer-1{transform:translate(calc(9% * var(--paper-fan,1)),calc(-8% * var(--paper-fan,1))) rotate(calc(12deg * var(--paper-fan,1)))}
+.field-paper-layer.layer-2{transform:translateY(calc(6% * var(--paper-fan,1))) rotate(calc(5deg * var(--paper-fan,1)))}
+.home-page .personal-chapter{margin-inline:calc(-1 * var(--home-gutter,24px));background:radial-gradient(ellipse at 92% 15%,#71805a,transparent 65%),#4c583c;color:#f4f1e8;min-height:75svh;display:flex;flex-direction:column;justify-content:center}
+.home-page .personal-grid p{color:#f4f1e8}
+.home-page .personal-grid h2 em,.home-page .interest-line span:last-child,.home-page .personal-chapter .chapter-link{color:#ffda24}
+.home-page .interest-line{border-color:#899475;opacity:calc(.5 + var(--interest-in,1)*.5);translate:calc((1 - var(--interest-in,1))*28px) 0}
+.home-page .interest-line span:last-child{transform:rotate(calc((1 - var(--interest-in,1))*-65deg))}
+.home-page .home-contact{margin:0 calc(-1 * var(--home-gutter,24px));min-height:85svh;display:flex;flex-direction:column;justify-content:center;background:radial-gradient(ellipse at 80% 36%,#46523a,transparent 65%),#24291e}
+.home-page .home-contact .chapter-rule,.home-page .home-contact h2 em{color:#ffda24}
+.home-page .finale-contact{background:#ffda24;color:#24291e;border:0;padding:10px 22px;border-radius:9px}
+.finale-signature{color:#ffda24;width:min(210px,70%);margin-top:30px}
+.finale-signature .signature{display:block;width:100%}
+.finale-signature .pen{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--finale-write,1))}
+.home-page .work-heading,.home-page .field-heading,.home-page .personal-grid,.home-page .home-contact-grid{translate:0 calc((1 - var(--scene-reveal,1))*35px);opacity:calc(.55 + var(--scene-reveal,1)*.45)}
+.home-page .home-footer{padding-block:24px 50px}
+@media(max-width:999px){.home-page .work-chapter{padding-bottom:45px}.home-page .work-chapter .exhibition-index{padding:14px}.film-progress{width:110px;padding:7px 9px}.film-progress-label>span{display:none}.home-page .personal-chapter,.home-page .home-contact{min-height:0;padding-block:55px}.home-page .field-paper-stack{inset:12% 9% 14%}}
+@media(max-width:700px){.home-page.film-nav-floating>.site-header.minimal-header{padding:8px 12px}.home-page .journey-navigation-inner{padding-bottom:12px}.home-page .work-heading{padding-top:24px}.home-page .field-paper-stack{display:none}.home-page .home-footer{padding-bottom:44px}.home-page .film-progress{bottom:7px;right:8px}.home-page .finale-signature{width:140px}}
+@media(prefers-reduced-motion:reduce){.home-page .hero-composition::after{display:none}.film-progress{transition:none}.home-page .work-heading,.home-page .field-heading,.home-page .personal-grid,.home-page .home-contact-grid,.home-page .interest-line{translate:none;opacity:1}.finale-signature .pen{stroke-dashoffset:0}.home-page .field-paper-stack{display:none}}

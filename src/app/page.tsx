@@ -1,11 +1,14 @@
 import SiteHeader from "./site-header";
 import Portrait from "./portrait";
 import HomeChapters from "./home-chapters";
+import ScrollDirector from "./scroll-director";
+import "./cinematic-scroll.css";
 
 export default function Home() {
   return (
     <main className="home-page" id="top">
       <SiteHeader />
+      <ScrollDirector />
       <div className="home-hero">
         <Portrait />
       </div>

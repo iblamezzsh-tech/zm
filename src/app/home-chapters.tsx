@@ -1,6 +1,6 @@
 import Link from "next/link";
 import JourneySequence from "./journey-sequence";
-import ChapterMotion from "./chapter-motion";
+import Signature from "./signature";
 import "./chapters.css";
 
 import ProjectExhibition from "./project-exhibition";
@@ -10,7 +10,6 @@ import {getFeaturedRecords} from "./featured-records";
 export default function HomeChapters() {
   return (
     <div className="home-chapters">
-      <ChapterMotion />
       <JourneySequence records={getFeaturedRecords()}/>
       <section className="work-chapter" id="projects" aria-labelledby="projects-title">
         <div className="chapter-rule"><span>02 / Selected initiatives</span><span>From idea to action</span></div>
@@ -27,9 +26,9 @@ export default function HomeChapters() {
           </div>
         </div>
       </section>
-      <section className="home-contact" aria-labelledby="home-contact-title">
+      <section className="home-contact" id="next-chapter" aria-labelledby="home-contact-title">
         <div className="chapter-rule"><span>05 / Correspondence</span><span>Until next time</span></div>
-        <div className="home-contact-grid"><h2 id="home-contact-title">Let's keep<br/><em>in touch.</em></h2><div><p>Good conversations often start with a simple hello.</p><Link className="chapter-link chapter-link-light" href="/contact">Let’s connect <span aria-hidden="true">↗</span></Link></div></div>
+        <div className="home-contact-grid"><h2 id="home-contact-title">Let's keep<br/><em>in touch.</em></h2><div><p>Good conversations often start with a simple hello.</p><Link className="chapter-link chapter-link-light finale-contact" href="/contact">Let’s connect <span aria-hidden="true">↗</span></Link><div className="finale-signature"><Signature/></div></div></div>
       </section>
     </div>
   );
