@@ -6,7 +6,8 @@ main.home-page.editorial-home{--ed-paper:#f4f1e8;--ed-ink:#24291e;--ed-yellow:#f
 .editorial-flow>section{position:relative;isolation:isolate;scroll-margin-top:0}
 .editorial-home>.site-header.minimal-header{position:fixed!important;top:0;left:0;right:0;margin:0!important;min-height:0;height:auto!important;z-index:45;padding:clamp(12px,1.5vw,24px) clamp(14px,1.6vw,26px);background:transparent!important;pointer-events:none}
 .editorial-home>.site-header.minimal-header>*{pointer-events:auto}
-.editorial-home.ed-dark-header>.site-header .minimal-identity{background:#f4f1e8;border-radius:6px}
+/* The SVG already supplies its own rounded dark background. Never add a second backing. */
+.editorial-home.ed-dark-header>.site-header .minimal-identity{background:transparent;border-radius:0}
 .editorial-home.ed-dark-header>.site-header .minimal-menu-trigger{background:#f4f1e8;color:#24291e;border-color:#f4f1e8}
 .editorial-home.film-at-finale>.site-header .minimal-connect{display:none}
 .ed-gutter{padding-inline:var(--ed-pad)}

@@ -1,7 +1,7 @@
 /* V17: remove conventional navigation chrome; preserve the hero layout. */
 main>.site-header.minimal-header,main:not(.home-page)>.site-header.minimal-header,.home-page>.site-header.minimal-header{display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:12px;height:clamp(74px,6.5vw,96px);min-height:0;margin:0;padding:0;border:0;background:transparent}
 .home-page>.site-header.minimal-header{margin-top:clamp(12px,2vw,25px);padding-inline:clamp(14px,2.8vw,46px);background:#eeece3;height:74px}
-.minimal-header .minimal-identity{display:inline-flex;min-width:0;flex-shrink:0}
+.minimal-header .minimal-identity,.zm-menu-top .zm-menu-logo{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;min-width:0;padding:0;border:0;background:transparent;border-radius:0;box-shadow:none;line-height:0}
 .minimal-identity img{display:block;width:clamp(38px,4.5vw,50px);height:auto}
 .minimal-actions{display:flex;align-items:center;gap:9px}
 .minimal-connect,.minimal-menu-trigger,.zm-menu-close{height:clamp(46px,4.4vw,58px);min-height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;font-size:13px;font-weight:700;letter-spacing:.005em;text-decoration:none}
@@ -23,7 +23,7 @@ main>.site-header.minimal-header,main:not(.home-page)>.site-header.minimal-heade
 .zm-menu-shell::before{content:"";position:absolute;inset:0;background:url("/hero-contours-static.svg") center/cover no-repeat;opacity:.24;pointer-events:none;z-index:-1}
 .zm-menu-top{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:clamp(12px,1.5vw,24px) clamp(14px,1.6vw,26px);pointer-events:none}
 .zm-menu-top>*{pointer-events:auto}
-.zm-menu-logo{display:block;background:#24291e;border-radius:9px;box-shadow:0 3px 18px #0002}
+.zm-menu-logo{display:inline-flex;background:transparent;border:0;border-radius:0;box-shadow:none}
 .zm-menu-logo img{display:block;width:clamp(38px,4.5vw,50px);height:auto}
 .zm-menu-close{background:#f4f1e8;color:#24291e;border:1px solid #f4f1e8;font:400 31px/1 Arial,sans-serif}
 .zm-menu-close:hover{background:var(--menu-yellow);border-color:var(--menu-yellow)}
@@ -108,3 +108,7 @@ main>.site-header.minimal-header,main:not(.home-page)>.site-header.minimal-heade
 @media(prefers-reduced-motion:reduce){.zm-menu-dialog *{animation:none!important;transition:none!important}.zm-gallery-reel{transform:none!important}}
 /* Keep V25 yellow on every normal header. */
 .minimal-header .minimal-connect:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+/* V64 — single SVG silhouette on every surface; retain visible keyboard focus. */
+.minimal-header .minimal-identity img,.zm-menu-top .zm-menu-logo img{display:block;width:clamp(38px,4.5vw,50px);height:auto;aspect-ratio:1;object-fit:contain;border:0;border-radius:0;background:transparent;box-shadow:none}
+.minimal-header .minimal-identity:focus-visible,.zm-menu-top .zm-menu-logo:focus-visible{outline:2px solid #ffda24;outline-offset:4px;border-radius:9px;box-shadow:0 0 0 1px #24291e}
