@@ -16,6 +16,7 @@ import "./editorial-flow.css";
 import "./motion-cut-v52.css";
 import "./studio54.css";
 import "./studio55.css";
+import "./studio62.css";
 
 export default function HomeChapters(){
  const records=getFeaturedRecords();
@@ -49,7 +50,7 @@ export default function HomeChapters(){
   </section>
   <section className="ed-work" id="projects" data-ed-scene data-ed-theme="dark">
    <div className="ed-gutter ed-caption"><span>04 / SELECTED INITIATIVES</span><span>01 — 03</span></div>
-   <div className="ed-work-banner" aria-hidden="true"><span>IDEAS INTO ACTION.</span></div><div className="ed-gutter ed-work-heading"><h2 data-ed-reveal>Ideas into <em>action.</em></h2><p>Three different interests. One desire to turn curiosity into something real.</p></div>
+   <div className="ed-work-banner" aria-hidden="true"><span>QUESTIONS → ACTION.</span></div><div className="ed-gutter ed-work-heading"><h2 data-ed-reveal>Ideas into <em>action.</em></h2><p>Three different interests. One desire to turn curiosity into something real.</p></div>
    <div className="ed-gutter ed-work-grid">
     {projects.map((p,i)=><article className={"ed-work-item ed-work-"+p.kind} id={i===0?"exhibit-overthink":"exhibit-"+p.slug} key={p.slug} data-ed-scene data-ed-theme="dark">
      <Link href={"/projects/"+p.slug} className="ed-work-image" data-ed-reveal aria-label={"Explore "+p.name}><ProjectEdition project={p}/></Link>
