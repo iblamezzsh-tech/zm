@@ -22,8 +22,8 @@ export function HeroSignature() {
   );
 }
 
-// Timings shared with motion-polish.css: 600ms cover, 850ms minimum hold, 700ms exit.
-const COVER_MS=600, MINIMUM_MS=1450, REVEAL_MS=700, FAILSAFE_MS=6500;
+// Timings shared with motion-polish.css: 600ms cover, 350ms minimum hold after cover, 700ms exit.
+const COVER_MS=600, MINIMUM_MS=950, REVEAL_MS=700, FAILSAFE_MS=6500;
 export function RouteSignature(){
  const path=usePathname(),router=useRouter();
  const curtain=useRef<HTMLDivElement>(null),pending=useRef<string|null>(null);

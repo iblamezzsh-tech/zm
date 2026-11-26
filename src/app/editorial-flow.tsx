@@ -37,7 +37,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     write(s,"--ed-pass",pass);write(s,"--ed-enter",enter);write(s,"--ed-travel",(pass-.5)*2);
     write(s,"--ed-local",local);write(s,"--ed-edge",edge);
     if(s.id==="film-present"){
-     write(s,"--ed-hero-exit",ease(.04,.77,local));write(s,"--ed-credit",ease(.22,.65,local));write(s,"--ed-hero-depart",ease(.75,1,local));
+     write(s,"--ed-hero-exit",ease(.06,.79,local));write(s,"--ed-credit",ease(.26,.68,local));write(s,"--ed-hero-depart",ease(.79,1,local));
     }
     if(s===collage&&cinema){
      const t=clamp(-r.top/Math.max(1,r.height-h));
@@ -45,7 +45,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
      write(s,"--rail-p",t);
     }
     if(s.classList.contains("ed-manifesto"))write(s,"--ed-manifesto-pass",clamp((h-r.top)/(r.height+h*.5)));
-    if(s.classList.contains("ed-social")){write(s,"--fan-open",cinema?ease(.02,.72,local):enter);write(s,"--fan-away",cinema?ease(.76,1,local):0);}
+    if(s.classList.contains("ed-social")){write(s,"--fan-open",cinema?ease(.04,.64,local):enter);write(s,"--fan-away",cinema?ease(.82,1,local):0);}
    }
    for(const node of reveals){
     // Horizontal gallery uses viewport x; ordinary scenes use stationary vertical bounds.
