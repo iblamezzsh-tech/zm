@@ -76,3 +76,10 @@ main.home-page>.site-header.minimal-header{position:absolute;z-index:10;top:0;le
 }
 @keyframes zm-contour-drift{from{transform:translate3d(-.65%,.45%,0) scale(1.045)}to{transform:translate3d(.65%,-.45%,0) scale(1.075)}}
 @media(prefers-reduced-motion:reduce){.hero-editorial-lines{animation:none;transform:none;will-change:auto}}
+
+/* V67: moving, low-contrast graphic silhouettes, not just drifting contour lines. */
+.hero-ambient-shapes{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;filter:blur(.65px)}
+.hero-editorial-lines{opacity:.58}
+.hero-fluid-color{opacity:.72}
+@media(max-width:600px){.hero-ambient-shapes{opacity:.82}}
+@media(prefers-reduced-motion:reduce){.hero-ambient-shapes{display:none}}
