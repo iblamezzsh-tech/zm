@@ -6,6 +6,8 @@ import "./styles.css";
 import "./design-refinement.css";
 import { RouteSignature } from "./signature-motion";
 import SmoothScroll from "./smooth-scroll";
+import SiteMotion from "./site-motion";
+import "./site-motion.css";
 import "./motion-polish.css";
 
 export const metadata: Metadata = {
@@ -21,6 +23,7 @@ export default function Layout({
       <body>
         {children}
         <SmoothScroll />
+        <SiteMotion />
         <RouteSignature />
       </body>
     </html>

@@ -1,6 +1,7 @@
 "use client";
 import {useEffect,useRef,useState} from "react";
 import {categories,type Category,type RecordEntry} from "./data";
+import MotionWords from "../motion-words";
 
 function Mark({category}:{category:RecordEntry["category"]}){
  return <svg viewBox="0 0 100 100" aria-hidden="true"><g stroke="currentColor" strokeWidth="1.2" fill="none">
@@ -24,11 +25,11 @@ export default function Archive({records}:{records:RecordEntry[]}){
  function close(){dialog.current?.close()}
  return <section className="archive-section" aria-labelledby="archive-title">
  <div className="archive-rule"><span>01 / Personal records</span><span>Experiences &amp; evidence</span></div>
- <div className="archive-heading"><h2 id="archive-title">The <em>archive.</em></h2><p>School days, competitions, volunteering and the documents I've kept along the way.</p></div>
+ <div className="archive-heading"><h2 id="archive-title"><MotionWords text="The"/> <em><MotionWords text="archive."/></em></h2><p>School days, competitions, volunteering and the documents I've kept along the way.</p></div>
  <div className="archive-tabs" role="group" aria-label="Filter archive">{categories.map(c=><button type="button" key={c} aria-pressed={category===c} onClick={()=>setCategory(c)}>{c}</button>)}</div>
  <div className="archive-count" aria-live="polite">{String(items.length).padStart(2,"0")} {items.length===1?"record":"records"} / {category}</div>
- {items.length?<div className="archive-grid">{items.map(entry=><EntryCard entry={entry} key={entry.id} onOpen={button=>open(entry,button)}/>)}</div>:<div className="archive-empty"><span>ZM / ARCHIVE NOTES</span><h3>{category==="Certificates"?"Documents yet to be added.":"A chapter still unfolding."}</h3><p>{category==="Certificates"?"No certificate files have been published in this archive yet.":"There are no published records in this category yet."}</p><button type="button" onClick={()=>setCategory("All")}>Browse all records ↗</button></div>}
- <dialog className="archive-dialog" ref={dialog} aria-label={selected?.title ?? "Archive record"} onClose={()=>{setSelected(null);trigger.current?.focus();trigger.current=null}} onClick={e=>{if(e.target===e.currentTarget){const rect=e.currentTarget.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)close()}}}>
+ {items.length?<div className="archive-grid" key={category}>{items.map(entry=><EntryCard entry={entry} key={entry.id} onOpen={button=>open(entry,button)}/>)}</div>:<div className="archive-empty"><span>ZM / ARCHIVE NOTES</span><h3>{category==="Certificates"?"Documents yet to be added.":"A chapter still unfolding."}</h3><p>{category==="Certificates"?"No certificate files have been published in this archive yet.":"There are no published records in this category yet."}</p><button type="button" onClick={()=>setCategory("All")}>Browse all records ↗</button></div>}
+ <dialog data-lenis-prevent className="archive-dialog" ref={dialog} aria-label={selected?.title ?? "Archive record"} onClose={()=>{setSelected(null);trigger.current?.focus();trigger.current=null}} onClick={e=>{if(e.target===e.currentTarget){const rect=e.currentTarget.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)close()}}}>
  <button type="button" autoFocus className="archive-close" aria-label="Close record" onClick={close}>×</button>
  {selected&&<><div className="dialog-meta">{selected.type} / {selected.category}{selected.period?" / "+selected.period:""}</div><h2 id="record-title">{selected.title}</h2><div className="dialog-org">{selected.organization}</div><p>{selected.description}</p>{selected.document?(<div className="archive-document">{selected.document.type==="image"?<img src={selected.document.src} alt={selected.document.alt}/>:<object data={selected.document.src} type="application/pdf" aria-label={selected.document.alt}><a href={selected.document.src}>Open PDF</a></object>}<a href={selected.document.src} target="_blank" rel="noreferrer">Open original document ↗</a></div>):<div className="dialog-evidence">Personal record · No supporting certificate published.</div>}</>}
  </dialog>

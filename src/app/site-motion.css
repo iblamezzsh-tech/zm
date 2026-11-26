@@ -1,0 +1,69 @@
+/* V31 — shared vocabulary, distinct motion choreography. No new animation runtime. */
+.site-reading-rail{position:fixed;z-index:45;left:0;right:0;top:0;height:3px;pointer-events:none}
+.site-reading-rail i{display:block;height:100%;background:#ffda24;transform:scaleX(var(--site-reading,0));transform-origin:left center}
+main:not(.home-page){--motion-yellow:#ffda24}
+main.site-controls-floating:not(.home-page)>.site-header.minimal-header{position:sticky;top:0;z-index:40;background:#f4f1e8;min-height:64px;height:auto;padding-block:8px;border:0}
+main.site-controls-floating:not(.home-page) .minimal-menu-trigger{background:#f4f1e8}
+main.site-motion-ready [data-motion-kind]{--site-in:1;--site-draw:1;--site-passage:.5}
+main.site-motion-ready [data-motion-kind=opening] h1 .zm-word>span{animation:site-title-in .78s cubic-bezier(.16,1,.3,1) both}
+main.site-motion-ready [data-motion-kind=opening] h1 em .zm-word>span{animation-delay:.12s}
+@keyframes site-title-in{from{transform:translate3d(0,110%,0)}to{transform:translate3d(0,0,0)}}
+main.site-motion-ready .zm-word{padding-bottom:.16em;margin-bottom:-.16em}
+main:not(.home-page) .zm-word{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+main.site-motion-ready .story-opening,main.site-motion-ready .case-opening,main.site-motion-ready .projects-opening{overflow:clip}
+main.site-motion-ready .story-portrait{overflow:clip;clip-path:polygon(0 0,92% 0,100% 10%,100% 100%,0 100%)}
+main.site-motion-ready .story-portrait img{transform:translate3d(calc(var(--art-x,0)*9px),calc(var(--art-y,0)*5px),0) scale(1.04);transition:transform .24s ease-out}
+main.site-motion-ready .story-entry .entry-art{overflow:clip;clip-path:polygon(0 0,100% 0,100% 87%,93% 100%,0 100%)}
+main.site-motion-ready .entry-art svg{transform:translate3d(calc(var(--art-x,0)*12px),calc((.5 - var(--site-passage,.5))*30px + var(--art-y,0)*9px),0) scale(calc(.86 + var(--site-in,1)*.14));transform-origin:center;transition:transform .14s linear}
+main.site-motion-ready .entry-art svg path[fill="none"],main.site-motion-ready .entry-art svg g[fill="none"] path,main.site-motion-ready .music-art svg path{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--site-draw,1))}
+main.site-motion-ready .entry-art>b{translate:0 calc((1 - var(--site-in,1))*70px)}
+main.site-motion-ready .entry-copy p{opacity:calc(.55 + var(--site-in,1)*.45)}
+main.site-motion-ready .exhibit-visual,main.site-motion-ready .case-opening .studio-poster{clip-path:polygon(0 0,100% 0,100% 90%,94% 100%,0 100%)}
+main.site-motion-ready .exhibit-visual .studio-poster{transition:none}
+.poster-object{transform-box:fill-box;transform-origin:center}
+main.site-motion-ready .poster-object{transform:translate3d(calc(var(--art-x,0)*24px),calc(var(--art-y,0)*18px),0) rotate(calc(var(--art-x,0)*5deg)) scale(calc(.86 + var(--site-in,1)*.14));transition:transform .24s cubic-bezier(.2,.75,.2,1)}
+main.site-motion-ready .studio-poster .think-word,main.site-motion-ready .studio-poster .finance-word,main.site-motion-ready .studio-poster .earth-word{translate:calc(var(--art-x,0)*-8px) calc(var(--art-y,0)*-5px);transition:translate .24s ease-out}
+main.site-motion-ready .case-focus>div{translate:calc((1 - var(--site-in,1))*24px) 0}
+main.site-motion-ready .case-focus>div:nth-child(even){translate:calc((1 - var(--site-in,1))*-24px) 0}
+main.site-motion-ready .case-focus{overflow:hidden}
+main.site-motion-ready .case-next{overflow:hidden}
+main.site-motion-ready .case-next h2{transition:transform .45s cubic-bezier(.16,1,.3,1)}
+main.site-motion-ready .case-next:hover h2,main.site-motion-ready .case-next:focus-visible h2{transform:translateX(18px)}
+main.site-motion-ready .archive-emblem svg:not(.signature){transform:rotate(calc(var(--art-x,0)*7deg));transition:transform .3s ease-out}
+main.site-motion-ready .archive-record{overflow:hidden}
+main.site-motion-ready .record-cover{overflow:hidden;clip-path:polygon(0 0,100% 0,100% 89%,94% 100%,0 100%);transition:clip-path .45s cubic-bezier(.2,.75,.2,1)}
+main.site-motion-ready .archive-record:hover .record-cover,main.site-motion-ready .archive-record:focus-visible .record-cover{clip-path:polygon(0 0,100% 0,100% 100%,100% 100%,0 100%)}
+main.site-motion-ready .record-cover img{transition:scale .45s cubic-bezier(.2,.75,.2,1)}
+main.site-motion-ready .archive-record:hover img,main.site-motion-ready .archive-record:focus-visible img{scale:1.035}
+main.site-motion-ready .archive-record[data-card-seen=true],main.site-motion-ready .personal-note[data-card-seen=true],main.site-motion-ready .contact-channel[data-card-seen=true]{animation:site-card-enter .55s cubic-bezier(.2,.75,.2,1) both}
+@keyframes site-card-enter{from{opacity:.35;transform:translateY(32px)}to{opacity:1;transform:none}}
+.archive-dialog[open]{animation:site-dialog-open .36s cubic-bezier(.16,1,.3,1) both}
+@keyframes site-dialog-open{from{opacity:0;transform:translateY(28px) scale(.98)}to{opacity:1;transform:none}}
+main.site-motion-ready .personal-stamp{rotate:calc((var(--site-passage,.5) - .5)*35deg)}
+main.site-motion-ready .music-art{overflow:hidden}
+main.site-motion-ready .music-art svg{transform:translate3d(calc(var(--art-x,0)*8px),calc(var(--art-y,0)*8px),0);transition:transform .25s ease-out}
+main.site-motion-ready .book-stack{perspective:1000px}
+main.site-motion-ready .book-spine{transform:translate3d(calc((1 - var(--site-in,1))*44px),0,0) rotateY(calc((1 - var(--site-in,1))*-15deg));transform-origin:left center}
+main.site-motion-ready .book-spine:nth-child(2){transform:translate3d(calc((1 - var(--site-in,1))*-35px),0,0) rotateY(calc((1 - var(--site-in,1))*12deg))}
+main.site-motion-ready .contact-postmark{rotate:calc((var(--site-passage,.5) - .5)*42deg)}
+main.site-motion-ready .letter-paper{transform:translate3d(calc(var(--art-x,0)*4px),calc((1 - var(--site-in,1))*28px + var(--art-y,0)*4px),0) rotate(calc((1 - var(--site-in,1))*-3deg));transform-origin:50% 90%;transition:transform .18s linear}
+main.site-motion-ready .contact-channel{position:relative;isolation:isolate;overflow:hidden;transition:color .32s}
+main.site-motion-ready .contact-channel::before{content:"";position:absolute;inset:0;z-index:-1;background:#ffda24;transform:translateX(-101%);transition:transform .44s cubic-bezier(.76,0,.24,1)}
+main.site-motion-ready .contact-channel:hover::before,main.site-motion-ready .contact-channel:focus-visible::before{transform:none}
+main.site-motion-ready .contact-channel:hover,main.site-motion-ready .contact-channel:focus-visible{color:#24291e}
+main.site-motion-ready .contact-channel b{transition:transform .35s}
+main.site-motion-ready .contact-channel:hover b{transform:translate(3px,-3px)}
+main.site-motion-ready [data-motion-kind] .signature .pen{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--site-draw,1))}
+main:not(.home-page) .story-autograph,main:not(.home-page) .letter-signature,main:not(.home-page) .story-end-row .signature,main:not(.home-page) .personal-end-row .signature,main:not(.home-page) .contact-ending-row .signature{color:#d8ac00}
+.route-destination{font-size:clamp(21px,4vw,54px)!important;letter-spacing:-.035em!important;text-transform:uppercase}
+.zm-route-curtain[data-phase=cover] .pen{stroke-dasharray:1;animation:route-ink .65s .10s both}
+.zm-route-curtain[data-phase=cover] .pen-dot{animation-delay:.26s}
+.zm-route-curtain[data-phase=cover] .pen-m{animation-delay:.31s}
+.zm-route-curtain[data-phase=cover] .pen-tail{animation-delay:.45s}
+@keyframes route-ink{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+/* Keep menu reels lightweight: tint without a per-frame blur or saturation filter. */
+.zm-menu-dialog .zm-gallery-tile{filter:none}
+.zm-menu-dialog .zm-gallery-tile::before{content:"";position:absolute;inset:0;z-index:1;background:#24291e;opacity:.36;pointer-events:none;transition:opacity .45s}
+.zm-menu-dialog .zm-gallery-tile.is-highlighted::before{opacity:.02}
+@media(max-width:759px){main.site-controls-floating:not(.home-page)>.site-header.minimal-header{min-height:58px}main.site-motion-ready .story-portrait,main.site-motion-ready .entry-art,main.site-motion-ready .exhibit-visual,main.site-motion-ready .case-opening .studio-poster{clip-path:none}main.site-motion-ready .letter-paper{transform:none}main.site-motion-ready .book-spine{transform:none}}
+@media(prefers-reduced-motion:reduce){.archive-dialog[open]{animation:none}.site-reading-rail{display:none}main.site-motion-ready *{animation:none!important;transition:none!important}main.site-motion-ready .signature .pen{stroke-dashoffset:0}}
