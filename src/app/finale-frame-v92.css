@@ -1,0 +1,71 @@
+/* V92 — sculpted graduation finale, based on the approved acid-lime mockup.
+   Live portrait, links and contour animation remain native HTML. */
+main.editorial-home .editorial-flow #next-chapter.film-finale-shot{
+ --finale-frame:#d5ff00;--finale-frame-gap:clamp(10px,1.15vw,20px);
+ --finale-cut-height:clamp(26px,5.5vh,42px);
+ --finale-cut-width:clamp(180px,20vw,310px);
+ position:relative;isolation:isolate;display:block;
+ padding:var(--finale-frame-gap)!important;
+ background:var(--finale-frame)!important;overflow:hidden;
+ min-height:100svh;box-sizing:border-box;
+}
+main.editorial-home .editorial-flow #next-chapter .film-finale{
+ --finale-yellow:var(--finale-frame);
+ position:relative;display:flex;flex-direction:column;
+ min-height:calc(100svh - 2 * var(--finale-frame-gap));
+ background:#24291e;
+ border-radius:clamp(16px,2.1vw,32px) clamp(16px,2.1vw,32px) 0 0;
+ overflow:hidden;clip-path:none;isolation:isolate;
+}
+main.editorial-home .editorial-flow #next-chapter .finale-inner{
+ flex:1 0 auto;min-height:calc(100svh - 2 * var(--finale-frame-gap) - 66px);
+ background:radial-gradient(ellipse at 50% 45%,#303b27 0%,#272e20 45%,#24291e 80%);
+}
+main.editorial-home .editorial-flow #next-chapter .finale-inner>.zm-atmosphere{
+ --contour-ink:#a5af90;--contour-strength:.20
+}
+main.editorial-home .editorial-flow #next-chapter .finale-footer{
+ flex:none;min-height:66px;box-sizing:border-box;
+ padding-top:10px;padding-bottom:calc(var(--finale-cut-height)*.55 + 5px);
+ background:#24291e;border-top:1px solid #f4f1e828;
+ color:#f4f1e8;z-index:5;
+}
+main.editorial-home .editorial-flow #next-chapter .finale-frame-cut{
+ position:absolute;bottom:-1px;width:var(--finale-cut-width);height:var(--finale-cut-height);
+ display:block;z-index:6;pointer-events:none;fill:var(--finale-frame);
+}
+main.editorial-home .editorial-flow #next-chapter .finale-frame-cut-left{left:-1px}
+main.editorial-home .editorial-flow #next-chapter .finale-frame-cut-right{right:-1px;transform:scaleX(-1)}
+main.editorial-home .editorial-flow #next-chapter .finale-edition span,
+main.editorial-home .editorial-flow #next-chapter .finale-footer a span{color:var(--finale-frame)}
+main.editorial-home .editorial-flow #next-chapter .finale-signature{color:var(--finale-frame);opacity:.90}
+main.editorial-home .editorial-flow #next-chapter .finale-cta a{
+ background:#ffda24;border-radius:8px;
+}
+main.editorial-home .editorial-flow #next-chapter .finale-cta a:hover{background:#f4f1e8}
+main.editorial-home .editorial-flow #next-chapter .finale-footer-caption{color:#b1bd9b}
+@media(min-width:850px){
+ main.editorial-home .editorial-flow #next-chapter .finale-heading{
+  top:clamp(23px,4.2vh,52px);width:min(72vw,1280px);
+ }
+ main.editorial-home .editorial-flow #next-chapter .finale-pages,
+ main.editorial-home .editorial-flow #next-chapter .finale-right{top:53%}
+ main.editorial-home .editorial-flow #next-chapter .finale-portrait{top:10%;bottom:-4%}
+ main.editorial-home .editorial-flow #next-chapter .finale-line-one{font-size:clamp(32px,min(6.2vw,10.9vh),108px)}
+ main.editorial-home .editorial-flow #next-chapter .finale-line-two{font-size:clamp(30px,min(5.7vw,9.7vh),96px)}
+}
+@media(max-width:849px){
+ main.editorial-home .editorial-flow #next-chapter.film-finale-shot{
+  --finale-frame-gap:9px;--finale-cut-height:24px;--finale-cut-width:36%;
+  min-height:0;
+ }
+ main.editorial-home .editorial-flow #next-chapter .film-finale{min-height:0}
+ main.editorial-home .editorial-flow #next-chapter .finale-inner{min-height:0;flex:auto}
+ main.editorial-home .editorial-flow #next-chapter .finale-footer{min-height:56px}
+}
+@media(max-width:400px){
+ main.editorial-home .editorial-flow #next-chapter .finale-inner{--finale-gutter:16px}
+ main.editorial-home .editorial-flow #next-chapter .finale-footer{padding-inline:16px}
+ main.editorial-home .editorial-flow #next-chapter .finale-line-one{font-size:clamp(24px,7.2vw,30px)}
+ main.editorial-home .editorial-flow #next-chapter .finale-line-two{font-size:clamp(23px,6.9vw,29px)}
+}

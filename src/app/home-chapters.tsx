@@ -31,6 +31,7 @@ import "./motion-v84.css";
 import "./memory-v89.css";
 import "./work-marquee-v90.css";
 import "./archive-v91.css";
+import "./finale-frame-v92.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -116,7 +117,6 @@ export default function HomeChapters(){
    <div className="ed-social-links"><a href="https://t.me/Shoxruxbekovich">Telegram ↗</a><a href="https://www.instagram.com/the_zzsh/">Instagram ↗</a><a href="https://github.com/iblamezzsh-tech/zm">GitHub ↗</a></div></div>
   </section>
   <section className="film-shot film-shot-contact film-dark film-finale-shot" id="next-chapter" data-ed-scene data-ed-theme="dark" aria-label="The next chapter">
-   <svg className="ed-finale-tab" viewBox="0 0 1200 50" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50V35Q0 24 14 24H485Q510 24 527 10Q539 0 559 0H641Q661 0 673 10Q690 24 715 24H1186Q1200 24 1200 35V50Z" fill="#24291e"/></svg>
    <div className="film-finale">
     <div className="finale-inner"><PageAtmosphere kind="earth" dark/>
      <div className="finale-heading">
@@ -145,6 +145,8 @@ export default function HomeChapters(){
      <div className="finale-note">THE JOURNEY CONTINUES.</div>
     </div>
     <footer className="finale-footer"><span>© ZiyoMuhammad</span><span className="finale-footer-caption">THE FUTURE IS STILL UNWRITTEN</span><a href="#top">Back to top <span aria-hidden="true">↑</span></a></footer>
+    <svg className="finale-frame-cut finale-frame-cut-left" viewBox="0 0 260 42" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0C0 16 9 24 25 24H180C194 24 201 27 213 36C220 41 226 42 238 42H260V42H0Z"/></svg>
+    <svg className="finale-frame-cut finale-frame-cut-right" viewBox="0 0 260 42" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0C0 16 9 24 25 24H180C194 24 201 27 213 36C220 41 226 42 238 42H260V42H0Z"/></svg>
    </div>
   </section>
  </EditorialFlow>
