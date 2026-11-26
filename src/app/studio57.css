@@ -1,0 +1,48 @@
+/* V57 — editorial precision. No changes to scroll geometry, motion controllers,
+   hero, finale, content claims or brand palette. */
+:root{--zm-reading-font:"DM Sans Variable",Arial,sans-serif;--zm-editorial-font:"Instrument Serif",Georgia,serif}
+.editorial-flow :is(.ed-kicker,.ed-caption),main.studio54 :is(.story-edition,.entry-top,.projects-rule,.archive-rule,.personal-rule,.contact-rule),.zm-menu-gallery-caption{font-family:var(--zm-reading-font);font-size:clamp(10px,.85vw,13px);line-height:1.45;letter-spacing:.085em;font-weight:650}
+.editorial-flow :is(.ed-collage-intro,.ed-future,.ed-work-heading,.ed-archive-heading,.ed-personal-head,.ed-social-heading) h2{letter-spacing:-.055em}
+.editorial-flow :is(.ed-collage-intro,.ed-future,.ed-work-heading,.ed-archive-heading,.ed-personal-head,.ed-social-heading) h2 em{letter-spacing:-.035em}
+.editorial-flow :is(.ed-manifesto-bottom,.ed-collage-intro,.ed-future,.ed-work-heading,.ed-personal-head,.ed-work-copy) p{line-height:1.55;text-wrap:pretty}
+main.studio54 :is(.story-opening,.projects-opening,.milestone-hero,.personal-title-wrap) h1{letter-spacing:-.065em}
+main.studio54 :is(.story-opening,.projects-opening,.milestone-hero,.personal-title-wrap) h1 em{letter-spacing:-.035em}
+main.studio54 :is(.entry-copy,.case-detail-grid,.story-opening-copy,.contact-title-grid,.personal-intro) p{line-height:1.65;text-wrap:pretty}
+main.studio54 .record-title{overflow-wrap:break-word;letter-spacing:-.025em}
+main.studio54 .record-info{line-height:1.45}
+main.studio54 .studio54-document figcaption,main.studio54 .studio54-plate-caption{font-family:var(--zm-reading-font);font-size:11px;line-height:1.45;letter-spacing:.045em}
+.edition56 .edition-top,.edition56 .edition-bottom,.edition56-main>div>span:first-child,.edition56-quiz-title>span:last-child,.edition56-sheet-meta span,.edition56-answer i,.edition56-chart-caption>span,.edition56-task b,.edition56-answer-sheet>small,.edition56-chart>small,.edition56-fieldnote>small{font-family:var(--zm-reading-font);letter-spacing:.025em}
+.edition56-quiz-title>strong{letter-spacing:-.065em;line-height:.87}
+.edition56-quiz-title>strong em{letter-spacing:-.045em}
+.edition56-finance-copy>strong{letter-spacing:-.055em;line-height:.94}
+.edition56-earth-copy>strong{letter-spacing:-.035em;line-height:.9}
+.edition56-chart-caption>strong{letter-spacing:-.055em}
+.edition56-answer-sheet>strong{letter-spacing:-.02em}
+.edition56.edition-think .edition56-answer-sheet{box-shadow:.65cqw .8cqw 0 #24291e35}
+.edition56.edition-finance .edition56-chart{background:#f4f1e8;border-color:#35443155}
+.edition56.edition-earth .edition56-fieldnote{box-shadow:.7cqw 1cqw 0 #17211755}
+@container(min-width:361px){
+ .edition56 .edition-top,.edition56 .edition-bottom{font-size:clamp(10px,1.65cqw,13px)}
+ .edition56-main>div>span:first-child{font-size:clamp(9px,1.45cqw,12px)}
+}
+@container(max-width:360px){
+ .edition56 .edition-top,.edition56 .edition-bottom{font-size:8px}
+ .edition56-main>div>span:first-child{font-size:8px}
+}
+@container(max-width:235px){
+ .edition56 .edition-top{border-bottom-color:transparent}
+ .edition56 .edition-bottom{border-top-color:transparent}
+}
+.zm-menu-dialog .zm-menu-label{letter-spacing:-.045em}
+.zm-menu-filmstrip-item{border-color:#f4f1e840}
+.zm-menu-filmstrip-item.is-selected{border-color:#ffda24}
+.zm-menu-gallery-caption{color:#dce0d2}
+@media(prefers-reduced-motion:no-preference){
+ .ed-link span{transition:transform .32s cubic-bezier(.2,.75,.25,1)}
+ .ed-work-image .studio54-edition{transition:transform .65s cubic-bezier(.2,.75,.25,1)}
+ .zm-menu-feature-frame{transition:opacity .42s,transform .65s cubic-bezier(.2,.75,.25,1),visibility .42s}
+}
+@media(max-width:700px){
+ .editorial-flow .ed-caption{font-size:10px;letter-spacing:.045em;gap:8px}
+ .zm-menu-gallery-caption{font-size:9px;letter-spacing:.035em}
+}
