@@ -1,8 +1,8 @@
-// V85: critical first-frame readiness and a real-hero aperture transition.
+// V86: visible intro timing, independent of critical first-frame readiness.
 export const bootScript=`(function(){try{
  if(location.pathname!=="/"||location.hash)return;
  var root=document.documentElement,media=matchMedia("(prefers-reduced-motion: reduce)");
- var start=performance.now(),done=false,dom=false,photo=false,fonts=false,photoOK=false,settle=0,slow=0,hard=0,cleanup=0;
+ var visibleSince=null,done=false,dom=false,photo=false,fonts=false,photoOK=false,settle=0,slow=0,hard=0,cleanup=0;
  root.dataset.zmBoot="pending";root.dataset.zmStage="document";
  function status(stage,message){
   if(done)return;root.dataset.zmStage=stage;
@@ -21,7 +21,7 @@ export const bootScript=`(function(){try{
   // The real hero is visible under the opening shutters, no duplicate portrait.
   document.dispatchEvent(new Event("zm-boot-prepare"));
   requestAnimationFrame(function(){document.dispatchEvent(new Event("zm-boot-prepare"))});
-  cleanup=setTimeout(removeGate,media.matches?0:ok?1280:420);
+  cleanup=setTimeout(removeGate,media.matches?0:ok?1510:420);
  }
  function check(){
   if(done)return;
@@ -30,14 +30,16 @@ export const bootScript=`(function(){try{
   if(!fonts){status("fonts","Preparing the typography.");return}
   status("motion","Opening the first frame.");
   if(settle)return;
-  // A short minimum only on the normal motion path, never on reduced motion.
-  var delay=media.matches?0:Math.max(0,620-(performance.now()-start));
+  // Start timing from the first painted intro, not the head script or resource clock.
+  if(!media.matches&&visibleSince===null)return;
+  var delay=media.matches?0:Math.max(0,2700-(performance.now()-visibleSince));
   settle=setTimeout(function(){finish(photoOK)},delay);
  }
  function skip(e){if(e.target&&e.target.closest&&e.target.closest("[data-boot-skip]")){e.preventDefault();finish(false)}}
  function restore(e){if(e.persisted){clearTimeout(cleanup);finish(false);removeGate()}}
  function onDOM(){
   if(dom||done)return;dom=true;
+  requestAnimationFrame(function(){requestAnimationFrame(function(){if(done)return;visibleSince=performance.now();check()})});
   // Only the actual first-screen portrait is critical. The attire lens and
   // later photographs/certificates may initialize after the entrance.
   var img=document.querySelector(".ed-opening .hero-portrait-plane > img.photo");
@@ -131,12 +133,12 @@ html[data-zm-boot-slow=true][data-zm-boot=pending] .zm-boot-skip{display:inline-
 @keyframes boot85-flash{0%{opacity:0;transform:scaleX(0)}26%{opacity:.95;transform:scaleX(1)}55%,100%{opacity:0;transform:scaleX(1)}}
 @keyframes boot85-fallback{to{opacity:0;visibility:hidden}}
 html[data-zm-boot=ready] .zm-boot-screen{pointer-events:none}
-html[data-zm-boot=ready] .zm-boot-shutter-top{animation:boot85-top 1.16s cubic-bezier(.65,.03,.22,1) both}
-html[data-zm-boot=ready] .zm-boot-shutter-bottom{animation:boot85-bottom 1.16s cubic-bezier(.65,.03,.22,1) both}
-html[data-zm-boot=ready] .zm-boot-stagecraft{animation:boot85-type-out .40s cubic-bezier(.5,0,.3,1) both}
-html[data-zm-boot=ready] .zm-boot-top{animation:boot85-top-out .45s both}
-html[data-zm-boot=ready] .zm-boot-bottom{animation:boot85-bottom-out .45s both}
-html[data-zm-boot=ready] .zm-boot-aperture{animation:boot85-flash .8s ease both}
+html[data-zm-boot=ready] .zm-boot-shutter-top{animation:boot85-top 1.4s cubic-bezier(.65,.03,.22,1) both}
+html[data-zm-boot=ready] .zm-boot-shutter-bottom{animation:boot85-bottom 1.4s cubic-bezier(.65,.03,.22,1) both}
+html[data-zm-boot=ready] .zm-boot-stagecraft{animation:boot85-type-out .58s cubic-bezier(.5,0,.3,1) both}
+html[data-zm-boot=ready] .zm-boot-top{animation:boot85-top-out .6s both}
+html[data-zm-boot=ready] .zm-boot-bottom{animation:boot85-bottom-out .6s both}
+html[data-zm-boot=ready] .zm-boot-aperture{animation:boot85-flash 1s ease both}
 html[data-zm-boot=fallback] .zm-boot-screen{pointer-events:none;animation:boot85-fallback .35s both}
 @media(max-width:600px){
  .zm-boot-top{grid-template-columns:1fr 1fr}.zm-boot-top>span:nth-child(2){display:none}
@@ -149,4 +151,15 @@ html[data-zm-boot=fallback] .zm-boot-screen{pointer-events:none;animation:boot85
  .zm-boot-screen *,.zm-boot-screen *::before,.zm-boot-screen *::after{animation:none!important;transition:none!important}
  html[data-zm-boot=ready] .zm-boot-screen,html[data-zm-boot=fallback] .zm-boot-screen{display:none!important}
 }
+
+/* V86 — readable first impression: the intro itself has a beginning,
+   a signature-drawing beat and a short still hold before opening. */
+@media(prefers-reduced-motion:no-preference){
+ html[data-zm-boot] .zm-boot-wordmark>span{animation:boot86-credit-in .65s .08s cubic-bezier(.22,1,.36,1) both}
+ html[data-zm-boot] .zm-boot-wordmark svg{animation:boot86-name-in 1.05s .16s cubic-bezier(.22,1,.36,1) both}
+ html[data-zm-boot] .zm-boot-subtitle{animation:boot86-credit-in .85s .58s cubic-bezier(.22,1,.36,1) both}
+ html[data-zm-boot] .zm-boot-ink path{animation-duration:1.45s}
+}
+@keyframes boot86-credit-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes boot86-name-in{0%{opacity:0;clip-path:inset(0 100% 0 0);transform:translateY(14px) scale(.97)}100%{opacity:1;clip-path:inset(0);transform:none}}
 `;
