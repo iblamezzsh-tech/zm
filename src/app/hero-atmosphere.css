@@ -6,7 +6,7 @@
 .hero-editorial-light{position:absolute;inset:-23%;pointer-events:none;background:radial-gradient(ellipse at 31% 40%,#fffdf5 0%,#fffdf5b3 22%,transparent 56%),radial-gradient(ellipse at 73% 62%,#b5c58b9e 0%,#c5cf9f42 25%,transparent 55%);transform:translate3d(-10%,2%,0);opacity:.92}
 .hero-editorial-shadow{position:absolute;inset:-16%;pointer-events:none;background:radial-gradient(ellipse at 23% 82%,#87956a55 0%,transparent 48%),radial-gradient(ellipse at 86% 16%,#c1cf9166 0%,transparent 43%);transform:translate3d(5%,-3%,0);opacity:.72}
 .hero-fluid-color{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;opacity:.87;filter:blur(2px)}
-.hero-editorial-lines{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;object-fit:cover;object-position:center;transform:none!important;animation:none!important}
+.hero-editorial-lines{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;object-fit:cover;object-position:center;transform:scale(1.045);}
 @media(prefers-reduced-motion:no-preference){
 .hero-editorial-light{animation:hero-light-sweep 9s ease-in-out infinite alternate;animation-play-state:paused;will-change:transform,opacity}
 .hero-editorial-shadow{animation:hero-shadow-breathe 13s ease-in-out infinite alternate;animation-play-state:paused;will-change:transform,opacity}
@@ -66,3 +66,13 @@ main.home-page>.site-header.minimal-header{position:absolute;z-index:10;top:0;le
 /* V25: selected hero accents in sunny yellow; all motion and layout preserved. */
 .home-page .home-hero .hero-signature{color:#d8ac00}
 .home-page .home-hero .hero-scroll span,.home-page .home-hero .hero-scroll:hover span{background:#ffda24;color:var(--ink)}
+
+/* V66 — a living portrait backdrop. Gentle independent loops; no layout shift. */
+@media(prefers-reduced-motion:no-preference){
+ .hero-editorial-lines{animation:zm-contour-drift 18s ease-in-out infinite alternate;animation-play-state:paused;will-change:transform}
+ .hero-editorial-background[data-running=true] .hero-editorial-lines{animation-play-state:running}
+ .hero-editorial-light{animation-duration:14s}
+ .hero-editorial-shadow{animation-duration:19s}
+}
+@keyframes zm-contour-drift{from{transform:translate3d(-.65%,.45%,0) scale(1.045)}to{transform:translate3d(.65%,-.45%,0) scale(1.075)}}
+@media(prefers-reduced-motion:reduce){.hero-editorial-lines{animation:none;transform:none;will-change:auto}}
