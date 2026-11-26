@@ -1,0 +1,3 @@
+# Adding archive records
+
+Edit src/app/achievements/data.ts. Distinguish experiences and competition participation from awards. Add only owner-approved details. For an authentic certificate, place a redacted public image or PDF under public/documents/ and set document.src, document.type and document.alt. The Certificates filter shows records with attached supporting documents. Never publish student IDs, QR codes, signatures of other people, or private details without review. No certificate images or award results are included in the initial archive. The initial records are based on prior portfolio content and the school stories supplied by the owner. Review before production publication.

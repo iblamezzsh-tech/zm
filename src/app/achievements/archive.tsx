@@ -1,0 +1,35 @@
+"use client";
+import {useRef,useState} from "react";
+import {categories,milestones,type Category,type RecordEntry} from "./data";
+
+function Mark({category}:{category:RecordEntry["category"]}){
+ return <svg viewBox="0 0 100 100" aria-hidden="true"><g stroke="currentColor" strokeWidth="1.2" fill="none">
+ {category==="Competitions"?<><circle cx="50" cy="44" r="28"/><circle cx="50" cy="44" r="21"/><path d="m31 66-6 25 24-13 24 13-6-25 M50 30l4 9 10 1-7 7 2 10-9-5-9 5 2-10-7-7 10-1Z"/></>:category==="Leadership"?<><circle cx="50" cy="50" r="35"/><path d="M50 10v80M10 50h80 M50 18l12 32-12 32-12-32Z"/><circle cx="50" cy="50" r="6" fill="currentColor"/></>:category==="Volunteering"?<><path d="M50 83C43 75 12 56 12 33 12 13 38 8 50 29 62 8 88 13 88 33 88 56 57 75 50 83Z"/><path d="M50 71V36 M50 56Q30 51 28 37 M50 50Q67 45 72 33"/></>:category==="Sports"?<><circle cx="50" cy="50" r="36"/><path d="m50 32 17 12-6 20H39l-6-20Z M50 32V14 M67 44l18-6 M61 64l11 15 M39 64 28 79 M33 44 15 38"/></>:<><path d="M12 26Q33 19 50 31Q67 19 88 26V72Q67 64 50 77Q33 64 12 72Z M50 31V77 M21 36l20 5 M59 41l20-5"/></>}
+ </g></svg>
+}
+function EntryCard({entry,onOpen}:{entry:RecordEntry;onOpen:()=>void}){
+ return <button type="button" className="archive-record" onClick={onOpen}>
+ <div className="record-cover"><span>ZM / ARCHIVE</span><Mark category={entry.category}/><span>{entry.type.toUpperCase()}</span></div>
+ <div className="record-info"><span>{entry.category}{entry.period?" / "+entry.period:""}</span><h3>{entry.title}</h3><p>{entry.organization}</p><span className="record-open">Read record <span aria-hidden="true">↗</span></span></div>
+ </button>
+}
+export default function Archive(){
+ const [category,setCategory]=useState<Category>("All");
+ const [selected,setSelected]=useState<RecordEntry|null>(null);
+ const dialog=useRef<HTMLDialogElement>(null);
+ const trigger=useRef<HTMLButtonElement|null>(null);
+ const items=milestones.filter(item=>category==="All"||(category==="Certificates"?Boolean(item.document):item.category===category));
+ function open(entry:RecordEntry){trigger.current=document.activeElement instanceof HTMLButtonElement?document.activeElement:null;setSelected(entry);dialog.current?.showModal()}
+ function close(){dialog.current?.close()}
+ return <section className="archive-section" aria-labelledby="archive-title">
+ <div className="archive-rule"><span>01 / Personal records</span><span>Experiences &amp; evidence</span></div>
+ <div className="archive-heading"><h2 id="archive-title">The <em>archive.</em></h2><p>A collection of experiences, responsibilities and milestones. Awards and certificates will be listed only when supporting records are available.</p></div>
+ <div className="archive-tabs" role="group" aria-label="Filter archive">{categories.map(c=><button type="button" key={c} aria-pressed={category===c} onClick={()=>setCategory(c)}>{c}</button>)}</div>
+ <div className="archive-count" aria-live="polite">{String(items.length).padStart(2,"0")} {items.length===1?"record":"records"} / {category}</div>
+ {items.length?<div className="archive-grid">{items.map(entry=><EntryCard entry={entry} key={entry.id} onOpen={()=>open(entry)}/>)}</div>:<div className="archive-empty"><span>ZM / ARCHIVE NOTES</span><h3>{category==="Certificates"?"Documents yet to be added.":"A chapter still unfolding."}</h3><p>{category==="Certificates"?"No certificate files have been published in this archive yet.":"There are no published records in this category yet."}</p><button type="button" onClick={()=>setCategory("All")}>Browse all records ↗</button></div>}
+ <dialog className="archive-dialog" ref={dialog} aria-labelledby="record-title" onClose={()=>{setSelected(null);trigger.current?.focus();trigger.current=null}} onClick={e=>{if(e.target===e.currentTarget){const rect=e.currentTarget.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)close()}}}>
+ <button type="button" className="archive-close" aria-label="Close record" onClick={close}>×</button>
+ {selected&&<><div className="dialog-meta">{selected.type} / {selected.category}{selected.period?" / "+selected.period:""}</div><h2 id="record-title">{selected.title}</h2><div className="dialog-org">{selected.organization}</div><p>{selected.description}</p>{selected.document?(<div className="archive-document">{selected.document.type==="image"?<img src={selected.document.src} alt={selected.document.alt}/>:<object data={selected.document.src} type="application/pdf" aria-label={selected.document.alt}><a href={selected.document.src}>Open PDF</a></object>}<a href={selected.document.src} target="_blank" rel="noreferrer">Open original document ↗</a></div>):<div className="dialog-evidence">Personal record · No supporting certificate published.</div>}</>}
+ </dialog>
+ </section>
+}
