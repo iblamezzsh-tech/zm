@@ -23,6 +23,7 @@ import "./motion-v76.css";
 import "./opening-v77.css";
 import PageAtmosphere from "./page-atmosphere";
 import "./home-atmosphere-v78.css";
+import "./opening-v79.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -34,7 +35,7 @@ export default function HomeChapters(){
  return <EditorialFlow>
   <section className="ed-opening" id="film-present" data-ed-scene data-ed-theme="light">
    <div className="ed-opening-sticky"><PageAtmosphere kind="story" dark/>
-    <div className="ed-opening-marquee" aria-hidden="true"><div className="ed-opening-ticker"><span>STAY CURIOUS. KEEP BECOMING.</span><span>STAY CURIOUS. KEEP BECOMING.</span></div></div>
+    <div className="ed-opening-marquee" aria-hidden="true"><div className="ed-opening-ticker"><span>STAY CURIOUS. KEEP BECOMING.</span></div></div>
     <div className="ed-opening-credits" aria-hidden="true"><div className="ed-opening-signature"><Signature/></div><span className="ed-opening-credit-label">01 / THE ART OF BECOMING</span></div>
     <div className="home-hero"><Portrait/></div>
    </div>
