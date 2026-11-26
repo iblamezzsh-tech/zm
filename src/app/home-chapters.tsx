@@ -17,6 +17,7 @@ import "./motion-cut-v52.css";
 import "./studio54.css";
 import "./studio55.css";
 import "./studio62.css";
+import "./studio63.css";
 
 export default function HomeChapters(){
  const records=getFeaturedRecords();
@@ -47,6 +48,19 @@ export default function HomeChapters(){
   <section className="ed-future ed-paper" id="film-future" data-ed-scene data-ed-theme="light">
    <div className="ed-gutter ed-future-content"><span className="ed-kicker">03 / STILL BECOMING</span><h2 data-ed-reveal>Ideas worth<br/><em>acting on.</em></h2><p>Economics, technology, education and a desire to turn curiosity into something real.</p><Link href="/projects" className="ed-link">Explore my projects <span>↗</span></Link></div>
    <div className="ed-future-words" aria-hidden="true"><span>THINK.</span><em>LEARN.</em><span>BUILD.</span></div>
+  </section>
+  <section className="zm-worlds" aria-label="Two sides of my journey" data-ed-scene data-ed-theme="dark">
+   <div className="ed-gutter ed-caption"><span>03 / TWO WORLDS</span><span>ONE CURIOSITY</span></div>
+   <div className="zm-worlds-grid">
+    <Link href="/projects" className="zm-world zm-world-build" data-ed-reveal>
+     <div className="zm-world-art" aria-hidden="true"><ProjectEdition project={projects[0]}/></div>
+     <div className="zm-world-copy"><span>01 / THE WORK</span><strong>What I <em>build.</em></strong><small>Explore the projects <b aria-hidden="true">↗</b></small></div>
+    </Link>
+    <Link href="/off-the-record" className="zm-world zm-world-life" data-ed-reveal>
+     <div className="zm-world-art" aria-hidden="true"><svg viewBox="0 0 500 300" fill="none" preserveAspectRatio="xMidYMid slice"><g stroke="currentColor" strokeWidth="1.1">{Array.from({length:21},(_,i)=><ellipse key={i} cx="255" cy="150" rx={44+i*9} ry={21+i*5} transform={`rotate(${i*11-45} 255 150)`}/>)}</g><path d="M250 14V286 M95 150H405" stroke="currentColor" opacity=".35"/></svg><div className="zm-world-sig"><Signature/></div></div>
+     <div className="zm-world-copy"><span>02 / OFF THE RECORD</span><strong>What I <em>love.</em></strong><small>Beyond the résumé <b aria-hidden="true">↗</b></small></div>
+    </Link>
+   </div>
   </section>
   <section className="ed-work" id="projects" data-ed-scene data-ed-theme="dark">
    <div className="ed-gutter ed-caption"><span>04 / SELECTED INITIATIVES</span><span>01 — 03</span></div>

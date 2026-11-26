@@ -1,0 +1,37 @@
+/* V63 — two contrasting editorial worlds, inspired by the reference's
+   split compositions. No third-party graphics, no new motion engine. */
+.zm-worlds{background:#24291e;color:#f4f1e8;padding-bottom:clamp(38px,6vw,90px);overflow:hidden}
+.zm-worlds-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(9px,1.5vw,24px);padding:clamp(24px,4vw,58px) var(--ed-pad) 0}
+.zm-world{position:relative;isolation:isolate;overflow:hidden;min-width:0;min-height:clamp(360px,47vw,680px);display:flex;align-items:flex-end;padding:clamp(18px,3.2vw,50px);text-decoration:none;color:#24291e;background:#ffda24}
+.zm-world-life{color:#f4f1e8;background:#354431}
+.zm-world-art{position:absolute;inset:0;z-index:-1;overflow:hidden}
+.zm-world-build .zm-world-art .studio54-edition{width:76%;position:absolute;top:5%;left:12%;transform:rotate(-8deg);box-shadow:0 12px 35px #24291e38}
+.zm-world-build .zm-world-art{background:linear-gradient(180deg,#ffda24 0%,#ffda24 72%)}
+.zm-world-life .zm-world-art svg{width:100%;height:100%;color:#dce0d2;opacity:.4;position:absolute;inset:0}
+.zm-world-life .zm-world-sig{position:absolute;top:16%;left:13%;width:74%;color:#ffda24;transform:rotate(-12deg)}
+.zm-world-life .zm-world-sig svg{position:static;height:auto;color:inherit;opacity:1}
+.zm-world-copy{position:relative;width:100%;padding-top:clamp(18px,3vw,40px);background:linear-gradient(180deg,transparent,#ffda24 28%);display:grid;gap:12px}
+.zm-world-life .zm-world-copy{background:linear-gradient(180deg,transparent,#354431 28%)}
+.zm-world-copy>span{font:650 clamp(10px,.85vw,13px)/1.4 "DM Sans Variable",Arial,sans-serif;letter-spacing:.085em}
+.zm-world-copy>strong{font:780 clamp(42px,6.3vw,108px)/.93 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.07em;display:block}
+.zm-world-copy>strong em{font:400 1.03em/.95 "Instrument Serif",Georgia,serif;letter-spacing:-.035em;display:block}
+.zm-world-copy>small{display:flex;align-items:center;justify-content:space-between;border-top:1px solid currentColor;padding-top:14px;font-size:clamp(13px,1.2vw,17px);font-weight:650}
+.zm-world-copy b{font-size:24px;font-weight:400}
+.zm-world:focus-visible{outline:3px solid #f4f1e8;outline-offset:3px}
+@media(prefers-reduced-motion:no-preference){
+ .editorial-flow[data-ed-motion=true] .zm-world .zm-world-art{transform:translateY(calc((1 - var(--ed-reveal,1))*-16%)) scale(calc(1.15 - var(--ed-reveal,1)*.15));}
+ .editorial-flow[data-ed-motion=true] .zm-world-life .zm-world-art{transform:translateY(calc((1 - var(--ed-reveal,1))*16%)) scale(calc(1.12 - var(--ed-reveal,1)*.12))}
+ .editorial-flow[data-ed-motion=true] .zm-world .zm-world-copy>strong{transform:translateY(calc((1 - var(--ed-reveal,1))*38px));opacity:calc(.4 + var(--ed-reveal,1)*.6)}
+ .zm-world-copy b{transition:transform .35s cubic-bezier(.2,.75,.25,1)}
+ .zm-world:hover b,.zm-world:focus-visible b{transform:translate(4px,-4px)}
+}
+@media(min-width:900px){
+ .editorial-flow[data-ed-cinema=true] .ed-archive-grid{grid-template-columns:repeat(6,minmax(0,1fr));align-items:start;gap:clamp(18px,2.5vw,40px)}
+ .editorial-flow[data-ed-cinema=true] .ed-archive-item{grid-column:span 2;min-width:0}
+ .editorial-flow[data-ed-cinema=true] .ed-archive-item:nth-child(4n+1){grid-column:span 3}
+ .editorial-flow[data-ed-cinema=true] .ed-archive-item:nth-child(4n+2){grid-column:span 3;margin-top:clamp(20px,5vw,76px);margin-bottom:0}
+ .editorial-flow[data-ed-cinema=true] .ed-archive-item:nth-child(4n+3){grid-column:span 3}
+ .editorial-flow[data-ed-cinema=true] .ed-archive-item:nth-child(4n+4){grid-column:span 3;margin-top:clamp(20px,5vw,76px);margin-bottom:0}
+ .editorial-flow[data-ed-cinema=true] .ed-archive-item .ed-archive-image{aspect-ratio:1.65}
+}
+@media(max-width:700px){.zm-worlds-grid{grid-template-columns:1fr}.zm-world{min-height:clamp(330px,86vw,520px)}.zm-world-copy>strong{font-size:clamp(44px,10vw,68px)}}
