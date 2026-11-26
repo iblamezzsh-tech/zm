@@ -69,3 +69,42 @@ export function createAtlasTerrain(canvas:HTMLCanvasElement){
  }
  return {draw,dispose(){canvas.removeEventListener("webglcontextlost",lose);gl.deleteBuffer(buffer);gl.deleteProgram(program)}};
 }
+
+// Render a moving perspective map even when WebGL is unavailable. Separate canvas
+// because a failed WebGL context cannot be changed into a 2D context.
+export function createAtlasFallback(canvas:HTMLCanvasElement){
+ const ctx=canvas.getContext("2d",{alpha:false});if(!ctx)return null;
+ const clamp=(v:number)=>Math.max(0,Math.min(1,v));
+ const smooth=(a:number,b:number,p:number)=>{const t=clamp((p-a)/(b-a));return t*t*(3-2*t)};
+ const mix=(a:number[],b:number[],t:number)=>a.map((v,i)=>v+(b[i]-v)*t);
+ const rgb=(a:number[])=>"rgb("+a.map(Math.round).join(",")+")";
+ let previous=-1,oldW=0,oldH=0;
+ function draw(p:number){
+  const w=Math.max(1,canvas.clientWidth),h=Math.max(1,canvas.clientHeight),f=Math.min(1,1100/w,700/h),W=Math.round(w*f),H=Math.round(h*f);
+  if(Math.abs(previous-p)<.0004&&W===oldW&&H===oldH)return;
+  previous=p;oldW=W;oldH=H;canvas.width=W;canvas.height=H;
+  const a=smooth(.16,.43,p),b=smooth(.57,.87,p);
+  const paper=mix(mix([255,218,36],[29,37,25],a),[244,241,232],b);
+  const ink=mix(mix([77,64,14],[216,201,82],a),[89,107,69],b);
+  ctx!.fillStyle=rgb(paper);ctx!.fillRect(0,0,W,H);
+  const gradient=ctx!.createLinearGradient(W*.12,0,W*.68,H*.18);
+  gradient.addColorStop(0,"rgba("+ink.map(Math.round).join(",")+",0)");
+  gradient.addColorStop(1,"rgba("+ink.map(Math.round).join(",")+",0.34)");
+  ctx!.strokeStyle=gradient;ctx!.lineWidth=.95;
+  const horizon=H*(.48+.08*Math.sin(p*Math.PI));
+  for(let j=-2;j<27;j++){
+   // Perspective spacing contracts toward the horizon; wave phase follows camera travel.
+   const d=(j+(p*11%1)+3)/28,depth=d*d;
+   for(const sign of [-1,1]){
+    ctx!.beginPath();
+    for(let i=0;i<=100;i++){
+     const u=i/100,x=u*W,amp=H*(.018+depth*.085);
+     const y=horizon+sign*depth*H*.67+amp*(Math.sin(u*10+p*6+depth*5)+.45*Math.sin(u*21-depth*9+p*4));
+     if(i===0)ctx!.moveTo(x,y);else ctx!.lineTo(x,y);
+    }
+    ctx!.stroke();
+   }
+  }
+ }
+ return {draw,dispose(){}};
+}

@@ -71,3 +71,7 @@
 .home-page .journey-sequence.atlas-journey .journey-stage .journey-scene.journey-past{opacity:calc(var(--atlas-in1,0)*(1 - var(--atlas-out1,0)))}
 .home-page .journey-sequence.atlas-journey .journey-stage .journey-scene.journey-next{opacity:var(--atlas-in2,0)}
 .project-exhibition.exhibition-spatial.exhibition-cinematic .exhibit-scene.is-current{opacity:1}
+
+.atlas-terrain-fallback{display:none;position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.atlas-journey [data-terrain=canvas] .atlas-terrain{display:none}
+.atlas-journey [data-terrain=canvas] .atlas-terrain-fallback{display:block}
