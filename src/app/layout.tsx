@@ -23,6 +23,7 @@ import "./studio61.css";
 import "./button-motion.css";
 import "./cursor-system.css";
 import "./interior-colors.css";
+import "./page-atmosphere.css";
 
 import {bootCSS,bootScript} from "./boot-intro";
 

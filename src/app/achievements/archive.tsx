@@ -1,4 +1,6 @@
 "use client";
+import PageAtmosphere from "../page-atmosphere";
+
 import {useEffect,useRef,useState} from "react";
 import {categories,type Category,type RecordEntry} from "./data";
 import MotionWords from "../motion-words";
@@ -28,12 +30,12 @@ export default function Archive({records}:{records:RecordEntry[]}){
  useEffect(()=>{const el=dialog.current;if(!selected||!el)return;if(!el.open)el.showModal();const previous=document.body.style.overflow;document.body.style.overflow="hidden";return()=>{document.body.style.overflow=previous}},[selected]);
  function open(entry:RecordEntry,button:HTMLButtonElement){trigger.current=button;setSelected(entry)}
  function close(){dialog.current?.close()}
- return <section className="archive-section" id="featured" aria-labelledby="archive-title">
+ return <section className="archive-section" id="featured" aria-labelledby="archive-title"><PageAtmosphere kind="archive"/>
  <div className="archive-rule"><span>01 / Personal records</span><span>Experiences &amp; evidence</span></div>
  <div className="archive-heading"><h2 id="archive-title"><MotionWords text="The"/> <em><MotionWords text="archive."/></em></h2><p>School days, competitions, volunteering and the documents I've kept along the way.</p></div>
  <div className="archive-tabs" role="group" aria-label="Filter archive">{categories.map(c=><button type="button" key={c} aria-pressed={category===c} onClick={()=>{setCategory(c);setFeaturedId("")}}>{c}</button>)}</div>
  <div className="archive-count" aria-live="polite">{String(items.length).padStart(2,"0")} {items.length===1?"record":"records"} / {category}</div>
- {featured&&<div className="archive-desk" aria-label="Selected archive record">
+ {featured&&<div className="archive-desk" aria-label="Selected archive record"><PageAtmosphere kind="archive" dark/>
  <div className="desk-top"><span>ZM / READING ROOM</span><span>{String(index+1).padStart(2,"0")} / {String(items.length).padStart(2,"0")}</span></div>
  <div className="desk-object"><div className="desk-paper-back" aria-hidden="true"/><div className="desk-paper" key={featured.id}>
  {featured.document?.type==="image"?<img src={featured.document.src} alt={featured.document.alt} decoding="async"/>:<div className="desk-index-sheet"><Mark category={featured.category}/><span>{featured.category} / {featured.type}</span><strong>{featured.title}</strong></div>}

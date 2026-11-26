@@ -1,3 +1,4 @@
+import PageAtmosphere from "../page-atmosphere";
 import MotionWords from "../motion-words";
 import {getFeaturedRecords} from "../featured-records";
 import Link from "next/link";
@@ -23,7 +24,7 @@ export default function About(){
  const records=getFeaturedRecords();
  return <main className="story-page studio54" id="story-top">
    <SiteHeader about />
-   <section className="story-opening" aria-labelledby="story-title">
+   <section className="story-opening" aria-labelledby="story-title"><PageAtmosphere kind="story"/>
      <div className="story-edition"><span>ZM / PERSONAL JOURNAL</span><span>UZBEKISTAN · IN PROGRESS</span></div>
      <h1 id="story-title"><MotionWords text="My"/> <em><MotionWords text="story."/></em></h1>
      <div className="story-opening-grid">
@@ -34,12 +35,12 @@ export default function About(){
    <div className="story-body">
     <nav className="story-index-nav" aria-label="Story chapters"><span>THE CHAPTERS</span>{chapters.map(c=><a href={"#"+c.id} key={c.id}><small>{c.number}</small>{c.id==="curiosity"?"Origins":c.id==="learning"?"School":c.id}<span aria-hidden="true">↘</span></a>)}</nav>
     <div className="story-entries">
-      {chapters.map(c=><section className={"story-entry story-entry-"+c.kind} key={c.id} id={c.id} aria-labelledby={c.id+"-title"}><div className="entry-top"><span>CHAPTER {c.number} / 04</span><span>{c.label}</span></div><div className="entry-spread"><div className="entry-art studio54-story-plate" data-story-motion>
+      {chapters.map(c=><section className={"story-entry story-entry-"+c.kind} key={c.id} id={c.id} aria-labelledby={c.id+"-title"}><PageAtmosphere kind="story"/><div className="entry-top"><span>CHAPTER {c.number} / 04</span><span>{c.label}</span></div><div className="entry-spread"><div className="entry-art studio54-story-plate" data-story-motion>
  {c.kind==="questions"||c.kind==="learning"?<div className="studio54-document-pair">{records.filter(r=>c.kind==="questions"?r.id==="handball-first-place-2022"||r.id==="zakovat-best-player-2024":r.id==="informatics-olympiad-third-place"||r.id==="business-studies-2026").map((r,i)=><figure key={r.id} className={"studio54-document doc-"+i}><img src={r.document!.src} alt={r.document!.alt} loading="lazy" decoding="async"/><figcaption>{r.dateLabel} / {r.chapter}</figcaption></figure>)}</div>:c.kind==="building"?<div className="studio54-story-projects"><span>THREE INITIATIVES / IN PROGRESS</span><Link href="/projects/overthink">OverThink <small>↗</small></Link><Link href="/projects/finance4youth">Finance4Youth <small>↗</small></Link><Link href="/projects/rezamin">ReZamin <small>↗</small></Link></div>:<div className="studio54-unwritten"><span>04 / THE FUTURE</span><strong>To be<br/><em>continued.</em></strong><div><Signature/></div></div>}
  <span className="studio54-plate-caption">{c.note}</span></div><div className="entry-copy" data-story-motion><h2 id={c.id+"-title"}><MotionWords text={c.title}/><br/><em><MotionWords text={c.emphasis}/></em></h2><p>{c.body}</p>{c.kind==="building"&&<Link href="/projects" className="story-inline-link">Explore my projects ↗</Link>}</div></div></section>)}
     </div>
    </div>
-   <section className="story-ending"><div className="entry-top"><span>ZM / END OF THIS CHAPTER</span><span>TO BE CONTINUED</span></div><h2><MotionWords text="There’s more"/><br/><em><MotionWords text="to come."/></em></h2><div className="story-end-row"><Link href="/projects">Discover what I build <span aria-hidden="true">↗</span></Link><div><Signature/></div></div></section>
+   <section className="story-ending"><PageAtmosphere kind="story" dark/><div className="entry-top"><span>ZM / END OF THIS CHAPTER</span><span>TO BE CONTINUED</span></div><h2><MotionWords text="There’s more"/><br/><em><MotionWords text="to come."/></em></h2><div className="story-end-row"><Link href="/projects">Discover what I build <span aria-hidden="true">↗</span></Link><div><Signature/></div></div></section>
    <footer className="home-footer"><span>ZiyoMuhammad</span><Link href="/">Back home</Link><a href="#story-top">Back to top ↑</a></footer>
  </main>
 }

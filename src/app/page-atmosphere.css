@@ -1,0 +1,93 @@
+/* V72 — original route-specific illustrated atmospheres. Homepage excluded. */
+main.studio54:not(.home-page) :has(> .zm-atmosphere){position:relative;isolation:isolate}
+main.studio54:not(.home-page) .zm-atmosphere{position:absolute;inset:0;display:block;z-index:-1;pointer-events:none;overflow:hidden;overflow:clip;user-select:none;--atm-opacity:.25;--atm-light:#c0cba8;--atm-glow:#e1d6a0}
+.zm-atmosphere .atm-primary,.zm-atmosphere .atm-secondary{position:absolute;inset:-9%;display:block;background-repeat:repeat-y;background-position:center top;background-size:100% auto;opacity:var(--atm-opacity);transform-origin:center}
+.zm-atmosphere .atm-secondary{opacity:calc(var(--atm-opacity)*1.2)}
+.zm-atmosphere .atm-light{position:absolute;inset:-15%;background:radial-gradient(ellipse at 17% 20%,var(--atm-light) 0%,transparent 48%),radial-gradient(ellipse at 84% 78%,var(--atm-glow) 0%,transparent 48%);opacity:.34}
+main.studio54:not(.home-page) .zm-atmosphere.atm-dark{--atm-opacity:.22;--atm-light:#718267;--atm-glow:#a8a36b}
+.zm-atmosphere.atm-dark .atm-primary,.zm-atmosphere.atm-dark .atm-secondary{filter:brightness(2.3) saturate(.3)}
+
+main.studio54:not(.home-page) .zm-atmosphere.atm-story:not(.atm-dark){--atm-light:#bac7a6;--atm-glow:#e1d6a0}
+.zm-atmosphere.atm-story .atm-primary{background-image:url("/atmosphere/story-1.svg")}
+.zm-atmosphere.atm-story .atm-secondary{background-image:url("/atmosphere/story-2.svg")}
+@media(prefers-reduced-motion:no-preference){.zm-atmosphere.atm-story .atm-primary{animation:atm-contours 24s ease-in-out infinite alternate}.zm-atmosphere.atm-story .atm-secondary{animation:atm-tide 29s ease-in-out infinite alternate}}
+
+main.studio54:not(.home-page) .zm-atmosphere.atm-archive:not(.atm-dark){--atm-light:#c5c5a3;--atm-glow:#e8d7a5}
+.zm-atmosphere.atm-archive .atm-primary{background-image:url("/atmosphere/archive-1.svg")}
+.zm-atmosphere.atm-archive .atm-secondary{background-image:url("/atmosphere/archive-2.svg")}
+@media(prefers-reduced-motion:no-preference){.zm-atmosphere.atm-archive .atm-primary{animation:atm-file 30s ease-in-out infinite alternate}.zm-atmosphere.atm-archive .atm-secondary{animation:atm-dust 16s ease-in-out infinite alternate}}
+
+main.studio54:not(.home-page) .zm-atmosphere.atm-gallery:not(.atm-dark){--atm-light:#aebf9d;--atm-glow:#e4d2a2}
+.zm-atmosphere.atm-gallery .atm-primary{background-image:url("/atmosphere/gallery-1.svg")}
+.zm-atmosphere.atm-gallery .atm-secondary{background-image:url("/atmosphere/gallery-2.svg")}
+@media(prefers-reduced-motion:no-preference){.zm-atmosphere.atm-gallery .atm-primary{animation:atm-frames 21s ease-in-out infinite alternate}.zm-atmosphere.atm-gallery .atm-secondary{animation:atm-rails 26s ease-in-out infinite alternate}}
+
+main.studio54:not(.home-page) .zm-atmosphere.atm-think:not(.atm-dark){--atm-light:#a3a46c;--atm-glow:#9d9b4c}
+.zm-atmosphere.atm-think .atm-primary{background-image:url("/atmosphere/think-1.svg")}
+.zm-atmosphere.atm-think .atm-secondary{background-image:url("/atmosphere/think-2.svg")}
+@media(prefers-reduced-motion:no-preference){.zm-atmosphere.atm-think .atm-primary{animation:atm-network 18s ease-in-out infinite alternate}.zm-atmosphere.atm-think .atm-secondary{animation:atm-question 23s ease-in-out infinite alternate}}
+
+main.studio54:not(.home-page) .zm-atmosphere.atm-finance:not(.atm-dark){--atm-light:#a5c49b;--atm-glow:#d0d7b2}
+.zm-atmosphere.atm-finance .atm-primary{background-image:url("/atmosphere/finance-1.svg")}
+.zm-atmosphere.atm-finance .atm-secondary{background-image:url("/atmosphere/finance-2.svg")}
+@media(prefers-reduced-motion:no-preference){.zm-atmosphere.atm-finance .atm-primary{animation:atm-grid 24s ease-in-out infinite alternate}.zm-atmosphere.atm-finance .atm-secondary{animation:atm-chart 20s ease-in-out infinite alternate}}
+
+main.studio54:not(.home-page) .zm-atmosphere.atm-earth:not(.atm-dark){--atm-light:#a3bc8a;--atm-glow:#d0d6a0}
+.zm-atmosphere.atm-earth .atm-primary{background-image:url("/atmosphere/earth-1.svg")}
+.zm-atmosphere.atm-earth .atm-secondary{background-image:url("/atmosphere/earth-2.svg")}
+@media(prefers-reduced-motion:no-preference){.zm-atmosphere.atm-earth .atm-primary{animation:atm-tide 23s ease-in-out infinite alternate}.zm-atmosphere.atm-earth .atm-secondary{animation:atm-leaves 17s ease-in-out infinite alternate}}
+
+main.studio54:not(.home-page) .zm-atmosphere.atm-notebook:not(.atm-dark){--atm-light:#dfcc8e;--atm-glow:#b8c3a8}
+.zm-atmosphere.atm-notebook .atm-primary{background-image:url("/atmosphere/notebook-1.svg")}
+.zm-atmosphere.atm-notebook .atm-secondary{background-image:url("/atmosphere/notebook-2.svg")}
+@media(prefers-reduced-motion:no-preference){.zm-atmosphere.atm-notebook .atm-primary{animation:atm-paper 25s ease-in-out infinite alternate}.zm-atmosphere.atm-notebook .atm-secondary{animation:atm-ink 19s ease-in-out infinite alternate}}
+
+main.studio54:not(.home-page) .zm-atmosphere.atm-post:not(.atm-dark){--atm-light:#c7c8a0;--atm-glow:#ddc784}
+.zm-atmosphere.atm-post .atm-primary{background-image:url("/atmosphere/post-1.svg")}
+.zm-atmosphere.atm-post .atm-secondary{background-image:url("/atmosphere/post-2.svg")}
+@media(prefers-reduced-motion:no-preference){.zm-atmosphere.atm-post .atm-primary{animation:atm-fold 25s ease-in-out infinite alternate}.zm-atmosphere.atm-post .atm-secondary{animation:atm-stamp 32s ease-in-out infinite alternate}}
+@keyframes atm-contours{from{transform:translate(-2%,-2%) rotate(-3deg)}to{transform:translate(3%,3%) rotate(4deg)}}
+@keyframes atm-tide{from{transform:translate(-2%,2%) scale(1.02)}to{transform:translate(4%,-3%) scale(1.10)}}
+@keyframes atm-file{from{transform:translate(-3%,0)}to{transform:translate(3%,-4%)}}
+@keyframes atm-dust{from{transform:translateY(3%)}to{transform:translate(1%,-4%)}}
+@keyframes atm-frames{from{transform:translateX(-3%) rotate(-2deg)}to{transform:translateX(4%) rotate(3deg)}}
+@keyframes atm-rails{from{transform:translateY(-3%)}to{transform:translateY(4%)}}
+@keyframes atm-network{from{transform:scale(.98) rotate(-2deg)}to{transform:scale(1.10) rotate(3deg)}}
+@keyframes atm-question{from{transform:translateY(4%)}to{transform:translateY(-4%)}}
+@keyframes atm-grid{from{transform:translateX(-4%)}to{transform:translateX(3%)}}
+@keyframes atm-chart{from{transform:translate(-3%,3%)}to{transform:translate(3%,-3%)}}
+@keyframes atm-leaves{from{transform:rotate(-4deg) translateX(-2%)}to{transform:rotate(5deg) translateX(2%)}}
+@keyframes atm-paper{from{transform:translateY(-2%)}to{transform:translateY(2%)}}
+@keyframes atm-ink{from{transform:translate(-2%,1%) rotate(-2deg)}to{transform:translate(2%,-2%) rotate(3deg)}}
+@keyframes atm-fold{from{transform:scale(1.02) translateY(-2%)}to{transform:scale(1.09) translateY(2%)}}
+@keyframes atm-stamp{from{transform:rotate(-4deg)}to{transform:rotate(5deg)}}
+@keyframes atm-lamp{from{transform:translate(-3%,-4%) scale(1.04)}to{transform:translate(5%,3%) scale(1.15)}}
+@media(prefers-reduced-motion:no-preference){
+ .zm-atmosphere .atm-light{animation:atm-lamp 19s ease-in-out infinite alternate}
+ .zm-atmosphere :is(.atm-primary,.atm-secondary,.atm-light){animation-play-state:paused}
+ .zm-atmosphere[data-running=true] :is(.atm-primary,.atm-secondary,.atm-light){animation-play-state:running}
+}
+main.studio54.story-page:not(.home-page) .story-opening{background:#dce0d2}
+main.studio54.story-page .story-opening h1{align-self:start;margin-top:clamp(18px,6vw,90px)}
+main.studio54.story-page .story-entry{padding-inline:clamp(14px,3vw,44px);padding-top:clamp(18px,3vw,40px);background:#e9e9de}
+main.studio54.story-page .story-entry:nth-child(even){background:#dce0d2}
+main.studio54.projects-page:not(.case-page) .exhibit-scene{background:#e9e9de}
+main.studio54.projects-page:not(.case-page) .exhibit-finance{background:#dce0d2}
+main.studio54.projects-page:not(.case-page) .exhibit-earth{background:#d5dece}
+main.studio54.projects-page:not(.case-page) .project-exhibition.exhibition-flow .exhibit-scene{margin:0 0 clamp(24px,4vw,64px);padding:clamp(22px,4vw,58px) clamp(14px,3vw,42px)}
+main.studio54.projects-page:not(.case-page) .exhibition-directory{margin-block:clamp(28px,4vw,65px)}
+main.studio54.projects-page.case-page :is(.case-introduction,.case-experience){background:#e9e9de;padding-inline:clamp(18px,4vw,60px)}
+main.studio54.case-world-finance :is(.case-introduction,.case-experience){background:#dce0d2}
+main.studio54.case-world-earth :is(.case-introduction,.case-experience){background:#d5dece}
+main.studio54.milestones-page .archive-section{background:#e9e9de;padding-inline:clamp(16px,3vw,45px)}
+main.studio54.milestones-page .archive-desk{background:#24291e}
+main.studio54.personal-page :is(.personal-questions,.personal-books){background:#e9e9de;padding-inline:clamp(18px,4vw,60px)}
+main.studio54.personal-page .personal-books{background:#dce0d2}
+main.studio54.contact-page .contact-letter{background:#dce0d2;padding-inline:clamp(18px,4vw,60px)}
+@media(max-width:700px){
+ main.studio54:not(.home-page) .zm-atmosphere{--atm-opacity:.16}
+ main.studio54:not(.home-page) .zm-atmosphere.atm-dark{--atm-opacity:.13}
+ .zm-atmosphere .atm-primary,.zm-atmosphere .atm-secondary{background-size:180% auto}
+ main.studio54.story-page .story-opening h1{margin-top:18px}
+}
+@media(prefers-reduced-motion:reduce){.zm-atmosphere *{animation:none!important;transition:none!important}}
