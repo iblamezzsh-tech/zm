@@ -1,0 +1,2 @@
+# V24 — Visible fluid color, fixed contours
+V23 was READY but its light sweep was too subtle for the owner. Increase ambient light contrast and shorten sweep to 9 seconds; add a lightweight color reveal behind the fixed linework, using the same velocity-mask grid as the approved V22 portrait. No line movement, no new simulation, no changes to portrait, solver, assets or layout. Reduced motion, pause and visibility are respected. Visual verification remains required. Preview only.

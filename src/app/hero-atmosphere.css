@@ -1,17 +1,20 @@
 /* V23: fixed editorial structure, separate atmospheric light, unchanged portrait motion. */
 .home-hero .hero-atmosphere{--hero-dx:0px;--hero-dy:0px;background:#eeece3;isolation:isolate}
 .hero-world{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:#eeece3}
-.hero-editorial-background{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,#f8f6ee 0%,#eeece3 60%,#e2e4d5 100%)}
-.hero-editorial-light{position:absolute;inset:-18%;pointer-events:none;background:radial-gradient(ellipse at 40% 30%,#fffdf3b3 0%,#fffdf350 24%,transparent 58%),radial-gradient(ellipse at 80% 70%,#c5cf9f45 0%,transparent 50%);transform:translate3d(-3%,0,0);opacity:.7}
-.hero-editorial-shadow{position:absolute;inset:-20%;pointer-events:none;background:radial-gradient(ellipse at 15% 75%,#9ca68024 0%,transparent 52%);opacity:.6}
-.hero-editorial-lines{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;object-fit:cover;object-position:center}
+/* V24: color moves through a fixed composition. Never transform the line layer. */
+.hero-editorial-background{position:absolute;inset:0;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 48% 34%,#fbf9ef 0%,#eeece3 60%,#dce0ce 100%)}
+.hero-editorial-light{position:absolute;inset:-23%;pointer-events:none;background:radial-gradient(ellipse at 31% 40%,#fffdf5 0%,#fffdf5b3 22%,transparent 56%),radial-gradient(ellipse at 73% 62%,#b5c58b9e 0%,#c5cf9f42 25%,transparent 55%);transform:translate3d(-10%,2%,0);opacity:.92}
+.hero-editorial-shadow{position:absolute;inset:-16%;pointer-events:none;background:radial-gradient(ellipse at 23% 82%,#87956a55 0%,transparent 48%),radial-gradient(ellipse at 86% 16%,#c1cf9166 0%,transparent 43%);transform:translate3d(5%,-3%,0);opacity:.72}
+.hero-fluid-color{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;opacity:.87;filter:blur(2px)}
+.hero-editorial-lines{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;object-fit:cover;object-position:center;transform:none!important;animation:none!important}
 @media(prefers-reduced-motion:no-preference){
-.hero-editorial-light{animation:hero-light-sweep 19s ease-in-out infinite alternate;animation-play-state:paused;will-change:transform,opacity}
-.hero-editorial-shadow{animation:hero-shadow-breathe 24s ease-in-out infinite alternate;animation-play-state:paused;will-change:opacity}
+.hero-editorial-light{animation:hero-light-sweep 9s ease-in-out infinite alternate;animation-play-state:paused;will-change:transform,opacity}
+.hero-editorial-shadow{animation:hero-shadow-breathe 13s ease-in-out infinite alternate;animation-play-state:paused;will-change:transform,opacity}
 .hero-editorial-background[data-running=true] .hero-editorial-light,.hero-editorial-background[data-running=true] .hero-editorial-shadow{animation-play-state:running}
 }
-@keyframes hero-light-sweep{0%{transform:translate3d(-3%,0,0);opacity:.68}100%{transform:translate3d(7%,-3%,0);opacity:.95}}
-@keyframes hero-shadow-breathe{0%{opacity:.48}100%{opacity:.82}}
+@keyframes hero-light-sweep{0%{transform:translate3d(-10%,2%,0);opacity:.90}100%{transform:translate3d(16%,-7%,0);opacity:1}}
+@keyframes hero-shadow-breathe{0%{transform:translate3d(5%,-3%,0);opacity:.55}100%{transform:translate3d(-9%,6%,0);opacity:.88}}
+@media(prefers-reduced-motion:reduce){.hero-fluid-color{display:none}.hero-editorial-light,.hero-editorial-shadow{animation:none;will-change:auto}}
 .home-hero .hero-atmosphere .hero-name{transform:translate3d(calc(var(--hero-dx)*-.65),calc(var(--hero-dy)*-.7),0);will-change:transform}
 .hero-portrait-plane{position:absolute;inset:0;z-index:1;pointer-events:none;transform:translate3d(var(--hero-dx),var(--hero-dy),0);will-change:transform}
 .home-hero .hero-portrait-plane .photo{z-index:1}
