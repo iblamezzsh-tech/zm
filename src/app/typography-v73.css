@@ -1,0 +1,87 @@
+/* V73 — legible editorial typography. No new font or background changes.
+   Let complete words retain their font metrics; keep the animation on glyphs
+   rather than clipping every individual word against its own line box. */
+main.studio54:not(.home-page) :is(h1,h2,h3){overflow-wrap:normal;word-break:normal;font-kerning:normal}
+main.studio54:not(.home-page) .zm-words{white-space:normal}
+main.studio54:not(.home-page) .zm-word{
+ display:inline-block;max-width:100%;overflow:visible;vertical-align:baseline;
+ padding:0;margin:0;white-space:nowrap;overflow-wrap:normal;word-break:normal;
+}
+main.studio54:not(.home-page) .zm-word>span{
+ display:inline-block;max-width:100%;white-space:inherit;overflow-wrap:inherit;word-break:normal;
+}
+main.studio54:not(.home-page) :is(h1,h2) .zm-word{line-height:inherit}
+main.studio54:not(.home-page) :is(h1,h2) em{line-height:inherit}
+main.studio54.story-page .story-opening h1{line-height:1.02;letter-spacing:-.055em;font-size:clamp(48px,9.4vw,150px)}
+main.studio54.story-page .story-opening h1 em{line-height:1.02;letter-spacing:-.025em}
+main.studio54.story-page .story-opening h1 .zm-words{display:block}
+main.studio54:not(.home-page) :is(.story-opening-copy,.entry-copy,.case-intro-grid,.case-detail-grid,.archive-heading,.music-copy,.books-layout,.letter-paper) h2{
+ line-height:1.09;letter-spacing:-.035em;
+}
+main.studio54:not(.home-page) :is(.story-opening-copy,.entry-copy,.case-intro-grid,.case-detail-grid,.archive-heading,.music-copy,.books-layout,.letter-paper) h2 em{letter-spacing:-.025em}
+main.studio54:not(.home-page) :is(.projects-opening,.milestone-hero,.personal-title-wrap) h1{line-height:1.02;letter-spacing:-.055em}
+main.studio54:not(.home-page) :is(.projects-opening,.milestone-hero,.personal-title-wrap) h1 em{line-height:1.03;letter-spacing:-.025em}
+main.studio54.contact-page .contact-title-grid h1{line-height:.96;letter-spacing:-.06em;font-size:clamp(72px,14vw,220px)}
+main.studio54.contact-page .contact-title-grid h1 em{line-height:1;letter-spacing:-.035em}
+main.studio54:not(.home-page) :is(.story-ending,.projects-ending,.case-future,.archive-ending,.personal-end,.contact-ending) h2{line-height:1.06;letter-spacing:-.035em}
+main.studio54:not(.home-page) :is(.story-edition,.entry-top,.projects-rule,.archive-rule,.personal-rule,.contact-rule){flex-wrap:wrap;row-gap:6px;line-height:1.5}
+main.studio54:not(.home-page) :is(.story-edition,.entry-top,.projects-rule,.archive-rule,.personal-rule,.contact-rule)>span{min-width:0;overflow-wrap:anywhere}
+main.studio54:not(.home-page) :is(.record-title,.record-org,.dialog-meta,.contact-channel>span,.note-question,.case-focus>div,.entry-copy p,.case-detail-grid p){overflow-wrap:anywhere;line-height:1.5}
+main.studio54:not(.home-page) :is(.record-title,.dialog-org,.note-topic){line-height:1.16}
+main.studio54:not(.home-page) .studio54-story-projects a{white-space:normal;line-height:1.14;overflow-wrap:anywhere}
+main.studio54:not(.home-page) .studio54-story-projects a small{align-self:center}
+main.studio54.case-page .case-title-group>div{container-type:inline-size;min-width:0}
+main.studio54.case-page .case-title-group h1{line-height:1.08!important;letter-spacing:-.055em;overflow-wrap:normal;white-space:normal}
+main.studio54.case-world-think .case-title-group h1{font-size:min(15.5cqw,124px)!important}
+main.studio54.case-world-finance .case-title-group h1{font-size:min(10.6cqw,150px)!important}
+main.studio54.case-world-earth .case-title-group h1{font-size:min(22cqw,160px)!important}
+main.studio54.case-page .case-title-group h1 .zm-word{display:inline-block;white-space:nowrap}
+main.studio54.case-page .case-next .next-project-title h2{font-size:min(10cqw,92px);line-height:1.12;letter-spacing:-.045em;white-space:normal;overflow-wrap:anywhere}
+main.studio54.projects-page .exhibit-caption h3{line-height:1.08;letter-spacing:-.045em;text-wrap:balance}
+main.studio54:not(.home-page) .exhibition-index nav a strong{white-space:normal;overflow-wrap:anywhere}
+main.studio54.milestones-page .archive-heading h2{font-size:clamp(44px,8vw,130px)}
+main.studio54.personal-page .personal-note summary .note-topic{line-height:1.13;overflow-wrap:anywhere}
+main.studio54.contact-page .contact-channel strong{line-height:1.12;overflow-wrap:anywhere}
+/* Preserve distinct directions, but shorten reveal travel so words never pile
+   over the previous line. The text is always readable once it is in view. */
+@media(prefers-reduced-motion:no-preference){
+ main.studio54.site-motion-ready:not(.home-page) .zm-word>span{transform:translateY(calc((1 - var(--word-reveal,1))* .24em));opacity:calc(.78 + var(--word-reveal,1)*.22)}
+ main.studio54.site-motion-ready.story-page .entry-copy .zm-word>span{transform:translateX(calc((1 - var(--word-reveal,1))* -.18em))}
+ main.studio54.site-motion-ready.projects-page :is(.case-introduction,.case-details) .zm-word>span{transform:translateY(calc((1 - var(--word-reveal,1))* .24em))}
+ main.studio54.site-motion-ready.milestones-page .archive-heading .zm-word>span{transform:translateY(calc((1 - var(--word-reveal,1))* .24em))}
+ main.studio54.site-motion-ready.personal-page :is(.personal-questions,.personal-books) .zm-word>span{transform:translate(calc((1 - var(--word-reveal,1))* .09em),calc((1 - var(--word-reveal,1))* .22em))}
+ main.studio54.site-motion-ready.contact-page .contact-letter .zm-word>span{transform:translateY(calc((1 - var(--word-reveal,1))* .24em));filter:none}
+ main.studio54.site-motion-ready:not(.home-page) [data-motion-kind=opening] h1 .zm-word>span{animation-name:zm-title-v73}
+ @keyframes zm-title-v73{from{transform:translateY(.25em);opacity:.55}to{transform:translateY(0);opacity:1}}
+}
+/* More breathing room for homepage text, without altering its hero or finale. */
+main.editorial-home .ed-statement{letter-spacing:-.055em;line-height:1.02}
+main.editorial-home .ed-statement-line.line-1,main.editorial-home .ed-statement-line.line-3{letter-spacing:-.025em}
+main.editorial-home :is(.ed-collage-intro,.ed-future,.ed-work-heading,.ed-archive-heading,.ed-personal-head,.ed-social-heading) h2{line-height:1.04;letter-spacing:-.045em}
+main.editorial-home :is(.ed-collage-intro,.ed-future,.ed-work-heading,.ed-archive-heading,.ed-personal-head,.ed-social-heading) h2 em{line-height:1.04;letter-spacing:-.025em}
+main.editorial-home .ed-work-copy h3.ed-project-name{font-size:min(4.4vw,64px,14cqw);line-height:1.18;letter-spacing:-.035em}
+main.editorial-home .ed-work-finance .ed-work-copy h3.ed-project-name{font-size:min(4vw,59px,10.8cqw)}
+main.editorial-home .ed-interest-list a span{line-height:1.12;letter-spacing:-.035em;overflow-wrap:anywhere}
+main.editorial-home .zm-world-copy>strong{line-height:1.04;letter-spacing:-.055em}
+main.editorial-home .zm-world-copy>strong em{line-height:1.04;letter-spacing:-.025em}
+.zm-menu-dialog .zm-menu-label{line-height:1.1;letter-spacing:-.035em}
+@media(max-width:850px){
+ main.studio54.story-page .story-opening h1{font-size:clamp(48px,14vw,110px)}
+ main.studio54.story-page .story-opening h1 .zm-words{display:inline}
+ main.studio54.contact-page .contact-title-grid h1{font-size:clamp(60px,18vw,150px)}
+ main.studio54:not(.home-page) :is(.story-ending,.projects-ending,.case-future,.archive-ending,.personal-end,.contact-ending) h2{font-size:clamp(42px,11vw,100px)}
+ main.studio54:not(.home-page) :is(.story-opening-copy,.entry-copy,.case-intro-grid,.case-detail-grid,.music-copy,.books-layout,.letter-paper) h2{font-size:clamp(36px,9vw,76px)}
+ main.studio54:not(.home-page) :is(.story-opening-copy,.entry-copy,.case-intro-grid,.case-detail-grid,.archive-heading,.music-copy,.books-layout,.letter-paper) h2 .zm-word{white-space:normal;overflow-wrap:anywhere}
+ main.editorial-home .ed-work-copy h3.ed-project-name{font-size:min(9vw,55px,12cqw)}
+ main.editorial-home .ed-work-finance .ed-work-copy h3.ed-project-name{font-size:min(9vw,55px,10.5cqw)}
+ main.editorial-home .editorial-flow[data-ed-cinema=true] .ed-work-heading h2{max-width:100%}
+}
+@media(max-width:520px){
+ main.studio54:not(.home-page) :is(.projects-opening,.milestone-hero,.personal-title-wrap) h1{font-size:clamp(40px,10.5vw,65px)}
+ main.studio54:not(.home-page) :is(.story-ending,.projects-ending,.case-future,.archive-ending,.personal-end,.contact-ending) h2 .zm-word{white-space:normal;overflow-wrap:anywhere}
+ main.studio54:not(.home-page) .archive-heading h2{font-size:clamp(40px,10vw,60px)}
+ main.studio54:not(.home-page) .archive-heading h2 .zm-word{white-space:normal;overflow-wrap:anywhere}
+ main.studio54:not(.home-page) .contact-channel strong{font-size:clamp(23px,6.6vw,32px)}
+ main.studio54:not(.home-page) .personal-note summary .note-topic{font-size:clamp(22px,6vw,31px)}
+}
+@media(prefers-reduced-motion:reduce){main.studio54:not(.home-page) .zm-word>span{transform:none!important;opacity:1!important;animation:none!important}}

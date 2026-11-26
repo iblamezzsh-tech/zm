@@ -24,6 +24,7 @@ import "./button-motion.css";
 import "./cursor-system.css";
 import "./interior-colors.css";
 import "./page-atmosphere.css";
+import "./typography-v73.css";
 
 import {bootCSS,bootScript} from "./boot-intro";
 
