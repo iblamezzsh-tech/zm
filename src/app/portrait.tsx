@@ -34,6 +34,7 @@ export default function Portrait() {
     let bounds = area.getBoundingClientRect();
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
     const point = { x: bounds.width / 2, y: bounds.height / 2, r: 0 };
+    // The overlay contains only academic attire; the original face stays on the base layer.
     // Translate a static feathered mask and counter-transform the photo so
     // its pixels stay registered to the base image. Only transforms animate.
     const diameter = 400;
@@ -153,7 +154,7 @@ export default function Portrait() {
   return (
     <section aria-label="Interactive portrait">
       <link rel="preload" as="image" href="/images/portrait-present.webp" />
-      <link rel="preload" as="image" href="/images/portrait-future.webp" />
+      <link rel="preload" as="image" href="/images/portrait-academic-attire.svg" />
       <div className="stage hero-composition" ref={stage}>
         <h1 className="hero-name" aria-label="ZiyoMuhammad">
           <svg viewBox="0 0 1200 164" role="presentation" aria-hidden="true">
@@ -171,7 +172,7 @@ export default function Portrait() {
           <img
             className="photo future-photo"
             ref={overlay}
-            src="/images/portrait-future.webp"
+            src="/images/portrait-academic-attire.svg"
             alt=""
             aria-hidden="true"
           />
