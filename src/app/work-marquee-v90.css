@@ -1,0 +1,27 @@
+/* V90 — autonomous seamless project belt. No scroll-linked transforms. */
+main.editorial-home .editorial-flow .ed-work-banner{
+ overflow:hidden;white-space:nowrap;position:relative;
+}
+main.editorial-home .editorial-flow .ed-work-banner .qa-marquee-track{
+ display:flex;width:max-content;align-items:center;max-width:none;
+ transform:translate3d(0,0,0);
+}
+main.editorial-home .editorial-flow .ed-work-banner .qa-marquee-unit{
+ display:flex;flex:none;align-items:center;min-width:100vw;
+ justify-content:space-around;gap:clamp(28px,4vw,72px);
+ padding-right:clamp(28px,4vw,72px);box-sizing:border-box;
+}
+main.editorial-home .editorial-flow .ed-work-banner .qa-marquee-unit>span{
+ display:block;flex:none;white-space:nowrap;transform:none!important;
+ animation:none!important;transition:none!important;opacity:1;
+ font-size:clamp(64px,11vw,176px);line-height:.98;letter-spacing:-.065em;
+}
+@media(prefers-reduced-motion:no-preference){
+ main.editorial-home .editorial-flow .ed-work-banner .qa-marquee-track{
+  animation:zm-v90-project-belt 18s linear infinite;will-change:transform;
+ }
+}
+@keyframes zm-v90-project-belt{to{transform:translate3d(-50%,0,0)}}
+@media(prefers-reduced-motion:reduce){
+ main.editorial-home .editorial-flow .ed-work-banner .qa-marquee-track{animation:none;transform:none}
+}

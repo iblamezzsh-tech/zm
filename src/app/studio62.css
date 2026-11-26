@@ -1,6 +1,6 @@
 /* V62 — recording-led composition: preserve the hero, finale and existing
    reveal transforms, but give the project and archive frames a clearer hierarchy. */
-.editorial-flow[data-ed-cinema=true] .ed-work-banner span{font-size:clamp(64px,11vw,176px);line-height:.98;letter-spacing:-.065em;transform:translateX(calc(5vw - var(--ed-pass,0)*13vw))}
+.editorial-flow[data-ed-cinema=true] .ed-work-banner span{font-size:clamp(64px,11vw,176px);line-height:.98;letter-spacing:-.065em;transform:none}
 .editorial-flow[data-ed-cinema=true] .ed-work-banner{padding-block:clamp(10px,2vh,22px)}
 .editorial-flow[data-ed-cinema=true] .ed-work-heading{padding-block:clamp(38px,5vw,76px)}
 .editorial-flow[data-ed-cinema=true] .ed-work-heading h2{font-size:clamp(48px,6vw,100px);max-width:65%}
