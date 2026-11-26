@@ -11,6 +11,7 @@ import "./site-motion.css";
 import "./motion-polish.css";
 import "./art-direction.css";
 import "./studio-v33.css";
+import "./motion-choreography.css";
 
 export const metadata: Metadata = {
   title: "ZiyoMuhammad — Personal Portfolio",

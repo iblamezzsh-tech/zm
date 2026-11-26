@@ -1,0 +1,118 @@
+/* V35 — scene-based motion. Native scroll geometry and one shared clock. */
+@media(prefers-reduced-motion:no-preference) and (min-width:850px) and (min-height:540px){
+/* Keep the approved opening intact at zero progress. The portrait and type part in depth. */
+.home-page.film-pinned-hero .home-hero{height:calc(153svh + 62px)}
+.home-page.film-pinned-hero .hero-composition .hero-portrait-plane{
+ scale:calc(1 + var(--departure-depth,0)*.12);
+ translate:0 calc(var(--departure-depth,0)*3.5vh);
+ opacity:calc(1 - var(--departure-light,0)*.34);
+}
+.home-page.film-pinned-hero .hero-composition .hero-name{
+ translate:0 calc(var(--film-exit,0)*-22vh);
+ scale:calc(1 + var(--departure-depth,0)*.075);
+}
+.home-page.film-pinned-hero .hero-composition .hero-world{
+ opacity:calc(1 - var(--departure-light,0)*.5);
+}
+.home-page.film-pinned-hero .film-hero-curtain{
+ clip-path:polygon(0 calc((1 - var(--film-curtain,0))*105% - 3%),
+  35% calc((1 - var(--film-curtain,0))*120% - 3%),
+  70% calc((1 - var(--film-curtain,0))*112% - 3%),
+  100% calc((1 - var(--film-curtain,0))*126% - 3%),100% 100%,0 100%);
+}
+.film-curtain-engraving{position:absolute;inset:0;width:100%;height:100%;opacity:.17;pointer-events:none;transform:rotate(calc((1 - var(--film-title,0))*-12deg)) scale(calc(.88 + var(--film-title,0)*.12))}
+.film-curtain-word{position:relative;z-index:1}
+.home-page.film-pinned-hero .film-curtain-word span:first-child{transform:translate3d(calc((1 - var(--film-title,0))*-28vw),calc((1 - var(--film-title,0))*12vh),0)}
+.home-page.film-pinned-hero .film-curtain-word span:last-child{transform:translate3d(calc((1 - var(--film-title,0))*28vw),calc((1 - var(--film-title,0))*-8vh),0)}
+/* A diagonal scene change, then a held composition rather than a crossfade. */
+.home-page .journey-sequence.journey-enhanced{height:295svh}
+.home-page .journey-enhanced .journey-stage .journey-scene{opacity:1;visibility:visible;transition:none}
+.home-page .journey-enhanced .journey-stage .journey-now{transform:none}
+.home-page .journey-enhanced .journey-stage .journey-now .journey-now-main{translate:0 calc(var(--journey-now-exit,0)*-13vh);scale:calc(1 - var(--journey-now-exit,0)*.09);transform-origin:left center}
+.home-page .journey-enhanced .journey-stage .journey-question{transform:translate3d(calc(var(--journey-now-exit,0)*-12vw),calc(-50% + var(--journey-now-exit,0)*8vh),0) rotate(calc(13deg - var(--journey-now-exit,0)*35deg)) scale(calc(1 + var(--journey-now-exit,0)*.24))}
+.home-page .journey-enhanced .journey-stage .journey-past{transform:none;clip-path:polygon(0 calc((1 - var(--journey-first,0))*115% - 1%),100% calc((1 - var(--journey-first,0))*140% - 1%),100% 100%,0 100%)}
+.home-page .journey-enhanced .journey-stage .journey-next{transform:none;clip-path:polygon(calc((1 - var(--journey-second,0))*115% - 1%) 0,100% 0,100% 100%,calc((1 - var(--journey-second,0))*137% - 1%) 100%)}
+.home-page .journey-enhanced .journey-stage .journey-past-copy{translate:calc((1 - var(--journey-first,0))*-9vw) calc(var(--journey-memory-exit,0)*-8vh)}
+.home-page .journey-enhanced .journey-stage .journey-next-copy{translate:calc((1 - var(--journey-future-in,0))*14vw) 0}
+.journey-line{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.16em;margin-bottom:-.16em}
+.journey-line>span{display:inline-block}
+.journey-enhanced .journey-past .journey-line>span{transform:translateY(calc((1 - var(--journey-first,0))*105%))}
+.journey-enhanced .journey-next .journey-line>span{transform:translateY(calc((1 - var(--journey-future-in,0))*100%))}
+.home-page .journey-enhanced .journey-stage .journey-document-0{transform:translate3d(calc((1 - var(--journey-papers,0))*-190px),calc((1 - var(--journey-papers,0))*170px),0) rotate(calc(-12deg - (1 - var(--journey-papers,0))*32deg)) scale(calc(.75 + var(--journey-papers,0)*.25))}
+.home-page .journey-enhanced .journey-stage .journey-document-1{transform:translate3d(calc((1 - var(--journey-papers,0))*170px),calc((1 - var(--journey-papers,0))*120px),0) rotate(calc(12deg + (1 - var(--journey-papers,0))*27deg)) scale(calc(.8 + var(--journey-papers,0)*.2))}
+.home-page .journey-enhanced .journey-stage .journey-document-2{transform:translateY(calc((1 - var(--journey-papers,0))*240px)) rotate(calc(-3deg + (1 - var(--journey-papers,0))*16deg))}
+.home-page .journey-enhanced .journey-contours{transform:translateX(calc((1 - var(--journey-future-in,0))*14%)) rotate(calc((1 - var(--journey-future-in,0))*-8deg));transform-origin:75% center}
+.home-page .journey-enhanced .journey-signature .pen{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--journey-future-in,1))}
+/* Project rail: the outer track moves horizontally, image and graphic move in opposing depth planes. */
+.home-page .exhibition-cinematic .exhibit-scene{padding-inline:clamp(5px,1.5vw,24px);perspective:1300px}
+.home-page .exhibition-cinematic .exhibit-visual{transform:scale(calc(1 - var(--slide-away,0)*.12)) rotateY(calc(var(--slide-direction,0)*-9deg));transform-origin:center center;transition:none}
+.home-page .exhibition-cinematic .exhibit-visual .studio-poster{transform:none}
+.home-page .exhibition-cinematic .exhibit-visual .studio-artwork{translate:calc(var(--slide-direction,0)*-12%) 0;scale:calc(1 + var(--slide-away,0)*.18)}
+.home-page .exhibition-cinematic .art-v32 .think-word,.home-page .exhibition-cinematic .art-v32 .finance-word,.home-page .exhibition-cinematic .art-v32 .earth-word{translate:calc(var(--slide-direction,0)*9%) 0}
+.home-page .exhibition-cinematic .exhibit-caption{opacity:calc(.25 + var(--slide-focus,1)*.75);translate:calc(var(--slide-direction,0)*9vw) calc(var(--slide-away,0)*24px)}
+.home-page .exhibition-cinematic .exhibit-visual .exhibit-badge{rotate:calc(var(--slide-direction,0)*-18deg)}
+.home-page .exhibition-cinematic .exhibit-scene{--art-motion:var(--slide-focus,1);--art-travel:calc(.5 + var(--slide-direction,0)*.5)}
+/* Documents unfold as paper and the interest rows reveal through a moving typography mask. */
+.home-page.film-motion-enabled .field-stage .field-art{transform:translate3d(0,calc((1 - var(--paper-fan,1))*110px),0) rotateX(calc((1 - var(--paper-fan,1))*21deg));transform-origin:center bottom}
+.home-page.film-motion-enabled .field-stage .field-stage-line svg{transform:rotate(calc((var(--scene-pass,.5) - .5)*30deg)) scale(1.2)}
+.home-page.film-motion-enabled .field-stage .field-stage-info{translate:calc((1 - var(--paper-fan,1))*-30px) 0}
+.home-page.film-motion-enabled .field-paper-layer.layer-0{transform:translate(calc(-25% * var(--paper-fan,1)),calc(-16% * var(--paper-fan,1))) rotate(calc(-19deg * var(--paper-fan,1)))}
+.home-page.film-motion-enabled .field-paper-layer.layer-1{transform:translate(calc(22% * var(--paper-fan,1)),calc(-10% * var(--paper-fan,1))) rotate(calc(20deg * var(--paper-fan,1)))}
+.home-page.film-motion-enabled .field-paper-layer.layer-2{transform:translateY(calc(19% * var(--paper-fan,1))) rotate(calc(8deg * var(--paper-fan,1)))}
+.home-page.film-motion-enabled .personal-chapter .personal-grid h2{transform:translateY(calc((1 - var(--notebook-flow,1))*36px))}
+.home-page.film-motion-enabled .interest-line>span:nth-child(2){transform:translate3d(calc((1 - var(--interest-in,1))*-13%),calc((1 - var(--interest-in,1))*30px),0);opacity:calc(.35 + var(--interest-in,1)*.65)}
+.home-page.film-motion-enabled .interest-line:nth-child(even)>span:nth-child(2){transform:translate3d(calc((1 - var(--interest-in,1))*13%),calc((1 - var(--interest-in,1))*30px),0)}
+.home-page.film-motion-enabled .home-contact .finale-signature{transform:translateY(calc((1 - var(--finale-write,1))*40px)) scale(calc(.8 + var(--finale-write,1)*.2));transform-origin:left center}
+.home-page.film-motion-enabled .home-contact .finale-signature .pen{stroke-dashoffset:calc(1 - var(--finale-write,1))}
+}
+/* Interior routes: independent composition-specific travel curves, not one entrance preset. */
+main.studio-scroll .story-opening .story-portrait img{transform:translate3d(calc(var(--art-x,0)*10px),calc((var(--site-passage,.5) - .5)*-45px + var(--art-y,0)*5px),0) scale(1.07);transition:none}
+main.studio-scroll .entry-spread .entry-art{clip-path:polygon(0 0,100% 0,100% calc(100% - (1 - var(--studio-unfold,1))*22%),0 calc(100% - (1 - var(--studio-unfold,1))*8%));transform:none}
+main.studio-scroll .entry-spread .entry-art>svg{transform:translate3d(calc((.5 - var(--studio-travel,.5))*48px + var(--art-x,0)*12px),calc((.5 - var(--studio-travel,.5))*60px + var(--art-y,0)*9px),0) scale(calc(.9 + var(--studio-unfold,1)*.1));transition:none}
+main.studio-scroll .story-evidence-paper.paper-0{transform:translate3d(calc((1 - var(--studio-unfold,1))*-24%),calc((1 - var(--studio-unfold,1))*32%),0) rotate(calc(-11deg - (1 - var(--studio-unfold,1))*21deg));translate:none}
+main.studio-scroll .story-evidence-paper.paper-1{transform:translate3d(calc((1 - var(--studio-unfold,1))*22%),calc((1 - var(--studio-unfold,1))*45%),0) rotate(calc(10deg + (1 - var(--studio-unfold,1))*19deg));translate:none}
+main.studio-scroll .entry-spread .entry-copy{translate:0 calc((1 - var(--studio-unfold,1))*44px)}
+main.studio-scroll .story-entry-learning .entry-copy{translate:calc((1 - var(--studio-unfold,1))*-24px) 0}
+main.studio-scroll .exhibit-scene,main.studio-scroll .case-feature-art{--art-motion:var(--studio-unfold,1);--art-travel:var(--studio-travel,.5)}
+main.studio-scroll .exhibit-visual{clip-path:polygon(0 0,100% 0,100% calc(100% - (1 - var(--studio-unfold,1))*24%),0 calc(100% - (1 - var(--studio-unfold,1))*6%))}
+main.studio-scroll .exhibit-visual .studio-artwork{translate:0 calc((.5 - var(--studio-travel,.5))*8%);scale:1.08}
+main.studio-scroll .exhibit-visual .studio-poster{transform:none}
+main.studio-scroll .case-feature-art .studio-poster{clip-path:polygon(0 0,100% 0,100% calc(100% - (1 - var(--studio-unfold,1))*14%),0 calc(100% - (1 - var(--studio-unfold,1))*5%))}
+main.studio-scroll .case-feature-art .poster-object{translate:0 calc((.5 - var(--studio-travel,.5))*22px)}
+/* Independent original artwork choreography. Finance draws; OverThink orbits; ReZamin unfolds. */
+.poster-orbit,.poster-orbit-inner{transform-box:fill-box;transform-origin:center}
+.home-page.film-motion-enabled .poster-orbit,main.studio-scroll .poster-orbit{transform:rotate(calc((var(--art-travel,.5) - .5)*48deg));stroke-dasharray:2 5}
+.home-page.film-motion-enabled .poster-orbit-inner,main.studio-scroll .poster-orbit-inner{transform:rotate(calc((var(--art-travel,.5) - .5)*-72deg))}
+.home-page.film-motion-enabled .poster-question,main.studio-scroll .poster-question{rotate:calc((var(--art-travel,.5) - .5)*-12deg);scale:calc(.83 + var(--art-motion,1)*.17)}
+.poster-finance-bar{transform-box:fill-box;transform-origin:center bottom}
+.home-page.film-motion-enabled .poster-finance-bar,main.studio-scroll .poster-finance-bar{transform:scaleY(clamp(.35,calc(.35 + var(--art-motion,1)*.85 - var(--bar-index,0)*.05),1))}
+.home-page.film-motion-enabled .poster-finance-line,main.studio-scroll .poster-finance-line{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--art-motion,1))}
+.poster-leaf-one,.poster-leaf-two,.poster-leaf-three{transform-box:fill-box;transform-origin:bottom center}
+.home-page.film-motion-enabled .poster-leaf-one,main.studio-scroll .poster-leaf-one{rotate:calc((1 - var(--art-motion,1))*-23deg)}
+.home-page.film-motion-enabled .poster-leaf-two,main.studio-scroll .poster-leaf-two{rotate:calc((1 - var(--art-motion,1))*23deg)}
+.home-page.film-motion-enabled .poster-leaf-three,main.studio-scroll .poster-leaf-three{rotate:calc((1 - var(--art-motion,1))*-14deg)}
+main.studio-scroll .case-focus>div{translate:0 calc((1 - var(--studio-arrival,1))*36px);opacity:calc(.55 + var(--studio-arrival,1)*.45)}
+main.studio-scroll .case-focus>div:nth-child(2){translate:0 calc((1 - var(--studio-arrival,1))*20px)}
+main.studio-scroll .case-focus>div:nth-child(4){translate:0 calc((1 - var(--studio-arrival,1))*55px)}
+main.studio-scroll .archive-desk .desk-object{transform:translateY(calc((1 - var(--studio-arrival,1))*80px)) rotateX(calc((1 - var(--studio-arrival,1))*17deg));transform-origin:center bottom}
+main.studio-scroll .archive-desk .desk-paper-back{transform:translateX(calc((1 - var(--studio-arrival,1))*18%)) rotate(calc(-8deg - (1 - var(--studio-arrival,1))*13deg))}
+main.studio-scroll .archive-desk .desk-copy{translate:calc((1 - var(--studio-arrival,1))*35px) 0}
+main.studio-scroll .personal-note .note-topic{display:block;translate:0 calc((1 - var(--studio-arrival,1))*20px)}
+main.studio-scroll .personal-note .note-plus{scale:calc(.7 + var(--studio-arrival,1)*.3)}
+main.studio-scroll .music-layout .music-art svg{transform:translate3d(calc(var(--art-x,0)*8px),calc((.5 - var(--studio-travel,.5))*44px + var(--art-y,0)*8px),0) rotate(calc((1 - var(--studio-unfold,1))*-9deg));transition:none}
+main.studio-scroll .books-layout .book-spine{transform:translate3d(calc((1 - var(--studio-unfold,1))*-65px),0,0) rotate(calc(-2deg - (1 - var(--studio-unfold,1))*6deg))}
+main.studio-scroll .books-layout .book-spine:nth-child(2){transform:translate3d(calc((1 - var(--studio-unfold,1))*65px),0,0) rotate(calc(2deg + (1 - var(--studio-unfold,1))*6deg))}
+main.studio-scroll .books-layout .book-spine:nth-child(3){transform:translate3d(calc((1 - var(--studio-unfold,1))*-35px),0,0) rotate(-1deg)}
+main.studio-scroll .letter-paper .signature .pen{stroke-dashoffset:calc(1 - var(--studio-unfold,1))}
+main.studio-scroll .contact-channel b{rotate:calc((1 - var(--studio-arrival,1))*-45deg);scale:calc(.76 + var(--studio-arrival,1)*.24)}
+/* When a viewport is too short for the pinned scenes, keep the scene in document flow. */
+@media(max-width:849px),(max-height:539px){
+.film-curtain-engraving{display:none}
+.home-page .journey-line{display:inline}
+.home-page .journey-line>span{display:inline}
+}
+@media(prefers-reduced-motion:reduce){
+.journey-line>span,.film-curtain-engraving{transform:none!important}
+.home-page .poster-object,.home-page .poster-finance-bar,.home-page .poster-leaf-one,.home-page .poster-leaf-two,.home-page .poster-leaf-three{transform:none!important;rotate:none!important;scale:none!important}
+.home-page .poster-finance-line{stroke-dashoffset:0!important}
+}

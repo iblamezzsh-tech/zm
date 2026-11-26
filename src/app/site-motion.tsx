@@ -13,6 +13,9 @@ const groups=[
  {selector:".case-introduction,.case-details,.case-future,.case-experience",kind:"case"},
  {selector:".field-notes",kind:"field"},
  {selector:".archive-heading",kind:"heading"},
+ {selector:".archive-desk",kind:"desk"},
+ {selector:".personal-note",kind:"note"},
+ {selector:".contact-channel",kind:"channel"},
  {selector:".personal-questions,.personal-music,.personal-books",kind:"personal"},
  {selector:".contact-letter",kind:"letter"},
  {selector:".story-ending,.projects-ending,.archive-ending,.personal-end,.contact-ending,.case-next",kind:"ending"},
@@ -29,6 +32,9 @@ export default function SiteMotion(){
   const assets=Array.from(main.querySelectorAll<HTMLElement>(assetSelector));
   const decorated=new Set<HTMLElement>();
   let enabled=false,disposed=false;
+  const precise=matchMedia("(min-width: 850px) and (min-height: 540px) and (prefers-reduced-motion: no-preference)");
+  const visualNodes=Array.from(main.querySelectorAll<HTMLElement>(".entry-spread,.case-feature-art,.exhibit-scene,.music-layout,.books-layout,.contact-letter-grid,.field-stage"));
+  const rootNodes=new Set<HTMLElement>([...visualNodes,...nodes.map(n=>n.el)]);
   function mark(el:HTMLElement,k:string){el.dataset.motionKind=k;decorated.add(el)}
   function write(el:HTMLElement,k:string,v:number){el.style.setProperty(k,v.toFixed(4))}
   nodes.forEach(({el,kind})=>mark(el,kind));
@@ -47,7 +53,8 @@ export default function SiteMotion(){
    indicator.current?.style.setProperty("--site-reading",String(clamp(y/max)));
    main!.classList.toggle("site-controls-floating",y>Math.min(140,h*.22));
    if(!enabled)return;
-   const values=nodes.map(node=>({node,r:node.el.getBoundingClientRect()}));
+   const geometry=new Map(Array.from(rootNodes,el=>[el,el.getBoundingClientRect()] as const));
+   const values=nodes.map(node=>({node,r:geometry.get(node.el)!}));
    for(const {node,r} of values){
     const {el,kind,words}=node;
     const start=h*(kind==="opening"?1.18:.97);
@@ -57,10 +64,17 @@ export default function SiteMotion(){
     write(el,"--site-in",draw);
     write(el,"--site-draw",ease(.06,.94,p));
     write(el,"--site-passage",clamp((h-r.top)/(h+r.height)));
+    write(el,"--studio-arrival",ease(.02,.92,clamp((h*.98-r.top)/(h*.64))));
     words.forEach((word,i)=>write(word,"--word-reveal",kind==="opening"?1:ease(Math.min(.32,i*.055),Math.min(.98,.62+i*.055),p)));
    }
+   for(const el of visualNodes){
+    const r=geometry.get(el)!;
+    const pass=clamp((h-r.top)/(h+r.height));
+    const arrival=ease(0,1,clamp((h*.98-r.top)/(h*.68)));
+    write(el,"--studio-travel",pass);write(el,"--studio-unfold",arrival);
+   }
   }
-  function mode(){enabled=!reduced.matches;main!.classList.toggle("site-motion-ready",enabled);if(!enabled)nodes.forEach(({words})=>words.forEach(word=>word.style.removeProperty("--word-reveal")));requestMotionFrame()}
+  function mode(){enabled=!reduced.matches;main!.classList.toggle("site-motion-ready",enabled);main!.classList.toggle("studio-scroll",precise.matches);if(!enabled)nodes.forEach(({words})=>words.forEach(word=>word.style.removeProperty("--word-reveal")));requestMotionFrame()}
   function pointer(e:PointerEvent){
     if(!enabled||!fine.matches||e.pointerType!=="mouse")return;
     const target=e.currentTarget as HTMLElement,r=target.getBoundingClientRect();
@@ -70,8 +84,8 @@ export default function SiteMotion(){
   function leave(e:PointerEvent){const el=e.currentTarget as HTMLElement;write(el,"--art-x",0);write(el,"--art-y",0)}
   assets.forEach(el=>{el.addEventListener("pointermove",pointer,{passive:true});el.addEventListener("pointerleave",leave)});
   const unsubscribe=subscribeMotion(update),ro=new ResizeObserver(requestMotionFrame);ro.observe(main);
-  reduced.addEventListener("change",mode);mode();update();
-  return()=>{disposed=true;unsubscribe();ro.disconnect();mutations.disconnect();cardObserver.disconnect();reduced.removeEventListener("change",mode);main.classList.remove("site-motion-ready","site-controls-floating");decorated.forEach(el=>{delete el.dataset.motionKind;el.style.removeProperty("--site-in");el.style.removeProperty("--site-draw");el.style.removeProperty("--site-passage")});assets.forEach(el=>{el.removeEventListener("pointermove",pointer);el.removeEventListener("pointerleave",leave)});};
+  reduced.addEventListener("change",mode);precise.addEventListener("change",mode);mode();update();
+  return()=>{disposed=true;unsubscribe();ro.disconnect();mutations.disconnect();cardObserver.disconnect();reduced.removeEventListener("change",mode);precise.removeEventListener("change",mode);main.classList.remove("site-motion-ready","site-controls-floating","studio-scroll");decorated.forEach(el=>{delete el.dataset.motionKind;el.style.removeProperty("--site-in");el.style.removeProperty("--site-draw");el.style.removeProperty("--site-passage")});assets.forEach(el=>{el.removeEventListener("pointermove",pointer);el.removeEventListener("pointerleave",leave)});};
  },[path]);
  return <div ref={indicator} className="site-reading-rail" aria-hidden="true" hidden={path==="/"}><i/></div>;
 }

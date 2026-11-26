@@ -45,12 +45,15 @@ export default function ProjectExhibition({directory=false}:{directory?:boolean}
        const p=Math.max(0,Math.min(1,-el!.getBoundingClientRect().top/distance));
        const raw=p*(count-1);
        const step=Math.min(count-2,Math.floor(raw)),part=raw-step;
-       const t=Math.max(0,Math.min(1,(part-.12)/.76));
+       const t=Math.max(0,Math.min(1,(part-.08)/.84));
        const shift=step+t*t*(3-2*t);
        rail.style.transform="translate3d("+(-shift*100)+"%,0,0)";
        scenes.forEach((scene,i)=>{
-         const distance=Math.min(1,Math.abs(shift-i));
-         scene.style.setProperty("--slide-away",String(distance));
+         const direction=shift-i;
+         const distance=Math.min(1,Math.abs(direction));
+         scene.style.setProperty("--slide-away",distance.toFixed(4));
+         scene.style.setProperty("--slide-direction",Math.max(-1,Math.min(1,direction)).toFixed(4));
+         scene.style.setProperty("--slide-focus",(1-distance).toFixed(4));
        });
        frame.style.setProperty("--exhibit-progress",String(p));
        const n=Math.min(count-1,Math.round(shift));
@@ -61,7 +64,7 @@ export default function ProjectExhibition({directory=false}:{directory?:boolean}
      update();const unsubscribe=subscribeMotion(update);const ro=new ResizeObserver(schedule);ro.observe(el);window.addEventListener("hashchange",hash);
      if(location.hash.startsWith("#exhibit-"))hash();
      return()=>{unsubscribe();ro.disconnect();window.removeEventListener("hashchange",hash);railReset()};
-     function railReset(){track.current?.style.removeProperty("transform");sticky.current?.style.removeProperty("--exhibit-progress")}
+     function railReset(){track.current?.style.removeProperty("transform");sticky.current?.style.removeProperty("--exhibit-progress");scenes.forEach(scene=>{scene.style.removeProperty("--slide-away");scene.style.removeProperty("--slide-direction");scene.style.removeProperty("--slide-focus")})}
    }
    if(!("IntersectionObserver" in window))return;
    const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting){const i=scenes.indexOf(entry.target as HTMLElement);if(i>=0){indexRef.current=i;setActive(i)}}}},{rootMargin:"-34% 0px -35% 0px",threshold:0});

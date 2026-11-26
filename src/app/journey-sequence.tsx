@@ -15,19 +15,22 @@ export default function JourneySequence({records}:{records:FeaturedRecord[]}){
  const current=useRef(0);
  useEffect(()=>{
   const el=root.current,canvas=stage.current;if(!el||!canvas)return;
-  const query=matchMedia("(min-width: 760px) and (min-height: 460px) and (prefers-reduced-motion: no-preference)");
+  const query=matchMedia("(min-width: 850px) and (min-height: 540px) and (prefers-reduced-motion: no-preference)");
   function measure(){
    if(!query.matches)return;
    const rect=el!.getBoundingClientRect();
    const distance=rect.height-canvas!.offsetHeight;
    const p=Math.max(0,Math.min(1,-rect.top/Math.max(distance,1)));
    canvas!.style.setProperty("--journey-progress",String(p));
-   const index=p<.32?0:p<.68?1:2;
+   const index=p<.30?0:p<.70?1:2;
    const smooth=(a:number,b:number,x:number)=>{const u=Math.max(0,Math.min(1,(x-a)/(b-a)));return u*u*(3-2*u)};
-   const first=smooth(.20,.40,p),second=smooth(.57,.77,p);
+   const first=smooth(.17,.39,p),second=smooth(.57,.81,p);
    canvas!.style.setProperty("--journey-first",String(first));
    canvas!.style.setProperty("--journey-second",String(second));
-   canvas!.style.setProperty("--journey-papers",String(smooth(.26,.53,p)));
+   canvas!.style.setProperty("--journey-papers",String(smooth(.22,.51,p)));
+   canvas!.style.setProperty("--journey-now-exit",String(smooth(.12,.39,p)));
+   canvas!.style.setProperty("--journey-memory-exit",String(smooth(.56,.80,p)));
+   canvas!.style.setProperty("--journey-future-in",String(smooth(.64,.94,p)));
    if(index!==current.current){current.current=index;setActive(index)}
   }
   const schedule=requestMotionFrame;
@@ -43,18 +46,18 @@ export default function JourneySequence({records}:{records:FeaturedRecord[]}){
   <div className="journey-scene journey-now" aria-hidden={enhanced&&active!==0}>
    <div className="journey-mast"><span>ZM / THE DISTANCE BETWEEN</span><span>01 / THE PRESENT</span></div>
    <span className="journey-question" aria-hidden="true">?</span>
-   <div className="journey-now-main"><span className="journey-overline">ANDIJAN, UZBEKISTAN</span><h2>I’m not<br/><em>there yet.</em></h2><p>I'm a student with questions, projects and a long way to go. The future you saw in the portrait is still unwritten.</p></div>
+   <div className="journey-now-main"><span className="journey-overline">ANDIJAN, UZBEKISTAN</span><h2><span className="journey-line"><span>I’m not</span></span><br/><em className="journey-line"><span>there yet.</span></em></h2><p>I'm a student with questions, projects and a long way to go. The future you saw in the portrait is still unwritten.</p></div>
    <div className="journey-side-note"><span>NOW</span><span>→</span><span>NEXT</span></div>
   </div>
   <div className="journey-scene journey-past" aria-hidden={enhanced&&active!==1}>
    <div className="journey-mast"><span>ZM / THE DISTANCE BETWEEN</span><span>02 / THE JOURNEY</span></div>
-   <div className="journey-past-copy"><span className="journey-overline">THE THINGS I KEEP</span><h2>Small<br/><em>moments.</em></h2><p>Leading school teams. Finding the answer to a Zakovat question. Learning something new on a court or in a classroom.</p></div>
+   <div className="journey-past-copy"><span className="journey-overline">THE THINGS I KEEP</span><h2><span className="journey-line"><span>Small</span></span><br/><em className="journey-line"><span>moments.</span></em></h2><p>Leading school teams. Finding the answer to a Zakovat question. Learning something new on a court or in a classroom.</p></div>
    <div className="journey-documents" aria-label="Selected original records">{archive.map((r,i)=><figure className={"journey-document journey-document-"+i} key={r.id}><img src={r.document!.src} alt={r.document!.alt} loading="lazy" decoding="async"/><figcaption>{r.dateLabel} / {r.chapter}</figcaption></figure>)}</div>
   </div>
   <div className="journey-scene journey-next" aria-hidden={enhanced&&active!==2}>
    <div className="journey-mast"><span>ZM / THE DISTANCE BETWEEN</span><span>03 / THE FUTURE</span></div>
    <div className="journey-contours" aria-hidden="true"><svg viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="currentColor" strokeWidth="1">{Array.from({length:22},(_,i)=><ellipse key={i} cx="750" cy="350" rx={30+i*25} ry={20+i*14} transform={`rotate(${i*8} 750 350)`}/>)}</g></svg></div>
-   <div className="journey-next-copy"><span className="journey-overline">STILL BECOMING</span><h2>The future<br/>isn’t <em>written.</em></h2><p>Economics, technology, education and ideas worth turning into action. This is where the next chapter begins.</p></div>
+   <div className="journey-next-copy"><span className="journey-overline">STILL BECOMING</span><h2><span className="journey-line"><span>The future</span></span><br/><span className="journey-line"><span>isn’t <em>written.</em></span></span></h2><p>Economics, technology, education and ideas worth turning into action. This is where the next chapter begins.</p></div>
    <div className="journey-signature"><Signature/></div>
   </div>
   <div className="journey-navigation"><div className="journey-progress" aria-hidden="true"><span/></div><div className="journey-navigation-inner">{enhanced?<nav aria-label="Jump to a story scene">{names.map((name,i)=><button key={name} type="button" aria-current={active===i?"step":undefined} onClick={()=>jump(i)}><span>0{i+1}</span> {name}</button>)}</nav>:<span>01 — 03 / NOW &amp; NEXT</span>}<Link href="/about">Read my story <span aria-hidden="true">↗</span></Link></div></div>
