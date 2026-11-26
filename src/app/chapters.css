@@ -1,0 +1,74 @@
+/* Homepage chapters. Isolated from the approved portrait composition. */
+.home-chapters { --chapter-gutter:clamp(22px,5vw,80px); }
+.home-chapters section { scroll-margin-top:24px; }
+.chapter-rule { display:flex; align-items:center; justify-content:space-between; gap:16px; border-bottom:1px solid currentColor; padding-bottom:16px; font-size:10px; font-weight:650; letter-spacing:.12em; text-transform:uppercase; }
+.story-chapter { background:var(--ink); color:var(--paper); padding:clamp(26px,4vw,62px) var(--chapter-gutter) clamp(60px,8vw,120px); overflow:hidden; }
+.story-chapter .chapter-rule { color:var(--accent); border-color:#747b5d; }
+.story-grid { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:clamp(30px,7vw,110px); padding-top:clamp(42px,6vw,90px); align-items:end; }
+.story-left { position:relative; }
+.story-overline,.story-index { font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:550; }
+.story-overline { color:#c5c8b8; margin:0 0 28px; }
+.story-left h2,.work-heading h2,.personal-grid h2 { font:400 clamp(64px,10vw,165px)/.83 var(--serif); letter-spacing:-.045em; margin:0; }
+.story-left h2 em { color:var(--accent); }
+.story-asterisk { display:block; font-size:clamp(40px,6vw,96px); line-height:1; color:var(--accent); margin-top:28px; }
+.story-index { color:var(--accent); }
+.story-right p { font-size:clamp(17px,1.9vw,25px); line-height:1.5; max-width:37ch; margin:20px 0; }
+.story-right p+p { font-size:clamp(15px,1.5vw,20px); color:#c5c8b8; }
+.chapter-link { display:inline-flex; align-items:center; justify-content:space-between; gap:30px; min-height:44px; font-size:13px; font-weight:650; text-decoration:none; border-bottom:1px solid; color:inherit; transition:gap .2s; }
+.chapter-link:hover { gap:42px; }
+.chapter-link-light { color:var(--accent); }
+.story-signature { color:var(--accent); width:min(210px,65%); margin:32px 0 0 auto; }
+.work-chapter { padding:clamp(52px,8vw,110px) 0; }
+.work-heading { display:grid; grid-template-columns:1fr minmax(170px,280px); align-items:end; gap:24px; padding:35px 0 50px; }
+.work-heading h2 { font-size:clamp(64px,9.5vw,150px); }
+.work-heading p,.work-info p,.personal-grid p { color:var(--muted); line-height:1.55; font-size:clamp(16px,1.6vw,21px); }
+.work-heading p { margin:0; }
+.work-item { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); align-items:center; gap:clamp(25px,6vw,95px); padding:28px 0; border-top:1px solid var(--line); }
+.work-item:last-child { border-bottom:1px solid var(--line); }
+.work-finance { grid-template-columns:minmax(0,1fr) minmax(0,1.45fr); }
+.work-finance .project-art { order:2; }
+.work-info { padding:12px 0; }
+.work-meta { display:flex; justify-content:space-between; gap:12px; font-size:10px; font-weight:650; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.work-info h3 { font:400 clamp(43px,6vw,100px)/.92 var(--serif); letter-spacing:-.04em; margin:30px 0 16px; overflow-wrap:anywhere; }
+.work-info p { max-width:34ch; margin:0 0 20px; }
+.work-note { display:inline-block; font-size:11px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; }
+.project-art { aspect-ratio:1.65; position:relative; isolation:isolate; overflow:hidden; padding:clamp(16px,2.6vw,36px); }
+.art-corner,.art-foot { position:absolute; z-index:3; font-size:clamp(8px,.75vw,11px); font-weight:650; letter-spacing:.12em; }
+.art-corner { top:7%; left:6%; }.art-foot { bottom:7%; left:6%; }
+.art-think { background:#24291e; color:#d5ed73; }
+.think-question { position:absolute; font:700 clamp(140px,32vw,500px)/.8 Georgia,serif; right:6%; bottom:-10%; opacity:.18; transform:rotate(12deg); }
+.think-orbit { position:absolute; inset:9% 2%; border:1px solid currentColor; border-radius:50%; opacity:.3; transform:rotate(-23deg); }
+.orbit-b { transform:rotate(23deg); }
+.think-word,.finance-word,.earth-word { position:absolute; z-index:2; left:6%; top:50%; transform:translateY(-50%); font:400 clamp(35px,6.2vw,96px)/.84 var(--serif); letter-spacing:-.05em; }
+.art-finance { background:#cbd7ad; color:#263a29; }
+.art-earth { background:#dcd5c2; color:#415942; }
+.project-art svg { width:100%; height:100%; position:absolute; inset:0; }
+.art-finance .finance-word,.art-earth .earth-word { font-size:clamp(30px,4.7vw,74px); }
+.personal-chapter { background:var(--accent); color:var(--ink); padding:clamp(26px,4vw,62px) var(--chapter-gutter) clamp(50px,8vw,100px); }
+.personal-grid { display:grid; grid-template-columns:1.25fr 1fr; gap:clamp(32px,6vw,90px); align-items:end; padding-top:clamp(32px,5vw,72px); }
+.personal-grid h2 { font-size:clamp(64px,9vw,135px); }
+.personal-grid p { color:var(--ink); max-width:34ch; margin:24px 0 15px; }
+.interest-line { display:grid; grid-template-columns:32px 1fr 28px; gap:8px; align-items:center; min-height:64px; border-top:1px solid #687b36; }
+.interest-line:last-child { border-bottom:1px solid #687b36; }
+.interest-line span:first-child { font-size:11px; }
+.interest-line span:nth-child(2) { font:400 clamp(26px,4vw,53px)/1 var(--serif); }
+.interest-line span:last-child { justify-self:end; font-size:20px; }
+@keyframes chapter-rise { from { transform:translateY(22px); opacity:.65; } to { transform:translateY(0); opacity:1; } }
+@media(prefers-reduced-motion:no-preference) { [data-chapter-motion].chapter-entered { animation:chapter-rise .8s cubic-bezier(.2,.7,.3,1) both; } }
+@media(max-width:700px) {
+ .chapter-rule { font-size:9px; letter-spacing:.06em; }
+ .story-grid,.personal-grid,.work-heading,.work-item,.work-finance { grid-template-columns:minmax(0,1fr); gap:24px; }
+ .story-left h2,.personal-grid h2 { font-size:clamp(62px,13vw,105px); }
+ .story-right { border-top:1px solid #747b5d; padding-top:24px; }
+ .story-asterisk { margin-top:18px; }
+ .work-heading { padding:28px 0; }
+ .work-heading h2 { font-size:clamp(58px,12vw,95px); }
+ .work-finance .project-art { order:0; }
+ .work-item { padding:20px 0 28px; gap:10px; }
+ .work-info h3 { margin:16px 0 12px; }
+ .project-art { aspect-ratio:1.45; }
+ .think-word,.finance-word,.earth-word { font-size:clamp(40px,10vw,70px); }
+ .art-finance .finance-word,.art-earth .earth-word { font-size:clamp(34px,8vw,62px); }
+ .personal-grid { align-items:start; }
+ .interest-line { min-height:56px; }
+}
