@@ -1,0 +1,55 @@
+/* V80 — one coherent cartographic line language across the homepage.
+   Original periodic vector field, not an imported reference image.
+   Surface colors and foreground artwork are unchanged. */
+.editorial-home .editorial-flow .zm-atmosphere{--contour-ink:#798469;--contour-strength:.38;--contour-tile:clamp(950px,115vw,1850px)}
+.editorial-home .editorial-flow .zm-atmosphere.atm-dark{--contour-ink:#b7c1a4;--contour-strength:.29}
+.editorial-home .editorial-flow .zm-atmosphere :is(.atm-light,.atm-secondary){display:none}
+.editorial-home .editorial-flow .zm-atmosphere .atm-primary{
+ inset:-100px;display:block;background:var(--contour-ink);opacity:var(--contour-strength);
+ mask-image:url("/atmosphere/home-contours-v80.svg");mask-size:var(--contour-tile) auto;
+ mask-repeat:repeat;mask-position:center top;mask-mode:alpha;
+ -webkit-mask-image:url("/atmosphere/home-contours-v80.svg");-webkit-mask-size:var(--contour-tile) auto;
+ -webkit-mask-repeat:repeat;-webkit-mask-position:center top;filter:none;
+}
+.editorial-home .editorial-flow .ed-collage-sticky>.zm-atmosphere{
+ --contour-ink:color-mix(in srgb,#b7c1a4,#798469 calc(var(--memory-light,1)*100%));--contour-strength:.37;
+}
+.editorial-home .editorial-flow .zm-world-build .zm-atmosphere{--contour-ink:#354431;--contour-strength:.30;--contour-tile:950px}
+.editorial-home .editorial-flow .zm-world-life .zm-atmosphere{--contour-ink:#dce0d2;--contour-strength:.31;--contour-tile:950px}
+.editorial-home .editorial-flow .ed-archive>.zm-atmosphere{--contour-strength:.31}
+.editorial-home .editorial-flow .ed-social-sticky>.zm-atmosphere{--contour-strength:.34}
+.editorial-home .editorial-flow .finale-inner>.zm-atmosphere{--contour-strength:.28}
+.editorial-home .editorial-flow .ed-manifesto,.editorial-home .editorial-flow .ed-collage{background-image:none}
+.editorial-home .editorial-flow .ed-collage-sticky::before,.editorial-home .editorial-flow .finale-inner::before{background-image:none}
+.editorial-home .editorial-flow:not([data-ed-cinema=true]) .ed-collage-sticky,
+.editorial-home .editorial-flow:not([data-ed-motion=true]) .ed-social-sticky{position:relative}
+.editorial-home .editorial-flow .ed-social-sticky{isolation:isolate}
+.editorial-home .editorial-flow .hero-editorial-lines{
+ inset:-100px;width:auto;height:auto;opacity:.41;background:#798469;
+ mask:url("/atmosphere/home-contours-v80.svg") center top/clamp(950px,115vw,1850px) auto repeat;
+ -webkit-mask:url("/atmosphere/home-contours-v80.svg") center top/clamp(950px,115vw,1850px) auto repeat;
+ transform:none;pointer-events:none;
+}
+.editorial-home .hero-editorial-light,.editorial-home .hero-editorial-shadow{display:none}
+@media(prefers-reduced-motion:no-preference){
+ .editorial-home .editorial-flow .zm-atmosphere .atm-primary,
+ .editorial-home .editorial-flow .hero-editorial-lines{
+  animation:home80-contour-flow 8s ease-in-out infinite alternate;animation-play-state:paused;
+ }
+ .editorial-home .editorial-flow:not([data-ed-motion=false]) .zm-atmosphere[data-running=true] .atm-primary,
+ .editorial-home .editorial-flow:not([data-ed-motion=false]) .hero-editorial-background[data-running=true] .hero-editorial-lines{animation-play-state:running}
+ .editorial-home .editorial-flow .ed-collage-sticky .atm-primary{animation-direction:alternate-reverse}
+ .editorial-home .editorial-flow .ed-personal .atm-primary{animation-duration:9s}
+ .editorial-home .editorial-flow .zm-world-life .atm-primary{animation-direction:alternate-reverse}
+ .editorial-home .editorial-flow .finale-inner .atm-primary{animation-duration:9s}
+}
+@keyframes home80-contour-flow{
+ from{transform:translate3d(-52px,35px,0)}
+ to{transform:translate3d(52px,-35px,0)}
+}
+@media(max-width:700px){
+ .editorial-home .editorial-flow .zm-atmosphere{--contour-tile:850px;--contour-strength:.34}
+ .editorial-home .editorial-flow .zm-atmosphere.atm-dark{--contour-strength:.27}
+ .editorial-home .editorial-flow .hero-editorial-lines{mask-size:850px auto;-webkit-mask-size:850px auto}
+}
+@media(prefers-reduced-motion:reduce){.editorial-home .editorial-flow .hero-editorial-lines,.editorial-home .editorial-flow .zm-atmosphere .atm-primary{animation:none!important;transform:none}}

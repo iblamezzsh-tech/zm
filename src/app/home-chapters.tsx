@@ -24,6 +24,7 @@ import "./opening-v77.css";
 import PageAtmosphere from "./page-atmosphere";
 import "./home-atmosphere-v78.css";
 import "./opening-v79.css";
+import "./home-contours-v80.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -67,7 +68,7 @@ export default function HomeChapters(){
      <div className="zm-world-copy"><span>01 / THE WORK</span><strong>What I <em>build.</em></strong><small>Explore the projects <b aria-hidden="true">↗</b></small></div>
     </Link>
     <Link href="/off-the-record" className="zm-world zm-world-life" data-ed-reveal>
-     <div className="zm-world-art" aria-hidden="true"><PageAtmosphere kind="notebook" dark/><svg viewBox="0 0 500 300" fill="none" preserveAspectRatio="xMidYMid slice"><g stroke="currentColor" strokeWidth="1.1">{Array.from({length:21},(_,i)=><ellipse key={i} cx="255" cy="150" rx={44+i*9} ry={21+i*5} transform={`rotate(${i*11-45} 255 150)`}/>)}</g><path d="M250 14V286 M95 150H405" stroke="currentColor" opacity=".35"/></svg><div className="zm-world-sig"><Signature/></div></div>
+     <div className="zm-world-art" aria-hidden="true"><PageAtmosphere kind="notebook" dark/><div className="zm-world-sig"><Signature/></div></div>
      <div className="zm-world-copy"><span>02 / OFF THE RECORD</span><strong>What I <em>love.</em></strong><small>Beyond the résumé <b aria-hidden="true">↗</b></small></div>
     </Link>
    </div>
@@ -76,7 +77,7 @@ export default function HomeChapters(){
    <div className="ed-gutter ed-caption"><span>04 / SELECTED INITIATIVES</span><span>01 — 03</span></div>
    <div className="ed-work-banner" aria-hidden="true"><span>QUESTIONS → ACTION.</span></div><div className="ed-gutter ed-work-heading"><h2 data-ed-reveal>Ideas into <em>action.</em></h2><p>Three different interests. One desire to turn curiosity into something real.</p></div>
    <div className="ed-gutter ed-work-grid">
-    {projects.map((p,i)=><article className={"ed-work-item ed-work-"+p.kind} id={i===0?"exhibit-overthink":"exhibit-"+p.slug} key={p.slug} data-ed-scene data-ed-theme="dark"><PageAtmosphere kind={p.kind} dark/>
+    {projects.map((p,i)=><article className={"ed-work-item ed-work-"+p.kind} id={i===0?"exhibit-overthink":"exhibit-"+p.slug} key={p.slug} data-ed-scene data-ed-theme="dark">
      <Link href={"/projects/"+p.slug} className="ed-work-image" data-ed-reveal aria-label={"Explore "+p.name}><ProjectEdition project={p}/></Link>
      <span className="ed-project-ghost" aria-hidden="true">{p.number}</span><div className="ed-work-copy"><span className="ed-kicker">{p.number} / {p.category}</span><h3 className="ed-project-name">{p.name}</h3><p>{p.summary}</p><Link href={"/projects/"+p.slug} className="ed-link">Inside the project <span>↗</span></Link></div>
     </article>)}
