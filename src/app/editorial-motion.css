@@ -1,0 +1,29 @@
+/* Interior art direction: different word motion per destination, with generous
+   line boxes and independent image masks. Do not animate the measured layout parent. */
+main:not(.home-page) .zm-words{white-space:normal}
+main:not(.home-page) h1,main:not(.home-page) h2{line-height:1.02;overflow-wrap:anywhere}
+main:not(.home-page) .zm-word{vertical-align:baseline;max-width:100%;white-space:normal;overflow-wrap:anywhere;padding:.06em 0 .18em;margin:-.06em 0 -.18em}
+main:not(.home-page) .zm-word>span{max-width:100%;overflow-wrap:anywhere}
+main:not(.home-page) .story-opening-grid,main:not(.home-page) .case-title-group,main:not(.home-page) .contact-title-grid,main:not(.home-page) .personal-title-wrap{min-width:0}
+main:not(.home-page) .story-opening-grid>*,main:not(.home-page) .case-title-group>*,main:not(.home-page) .contact-title-grid>*,main:not(.home-page) .personal-title-wrap>*{min-width:0}
+.story-page .story-opening h1{font-size:clamp(58px,8.2vw,132px);line-height:1}
+.contact-page .contact-title-grid h1{font-size:clamp(68px,13vw,212px);line-height:.98}
+.personal-page .personal-title-wrap h1{font-size:clamp(60px,11.4vw,176px);line-height:.98}
+.projects-page .projects-opening h1{font-size:clamp(59px,10.5vw,168px);line-height:.98}
+.milestones-page .milestone-hero h1{font-size:clamp(45px,10.2vw,158px);line-height:1.02}
+@media(prefers-reduced-motion:no-preference){
+main.site-motion-ready.story-page .entry-copy .zm-word>span{transform:translate3d(calc((1 - var(--word-reveal,1))*-95%),0,0)}
+main.site-motion-ready.story-page .story-evidence-paper img{clip-path:inset(calc((1 - var(--site-in,1))*100%) 0 0);scale:calc(1.07 - var(--site-in,1)*.07)}
+main.site-motion-ready.projects-page .case-introduction .zm-word>span,main.site-motion-ready.projects-page .case-details .zm-word>span{transform:translate3d(0,calc((1 - var(--word-reveal,1))*105%),0) rotate(calc((1 - var(--word-reveal,1))*6deg));transform-origin:left bottom}
+main.site-motion-ready.milestones-page .archive-heading .zm-word>span{transform:translate3d(0,calc((1 - var(--word-reveal,1))*105%),0) scaleX(calc(.85 + var(--word-reveal,1)*.15))}
+main.site-motion-ready.milestones-page .desk-paper img{animation:archive-image .72s cubic-bezier(.16,1,.3,1) both}
+@keyframes archive-image{from{clip-path:inset(0 100% 0 0);scale:1.06}to{clip-path:inset(0);scale:1}}
+main.site-motion-ready.personal-page .personal-questions .zm-word>span,main.site-motion-ready.personal-page .personal-books .zm-word>span{transform:translate3d(calc((1 - var(--word-reveal,1))*60%),calc((1 - var(--word-reveal,1))*95%),0) rotate(calc((1 - var(--word-reveal,1))*-8deg))}
+main.site-motion-ready.contact-page .contact-letter .zm-word>span{transform:translate3d(0,calc((1 - var(--word-reveal,1))*115%),0);filter:blur(calc((1 - var(--word-reveal,1))*1px))}
+main.site-motion-ready .case-world-finance .poster-finance-line{stroke-dashoffset:calc(1 - var(--studio-unfold,1))}
+}
+@media(max-width:760px){
+.story-page .story-opening h1,.projects-page .projects-opening h1,.personal-page .personal-title-wrap h1{font-size:clamp(48px,13vw,105px)}
+.contact-page .contact-title-grid h1{font-size:clamp(60px,16vw,125px)}
+.milestones-page .milestone-hero h1{font-size:clamp(39px,10.5vw,90px)}
+}

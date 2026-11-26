@@ -52,7 +52,7 @@ export function RouteSignature(){
    clear();pending.current=href;started.current=performance.now();resetScrollMomentum();
    router.prefetch(href);
    const dest=url.pathname;
-   curtain.current.dataset.edit=dest==="/about"?"paper":dest==="/achievements"?"archive":dest==="/off-the-record"?"notebook":dest.startsWith("/projects")?"project":"signature";
+   curtain.current.dataset.edit=dest==="/about"?"paper":dest==="/achievements"?"archive":dest==="/off-the-record"?"notebook":dest==="/projects/overthink"?"think":dest==="/projects/finance4youth"?"finance":dest==="/projects/rezamin"?"earth":dest==="/projects"?"project":dest==="/contact"?"letter":"signature";
    curtain.current.dataset.phase="cover";
    const label=curtain.current.querySelector<HTMLElement>("[data-destination]");if(label)label.textContent=names[url.pathname];
    coverTimer.current=setTimeout(()=>{router.push(href);coverTimer.current=null},COVER_MS);

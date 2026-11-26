@@ -52,8 +52,8 @@ html.lenis{scroll-behavior:auto!important}
 @keyframes edit-paper-out{from{transform:translate3d(0,0,0)}to{transform:translate3d(-101%,0,0)}}
 .zm-route-curtain[data-edit=project][data-phase=cover]{animation:edit-lens-in .6s cubic-bezier(.76,0,.24,1) both}
 .zm-route-curtain[data-edit=project][data-phase=reveal]{animation:edit-lens-out .7s cubic-bezier(.76,0,.24,1) both}
-@keyframes edit-lens-in{from{transform:none;clip-path:circle(0% at 50% 50%)}to{transform:none;clip-path:circle(76% at 50% 50%)}}
-@keyframes edit-lens-out{from{transform:none;clip-path:circle(76% at 50% 50%)}to{transform:none;clip-path:circle(0% at 50% 50%)}}
+@keyframes edit-lens-in{from{transform:none;clip-path:circle(0% at 50% 50%)}to{transform:none;clip-path:circle(150% at 50% 50%)}}
+@keyframes edit-lens-out{from{transform:none;clip-path:circle(150% at 50% 50%)}to{transform:none;clip-path:circle(0% at 50% 50%)}}
 .zm-route-curtain[data-edit=archive][data-phase=cover]{animation:edit-archive-in .6s cubic-bezier(.76,0,.24,1) both}
 .zm-route-curtain[data-edit=archive][data-phase=reveal]{animation:edit-archive-out .7s cubic-bezier(.76,0,.24,1) both}
 @keyframes edit-archive-in{from{transform:none;clip-path:inset(50% 0)}to{transform:none;clip-path:inset(0)}}
@@ -64,3 +64,33 @@ html.lenis{scroll-behavior:auto!important}
 @keyframes edit-notebook-out{from{transform:none;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}to{transform:none;clip-path:polygon(100% 0,100% 0,100% 100%,100% 100%)}}
 .zm-route-curtain[data-edit]:not([data-edit=signature])[data-phase=cover] .route-destination{animation:edit-title-in .65s .23s cubic-bezier(.16,1,.3,1) both}
 @keyframes edit-title-in{from{transform:translateY(45px);opacity:0}to{transform:none;opacity:1}}
+
+/* Project-specific transitions. Each cover ends fully opaque before routing. */
+.zm-route-curtain[data-edit=think] .zm-route-curtain-inner{background:#ffda24;color:#24291e}
+.zm-route-curtain[data-edit=finance] .zm-route-curtain-inner{background:#e5e8da;color:#24291e}
+.zm-route-curtain[data-edit=earth] .zm-route-curtain-inner{background:#354431;color:#f4f1e8}
+.zm-route-curtain[data-edit=letter] .zm-route-curtain-inner{background:#f4f1e8;color:#24291e}
+.zm-route-curtain[data-edit=think] .route-motif i{border-radius:50%;height:52px;width:52px}
+.zm-route-curtain[data-edit=think] .route-motif i:nth-child(2){background:currentColor}
+.zm-route-curtain[data-edit=finance] .route-motif{align-items:end}
+.zm-route-curtain[data-edit=finance] .route-motif i{background:currentColor;width:18px;height:22px}
+.zm-route-curtain[data-edit=finance] .route-motif i:nth-child(2){height:43px}
+.zm-route-curtain[data-edit=finance] .route-motif i:nth-child(3){height:65px}
+.zm-route-curtain[data-edit=earth] .route-motif i{border-radius:80% 0 80% 0;transform:rotate(-30deg);background:#aab894}
+.zm-route-curtain[data-edit=letter] .route-motif i{width:65px;height:45px;transform:rotate(-8deg)}
+.zm-route-curtain[data-edit=think][data-phase=cover]{animation:think-edit-in .6s cubic-bezier(.76,0,.24,1) both}
+.zm-route-curtain[data-edit=think][data-phase=reveal]{animation:think-edit-out .7s cubic-bezier(.76,0,.24,1) both}
+@keyframes think-edit-in{from{transform:none;clip-path:polygon(50% 50%,50% 50%,50% 50%,50% 50%)}to{transform:none;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}}
+@keyframes think-edit-out{from{transform:none;clip-path:inset(0)}to{transform:none;clip-path:inset(0 100% 0 0)}}
+.zm-route-curtain[data-edit=finance][data-phase=cover]{animation:finance-edit-in .6s cubic-bezier(.76,0,.24,1) both}
+.zm-route-curtain[data-edit=finance][data-phase=reveal]{animation:finance-edit-out .7s cubic-bezier(.76,0,.24,1) both}
+@keyframes finance-edit-in{from{transform:none;clip-path:polygon(0 100%,33% 100%,33% 100%,66% 100%,66% 100%,100% 100%,100% 100%,0 100%)}to{transform:none;clip-path:polygon(0 0,33% 0,33% 0,66% 0,66% 0,100% 0,100% 100%,0 100%)}}
+@keyframes finance-edit-out{from{transform:none;clip-path:inset(0)}to{transform:none;clip-path:inset(100% 0 0)}}
+.zm-route-curtain[data-edit=earth][data-phase=cover]{animation:earth-edit-in .6s cubic-bezier(.76,0,.24,1) both}
+.zm-route-curtain[data-edit=earth][data-phase=reveal]{animation:earth-edit-out .7s cubic-bezier(.76,0,.24,1) both}
+@keyframes earth-edit-in{from{transform:none;clip-path:circle(0% at 100% 100%)}to{transform:none;clip-path:circle(150% at 50% 50%)}}
+@keyframes earth-edit-out{from{transform:none;clip-path:circle(150% at 50% 50%)}to{transform:none;clip-path:circle(0% at 0 0)}}
+.zm-route-curtain[data-edit=letter][data-phase=cover]{animation:letter-edit-in .6s cubic-bezier(.76,0,.24,1) both}
+.zm-route-curtain[data-edit=letter][data-phase=reveal]{animation:letter-edit-out .7s cubic-bezier(.76,0,.24,1) both}
+@keyframes letter-edit-in{from{transform:none;clip-path:inset(0 0 100%)}to{transform:none;clip-path:inset(0)}}
+@keyframes letter-edit-out{from{transform:none;clip-path:inset(0)}to{transform:none;clip-path:inset(0 0 100%)}}
