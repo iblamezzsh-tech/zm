@@ -1,0 +1,64 @@
+/* V65: one interaction language, independent of scroll and route transforms.
+   Individual scale/translate/rotate compose with existing transform animations.
+   Never animate position, dimensions or scroll-driven clip paths on the controls. */
+:root{--zm-button-ease:cubic-bezier(.2,.75,.25,1);--zm-button-fast:160ms;--zm-button-settle:320ms}
+@media(prefers-reduced-motion:no-preference){
+ /* Every enabled native button, including future controls. */
+ button:not(:disabled),[role="button"]:not([aria-disabled="true"]),summary{
+  transition:scale var(--zm-button-fast) var(--zm-button-ease),background-color var(--zm-button-settle) var(--zm-button-ease),color var(--zm-button-settle),border-color var(--zm-button-settle),box-shadow var(--zm-button-settle);
+  transform-origin:center;
+ }
+ /* CTAs and compact links only: do not transition the scroll-scrubbed art or chapter wrappers. */
+ :is(.minimal-connect,.contact-direct,.desk-open,.story-continue,.ed-link,.case-link,.exhibit-link,.personal-link,.contact-text-link,.story-inline-link,.hero-scroll,.finale-cta a,.archive-hero-link,.home-footer a,.finale-footer a,.ed-social-links a,.zm-menu-social a,.archive-document a,.case-breadcrumb a,.minimal-identity,.zm-menu-logo){
+  transition:scale var(--zm-button-fast) var(--zm-button-ease),background-color var(--zm-button-settle) var(--zm-button-ease),color var(--zm-button-settle),border-color var(--zm-button-settle),box-shadow var(--zm-button-settle),text-underline-offset var(--zm-button-settle);
+  transform-origin:center;
+ }
+ /* A physical press works on touch and mouse; no delay to navigation. */
+ button:not(:disabled):active,[role="button"]:not([aria-disabled="true"]):active,summary:active{scale:.975}
+ a[href]:not(.skip-link):active{scale:.985}
+ :is(.minimal-connect,.contact-direct,.finale-cta a,.minimal-menu-trigger,.zm-menu-close,.archive-close,.desk-controls button):active{scale:.94}
+ /* Independent arrow translation preserves existing transform-based choreography. */
+ :is(.ed-link,.minimal-connect,.contact-direct,.desk-open,.story-continue,.exhibit-link,.finale-cta a,.hero-scroll) > span:last-child,
+ :is(.contact-channel,.zm-world-copy,.ed-interest-list a)>b,
+ .zm-world-copy small>b,.case-next>span:last-child,.story-index-nav a>span:last-child,
+ .studio54-story-projects a>small,.zm-menu-link-arrow,.finale-nav a>small[aria-hidden="true"],.finale-footer a>span{
+  transition:translate var(--zm-button-settle) var(--zm-button-ease),rotate var(--zm-button-settle) var(--zm-button-ease),scale var(--zm-button-settle) var(--zm-button-ease);
+ }
+ .minimal-menu-glyph i{transition:translate var(--zm-button-settle) var(--zm-button-ease),scale var(--zm-button-settle) var(--zm-button-ease)}
+ .zm-menu-close>span{display:inline-block;transition:rotate var(--zm-button-settle) var(--zm-button-ease)}
+ .note-plus{transition:transform var(--zm-button-settle) var(--zm-button-ease),scale var(--zm-button-settle) var(--zm-button-ease)}
+ .quiz-answers button>span:last-child{transition:translate var(--zm-button-settle) var(--zm-button-ease),scale var(--zm-button-settle) var(--zm-button-ease)}
+ .archive-record .record-info,.ed-archive-item .ed-archive-label{transition:translate var(--zm-button-settle) var(--zm-button-ease)}
+ .minimal-identity img,.zm-menu-logo img{transition:scale var(--zm-button-settle) var(--zm-button-ease)}
+ @media(hover:hover) and (pointer:fine){
+  :is(.minimal-connect,.contact-direct,.finale-cta a,.desk-open,.minimal-menu-trigger,.zm-menu-close,.archive-close,.desk-controls button:not(:disabled),.archive-tabs button,.zm-reading-option):hover{scale:1.025}
+  button:not(:disabled):not(.archive-record):hover{cursor:pointer}
+  :is(.ed-link,.minimal-connect,.contact-direct,.desk-open,.exhibit-link,.finale-cta a):hover>span:last-child,
+  :is(.contact-channel,.ed-interest-list a):hover>b,.zm-world:hover .zm-world-copy small>b,.case-next:hover>span:last-child,
+  .story-index-nav a:hover>span:last-child,.studio54-story-projects a:hover>small,.zm-menu-links a:hover .zm-menu-link-arrow,
+  .finale-nav a:hover>small[aria-hidden="true"]{translate:3px -3px}
+  .hero-scroll:hover>span:last-child,.story-continue:hover>span:last-child{translate:0 4px}
+  .finale-footer a:hover>span{translate:0 -4px}
+  .minimal-menu-trigger:hover .minimal-menu-glyph i:first-child{translate:-4px 0;scale:1.16 1}
+  .minimal-menu-trigger:hover .minimal-menu-glyph i:last-child{translate:4px 0;scale:1.16 1}
+  .zm-menu-close:hover>span{rotate:90deg}
+  .personal-note summary:hover .note-plus{scale:1.14}
+  .quiz-answers button:hover>span:last-child{translate:3px -2px}
+  .archive-record:hover .record-info,.ed-archive-item:hover .ed-archive-label{translate:0 -3px}
+  .minimal-identity:hover img,.zm-menu-logo:hover img{scale:1.055}
+  :is(.home-footer a,.ed-social-links a,.zm-menu-social a,.archive-document a,.case-breadcrumb a,.case-link,.personal-link,.contact-text-link,.story-inline-link):hover{text-underline-offset:6px}
+ }
+ /* Keyboard feedback parallels hover, without requiring a pointer. */
+ :is(.minimal-connect,.contact-direct,.finale-cta a,.desk-open,.minimal-menu-trigger,.zm-menu-close,.archive-close):focus-visible{scale:1.025}
+ :is(.ed-link,.minimal-connect,.contact-direct,.desk-open,.exhibit-link,.finale-cta a):focus-visible>span:last-child,
+ .zm-menu-links a:focus-visible .zm-menu-link-arrow,.contact-channel:focus-visible>b,.ed-interest-list a:focus-visible>b{translate:3px -3px}
+ .quiz-answers button[aria-pressed=true]>span:last-child{scale:1.15}
+ .personal-note[open]>p{animation:zm-note-open .28s var(--zm-button-ease) both}
+ @keyframes zm-note-open{from{opacity:.3;translate:0 -5px}to{opacity:1;translate:0 0}}
+ /* Keep press stronger than hover, including pointer held on desktop. */
+ button:not(:disabled):active,[role="button"]:not([aria-disabled="true"]):active,summary:active{scale:.975}
+ :is(.minimal-connect,.contact-direct,.finale-cta a,.minimal-menu-trigger,.zm-menu-close,.archive-close,.desk-controls button):active{scale:.94}
+}
+@media(prefers-reduced-motion:reduce){
+ /* Retain existing static hover/selected/focus colors; this layer introduces no motion. */
+}
