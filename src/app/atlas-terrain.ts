@@ -65,7 +65,7 @@ export function createAtlasTerrain(canvas:HTMLCanvasElement){
   const W=Math.round(w*factor),H=Math.round(h*factor);
   if(W===lastW&&H===lastH&&Math.abs(p-last)<.0004)return;
   if(W!==lastW||H!==lastH){canvas.width=W;canvas.height=H;gl!.viewport(0,0,W,H);lastW=W;lastH=H}
-  last=p;gl!.useProgram(program);gl!.uniform2f(resolution,W,H);gl!.uniform1f(progress,p);gl!.uniform1f(breath,0);gl!.drawArrays(gl!.TRIANGLES,0,3);
+  last=p;canvas.style.visibility="visible";gl!.useProgram(program);gl!.uniform2f(resolution,W,H);gl!.uniform1f(progress,p);gl!.uniform1f(breath,0);gl!.drawArrays(gl!.TRIANGLES,0,3);
  }
  return {draw,dispose(){canvas.removeEventListener("webglcontextlost",lose);gl.deleteBuffer(buffer);gl.deleteProgram(program)}};
 }
