@@ -1,0 +1,26 @@
+/* V59 — a consistent photographic and archival presentation.
+   Original image files, portrait planes, canvas alignment and scroll geometry stay intact. */
+:root{--zm-mat:#fffdf4;--zm-mat-edge:#24291e26;--zm-photo-stage:#354431}
+.editorial-flow .ed-document-image{box-sizing:border-box;background:var(--zm-mat);border:1px solid var(--zm-mat-edge);box-shadow:0 2px 3px #24291e12,0 12px 32px #24291e18}
+.editorial-flow .ed-document-image img{object-fit:contain;object-position:center}
+.editorial-flow .ed-document figcaption{gap:5px}
+.editorial-flow .ed-document figcaption span{font:650 clamp(10px,.8vw,12px)/1.4 "DM Sans Variable",Arial,sans-serif;letter-spacing:.055em}
+.editorial-flow .ed-document figcaption strong{letter-spacing:-.025em;line-height:1.2}
+.editorial-flow .ed-archive-image{box-sizing:border-box;background:var(--zm-mat);border:1px solid #f4f1e84a;padding:clamp(5px,.65vw,12px)}
+.editorial-flow .ed-archive-image img{object-fit:contain;object-position:center}
+.editorial-flow .ed-archive-label strong{line-height:1.25;letter-spacing:-.025em}
+.editorial-flow .ed-fan-without-portrait .ed-fan-card{border-color:var(--zm-mat);border-radius:clamp(4px,.65vw,10px);box-shadow:0 3px 6px #24291e16,0 14px 30px #24291e22}
+.editorial-flow .ed-fan-without-portrait .ed-fan-card img{box-sizing:border-box;padding:clamp(4px,.6vw,9px);background:var(--zm-mat);object-position:center}
+main.studio54.story-page .story-portrait{background:radial-gradient(ellipse at 52% 45%,#758068 0%,#4b5942 52%,#354431 100%);box-shadow:inset 0 0 0 1px #24291e20}
+main.studio54.story-page .story-portrait img{object-fit:contain;object-position:center bottom}
+main.studio54 .studio54-document{box-sizing:border-box;background:var(--zm-mat);border:1px solid var(--zm-mat-edge);box-shadow:0 2px 3px #24291e12,0 10px 24px #24291e18}
+main.studio54 .studio54-document img{object-fit:contain;object-position:center}
+main.studio54 .archive-grid.studio54-index .record-has-document .record-cover{background:var(--zm-mat);border:1px solid var(--zm-mat-edge)}
+main.studio54 .archive-grid.studio54-index .record-has-document .record-cover img{object-fit:contain;object-position:center}
+.zm-menu-feature-frame .tile-document img{box-sizing:border-box;background:var(--zm-mat);object-fit:contain;object-position:center}
+.zm-menu-feature-frame .tile-portrait{background:radial-gradient(ellipse at 50% 45%,#758068,#354431 82%)}
+.zm-menu-feature-frame .tile-portrait img{object-fit:contain;object-position:center bottom}
+@media(max-width:520px){
+ .editorial-flow .ed-document figcaption span{font-size:10px;letter-spacing:.035em}
+ .editorial-flow .ed-archive-image{padding:5px}
+}

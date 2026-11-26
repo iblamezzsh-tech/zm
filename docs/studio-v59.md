@@ -1,0 +1,1 @@
+V59: unified warm paper mats, subtle physical edges and shadows, consistent documentary caption typography, and olive portrait backdrops for story/menu. Existing photos and certificates are unmodified and remain uncropped; hero/finale canvas alignment and motion controllers untouched. CSS-only refinement. Full rendered visual QA outstanding.

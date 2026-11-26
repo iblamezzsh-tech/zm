@@ -18,6 +18,7 @@ import "./editorial-motion.css";
 import "./surface-colors.css";
 import "./studio55.css";
 import "./studio57.css";
+import "./studio59.css";
 
 import {bootCSS,bootScript} from "./boot-intro";
 
