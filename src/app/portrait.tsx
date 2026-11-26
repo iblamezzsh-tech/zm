@@ -94,7 +94,7 @@ export default function Portrait() {
       radius();
     }
     function down(e: PointerEvent) {
-      if (!e.isPrimary || e.pointerType === "mouse") return;
+      if (!e.isPrimary || e.pointerType === "mouse" || (e.target instanceof Element && e.target.closest("a, button"))) return;
       touch = e.pointerId;
       area!.setPointerCapture(e.pointerId);
       enter(e);
@@ -111,8 +111,11 @@ export default function Portrait() {
       setPinned(full);
       radius();
     }
-    function resize() {
+    function refreshBounds() {
       bounds = area!.getBoundingClientRect();
+    }
+    function resize() {
+      refreshBounds();
       layer!.style.width = bounds.width + "px";
       layer!.style.height = bounds.height + "px";
       radius();
@@ -132,7 +135,8 @@ export default function Portrait() {
         area.addEventListener("pointerdown", down, options);
         area.addEventListener("pointerup", up, options);
         area.addEventListener("pointercancel", up, options);
-        window.addEventListener("scroll", resize, {
+        area.addEventListener("lostpointercapture", up, options);
+        window.addEventListener("scroll", refreshBounds, {
           ...options,
           capture: true,
         });
@@ -229,7 +233,7 @@ export default function Portrait() {
           ref={switcher}
           className="switch"
           aria-pressed={pinned}
-          aria-label={pinned ? "Show present portrait" : "Show future portrait"}
+          aria-label="Show future portrait"
         >
           <span className={!pinned ? "selected" : ""}>Present</span>
           <span className={pinned ? "selected" : ""}>Future</span>

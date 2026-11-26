@@ -5,7 +5,6 @@ import HomeChapters from "./home-chapters";
 export default function Home() {
   return (
     <main className="home-page" id="top">
-      <a className="skip-link" href="#introduction">Skip to introduction</a>
       <SiteHeader />
       <div className="home-hero">
         <Portrait />

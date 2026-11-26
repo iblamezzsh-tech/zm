@@ -2,6 +2,8 @@ import Link from "next/link";
 
 export default function SiteHeader({ about = false, projects = false, achievements = false, personal = false, contact = false }: { about?: boolean; projects?: boolean; achievements?: boolean; personal?: boolean; contact?: boolean }) {
   return (
+    <>
+    <a className="skip-link" href="#main-content">Skip to content</a>
     <header className="site-header">
       <Link className="identity" href="/" aria-label="ZiyoMuhammad home">
         <img src="/icon.svg" alt="" width="45" height="45" />
@@ -19,5 +21,7 @@ export default function SiteHeader({ about = false, projects = false, achievemen
         Let’s connect <span className="about-arrow" aria-hidden="true" />
       </Link>
     </header>
+    <div id="main-content" tabIndex={-1} />
+    </>
   );
 }
