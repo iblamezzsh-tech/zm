@@ -1,5 +1,6 @@
 "use client";
 import {useEffect,useRef} from "react";
+import {heroFields} from "./liquid-field";
 
 const TAU=Math.PI*2;
 const families=[
@@ -57,9 +58,16 @@ export default function ContourField({paused}:{paused:boolean}){
     const radius=unit*.34;
     const influence=Math.exp(-(distance*distance)/(radius*radius))*cursor.weight;
     const wave=unit*.085*influence*Math.sin(distance/unit*10.5-t*2.2);
-    const push=unit*.068*influence+wave;
-    x+=dx/Math.max(distance,24)*push-cursor.weight*influence*14;
+    const push=unit*.018*influence+wave*.22;
+    x+=dx/Math.max(distance,24)*push;
     y+=dy/Math.max(distance,24)*push;
+    // The very same wave that transports the portrait mask bends the terrain.
+    const field=heroFields.get(stage!);
+    if(field&&x>=0&&x<=w&&y>=0&&y<=h){
+      const ripple=field.sample(x/w,y/h);
+      x+=ripple.x*unit*.8+ripple.height*unit*.026;
+      y+=ripple.y*unit*.8;
+    }
     points.push({x,y});
    }
    return points;
@@ -105,7 +113,8 @@ export default function ContourField({paused}:{paused:boolean}){
    const path:Point[]=[];
    for(let i=0;i<=100;i++){
     const x=w*(i/100*1.3-.15);
-    const y=h*(.18+.13*Math.sin(x/w*4.2+t*.42)+.055*Math.sin(x/w*9-t*.29));
+    let y=h*(.18+.13*Math.sin(x/w*4.2+t*.42)+.055*Math.sin(x/w*9-t*.29));
+    const field=heroFields.get(stage!);if(field&&x>=0&&x<=w){const r=field.sample(x/w,y/h);y+=r.y*unit*.95+r.height*unit*.025}
     path.push({x,y});
    }
    ctx.globalAlpha=.15;stroke(path,"#a6b48a",unit*.115,false);

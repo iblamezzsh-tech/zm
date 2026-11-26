@@ -62,3 +62,7 @@ main.home-page>.site-header.minimal-header{position:absolute;z-index:10;top:0;le
 .home-page .home-hero .hero-scroll{bottom:2%;left:4%}
 }
 @media(prefers-reduced-motion:reduce){.home-page .hero-portrait-plane{transform:scale(var(--portrait-scale))!important;transform-origin:50% 100%}.home-page .home-hero .hero-name{transform:none!important}}
+
+/* V21: stationary artwork composited through a living fluid alpha field. */
+.hero-attire-source{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}
+.hero-liquid-reveal{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;display:block}

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { HeroSignature } from "./signature-motion";
-import { gsap } from "gsap";
+import { LiquidField, heroFields } from "./liquid-field";
 import "./hero-atmosphere.css";
 import ContourField from "./contour-field";
 
@@ -9,7 +9,7 @@ export default function Portrait() {
   const stage = useRef<HTMLDivElement>(null);
   const base = useRef<HTMLImageElement>(null);
   const overlay = useRef<HTMLImageElement>(null);
-  const lens = useRef<HTMLDivElement>(null);
+  const lens = useRef<HTMLCanvasElement>(null);
   const switcher = useRef<HTMLButtonElement>(null);
   const pauseButton = useRef<HTMLButtonElement>(null);
   const [paused, setPaused] = useState(false);
@@ -17,210 +17,106 @@ export default function Portrait() {
   const [pinned, setPinned] = useState(false);
 
   useEffect(() => {
-    const area = stage.current,
-      layer = overlay.current,
-      original = base.current,
-      button = switcher.current,
-      aperture = lens.current,
-      pause = pauseButton.current;
-    if (
-      !area ||
-      !layer ||
-      !original ||
-      !button ||
-      !aperture ||
-      !pause ||
-      !CSS.supports("mask-image", "radial-gradient(black, transparent)")
-    )
-      return;
-    let alive = true,
-      full = false,
-      inside = false,
-      touch: number | null = null;
-    let stopped = false, interacted = false, demonstrated = false;
-    let demo: gsap.core.Timeline | null = null;
-    const depth = { x: 0, y: 0 };
-    let bounds = area.getBoundingClientRect();
-    let portraitScale = 1;
-    const motion = matchMedia("(prefers-reduced-motion: reduce)");
-    const point = { x: bounds.width / 2, y: bounds.height / 2, r: 0 };
-    // The overlay contains only academic attire; the original face stays on the base layer.
-    // Translate a static feathered mask and counter-transform the photo so
-    // its pixels stay registered to the base image. Only transforms animate.
-    const diameter = 400;
-    function paint() {
-      if (!point.r) {
-        aperture!.style.visibility = "hidden";
-        return;
-      }
-      const localRadius=point.r/portraitScale;
-      const scale = (localRadius * 2) / diameter;
-      // Convert stage coordinates to the shared, enlarged portrait plane.
-      const left = (point.x-depth.x-bounds.width*(1-portraitScale)/2)/portraitScale-localRadius;
-      const top = (point.y-depth.y-bounds.height*(1-portraitScale))/portraitScale-localRadius;
-      aperture!.style.visibility = "visible";
-      aperture!.style.transform = `translate3d(${left}px,${top}px,0) scale(${scale})`;
-      layer!.style.transform = `scale(${1 / scale}) translate3d(${-left}px,${-top}px,0)`;
+    const area=stage.current, original=base.current, attire=overlay.current, output=lens.current, button=switcher.current, pause=pauseButton.current;
+    if(!area||!original||!attire||!output||!button||!pause)return;
+    const ctx=output.getContext("2d");
+    if(!ctx)return;
+    const mask=document.createElement("canvas");
+    const maskCtx=mask.getContext("2d");
+    if(!maskCtx)return;
+    const motion=matchMedia("(prefers-reduced-motion: reduce)");
+    const field=new LiquidField();
+    heroFields.set(area,field);
+    let bounds=area.getBoundingClientRect(), scale=1, dpr=1, alive=true, loaded=false, visible=false, stopped=false, full=false;
+    let pointer:number|null=null, inside=false, lastPoint:{x:number;y:number}|null=null;
+    let raf=0,last=0,acc=0,age=0,interacted=false, demoDone=false;
+    let targetX=0,targetY=0,dx=0,dy=0;
+    let imageData:ImageData|null=null;
+    const canMove=()=>visible&&!stopped&&!motion.matches&&!document.hidden;
+    function paint(){
+      if(!loaded||!ctx||!maskCtx||!output||!attire||!imageData)return;
+      const w=bounds.width,h=bounds.height;
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      ctx.globalCompositeOperation="source-over";ctx.clearRect(0,0,w,h);
+      if(!full&&!field.hasInk)return;
+      const fit=Math.min(w/attire.naturalWidth,h/attire.naturalHeight);
+      const iw=attire.naturalWidth*fit,ih=attire.naturalHeight*fit;
+      ctx.drawImage(attire,(w-iw)/2,h-ih,iw,ih);
+      if(full)return;
+      // Alpha comes from the evolving density field, not a circular CSS mask.
+      field.writeMask(imageData.data);
+      maskCtx.putImageData(imageData,0,0);
+      ctx.globalCompositeOperation="destination-in";
+      ctx.imageSmoothingEnabled=true;
+      ctx.imageSmoothingQuality="high";
+      ctx.drawImage(mask,(-dx-w*(1-scale)/2)/scale,(-dy-h*(1-scale))/scale,w/scale,h/scale);
+      ctx.globalCompositeOperation="source-over";
     }
-    function paintDepth() {
-      area!.style.setProperty("--hero-dx", depth.x+"px");
-      area!.style.setProperty("--hero-dy", depth.y+"px");
+    function depth(){
+      area!.style.setProperty("--hero-dx",dx+"px");area!.style.setProperty("--hero-dy",dy+"px");
+    }
+    function frame(now:number){
+      raf=0;if(!alive||!canMove()){last=0;return}
+      const dt=last?Math.min(.05,(now-last)/1000):1/60;last=now;age+=dt;acc+=dt;
+      const ease=1-Math.exp(-dt*6);
+      dx+=(targetX-dx)*ease;dy+=(targetY-dy)*ease;depth();
+      if(!interacted&&!demoDone&&age>1.1){
+        const t=(age-1.1)/2.4;
+        if(t>=1){demoDone=true;lastPoint=null}
+        else{const x=bounds.width*(.38+.24*t),y=bounds.height*(.16+.25*Math.sin(t*Math.PI));
+          field.splat(x/bounds.width,y/bounds.height,lastPoint?.x,lastPoint?.y,.73);lastPoint={x:x/bounds.width,y:y/bounds.height}}
+      }
+      if(inside&&lastPoint&&!full)field.splat(lastPoint.x,lastPoint.y,undefined,undefined,.18);
+      while(acc>=1/60){field.step();acc-=1/60}
+      paint();raf=requestAnimationFrame(frame);
+    }
+    function sync(){
+      if(!alive)return;
+      if(canMove()){if(!raf){last=0;raf=requestAnimationFrame(frame)}}
+      else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;depth();field.clear();paint()}
+    }
+    function resize(){
+      bounds=area!.getBoundingClientRect();
+      if(!bounds.width||!bounds.height)return;
+      scale=Number.parseFloat(getComputedStyle(area!).getPropertyValue("--portrait-scale"))||1;
+      dpr=Math.min(devicePixelRatio||1,1.6);
+      output!.width=Math.round(bounds.width*dpr);output!.height=Math.round(bounds.height*dpr);
+      field.resize(bounds.width,bounds.height);
+      mask.width=field.width;mask.height=field.height;
+      imageData=maskCtx!.createImageData(field.width,field.height);
       paint();
     }
-    const depthOptions = {duration: .65, ease:"power3.out", onUpdate:paintDepth};
-    const dxTo = gsap.quickTo(depth,"x",depthOptions), dyTo = gsap.quickTo(depth,"y",depthOptions);
-    function resetDepth(immediate=false) {
-      if(immediate){dxTo.tween.pause();dyTo.tween.pause();depth.x=0;depth.y=0;paintDepth()}
-      else{dxTo(0);dyTo(0)}
+    function refresh(){bounds=area!.getBoundingClientRect()}
+    function track(e:PointerEvent){
+      if(e.pointerType!=="mouse"&&pointer!==e.pointerId)return;
+      if(!interacted){lastPoint=null;interacted=true;demoDone=true}
+      const x=Math.max(0,Math.min(1,(e.clientX-bounds.left)/Math.max(1,bounds.width)));
+      const y=Math.max(0,Math.min(1,(e.clientY-bounds.top)/Math.max(1,bounds.height)));
+      const prev=lastPoint;inside=true;lastPoint={x,y};
+      if(canMove()){
+        if(e.pointerType==="mouse"){targetX=(x*2-1)*13;targetY=(y*2-1)*6}
+        field.splat(x,y,prev?.x,prev?.y,1);
+      }else if(!full){field.clear();field.splat(x,y,undefined,undefined,1);paint()}
     }
-    function cancelDemo() {
-      if(!demo)return;
-      demo.kill();demo=null;point.r=0;paint();
-    }
-    function demonstrate() {
-      if(demonstrated||interacted||stopped||motion.matches||full||document.hidden)return;
-      demonstrated=true;
-      point.x=bounds.width*.44;point.y=bounds.height*.18;point.r=0;
-      const revealRadius=Math.max(100,Math.min(bounds.width*.19,bounds.height*.34));
-      demo=gsap.timeline({delay:1.05,onUpdate:paint,onComplete:()=>{demo=null;point.r=0;paint()}});
-      demo.to(point,{r:revealRadius,duration:.7,ease:"power2.inOut"})
-        .to(point,{x:bounds.width*.57,y:bounds.height*.31,duration:1.35,ease:"sine.inOut"})
-        .to(point,{r:0,duration:.65,ease:"power2.inOut"});
-    }
-    function motionChanged() {
-      if(motion.matches||stopped){cancelDemo();resetDepth(true)}
-      resize();
-    }
-    function toggleMotion(){
-      stopped=!stopped;setPaused(stopped);
-      if(stopped){interacted=true;cancelDemo();resetDepth(true);xTo.tween.pause();yTo.tween.pause();rTo.tween.pause()}
-      radius();
-    }
-    const opts = { duration: 0.24, ease: "power3.out", onUpdate: paint };
-    const xTo = gsap.quickTo(point, "x", opts),
-      yTo = gsap.quickTo(point, "y", opts);
-    const rTo = gsap.quickTo(point, "r", { ...opts, duration: 0.48 });
-    function radius() {
-      const r = full
-        ? Math.hypot(bounds.width, bounds.height) / 0.76
-        : inside
-          ? Math.max(96, Math.min(bounds.width * 0.27, bounds.height * 0.49))
-          : 0;
-      if (motion.matches || stopped) {
-        xTo.tween.pause();
-        yTo.tween.pause();
-        rTo.tween.pause();
-        point.r = r;
-        paint();
-      } else rTo(r);
-    }
-    function track(e: PointerEvent) {
-      if (e.pointerType !== "mouse" && touch !== e.pointerId) return;
-      interacted=true;cancelDemo();
-      const x = e.clientX - bounds.left,
-        y = e.clientY - bounds.top;
-      if(e.pointerType==="mouse"&&!motion.matches&&!stopped){
-        dxTo(Math.max(-1,Math.min(1,x/Math.max(1,bounds.width)*2-1))*13);
-        dyTo(Math.max(-1,Math.min(1,y/Math.max(1,bounds.height)*2-1))*6);
-      }
-      if(full)return;
-      if (!inside || motion.matches || stopped) {
-        point.x = x;
-        point.y = y;
-        paint();
-      } else {
-        xTo(x);
-        yTo(y);
-      }
-      if (!inside) {
-        inside = true;
-        radius();
-      }
-    }
-    function enter(e: PointerEvent) {
-      bounds = area!.getBoundingClientRect();
-      track(e);
-    }
-    function leave() {
-      resetDepth(motion.matches||stopped);
-      inside = false;
-      radius();
-    }
-    function down(e: PointerEvent) {
-      if (!e.isPrimary || e.pointerType === "mouse" || (e.target instanceof Element && e.target.closest("a, button"))) return;
-      touch = e.pointerId;
-      area!.setPointerCapture(e.pointerId);
-      enter(e);
-    }
-    function up(e: PointerEvent) {
-      if (e.pointerId === touch) {
-        touch = null;
-        leave();
-      }
-    }
-    function toggle() {
-      interacted=true;cancelDemo();
-      full = !full;
-      inside = false;
-      setPinned(full);
-      radius();
-    }
-    function refreshBounds() {
-      bounds = area!.getBoundingClientRect();
-    }
-    function resize() {
-      refreshBounds();
-      portraitScale=Number.parseFloat(getComputedStyle(area!).getPropertyValue("--portrait-scale"))||1;
-      layer!.style.width = bounds.width + "px";
-      layer!.style.height = bounds.height + "px";
-      radius();
-    }
-    const controller = new AbortController();
-    const options = { signal: controller.signal, passive: true };
-    const observer = new ResizeObserver(resize);
-    const visibility = new IntersectionObserver(entries=>{
-      const visible=entries[0]?.isIntersecting??false;
-      area.classList.toggle("hero-in-view",visible);
-      if(visible)demonstrate();else{cancelDemo();resetDepth(true)}
-    },{threshold:.2});
-    function documentVisibility(){area!.classList.toggle("hero-tab-hidden",document.hidden);if(document.hidden){cancelDemo();resetDepth(true)}}
-    void Promise.all([original.decode(), layer.decode()])
-      .then(() => {
-        if (!alive) return;
-        resize();
-        paint();
-        setReady(true);
-        area.addEventListener("pointerenter", enter, options);
-        area.addEventListener("pointermove", track, options);
-        area.addEventListener("pointerleave", leave, options);
-        area.addEventListener("pointerdown", down, options);
-        area.addEventListener("pointerup", up, options);
-        area.addEventListener("pointercancel", up, options);
-        area.addEventListener("lostpointercapture", up, options);
-        window.addEventListener("scroll", refreshBounds, {
-          ...options,
-          capture: true,
-        });
-        button.addEventListener("click", toggle, options);
-        motion.addEventListener("change", motionChanged, options);
-        pause.addEventListener("click",toggleMotion,options);
-        document.addEventListener("visibilitychange",documentVisibility,options);
-        documentVisibility();
-        observer.observe(area);
-        visibility.observe(area);
-      })
-      .catch(() => {
-        /* The original remains readable if the second image fails. */
-      });
-    return () => {
-      alive = false;
-      controller.abort();
-      observer.disconnect();
-      visibility.disconnect();
-      cancelDemo();
-      gsap.killTweensOf(point);
-      gsap.killTweensOf(depth);
-    };
+    function enter(e:PointerEvent){refresh();track(e)}
+    function leave(){inside=false;lastPoint=null;targetX=targetY=0;if(!canMove()){field.clear();paint()}}
+    function down(e:PointerEvent){if(!e.isPrimary||e.pointerType==="mouse"||(e.target instanceof Element&&e.target.closest("a,button")))return;pointer=e.pointerId;area!.setPointerCapture(e.pointerId);enter(e)}
+    function up(e:PointerEvent){if(e.pointerId===pointer){pointer=null;leave()}}
+    function toggle(){interacted=true;demoDone=true;full=!full;setPinned(full);field.clear();paint()}
+    function toggleMotion(){stopped=!stopped;setPaused(stopped);interacted=true;demoDone=true;sync()}
+    const controller=new AbortController(),options={signal:controller.signal,passive:true};
+    const ro=new ResizeObserver(resize);
+    const io=new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting??false;sync()},{threshold:.03});
+    Promise.all([original.decode(),attire.decode()]).then(()=>{
+      if(!alive)return;
+      loaded=true;resize();setReady(true);ro.observe(area);io.observe(area);
+      area.addEventListener("pointerenter",enter,options);area.addEventListener("pointermove",track,options);area.addEventListener("pointerleave",leave,options);
+      area.addEventListener("pointerdown",down,options);area.addEventListener("pointerup",up,options);area.addEventListener("pointercancel",up,options);area.addEventListener("lostpointercapture",up,options);
+      window.addEventListener("scroll",refresh,{...options,capture:true});
+      button.addEventListener("click",toggle,options);pause.addEventListener("click",toggleMotion,options);
+      motion.addEventListener("change",sync,options);document.addEventListener("visibilitychange",sync,options);
+    }).catch(()=>{/* Keep the original portrait if the attire cannot be decoded. */});
+    return()=>{alive=false;controller.abort();ro.disconnect();io.disconnect();if(raf)cancelAnimationFrame(raf);heroFields.delete(area)};
   }, []);
 
   return (
@@ -242,7 +138,8 @@ export default function Portrait() {
           alt="ZiyoMuhammad in a white shirt"
           fetchPriority="high"
         />
-        <div className="lens" ref={lens} aria-hidden="true">
+        <canvas className="hero-liquid-reveal" ref={lens} aria-hidden="true"/>
+        <div className="hero-attire-source" aria-hidden="true">
           <img
             className="photo future-photo"
             ref={overlay}
