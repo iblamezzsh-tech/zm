@@ -1,0 +1,49 @@
+/* V74 — one cinematic sequence; independently timed beats, not extra effects. */
+@media(prefers-reduced-motion:no-preference){
+ .editorial-flow[data-ed-cinema=true] .ed-opening{height:190svh}
+ .editorial-flow[data-ed-cinema=true] .ed-opening-credits{opacity:calc(var(--ed-credit,0)*(1 - var(--ed-credit-away,0)*.75))}
+ .editorial-flow[data-ed-cinema=true] .ed-opening .home-hero{transform:translateY(calc(var(--ed-hero-depart,0)*-15vh)) scale(calc(1 - var(--ed-hero-exit,0)*.49));opacity:calc(1 - var(--ed-credit,0)*.58 - var(--ed-hero-depart,0)*.42)}
+ .editorial-flow[data-ed-cinema=true] .ed-opening-ticker{transform:translateX(calc(-8vw - var(--ed-credit,0)*30vw))}
+ .editorial-flow[data-ed-cinema=true] .ed-opening-signature .signature{transform:rotate(-7deg) scale(calc(.72 + var(--ed-credit,0)*.28))}
+ .editorial-flow[data-ed-motion=true] .ed-statement-line{overflow:visible;padding:.07em .04em .16em}
+ .editorial-flow[data-ed-motion=true] .ed-statement-line>span{transform:translate3d(calc((1 - var(--ed-reveal,1))*var(--line-direction,1)*min(7vw,90px)),calc((1 - var(--ed-reveal,1))*35%),0) rotate(calc((1 - var(--ed-reveal,1))*var(--line-direction,1)*2deg));clip-path:none;opacity:var(--ed-reveal,1)}
+ .editorial-flow[data-ed-motion=true] h2[data-ed-reveal]{clip-path:none;opacity:calc(.45 + var(--ed-reveal,1)*.55);translate:0 calc((1 - var(--ed-reveal,1))*16px)}
+ .editorial-flow[data-ed-cinema=true] .ed-collage{height:calc(100svh + var(--rail-distance,0px)*1.04)}
+ .editorial-flow[data-ed-cinema=true] .ed-document{transform:translateY(calc(var(--doc-y,0)*1vh + (var(--rail-p,0) - .5)*var(--ed-depth,0)*12vh)) rotate(var(--ed-tilt))}
+ .editorial-flow[data-ed-cinema=true] .ed-document-image img{transform:scale(calc(1.12 - var(--ed-reveal,1)*.12));clip-path:inset(0 calc((1 - var(--ed-reveal,1))*38%) 0 0)}
+ .editorial-flow[data-ed-motion=true] .ed-future-words>span:first-child{transform:translateX(calc((1 - var(--future-think,1))*25vw)) rotateY(calc((1 - var(--future-think,1))*-18deg))}
+ .editorial-flow[data-ed-motion=true] .ed-future-words>em{transform:translateX(calc((1 - var(--future-learn,1))*-22vw))}
+ .editorial-flow[data-ed-motion=true] .ed-future-words>span:last-child{transform:translateX(calc((1 - var(--future-build,1))*28vw))}
+ .editorial-flow[data-ed-motion=true] .zm-world[data-ed-reveal]{clip-path:none;opacity:calc(.72 + var(--ed-reveal,1)*.28)}
+ .editorial-flow[data-ed-motion=true] .zm-world-copy>strong{transform:translateY(calc((1 - var(--ed-reveal,1))*24px));opacity:calc(.75 + var(--ed-reveal,1)*.25)}
+ .editorial-flow[data-ed-cinema=true] .ed-work-image .studio54-edition{transition:none}
+ .editorial-flow[data-ed-cinema=true] .ed-work-think .studio54-edition{transform:scale(calc(1.13 - var(--ed-reveal,1)*.13))}
+ .editorial-flow[data-ed-cinema=true] .ed-work-finance .studio54-edition{transform:scale(calc(1.10 - var(--ed-reveal,1)*.10))}
+ .editorial-flow[data-ed-cinema=true] .ed-work-earth .studio54-edition{transform:scale(calc(1.14 - var(--ed-reveal,1)*.14))}
+ .editorial-flow[data-ed-motion=true] .ed-work-copy h3{clip-path:none;opacity:calc(.55 + var(--project-copy,1)*.45);transform:translateX(calc((1 - var(--project-copy,1))*-18px))}
+ .editorial-flow[data-ed-motion=true] .ed-work-copy p{opacity:calc(.72 + var(--project-body,1)*.28);translate:0 calc((1 - var(--project-body,1))*12px)}
+ .editorial-flow[data-ed-cinema=true] .ed-archive-item .ed-archive-image{clip-path:inset(calc((1 - var(--ed-reveal,1))*38%) 0 0);transform:translateY(calc((1 - var(--ed-reveal,1))*-3vh)) scale(calc(.94 + var(--ed-reveal,1)*.06))}
+ .editorial-flow[data-ed-cinema=true] .ed-archive-item:nth-child(even) .ed-archive-image{clip-path:inset(0 0 calc((1 - var(--ed-reveal,1))*38%) 0);transform:translateY(calc((1 - var(--ed-reveal,1))*3vh)) scale(calc(.94 + var(--ed-reveal,1)*.06))}
+ .editorial-flow[data-ed-motion=true] .ed-archive-label{opacity:calc(.75 + var(--ed-reveal,1)*.25)}
+ .editorial-flow[data-ed-motion=true] .ed-interest-list a{clip-path:none;opacity:calc(.6 + var(--ed-reveal,1)*.4)}
+ .editorial-flow[data-ed-motion=true] .ed-interest-list a span{transform:translateX(calc((1 - var(--ed-reveal,1))*-5vw))}
+ .editorial-flow[data-ed-motion=true] .ed-interest-list a:nth-child(even) span{transform:translateX(calc((1 - var(--ed-reveal,1))*5vw))}
+ .editorial-flow[data-ed-cinema=true] .ed-social{height:155svh}
+ .editorial-flow[data-ed-cinema=true] .ed-fan{transform:translateY(calc(var(--fan-away,0)*-15vh)) scale(calc(1 + var(--fan-away,0)*.12))}
+ .editorial-flow[data-ed-cinema=true] .ed-social-links{opacity:calc(.55 + var(--social-links,1)*.45);transform:translateY(calc((1 - var(--social-links,1))*18px - var(--fan-away,0)*8vh))}
+ .editorial-flow[data-ed-motion=true] .film-finale{clip-path:inset(0 calc((1 - var(--ed-edge,1))*4%) 0 round calc((1 - var(--ed-edge,1))*18px))}
+ .editorial-flow[data-ed-motion=true] .finale-portrait{transform:translateY(calc((1 - var(--finale-portrait-in,1))*9vh)) scale(calc(1.06 - var(--finale-portrait-in,1)*.06))}
+ .editorial-flow[data-ed-motion=true] .finale-heading .film-word>span{--v74-word:clamp(0,calc(var(--finale-title-in,1)*1.30 - var(--word-i,0)*.08),1);transform:translateY(calc((1 - var(--v74-word))*30%));opacity:calc(.55 + var(--v74-word)*.45)}
+ .editorial-flow[data-ed-motion=true] .finale-line-two .film-word>span{--v74-word:clamp(0,calc(var(--finale-title-in,1)*1.45 - .20 - var(--word-i,0)*.07),1)}
+ .editorial-flow[data-ed-motion=true] :is(.finale-pages,.finale-right){opacity:calc(.65 + var(--finale-nav-in,1)*.35)}
+ .editorial-flow[data-ed-motion=true] .finale-nav>a{translate:0 calc((1 - clamp(0,calc(var(--finale-nav-in,1)*1.35 - var(--nav-i,0)*.08),1))*10px)}
+ .editorial-flow[data-ed-motion=true] :is([data-ed-reveal],.ed-archive-item):focus-visible{clip-path:none;opacity:1}
+ .editorial-flow[data-ed-motion=true] .ed-archive-item:focus-visible :is(.ed-archive-image,.ed-archive-label){clip-path:none;transform:none;opacity:1}
+ .editorial-flow[data-ed-motion=true] .ed-work-image:focus-visible .studio54-edition{transform:none}
+ @media(max-width:899px){
+  .editorial-flow[data-ed-motion=true] .ed-future-words>span:first-child{transform:translateX(calc((1 - var(--future-think,1))*12vw))}
+  .editorial-flow[data-ed-motion=true] .ed-future-words>em{transform:translateX(calc((1 - var(--future-learn,1))*-10vw))}
+  .editorial-flow[data-ed-motion=true] .ed-future-words>span:last-child{transform:translateX(calc((1 - var(--future-build,1))*14vw))}
+  .editorial-flow[data-ed-motion=true] .ed-statement-line>span{transform:translateY(calc((1 - var(--ed-reveal,1))*22%));opacity:calc(.65 + var(--ed-reveal,1)*.35)}
+ }
+}

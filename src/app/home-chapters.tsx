@@ -18,6 +18,7 @@ import "./studio54.css";
 import "./studio55.css";
 import "./studio62.css";
 import "./studio63.css";
+import "./motion-v74.css";
 
 export default function HomeChapters(){
  const records=getFeaturedRecords();
