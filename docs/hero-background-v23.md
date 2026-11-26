@@ -1,0 +1,2 @@
+# V23 — Static editorial background
+The user approved the V22 fluid portrait reveal but rejected moving background lines. Replace the animated contour canvas with fixed SVG contour art, based on the existing shape families, and separate low-contrast CSS light/shadow breathing. No cursor displacement or line animation. Ambient layers pause offscreen, in hidden tabs, for reduced motion or when paused. The V22 portrait code and fluid solver are unchanged, along with the existing scale, layout and navigation. Visual review in a browser remains necessary. Preview branch only.
