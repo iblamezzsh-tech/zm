@@ -1,0 +1,62 @@
+/* V78 — continuously moving homepage environments. Only decorative layers
+   animate, with separate time-based loops and existing viewport visibility checks. */
+.editorial-home .editorial-flow :is(.ed-manifesto,.ed-future,.ed-work,.ed-archive,.ed-work-item){position:relative;isolation:isolate}
+.editorial-home .editorial-flow :is(.ed-collage-sticky,.ed-opening-sticky,.ed-social-sticky,.finale-inner,.zm-world-art){isolation:isolate}
+.editorial-home .editorial-flow :is(.zm-worlds,.ed-personal){position:relative;isolation:isolate}
+.editorial-home .editorial-flow .zm-atmosphere{position:absolute;inset:0;display:block;overflow:hidden;overflow:clip;z-index:-1;pointer-events:none;user-select:none;--atm-opacity:.19;--atm-light:#b4c29b;--atm-glow:#e0d4a0}
+.editorial-home .editorial-flow .zm-atmosphere.atm-dark{--atm-opacity:.16;--atm-light:#718463;--atm-glow:#9a995f}
+.editorial-home .editorial-flow .zm-atmosphere :is(.atm-primary,.atm-secondary){inset:-90px;background-size:clamp(580px,100vw,1600px) auto;background-repeat:repeat;background-position:center top;opacity:var(--atm-opacity)}
+.editorial-home .editorial-flow .zm-atmosphere .atm-secondary{opacity:calc(var(--atm-opacity)*.85)}
+.editorial-home .editorial-flow .zm-atmosphere .atm-light{inset:-90px;background-size:100% min(1100px,110vh);background-repeat:repeat-y;opacity:.32}
+.editorial-home .editorial-flow .ed-manifesto{background-image:none}
+.editorial-home .editorial-flow .ed-work-item>.zm-atmosphere{--atm-opacity:.22}
+.editorial-home .editorial-flow .ed-collage-sticky>.zm-atmosphere{--atm-opacity:.20;--atm-light:#9ba98a;--atm-glow:#d7c88e}
+.editorial-home .editorial-flow .zm-world-build .zm-atmosphere{--atm-opacity:.17;--atm-light:#fff3a1;--atm-glow:#d7ae24}
+.editorial-home .editorial-flow .zm-world-life .zm-atmosphere{--atm-opacity:.18}
+.editorial-home .editorial-flow .ed-social-sticky>.zm-atmosphere{--atm-opacity:.16;--atm-light:#e1c962;--atm-glow:#dce0d2}
+.editorial-home .editorial-flow .finale-inner>.zm-atmosphere{--atm-opacity:.17;--atm-light:#809069;--atm-glow:#aba05a}
+.editorial-home .editorial-flow .ed-opening-sticky>.zm-atmosphere{--atm-opacity:.20}
+/* The ambient layer is always behind the existing hero/credits stacking order. */
+@media(prefers-reduced-motion:no-preference){
+ .editorial-home .editorial-flow .zm-atmosphere .atm-light{animation:home78-light 8.5s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-story .atm-primary{animation:home78-contours 7s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-story .atm-secondary{animation:home78-tide 9s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-gallery .atm-primary{animation:home78-frames 8s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-gallery .atm-secondary{animation:home78-rails 6.5s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-finance .atm-primary{animation:home78-grid 8s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-finance .atm-secondary{animation:home78-chart 7s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-think .atm-primary{animation:home78-network 7.5s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-think .atm-secondary{animation:home78-question 8.5s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-earth .atm-primary{animation:home78-tide 8s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-earth .atm-secondary{animation:home78-leaves 7s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-archive .atm-primary{animation:home78-files 9s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-archive .atm-secondary{animation:home78-dust 6.5s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-notebook .atm-primary{animation:home78-paper 8s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-notebook .atm-secondary{animation:home78-ink 7s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-post .atm-primary{animation:home78-rails 8s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .atm-post .atm-secondary{animation:home78-stamp 9s ease-in-out infinite alternate}
+ .editorial-home .editorial-flow .zm-atmosphere :is(.atm-primary,.atm-secondary,.atm-light){animation-play-state:paused}
+ .editorial-home .editorial-flow:not([data-ed-motion=false]) .zm-atmosphere[data-running=true] :is(.atm-primary,.atm-secondary,.atm-light){animation-play-state:running}
+ .editorial-home .hero-editorial-lines{animation-duration:8s;animation-name:home78-hero-lines}
+ .editorial-home .hero-editorial-light{animation-duration:7s}
+ .editorial-home .hero-editorial-shadow{animation-duration:9s}
+ .editorial-home .editorial-flow[data-ed-motion=false] .hero-editorial-background :is(.hero-editorial-lines,.hero-editorial-light,.hero-editorial-shadow){animation-play-state:paused}
+}
+@keyframes home78-light{from{transform:translate3d(-45px,-26px,0)}to{transform:translate3d(48px,32px,0)}}
+@keyframes home78-contours{from{transform:translate3d(-38px,24px,0) scale(1.015)}to{transform:translate3d(44px,-24px,0) scale(1.05)}}
+@keyframes home78-tide{from{transform:translate3d(-45px,-24px,0) scale(1.02)}to{transform:translate3d(48px,30px,0) scale(1.06)}}
+@keyframes home78-frames{from{transform:translate3d(-48px,0,0)}to{transform:translate3d(48px,20px,0)}}
+@keyframes home78-rails{from{transform:translate3d(18px,-42px,0)}to{transform:translate3d(-18px,42px,0)}}
+@keyframes home78-grid{from{transform:translate3d(-40px,0,0)}to{transform:translate3d(40px,-20px,0)}}
+@keyframes home78-chart{from{transform:translate3d(-34px,35px,0)}to{transform:translate3d(40px,-34px,0)}}
+@keyframes home78-network{from{transform:translate3d(-32px,-24px,0) scale(1)}to{transform:translate3d(32px,24px,0) scale(1.06)}}
+@keyframes home78-question{from{transform:translate3d(38px,-28px,0)}to{transform:translate3d(-38px,28px,0)}}
+@keyframes home78-leaves{from{transform:translate3d(-42px,16px,0) scale(1.01)}to{transform:translate3d(42px,-16px,0) scale(1.045)}}
+@keyframes home78-files{from{transform:translate3d(-34px,22px,0)}to{transform:translate3d(40px,-28px,0)}}
+@keyframes home78-dust{from{transform:translate3d(15px,42px,0);opacity:.07}to{transform:translate3d(-15px,-42px,0);opacity:.19}}
+@keyframes home78-paper{from{transform:translate3d(0,-26px,0)}to{transform:translate3d(0,26px,0)}}
+@keyframes home78-ink{from{transform:translate3d(-38px,20px,0)}to{transform:translate3d(38px,-20px,0)}}
+@keyframes home78-stamp{from{transform:translate3d(36px,-25px,0)}to{transform:translate3d(-36px,25px,0)}}
+@keyframes home78-hero-lines{from{transform:translate3d(-2%,1.4%,0) scale(1.065)}to{transform:translate3d(2%,-1.4%,0) scale(1.12)}}
+@media(max-width:700px){.editorial-home .editorial-flow .zm-atmosphere{--atm-opacity:.14}.editorial-home .editorial-flow .zm-atmosphere.atm-dark{--atm-opacity:.12}.editorial-home .editorial-flow .zm-atmosphere :is(.atm-primary,.atm-secondary){background-size:660px auto}}
+@media(prefers-reduced-motion:reduce){.editorial-home .editorial-flow .zm-atmosphere *{animation:none!important}}

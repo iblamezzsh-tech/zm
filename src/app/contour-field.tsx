@@ -22,7 +22,7 @@ export default function ContourField({paused}:{paused:boolean}){
    if(!ambient||!ink||now-lastAmbient<1000/30)return;
    phase+=lastAmbient?Math.min(.08,(now-lastAmbient)/1000):0;lastAmbient=now;
    const W=ambient.width,H=ambient.height;
-   const t=phase*TAU/16;
+   const t=phase*TAU/10;
    ink.clearRect(0,0,W,H);ink.save();ink.scale(W,H);
    // Broad soft-sage silhouettes, with independently changing cubic contours.
    // The portrait and text remain in front of this decorative layer.
