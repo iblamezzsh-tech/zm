@@ -1,0 +1,69 @@
+/* V55: one artwork language across the directory, home, navigation and case studies.
+   No extra geometry, no new animation engine. */
+.ed-work-image .studio54-edition{width:100%;aspect-ratio:1.45;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.ed-work-finance .ed-work-image .studio54-edition{aspect-ratio:1.5}
+.ed-work-earth .ed-work-image .studio54-edition{aspect-ratio:1.75}
+.ed-work-image:hover .studio54-edition{transform:scale(1.025)}
+.editorial-flow[data-ed-cinema=true] .ed-work-think .studio54-edition{transform:scale(calc(1.16 - var(--ed-reveal,1)*.16))}
+.editorial-flow[data-ed-cinema=true] .ed-work-finance .studio54-edition{transform:scale(calc(1.12 - var(--ed-reveal,1)*.12))}
+.editorial-flow[data-ed-cinema=true] .ed-work-earth .studio54-edition{transform:scale(calc(1.18 - var(--ed-reveal,1)*.18))}
+.ed-fan-card .studio54-edition{width:100%;height:100%;aspect-ratio:auto;padding:8%;grid-template-rows:auto minmax(0,1fr) auto}
+.ed-fan-card .edition-top,.ed-fan-card .edition-bottom{font-size:6px}
+.ed-fan-card .edition-think-main,.ed-fan-card .edition-earth-main{display:flex;flex-direction:column;justify-content:center;align-items:start}
+.ed-fan-card .edition-think-note,.ed-fan-card .edition-earth-list{display:none}
+.ed-fan-card .edition-think-type{font-size:21cqw}.ed-fan-card .edition-think-type span:nth-child(3){font-size:15cqw}
+.ed-fan-card .edition-earth-title strong{font-size:15cqw}
+.next-project-art .studio54-edition{width:100%;aspect-ratio:1.55}
+.next-project-art .edition-top,.next-project-art .edition-bottom{font-size:clamp(6px,1.5cqw,10px)}
+.next-project-art .edition-finance-sheet dl{display:none}
+/* One curated contact sheet, responding to the selected chapter rather than looping indefinitely. */
+.zm-menu-dialog .zm-menu-contact-sheet{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto auto;align-content:center;align-self:center;gap:clamp(8px,1.4vh,16px);height:100dvh;min-height:0;padding:clamp(85px,14vh,135px) clamp(20px,3.2vw,58px) clamp(22px,4vh,45px);mask-image:none}
+.zm-menu-feature{position:relative;min-height:0;overflow:hidden;border:1px solid #f4f1e833;background:#354431}
+.zm-menu-feature-frame{position:absolute;inset:0;opacity:0;visibility:hidden;transform:scale(1.045);transition:opacity .42s,transform .65s cubic-bezier(.2,.8,.2,1),visibility .42s}
+.zm-menu-feature-frame.is-selected{opacity:1;visibility:visible;transform:none;z-index:2}
+.zm-menu-feature-frame .zm-gallery-tile{height:100%;width:100%;aspect-ratio:auto;filter:none;box-shadow:none}
+.zm-menu-feature-frame .tile-portrait img{object-fit:contain;object-position:center bottom;transform:none}
+.zm-menu-feature-frame .tile-document img{padding:6%;object-fit:contain;background:#deded1}
+.zm-menu-feature-frame .tile-notebook{background:#ffda24;color:#24291e}
+.zm-menu-feature-frame .tile-notebook-mark{color:#24291e}
+.zm-menu-feature-frame .tile-signature-mark{padding:12%}
+.zm-menu-feature-frame .studio54-edition{height:100%;width:100%;aspect-ratio:auto}
+.zm-menu-filmstrip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.zm-menu-filmstrip-item{min-width:0;position:relative;aspect-ratio:1.1;border:1px solid #f4f1e833;overflow:hidden}
+.zm-menu-filmstrip-item.is-selected{border-color:#ffda24}
+.zm-menu-filmstrip-item .zm-gallery-tile{width:100%;height:100%;aspect-ratio:auto;box-shadow:none}
+.zm-menu-filmstrip-item .zm-tile-label,.zm-menu-filmstrip-item .edition-top,.zm-menu-filmstrip-item .edition-bottom,.zm-menu-filmstrip-item .edition-think-note,.zm-menu-filmstrip-item .tile-notebook-mark>span{display:none}
+.zm-menu-filmstrip-item .studio54-edition{width:100%;height:100%;display:flex;align-items:center;padding:5%;aspect-ratio:auto}
+.zm-menu-filmstrip-item .edition-think-main{display:block}.zm-menu-filmstrip-item .edition-think-type{font-size:19cqw}.zm-menu-filmstrip-item .tile-notebook-mark b{font-size:clamp(9px,1vw,14px)}
+.zm-menu-gallery-caption{display:flex;justify-content:space-between;gap:12px;color:#c5cdb8;font:650 9px/1.4 Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.zm-menu-dialog[open] .zm-menu-contact-sheet{animation:s55-sheet-in .7s cubic-bezier(.2,.8,.2,1) both}
+@keyframes s55-sheet-in{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
+/* Project links expand the actual clicked artwork into the transition and
+   land on its corresponding destination cover. Other routes retain their timing. */
+.zm-route-curtain[data-edit=match]{transform:none;clip-path:none;background:transparent}
+.zm-route-curtain[data-edit=match] .zm-route-curtain-inner{background:#24291e;color:#f4f1e8;justify-content:flex-end;align-items:flex-start;padding:clamp(15px,3vw,45px)}
+.zm-route-curtain[data-edit=match] .zm-route-curtain-inner .signature{display:none}
+.zm-route-curtain[data-edit=match] .route-destination{font:750 clamp(20px,4vw,54px)/1 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.06em}
+.zm-route-curtain .route-match-art{display:none}
+.zm-route-curtain[data-edit=match] .route-match-art{display:block;position:absolute;inset:0;z-index:4;pointer-events:none}
+.zm-route-curtain .route-flight{position:absolute;aspect-ratio:auto;margin:0;box-sizing:border-box;max-width:none;max-height:none;transform:none;clip-path:none;overflow:hidden}
+.zm-route-curtain[data-edit=match][data-phase=cover]{animation:s55-match-cover .6s both}
+.zm-route-curtain[data-edit=match][data-phase=cover] .zm-route-curtain-inner{animation:s55-bg-in .6s both}
+.zm-route-curtain[data-edit=match][data-phase=reveal]{animation:s55-match-out .7s both}
+.zm-route-curtain[data-edit=match][data-phase=reveal] .zm-route-curtain-inner{animation:s55-bg-out .7s both}
+@keyframes s55-match-cover{from,to{transform:none;visibility:visible;clip-path:none}}
+@keyframes s55-match-out{0%,95%{transform:none;visibility:visible;opacity:1;clip-path:none}100%{transform:none;visibility:hidden;opacity:0;clip-path:none}}
+@keyframes s55-bg-in{from{opacity:0}to{opacity:1}}
+@keyframes s55-bg-out{from{opacity:1}to{opacity:0}}
+/* The full-screen route titles themselves are the visual motif. No dummy icons. */
+.zm-route-curtain[data-edit]:not([data-edit=signature]):not([data-edit=match]) .zm-route-curtain-inner>span.route-destination{font-size:clamp(35px,min(10vw,18vh),150px);line-height:.95;letter-spacing:-.075em;max-width:92vw;text-align:center;overflow-wrap:normal}
+.zm-route-curtain[data-edit=paper] .route-destination,.zm-route-curtain[data-edit=letter] .route-destination{font-family:"Instrument Serif",Georgia,serif;font-weight:400}
+.zm-route-curtain[data-edit=notebook] .route-destination{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-weight:400}
+.zm-route-curtain[data-edit=finance] .route-destination{font-size:clamp(27px,min(9vw,15vh),120px)}
+/* Tight viewports: use a readable word, never an orphan letter. */
+main.studio54 .exhibition-index nav a strong{overflow-wrap:normal;word-break:normal;font-size:clamp(11px,1.25vw,18px)}
+main.studio54 .case-next .next-project-title{min-width:0;container-type:inline-size}
+main.studio54 .case-next .next-project-title h2{font-size:min(12cqw,96px);line-height:1.08}
+main.studio54 .studio54-story-projects a{font-size:min(7.5vw,110px);overflow-wrap:normal;white-space:nowrap}
+@media(max-width:700px){.zm-menu-dialog .zm-menu-contact-sheet{grid-row:2;display:grid;height:auto;padding:0 14px 18px;grid-template-rows:auto auto;gap:9px}.zm-menu-feature{display:none}.zm-menu-gallery-caption{font-size:8px}.zm-menu-filmstrip{gap:4px}.zm-menu-filmstrip-item{aspect-ratio:1}.zm-menu-filmstrip-item .zm-gallery-tile{height:100%}.zm-menu-shell{grid-template-rows:auto auto}.zm-menu-dialog .zm-menu-label{font-size:clamp(24px,6.8vw,46px)}.ed-work-image .studio54-edition{aspect-ratio:1.35}.next-project-art .studio54-edition{aspect-ratio:1.2}}
+@media(prefers-reduced-motion:reduce){.zm-menu-feature-frame,.ed-work-image .studio54-edition{transition:none}.zm-menu-dialog[open] .zm-menu-contact-sheet{animation:none}}

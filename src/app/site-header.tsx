@@ -2,26 +2,28 @@
 import Link from "next/link";
 import {useEffect,useRef,useState,useId} from "react";
 import Signature from "./signature";
+import ProjectEdition from "./project-edition";
+import {projects as portfolioProjects} from "./projects/data";
 import "./site-menu.css";
 
 const pages=[
  {href:"/",label:"Home",number:"01",note:"The present",visual:"present"},
- {href:"/about",label:"My story",number:"02",note:"Where it began",visual:"future"},
+ {href:"/about",label:"My story",number:"02",note:"Where it began",visual:"story"},
  {href:"/projects",label:"Projects",number:"03",note:"Ideas in action",visual:"project"},
  {href:"/achievements",label:"Milestones",number:"04",note:"The journey",visual:"mun"},
- {href:"/off-the-record",label:"Off the record",number:"05",note:"Beyond the portfolio",visual:"sport"},
+ {href:"/off-the-record",label:"Off the record",number:"05",note:"Beyond the portfolio",visual:"notebook"},
  {href:"/contact",label:"Let's connect",number:"06",note:"Say hello",visual:"signature"},
 ] as const;
 type Tile={id:string;label:string;image?:string;kind:"portrait"|"future"|"document"|"project"|"signature"|"notebook"};
 const columns:Tile[][]=[
  [
  {id:"present",label:"01 / The present",image:"/images/portrait-present.webp",kind:"portrait"},
- {id:"sport",label:"02 / Off the record",kind:"notebook"},
+ {id:"story",label:"02 / Around the table",image:"/documents/zakovat-best-player-2024.webp",kind:"document"},
  {id:"project",label:"03 / OverThink",kind:"project"},
  ],
  [
  {id:"mun",label:"04 / Original records",image:"/documents/namangan-mun-2026.webp",kind:"document"},
- {id:"future",label:"05 / The next chapter",image:"/images/portrait-present.webp",kind:"future"},
+ {id:"notebook",label:"05 / Off the record",kind:"notebook"},
  {id:"signature",label:"06 / Z.M.",kind:"signature"},
  ]
 ];
@@ -29,7 +31,7 @@ function GalleryTile({tile,active}:{tile:Tile;active:boolean}){
  return <div className={"zm-gallery-tile tile-"+tile.kind+(active?" is-highlighted":"")}>
   {tile.image&&<img src={tile.image} alt="" draggable={false}/>}
   {tile.kind==="future"&&<img className="tile-attire" src="/images/portrait-academic-attire.svg" alt="" draggable={false}/>}
-  {tile.kind==="project"&&<div className="tile-project-mark"><b>?</b><span>OverThink.</span></div>}
+  {tile.kind==="project"&&<ProjectEdition project={portfolioProjects[0]}/>}
   {tile.kind==="notebook"&&<div className="tile-notebook-mark"><span>FIELD NOTES</span><b>Stay<br/><em>curious.</em></b><span>ZM / PERSONAL NOTEBOOK</span></div>}{tile.kind==="signature"&&<div className="tile-signature-mark"><Signature/></div>}
   <span className="zm-tile-label">{tile.label}</span>
  </div>
@@ -64,8 +66,8 @@ export default function SiteHeader({about=false,projects=false,achievements=fals
     <Link className="zm-menu-logo" href="/" onClick={()=>close(false)} aria-label="ZiyoMuhammad home"><img src="/icon.svg" alt="" width="50" height="50"/></Link>
     <div className="minimal-actions"><Link className="minimal-connect zm-menu-connect" href="/contact" onClick={()=>close(false)}>Let's Connect <span aria-hidden="true">↗</span></Link><button className="zm-menu-close" type="button" aria-label="Close navigation menu" onClick={()=>close()} autoFocus><span aria-hidden="true">×</span></button></div>
    </div>
-   <div className="zm-menu-gallery" aria-hidden="true">
-    {open&&columns.map((tiles,i)=><div className={"zm-gallery-column column-"+i} key={i}><div className="zm-gallery-reel">{[0,1].map(copy=><div className="zm-gallery-set" key={copy}>{tiles.map(tile=><GalleryTile key={tile.id} tile={tile} active={selected===tile.id}/>)}</div>)}</div></div>)}
+   <div className="zm-menu-gallery zm-menu-contact-sheet" aria-hidden="true">
+    {open&&<><div className="zm-menu-feature">{columns.flat().map(tile=><div className={"zm-menu-feature-frame"+(selected===tile.id?" is-selected":"")} key={tile.id}><GalleryTile tile={tile} active={selected===tile.id}/></div>)}</div><div className="zm-menu-filmstrip">{columns.flat().map(tile=><div className={"zm-menu-filmstrip-item"+(selected===tile.id?" is-selected":"")} key={tile.id}><GalleryTile tile={tile} active={selected===tile.id}/></div>)}</div><div className="zm-menu-gallery-caption"><span>THE PORTFOLIO / CONTACT SHEET</span><span>{pages.find(p=>p.visual===selected)?.note??"The present"}</span></div></>}
    </div>
    <div className="zm-menu-right">
     <div className="zm-menu-index"><span>ZM / INDEX</span><span>01—06</span></div>

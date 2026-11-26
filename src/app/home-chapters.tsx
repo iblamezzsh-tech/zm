@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Portrait from "./portrait";
 import Signature from "./signature";
-import ProjectArt from "./project-art";
+import ProjectEdition from "./project-edition";
 import EditorialFlow from "./editorial-flow";
 import FilmWords from "./film-words";
 import {getFeaturedRecords} from "./featured-records";
@@ -14,6 +14,8 @@ import "./cinematic-film.css";
 import "./finale-v45.css";
 import "./editorial-flow.css";
 import "./motion-cut-v52.css";
+import "./studio54.css";
+import "./studio55.css";
 
 export default function HomeChapters(){
  const records=getFeaturedRecords();
@@ -50,7 +52,7 @@ export default function HomeChapters(){
    <div className="ed-work-banner" aria-hidden="true"><span>IDEAS INTO ACTION.</span></div><div className="ed-gutter ed-work-heading"><h2 data-ed-reveal>Ideas into <em>action.</em></h2><p>Three different interests. One desire to turn curiosity into something real.</p></div>
    <div className="ed-gutter ed-work-grid">
     {projects.map((p,i)=><article className={"ed-work-item ed-work-"+p.kind} id={i===0?"exhibit-overthink":"exhibit-"+p.slug} key={p.slug} data-ed-scene data-ed-theme="dark">
-     <Link href={"/projects/"+p.slug} className="ed-work-image" data-ed-reveal aria-label={"Explore "+p.name}><ProjectArt kind={p.kind}/></Link>
+     <Link href={"/projects/"+p.slug} className="ed-work-image" data-ed-reveal aria-label={"Explore "+p.name}><ProjectEdition project={p}/></Link>
      <div className="ed-work-copy"><span className="ed-kicker">{p.number} / {p.category}</span><h3 className="ed-project-name">{p.name}</h3><p>{p.summary}</p><Link href={"/projects/"+p.slug} className="ed-link">Inside the project <span>↗</span></Link></div>
     </article>)}
    </div>
@@ -68,7 +70,7 @@ export default function HomeChapters(){
   </section>
   <section className="ed-social ed-paper" data-ed-scene data-ed-theme="light">
    <div className="ed-social-sticky"><div className="ed-social-heading"><span className="ed-kicker">07 / STAY IN TOUCH</span><h2 data-ed-reveal>See you <em>around.</em></h2></div>
-   <div className="ed-fan ed-fan-without-portrait" aria-hidden="true">{[0,1,2,3].map(i=><div className={"ed-fan-card ed-fan-"+i} key={i} style={{"--fan-i":i-1.5} as React.CSSProperties}>{i===0||i===3?<ProjectArt kind={i===0?"think":"earth"}/>:records[i===1?0:records.length-1]?.document?<img src={records[i===1?0:records.length-1].document!.src} alt="" decoding="async" fetchPriority="low"/>:<Signature/>}</div>)}</div>
+   <div className="ed-fan ed-fan-without-portrait" aria-hidden="true">{[0,1,2,3].map(i=><div className={"ed-fan-card ed-fan-"+i} key={i} style={{"--fan-i":i-1.5} as React.CSSProperties}>{i===0||i===3?<ProjectEdition project={projects[i===0?0:2]}/>:records[i===1?0:records.length-1]?.document?<img src={records[i===1?0:records.length-1].document!.src} alt="" decoding="async" fetchPriority="low"/>:<Signature/>}</div>)}</div>
    <div className="ed-social-links"><a href="https://t.me/Shoxruxbekovich">Telegram ↗</a><a href="https://www.instagram.com/the_zzsh/">Instagram ↗</a><a href="https://github.com/iblamezzsh-tech/zm">GitHub ↗</a></div></div>
   </section>
   <section className="film-shot film-shot-contact film-dark film-finale-shot" id="next-chapter" data-ed-scene data-ed-theme="dark" aria-label="The next chapter">

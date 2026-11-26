@@ -29,6 +29,39 @@ export function RouteSignature(){
  const curtain=useRef<HTMLDivElement>(null),pending=useRef<string|null>(null);
  const coverTimer=useRef<ReturnType<typeof setTimeout>|null>(null),failTimer=useRef<ReturnType<typeof setTimeout>|null>(null),releaseTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
  const previous=useRef(path);
+ const match=useRef<{clone:HTMLElement;animation:Animation|null;destination:HTMLElement|null;stage:HTMLDivElement}|null>(null);
+ function clearMatch(){
+  const m=match.current;if(!m)return;
+  m.animation?.cancel();if(m.destination)m.destination.style.removeProperty("opacity");
+  m.stage.replaceChildren();match.current=null;
+ }
+ function artFrame(rect:{left:number;top:number;width:number;height:number}){
+  return {left:rect.left+"px",top:rect.top+"px",width:rect.width+"px",height:rect.height+"px"};
+ }
+ function startMatch(a:HTMLAnchorElement){
+  const art=a.querySelector<HTMLElement>(".studio54-edition")??a.closest(".ed-work-item,.exhibit-scene")?.querySelector<HTMLElement>(".studio54-edition");
+  const stage=curtain.current?.querySelector<HTMLDivElement>(".route-match-art");
+  if(!art||!stage)return false;
+  const r=art.getBoundingClientRect();if(r.width<100||r.height<70||r.top>=innerHeight*.9||r.bottom<=innerHeight*.1)return false;
+  const clone=art.cloneNode(true) as HTMLElement;
+  clone.querySelectorAll("[id]").forEach(n=>n.removeAttribute("id"));
+  clone.setAttribute("aria-hidden","true");clone.classList.add("route-flight");
+  const w=Math.min(innerWidth*.83,innerHeight*.79*r.width/r.height),h=w*r.height/r.width;
+  const target={left:(innerWidth-w)/2,top:(innerHeight-h)/2,width:w,height:h};
+  Object.assign(clone.style,artFrame(r));stage.replaceChildren(clone);
+  const animation=clone.animate([artFrame(r),artFrame(target)],{duration:COVER_MS,easing:"cubic-bezier(.76,0,.24,1)",fill:"forwards"});
+  match.current={clone,animation,destination:null,stage};return true;
+ }
+ function landMatch(){
+  const m=match.current;if(!m)return;
+  const target=document.querySelector<HTMLElement>("main.case-page .case-feature-art .studio54-edition");
+  const from=m.clone.getBoundingClientRect(),to=target?.getBoundingClientRect();
+  if(!target||!to||to.width<100||to.height<70||to.top>=innerHeight){m.animation?.cancel();Object.assign(m.clone.style,artFrame(from));return;}
+  m.destination=target;target.style.opacity="0";m.animation?.cancel();
+  Object.assign(m.clone.style,artFrame(from));
+  m.animation=m.clone.animate([artFrame(from),artFrame(to)],{duration:REVEAL_MS,easing:"cubic-bezier(.22,1,.36,1)",fill:"forwards"});
+ }
+
  const started=useRef(0);
  const holdTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
  const names:Record<string,string>={"/":"The Present","/about":"My Story","/projects":"Projects","/achievements":"Milestones","/off-the-record":"Off the Record","/contact":"Let’s Connect","/projects/overthink":"OverThink","/projects/finance4youth":"Finance4Youth","/projects/rezamin":"ReZamin"};
@@ -36,8 +69,9 @@ export function RouteSignature(){
  function reveal(){
   clear();pending.current=null;
   const el=curtain.current;if(!el)return;
+  if(el.dataset.edit==="match")landMatch();
   el.dataset.phase="reveal";
-  releaseTimer.current=setTimeout(()=>{el.dataset.phase="idle";releaseTimer.current=null},REVEAL_MS);
+  releaseTimer.current=setTimeout(()=>{el.dataset.phase="idle";clearMatch();releaseTimer.current=null},REVEAL_MS);
  }
  useEffect(()=>{
   function onClick(e:MouseEvent){
@@ -49,10 +83,11 @@ export function RouteSignature(){
    if(!curtain.current||!names[url.pathname])return;
    e.preventDefault();if(pending.current||curtain.current.dataset.phase!=="idle")return;
    const href=url.pathname+url.search+url.hash;
-   clear();pending.current=href;started.current=performance.now();resetScrollMomentum();
+   clear();clearMatch();pending.current=href;started.current=performance.now();resetScrollMomentum();
    router.prefetch(href);
    const dest=url.pathname;
    curtain.current.dataset.edit=dest==="/about"?"paper":dest==="/achievements"?"archive":dest==="/off-the-record"?"notebook":dest==="/projects/overthink"?"think":dest==="/projects/finance4youth"?"finance":dest==="/projects/rezamin"?"earth":dest==="/projects"?"project":dest==="/contact"?"letter":"signature";
+   if(dest.startsWith("/projects/")&&startMatch(a))curtain.current.dataset.edit="match";
    curtain.current.dataset.phase="cover";
    const label=curtain.current.querySelector<HTMLElement>("[data-destination]");if(label)label.textContent=names[url.pathname];
    coverTimer.current=setTimeout(()=>{router.push(href);coverTimer.current=null},COVER_MS);
@@ -61,9 +96,9 @@ export function RouteSignature(){
   // Capture before Next's link handler, without intercepting same-page anchors.
   document.addEventListener("click",onClick,true);
   const reduced=matchMedia("(prefers-reduced-motion: reduce)");
-  function cancelMotion(){if(!reduced.matches)return;const href=pending.current;clear();pending.current=null;if(curtain.current)curtain.current.dataset.phase="idle";if(href)router.push(href)}
+  function cancelMotion(){if(!reduced.matches)return;const href=pending.current;clear();pending.current=null;if(curtain.current)curtain.current.dataset.phase="idle";clearMatch();if(href)router.push(href)}
   reduced.addEventListener("change",cancelMotion);
-  return()=>{document.removeEventListener("click",onClick,true);reduced.removeEventListener("change",cancelMotion);clear()};
+  return()=>{document.removeEventListener("click",onClick,true);reduced.removeEventListener("change",cancelMotion);clear();clearMatch()};
  },[router]);
  useLayoutEffect(()=>{
   if(previous.current===path)return;
@@ -75,5 +110,5 @@ export function RouteSignature(){
    holdTimer.current=setTimeout(reveal,remaining);
   }
  },[path]);
- return <div className="zm-route-curtain" ref={curtain} data-phase="idle" aria-hidden="true"><div className="zm-route-curtain-inner"><span>ZM / THE JOURNEY CONTINUES</span><div className="route-motif" aria-hidden="true"><i/><i/><i/></div><Signature/><span className="route-destination" data-destination>NOW &amp; NEXT</span></div></div>;
+ return <div className="zm-route-curtain" ref={curtain} data-phase="idle" aria-hidden="true"><div className="zm-route-curtain-inner"><span>ZM / THE JOURNEY CONTINUES</span><Signature/><span className="route-destination" data-destination>NOW &amp; NEXT</span></div><div className="route-match-art" aria-hidden="true"/></div>;
 }

@@ -3,7 +3,6 @@ import type {Metadata} from "next";
 import Link from "next/link";
 import {notFound} from "next/navigation";
 import SiteHeader from "../../site-header";
-import ProjectArt from "../../project-art";
 import ProjectEdition from "../../project-edition";
 import {findProject,projects} from "../data";
 import ProjectExperience from "../project-experience";
@@ -20,5 +19,5 @@ export default async function ProjectPage({params}:Props){const p=findProject((a
 <section className="case-details"><div className="projects-rule"><span>02 / The approach</span><span>{p.role}</span></div><div className="case-detail-grid"><div><h2><MotionWords text="From idea"/><br/><em><MotionWords text="to action."/></em></h2><p>{p.approach}</p></div><div className="case-focus"><span>AREAS OF FOCUS</span>{p.focus.map((item,i)=><div key={item}><small>0{i+1}</small>{item}</div>)}</div></div></section>
 <ProjectExperience kind={p.kind}/>
 <section className="case-future"><div className="projects-rule"><span>03 / Looking ahead</span><span>In progress</span></div><h2><MotionWords text="What comes"/> <em><MotionWords text="next."/></em></h2><p>{p.next}</p></section>
-<Link className="case-next" href={"/projects/"+next.slug}><div className="next-project-art"><ProjectArt kind={next.kind}/></div><div className="next-project-title"><span>NEXT INITIATIVE / {next.number}</span><h2>{next.name}</h2></div><span aria-hidden="true">↗</span></Link>
+<Link className="case-next" href={"/projects/"+next.slug}><div className="next-project-art"><ProjectEdition project={next}/></div><div className="next-project-title"><span>NEXT INITIATIVE / {next.number}</span><h2>{next.name}</h2></div><span aria-hidden="true">↗</span></Link>
 <footer className="home-footer"><span>ZiyoMuhammad</span><Link href="/projects">All projects</Link><a href="#top">Back to top ↑</a></footer></main>}
