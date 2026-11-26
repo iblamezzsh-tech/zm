@@ -1,0 +1,42 @@
+/* V61 — final responsive polish. Keep cinematic scene heights, transforms,
+   artwork aspect ratios, portrait alignment and the existing palette intact. */
+.editorial-home .ed-work-copy,.editorial-home .ed-archive-label,main.studio54 :is(.case-title-group,.case-focus,.entry-copy,.story-opening-copy,.contact-title-grid,.personal-title-wrap){min-width:0}
+.editorial-home .ed-work-copy h3.ed-project-name{letter-spacing:-.045em;line-height:1.12}
+.editorial-home .ed-archive-label span{font:650 clamp(10px,.8vw,12px)/1.4 "DM Sans Variable",Arial,sans-serif;letter-spacing:.045em}
+.editorial-home .ed-archive-label strong{overflow-wrap:break-word}
+.editorial-home .ed-interest-list a{grid-template-columns:clamp(28px,7vw,100px) minmax(0,1fr) auto}
+.editorial-home .ed-interest-list a span{min-width:0}
+main.studio54 .contact-title-grid h1{letter-spacing:-.07em}
+main.studio54 .personal-note summary .note-topic{letter-spacing:-.045em;min-width:0;overflow-wrap:break-word}
+main.studio54 .record-title{overflow-wrap:break-word}
+main.studio54 .case-focus>div{grid-template-columns:26px minmax(0,1fr)}
+main.studio54 .case-next .next-project-title h2{letter-spacing:-.045em}
+main.studio54 .studio54-story-projects a{min-width:0;gap:8px;letter-spacing:-.05em}
+main.studio54 .studio54-story-projects a small{flex:none}
+.zm-menu-dialog .zm-menu-gallery-caption{flex-wrap:wrap;row-gap:4px}
+@media(max-width:850px){
+ main.studio54.case-world-think .case-opening{grid-template-columns:minmax(0,1fr)}
+ main.studio54 .contact-title-grid h1{font-size:clamp(60px,20vw,160px)}
+ main.studio54 .personal-note summary .note-topic{font-size:clamp(23px,6.4vw,50px)}
+ main.studio54 .personal-note summary .note-question{line-height:1.45}
+}
+@media(max-width:520px){
+ main.studio54 :is(.story-opening,.projects-opening,.milestone-hero,.personal-title-wrap) h1{font-size:clamp(42px,11vw,65px);line-height:.98}
+ main.studio54 .story-index-nav a{min-width:0;overflow-wrap:break-word}
+ main.studio54 .studio54-story-projects a{font-size:clamp(22px,6.6vw,34px)}
+ main.studio54 .record-title{font-size:clamp(19px,5.4vw,25px)}
+ .editorial-home .ed-caption{flex-wrap:wrap;row-gap:5px}
+ .editorial-home .ed-archive-grid{gap:22px 12px}
+ .editorial-home .ed-archive-label{padding-top:9px}
+ .editorial-home .ed-archive-label strong{font-size:13px;line-height:1.35}
+ .editorial-home .ed-interest-list a{grid-template-columns:26px minmax(0,1fr) auto;gap:8px}
+ .editorial-home .ed-interest-list a span{font-size:clamp(25px,8.5vw,44px);letter-spacing:-.035em}
+ .editorial-home .ed-work-copy h3.ed-project-name{font-size:min(9vw,50px,10cqw)}
+ .editorial-home .ed-work-finance .ed-work-copy h3.ed-project-name{font-size:min(9vw,50px,9.7cqw)}
+ .zm-menu-dialog .zm-menu-label{font-size:clamp(22px,6.3vw,36px)}
+}
+@media(max-width:360px){
+ main.studio54 .personal-note summary{grid-template-columns:20px minmax(0,1fr) 24px;gap:7px}
+ main.studio54 .personal-note summary .note-topic{font-size:clamp(21px,6.4vw,25px)}
+ .editorial-home .ed-archive-label span{font-size:9px;letter-spacing:0}
+}
