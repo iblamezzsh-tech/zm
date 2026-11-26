@@ -62,8 +62,10 @@ export function createRibbonCPU(canvas:HTMLCanvasElement){
   const W=canvas.width,H=canvas.height;ctx!.fillStyle=rgb(c.color);ctx!.fillRect(0,0,W,H);
   const cosine=Math.cos(c.roll),sine=Math.sin(c.roll);
   function view(v:Vertex){const x=v.p[0]-c.x,y=v.p[1]-c.y,z=c.focal-v.p[2]-c.z;return {x:x*cosine+y*sine,y:-x*sine+y*cosine,z,shade:v.shade}}
-  const commands=geometry.map(f=>f.map(view)).filter(f=>f.every(p=>p.z>45)&&f.some(p=>p.z<c.focal*6)).sort((a,b)=>b.reduce((s,p)=>s+p.z,0)-a.reduce((s,p)=>s+p.z,0));
-  for(const f of commands){const z=f.reduce((s,p)=>s+p.z,0)/3,s=f.reduce((s,p)=>s+p.shade,0)/3;const fog=Math.min(.96,Math.max(.10,(z-c.focal*.65)/(c.focal*5.35)));
+  type P=ReturnType<typeof view>;
+  function clip(poly:P[]){const out:P[]=[];for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],inside=a.z>45,next=b.z>45;if(inside)out.push(a);if(inside!==next){const t=(45-a.z)/(b.z-a.z);out.push({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t,z:45,shade:a.shade+(b.shade-a.shade)*t})}}return out}
+  const commands=geometry.map(f=>clip(f.map(view))).filter(f=>f.length>=3&&f.some(p=>p.z<c.focal*6)).sort((a,b)=>b.reduce((s,p)=>s+p.z,0)/b.length-a.reduce((s,p)=>s+p.z,0)/a.length);
+  for(const f of commands){const z=f.reduce((s,p)=>s+p.z,0)/f.length,s=f.reduce((s,p)=>s+p.shade,0)/f.length;const fog=Math.min(.96,Math.max(.10,(z-c.focal*.65)/(c.focal*5.35)));
    const metal=[.36+.64*s,.29+.55*s,.075+.145*s];const color=metal.map((v,i)=>v+(c.color[i]-v)*fog);
    ctx!.beginPath();f.forEach((p,i)=>{const x=W/2+p.x*c.focal/p.z*W/w,y=H/2+p.y*c.focal/p.z*H/h;if(i)ctx!.lineTo(x,y);else ctx!.moveTo(x,y)});ctx!.closePath();ctx!.fillStyle=rgb(color);ctx!.fill();ctx!.strokeStyle=ctx!.fillStyle;ctx!.lineWidth=.6;ctx!.stroke();
   }

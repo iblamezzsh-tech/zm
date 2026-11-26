@@ -20,7 +20,7 @@ export default function FilmStage({children}:{children:ReactNode}){
  useEffect(()=>{
   const el=root.current,v=viewport.current,space=world.current,main=el?.closest<HTMLElement>("main");
   if(!el||!v||!space||!main)return;
-  const mq=matchMedia("(min-width: 850px) and (min-height: 460px) and (prefers-reduced-motion: no-preference)");
+  const mq=matchMedia("(min-width: 850px) and (min-height: 460px) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
   const shots=Array.from(space.querySelectorAll<HTMLElement>(":scope > .film-shot"));
   if(shots.length!==SHOTS.length)return;
   let gpu:ReturnType<typeof createRibbonGPU>=null,cpu:ReturnType<typeof createRibbonCPU>=null;
@@ -36,12 +36,14 @@ export default function FilmStage({children}:{children:ReactNode}){
    space!.style.transform="rotateZ("+(-cam.roll)+"rad) translate3d("+(-cam.x)+"px,"+(-cam.y)+"px,"+cam.z+"px)";
    const n=clamp(Math.round(u),0,shots.length-1);
    for(let i=0;i<shots.length;i++){
-    const shot=shots[i],local=u-i,near=local>-.96&&local<.62;
-    const fadeIn=smooth(-.95,-.27,local),fadeOut=1-smooth(.13,.55,local);
+    const shot=shots[i],local=u-i,near=local>-1.10&&local<.67;
+    const fadeIn=smooth(-.90,-.28,local),fadeOut=1-smooth(.10,.46,local);
+    const artAlpha=(i===0?1:smooth(-1.10,-.28,local))*(1-smooth(.20,.63,local));
     const alpha=i===0?fadeOut:fadeIn*fadeOut;
     shot.style.transform="translate3d("+(SHOTS[i].x*w)+"px,"+(SHOTS[i].y*h)+"px,"+(-i*cam.step)+"px)";
     shot.style.visibility=near||Math.abs(local)<.001?"visible":"hidden";
     shot.style.setProperty("--shot-opacity",String(alpha));
+    shot.style.setProperty("--shot-art-opacity",String(artAlpha));
     shot.style.setProperty("--shot-relative",String(clamp(local,-1,1)));
     shot.style.setProperty("--shot-arrival",String(fadeIn));
     shot.style.setProperty("--shot-exit",String(smooth(.02,.55,local)));
@@ -74,7 +76,7 @@ export default function FilmStage({children}:{children:ReactNode}){
   }
   function sync(){
    const next=mq.matches&&!manual.current;
-   if(next===live)return;
+   if(next===live){if(!next)setEnabled(false);return}
    if(!next){clean();setEnabled(false);return}
    live=true;el!.dataset.live="true";main!.classList.add("cinematic-live");setEnabled(true);
    previous=-1;
