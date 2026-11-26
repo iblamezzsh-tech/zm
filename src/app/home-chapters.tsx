@@ -39,26 +39,31 @@ export default function HomeChapters(){
    <div className="film-finale">
     <div className="finale-inner">
      <div className="finale-heading">
-      <div className="finale-signature"><Signature/></div>
-      <h2><FilmWords text="Always"/><em><FilmWords text="becoming."/></em><br/><FilmWords text="Never"/><em><FilmWords text="standing still."/></em></h2>
+      <p className="finale-edition">THE NEXT CHAPTER <span> / </span> A PORTRAIT IN PROGRESS</p>
+      <h2><span className="finale-line-one"><FilmWords text="Always becoming."/></span><em className="finale-line-two"><FilmWords text="Never standing still."/></em></h2>
      </div>
-     <nav className="finale-nav finale-pages" aria-label="Explore the portfolio">
-      <span>EXPLORE</span>
-      <a href="#top">Home</a><Link href="/about">My story</Link><Link href="/projects">Projects</Link><Link href="/achievements">Milestones</Link><Link href="/off-the-record">Off the record</Link>
-     </nav>
      <div className="finale-portrait" role="img" aria-label="ZiyoMuhammad imagined in graduation attire">
       <img src="/images/portrait-present.webp" alt="" fetchPriority="low" decoding="async"/>
       <img src="/images/portrait-academic-attire.svg" alt="" fetchPriority="low" decoding="async"/>
      </div>
-     <nav className="finale-nav finale-socials" aria-label="Social links">
-      <span>FOLLOW ME</span>
-      <a href="https://t.me/Shoxruxbekovich">Telegram</a><a href="https://www.instagram.com/the_zzsh/">Instagram</a><a href="https://github.com/iblamezzsh-tech/zm">GitHub</a>
+     <nav className="finale-nav finale-pages" aria-label="Explore the portfolio">
+      <span>01 / EXPLORE</span>
+      {([{href:"#top",label:"Home"},{href:"/about",label:"My story"},{href:"/projects",label:"Projects"},{href:"/achievements",label:"Milestones"},{href:"/off-the-record",label:"Off the record"}]).map((item,i)=><Link key={item.href} href={item.href} style={{"--nav-i":i} as React.CSSProperties}><small>0{i+1}</small><span>{item.label}</span></Link>)}
      </nav>
-     <div className="finale-cta"><Link href="/contact">Let’s connect <span aria-hidden="true">↗</span></Link></div>
+     <div className="finale-right">
+      <nav className="finale-nav finale-socials" aria-label="Social links">
+       <span>02 / ELSEWHERE</span>
+       <a href="https://t.me/Shoxruxbekovich" style={{"--nav-i":0} as React.CSSProperties}><span>Telegram</span><small aria-hidden="true">↗</small></a>
+       <a href="https://www.instagram.com/the_zzsh/" style={{"--nav-i":1} as React.CSSProperties}><span>Instagram</span><small aria-hidden="true">↗</small></a>
+       <a href="https://github.com/iblamezzsh-tech/zm" style={{"--nav-i":2} as React.CSSProperties}><span>GitHub</span><small aria-hidden="true">↗</small></a>
+      </nav>
+      <div className="finale-cta"><Link href="/contact">Let’s connect <span aria-hidden="true">↗</span></Link></div>
+     </div>
+     <div className="finale-signature"><Signature/></div>
      <div className="finale-location">ANDIJAN / UZBEKISTAN</div>
      <div className="finale-note">THE JOURNEY CONTINUES.</div>
     </div>
-    <footer className="finale-footer"><span>© ZiyoMuhammad</span><a href="#top">Back to top ↑</a></footer>
+    <footer className="finale-footer"><span>© ZiyoMuhammad</span><span className="finale-footer-caption">THE FUTURE IS STILL UNWRITTEN</span><a href="#top">Back to top <span aria-hidden="true">↑</span></a></footer>
    </div>
   </section>
  </FilmStage>

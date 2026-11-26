@@ -75,13 +75,14 @@ export default function FilmStage({children}:{children:ReactNode}){
    shots[0].style.setProperty("--hero-aperture",String(smooth(.04,.48,u)));
    v!.style.setProperty("--film-position",String(u/(shots.length-1)));
    main!.classList.toggle("film-after-portrait",u>.22);
+   main!.classList.toggle("film-at-finale",u>8.62);
    current.current=n;
   }
   // Linear scroll mapping is direct; no timeline library is required to initialize the camera.
   function clean(){
    live=false;
    delete el!.dataset.live;delete el!.dataset.motionReady;space!.style.removeProperty("transform");v!.style.removeProperty("background-color");v!.style.removeProperty("--film-paper");
-   main!.classList.remove("cinematic-live","film-after-portrait");
+   main!.classList.remove("cinematic-live","film-after-portrait","film-at-finale");
    for(const s of shots){s.inert=false;s.removeAttribute("aria-hidden");s.removeAttribute("style");delete s.dataset.textOwner}
   }
   function measure(){
