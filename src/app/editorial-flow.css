@@ -47,8 +47,8 @@ main.home-page.editorial-home{--ed-paper:#f4f1e8;--ed-ink:#24291e;--ed-yellow:#f
 .ed-document-image{background:#fffdf7;padding:clamp(6px,1vw,18px);box-shadow:0 12px 40px #24291e20;aspect-ratio:1.37;overflow:hidden}
 .ed-document-image img{display:block;width:100%;height:100%;object-fit:contain}
 .ed-document figcaption{display:flex;flex-direction:column;gap:5px;padding-top:12px}
-.ed-document figcaption span{font:650 10px/1.3 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase}
-.ed-document figcaption strong{font:650 clamp(16px,2vw,28px)/1.1 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.05em}
+.ed-document figcaption>span{font:650 10px/1.3 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.ed-document figcaption>strong{font:650 clamp(16px,2vw,28px)/1.1 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.05em}
 .editorial-flow[data-ed-motion=true] .ed-document{transform:translateY(calc(var(--ed-travel,0)*var(--ed-depth,0)*65px)) rotate(var(--ed-tilt))}
 .ed-future{display:grid;grid-template-columns:1fr 1fr;gap:4vw;align-items:center;min-height:75svh;padding-block:clamp(65px,10vw,150px);overflow:hidden;border-top:1px solid #24291e25}
 .ed-future-words{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;font:800 clamp(50px,11vw,170px)/.76 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.10em;transform:rotate(-7deg);color:#24291e;padding-right:var(--ed-pad);gap:10px}
@@ -81,8 +81,8 @@ main.home-page.editorial-home{--ed-paper:#f4f1e8;--ed-ink:#24291e;--ed-yellow:#f
 .ed-archive-image img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .35s}
 .ed-archive-item:hover img{transform:scale(1.045)}
 .ed-archive-label{display:flex;flex-direction:column;gap:6px;padding-top:12px}
-.ed-archive-label span{font:650 9px/1.3 Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#ffda24}
-.ed-archive-label strong{font:600 clamp(13px,1.2vw,18px)/1.2 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.02em;overflow-wrap:anywhere}
+.ed-archive-label>span{font:650 9px/1.3 Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#ffda24}
+.ed-archive-label>strong{font:600 clamp(13px,1.2vw,18px)/1.2 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.02em;overflow-wrap:anywhere}
 .ed-personal{padding-bottom:clamp(65px,8vw,130px)}
 .ed-personal-head{display:flex;justify-content:space-between;align-items:end;gap:24px;padding-top:clamp(36px,6vw,90px);padding-bottom:30px}
 .ed-personal-head p{max-width:29ch}

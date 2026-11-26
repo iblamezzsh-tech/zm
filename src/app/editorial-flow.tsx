@@ -131,12 +131,24 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    let lo=0,hi=1;for(let i=0;i<16;i++){const m=(lo+hi)/2;if(railProgress(m)<target)lo=m;else hi=m}
    scrollToFilm(top+(collage.offsetHeight-innerHeight)*(lo+hi)/2,true);
   }
+  // Time-based typography: scroll merely triggers entry. Once visible, words
+  // finish their own choreography even when the visitor stops scrolling.
+  const kinetic=Array.from(el.querySelectorAll<HTMLElement>("[data-kinetic]"));
+  const played=new WeakSet<HTMLElement>();
+  const typeObserver=typeof IntersectionObserver==="undefined"?null:new IntersectionObserver(entries=>{
+   for(const entry of entries){
+    const node=entry.target as HTMLElement;
+    if(!entry.isIntersecting||entry.intersectionRatio<.12||played.has(node))continue;
+    played.add(node);node.dataset.kineticPlay="true";typeObserver?.unobserve(node);
+   }
+  },{threshold:[.12]});
+  if(typeObserver){for(const node of kinetic){node.dataset.kineticReady="true";typeObserver.observe(node)}}
   const unsub=subscribeMotion(render),ro=new ResizeObserver(resize);ro.observe(el);if(rail)ro.observe(rail);
   reduced.addEventListener("change",mode);desktop.addEventListener("change",mode);window.addEventListener("zm-film-mode",change);el.addEventListener("focusin",focus);
   document.addEventListener("zm-boot-prepare",resize);
   mode();document.fonts.ready.then(()=>{if(alive)resize()});
   document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:true}}));
-  return()=>{alive=false;unsub();ro.disconnect();reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);main.classList.remove("ed-dark-header","film-at-finale");delete el.dataset.edMotion;delete el.dataset.edCinema};
+  return()=>{alive=false;typeObserver?.disconnect();for(const node of kinetic){delete node.dataset.kineticReady;delete node.dataset.kineticPlay}unsub();ro.disconnect();reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);main.classList.remove("ed-dark-header","film-at-finale");delete el.dataset.edMotion;delete el.dataset.edCinema};
  },[]);
  return <div ref={root} className="editorial-flow" id="main-content" tabIndex={-1}>{children}</div>
 }
