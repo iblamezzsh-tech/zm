@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function SiteHeader({ about = false }: { about?: boolean }) {
+export default function SiteHeader({ about = false, projects = false }: { about?: boolean; projects?: boolean }) {
   return (
     <header className="site-header">
       <Link className="identity" href="/" aria-label="ZiyoMuhammad home">
@@ -8,9 +8,9 @@ export default function SiteHeader({ about = false }: { about?: boolean }) {
         <span className="identity-wordmark">ZiyoMuhammad</span>
       </Link>
       <nav className="primary-nav" aria-label="Primary navigation">
-        <Link href="/" aria-current={!about ? "page" : undefined}>Home</Link>
+        <Link href="/" aria-current={!about && !projects ? "page" : undefined}>Home</Link>
         <Link href="/about" aria-current={about ? "page" : undefined}>My story</Link>
-        <Link href="/#projects">Projects</Link>
+        <Link href="/projects" aria-current={projects ? "page" : undefined}>Projects</Link>
         <Link href="/#interests">Off the record</Link>
       </nav>
       <Link className="about header-action" href={about ? "/" : "/about"}>

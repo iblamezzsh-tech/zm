@@ -1,0 +1,2 @@
+# Project content
+Portfolio case-study copy is a proposed first-person narrative based on the previously discussed project scope. Roles: OverThink project lead; Finance4Youth co-founder; ReZamin founder. Planned activities are distinguished from completed results. No participant numbers, financial figures, testimonials or completion claims have been added. The illustrations are original portfolio graphics, not official project logos or documentary photography. Replace or supplement them with approved project assets when supplied.

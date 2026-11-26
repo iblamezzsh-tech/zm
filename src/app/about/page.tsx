@@ -37,10 +37,10 @@ export default function About(){
    <div className="story-body">
     <nav className="story-index-nav" aria-label="Story chapters"><span>THE CHAPTERS</span>{chapters.map(c=><a href={"#"+c.id} key={c.id}><small>{c.number}</small>{c.id==="curiosity"?"Origins":c.id==="learning"?"School":c.id}<span aria-hidden="true">↘</span></a>)}</nav>
     <div className="story-entries">
-      {chapters.map(c=><section className={"story-entry story-entry-"+c.kind} key={c.id} id={c.id} aria-labelledby={c.id+"-title"}><div className="entry-top"><span>CHAPTER {c.number} / 04</span><span>{c.label}</span></div><div className="entry-art" data-story-motion><StoryGraphic kind={c.kind}/><span>{c.note}</span><b aria-hidden="true">{c.number}</b></div><div className="entry-copy" data-story-motion><h2 id={c.id+"-title"}>{c.title}<br/><em>{c.emphasis}</em></h2><p>{c.body}</p>{c.kind==="building"&&<Link href="/#projects" className="story-inline-link">Explore my projects ↗</Link>}</div></section>)}
+      {chapters.map(c=><section className={"story-entry story-entry-"+c.kind} key={c.id} id={c.id} aria-labelledby={c.id+"-title"}><div className="entry-top"><span>CHAPTER {c.number} / 04</span><span>{c.label}</span></div><div className="entry-art" data-story-motion><StoryGraphic kind={c.kind}/><span>{c.note}</span><b aria-hidden="true">{c.number}</b></div><div className="entry-copy" data-story-motion><h2 id={c.id+"-title"}>{c.title}<br/><em>{c.emphasis}</em></h2><p>{c.body}</p>{c.kind==="building"&&<Link href="/projects" className="story-inline-link">Explore my projects ↗</Link>}</div></section>)}
     </div>
    </div>
-   <section className="story-ending"><div className="entry-top"><span>ZM / END OF THIS CHAPTER</span><span>TO BE CONTINUED</span></div><h2>There’s more<br/><em>to come.</em></h2><div className="story-end-row"><Link href="/#projects">Discover what I build <span aria-hidden="true">↗</span></Link><div><Signature/></div></div></section>
+   <section className="story-ending"><div className="entry-top"><span>ZM / END OF THIS CHAPTER</span><span>TO BE CONTINUED</span></div><h2>There’s more<br/><em>to come.</em></h2><div className="story-end-row"><Link href="/projects">Discover what I build <span aria-hidden="true">↗</span></Link><div><Signature/></div></div></section>
    <footer className="home-footer"><span>ZiyoMuhammad</span><Link href="/">Back home</Link><a href="#story-top">Back to top ↑</a></footer>
  </main>
 }
