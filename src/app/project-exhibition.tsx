@@ -30,7 +30,7 @@ export default function ProjectExhibition({directory=false}:{directory?:boolean}
  }
  useEffect(()=>{
    const el=root.current;if(!el)return;
-   const q=matchMedia("(min-width: 1000px) and (min-height: 650px) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
+   const q=matchMedia("(min-width: 820px) and (min-height: 460px) and (prefers-reduced-motion: no-preference)");
    function sync(){setCinematic(!directory&&q.matches)}
    sync();q.addEventListener("change",sync);return()=>q.removeEventListener("change",sync);
  },[directory]);
@@ -44,9 +44,17 @@ export default function ProjectExhibition({directory=false}:{directory?:boolean}
        const frame=sticky.current,rail=track.current;if(!frame||!rail)return;
        const distance=Math.max(1,el!.offsetHeight-frame.offsetHeight);
        const p=Math.max(0,Math.min(1,-el!.getBoundingClientRect().top/distance));
-       rail.style.setProperty("--exhibit-shift",String(p*(count-1)));
+       const raw=p*(count-1);
+       const step=Math.min(count-2,Math.floor(raw)),part=raw-step;
+       const t=Math.max(0,Math.min(1,(part-.12)/.76));
+       const shift=step+t*t*(3-2*t);
+       rail.style.transform="translate3d("+(-shift*100)+"%,0,0)";
+       scenes.forEach((scene,i)=>{
+         const distance=Math.min(1,Math.abs(shift-i));
+         scene.style.setProperty("--slide-away",String(distance));
+       });
        frame.style.setProperty("--exhibit-progress",String(p));
-       const n=Math.min(count-1,Math.round(p*(count-1)));
+       const n=Math.min(count-1,Math.round(shift));
        if(n!==indexRef.current){indexRef.current=n;setActive(n)}
      }
      function schedule(){if(!raf)raf=requestAnimationFrame(update)}
@@ -54,7 +62,7 @@ export default function ProjectExhibition({directory=false}:{directory?:boolean}
      update();window.addEventListener("scroll",schedule,{passive:true});window.addEventListener("resize",schedule,{passive:true});window.addEventListener("hashchange",hash);
      if(location.hash.startsWith("#exhibit-"))hash();
      return()=>{if(raf)cancelAnimationFrame(raf);window.removeEventListener("scroll",schedule);window.removeEventListener("resize",schedule);window.removeEventListener("hashchange",hash);railReset()};
-     function railReset(){track.current?.style.removeProperty("--exhibit-shift");sticky.current?.style.removeProperty("--exhibit-progress")}
+     function railReset(){track.current?.style.removeProperty("transform");sticky.current?.style.removeProperty("--exhibit-progress")}
    }
    if(!("IntersectionObserver" in window))return;
    const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting){const i=scenes.indexOf(entry.target as HTMLElement);if(i>=0){indexRef.current=i;setActive(i)}}}},{rootMargin:"-34% 0px -35% 0px",threshold:0});

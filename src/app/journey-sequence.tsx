@@ -14,7 +14,7 @@ export default function JourneySequence({records}:{records:FeaturedRecord[]}){
  const current=useRef(0);
  useEffect(()=>{
   const el=root.current,canvas=stage.current;if(!el||!canvas)return;
-  const query=matchMedia("(min-width: 850px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)");
+  const query=matchMedia("(min-width: 760px) and (min-height: 460px) and (prefers-reduced-motion: no-preference)");
   let raf=0;
   function measure(){
    raf=0;if(!query.matches)return;
@@ -24,10 +24,10 @@ export default function JourneySequence({records}:{records:FeaturedRecord[]}){
    canvas!.style.setProperty("--journey-progress",String(p));
    const index=p<.32?0:p<.68?1:2;
    const smooth=(a:number,b:number,x:number)=>{const u=Math.max(0,Math.min(1,(x-a)/(b-a)));return u*u*(3-2*u)};
-   const first=smooth(.23,.41,p),second=smooth(.59,.77,p);
+   const first=smooth(.20,.40,p),second=smooth(.57,.77,p);
    canvas!.style.setProperty("--journey-first",String(first));
    canvas!.style.setProperty("--journey-second",String(second));
-   canvas!.style.setProperty("--journey-papers",String(smooth(.25,.48,p)));
+   canvas!.style.setProperty("--journey-papers",String(smooth(.26,.53,p)));
    if(index!==current.current){current.current=index;setActive(index)}
   }
   function schedule(){if(!raf)raf=requestAnimationFrame(measure)}
