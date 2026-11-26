@@ -1,7 +1,8 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect,useLayoutEffect,useRef } from "react";
+import { usePathname,useRouter } from "next/navigation";
+import {resetScrollMomentum,requestMotionFrame} from "./motion-clock";
 import Signature from "./signature";
 
 let heroHasPlayed = false;
@@ -21,40 +22,46 @@ export function HeroSignature() {
   );
 }
 
-export function RouteSignature() {
-  const path = usePathname();
-  const previous = useRef(path);
-  const sweep = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => {
-    if (previous.current === path) return;
-    previous.current = path;
-    const el = sweep.current;
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-    if (!el || reduced.matches) return;
-    // Route content is already committed. The decorative layer never handles
-    // focus, pointer events, or navigation, including history traversal.
-    el.classList.remove("writing");
-    void el.offsetWidth;
-    el.classList.add("writing");
-    const stop = () => el.classList.remove("writing");
-    reduced.addEventListener("change", stop, { once: true });
-    return () => {
-      reduced.removeEventListener("change", stop);
-      stop();
-    };
-  }, [path]);
-  return (
-    <div
-      className="route-sweep"
-      ref={sweep}
-      aria-hidden="true"
-      onAnimationEnd={(e) => {
-        if (e.animationName === "sweep-away")
-          e.currentTarget.classList.remove("writing");
-      }}
-    >
-      <div className="route-ribbon" />
-      <Signature />
-    </div>
-  );
+export function RouteSignature(){
+ const path=usePathname(),router=useRouter();
+ const curtain=useRef<HTMLDivElement>(null),pending=useRef<string|null>(null);
+ const coverTimer=useRef<ReturnType<typeof setTimeout>|null>(null),failTimer=useRef<ReturnType<typeof setTimeout>|null>(null),releaseTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
+ const previous=useRef(path);
+ function clear(){if(coverTimer.current)clearTimeout(coverTimer.current);if(failTimer.current)clearTimeout(failTimer.current);if(releaseTimer.current)clearTimeout(releaseTimer.current);coverTimer.current=failTimer.current=releaseTimer.current=null}
+ function reveal(){
+  clear();pending.current=null;
+  const el=curtain.current;if(!el)return;
+  el.dataset.phase="reveal";
+  releaseTimer.current=setTimeout(()=>{el.dataset.phase="idle";releaseTimer.current=null},520);
+ }
+ useEffect(()=>{
+  function onClick(e:MouseEvent){
+   if(e.defaultPrevented||e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||matchMedia("(prefers-reduced-motion: reduce)").matches||!(e.target instanceof Element))return;
+   const a=e.target.closest<HTMLAnchorElement>("a[href]");
+   if(!a||a.target||a.hasAttribute("download")||a.hasAttribute("data-no-transition"))return;
+   const url=new URL(a.href,location.href);
+   if(url.origin!==location.origin||url.pathname===location.pathname||!["http:","https:"].includes(url.protocol))return;
+   if(!curtain.current)return;
+   e.preventDefault();if(pending.current)return;
+   const href=url.pathname+url.search+url.hash;
+   clear();pending.current=href;resetScrollMomentum();
+   router.prefetch(href);
+   curtain.current.dataset.phase="cover";
+   coverTimer.current=setTimeout(()=>{router.push(href);coverTimer.current=null},360);
+   failTimer.current=setTimeout(reveal,3500);
+  }
+  // Capture before Next's link handler, without intercepting same-page anchors.
+  document.addEventListener("click",onClick,true);
+  const reduced=matchMedia("(prefers-reduced-motion: reduce)");
+  function cancelMotion(){if(!reduced.matches)return;const href=pending.current;clear();pending.current=null;if(curtain.current)curtain.current.dataset.phase="idle";if(href)router.push(href)}
+  reduced.addEventListener("change",cancelMotion);
+  return()=>{document.removeEventListener("click",onClick,true);reduced.removeEventListener("change",cancelMotion);clear()};
+ },[router]);
+ useLayoutEffect(()=>{
+  if(previous.current===path)return;
+  previous.current=path;
+  resetScrollMomentum();requestMotionFrame();
+  if(pending.current)reveal();
+ },[path]);
+ return <div className="zm-route-curtain" ref={curtain} data-phase="idle" aria-hidden="true"><div className="zm-route-curtain-inner"><span>ZM / THE JOURNEY CONTINUES</span><Signature/><span>NOW &amp; NEXT</span></div></div>;
 }

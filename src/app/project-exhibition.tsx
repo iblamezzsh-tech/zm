@@ -1,5 +1,6 @@
 "use client";
 import {useEffect,useRef,useState} from "react";
+import {subscribeMotion,requestMotionFrame,scrollToFilm} from "./motion-clock";
 import type {MouseEvent,FocusEvent} from "react";
 import Link from "next/link";
 import ProjectArt from "./project-art";
@@ -19,7 +20,7 @@ export default function ProjectExhibition({directory=false}:{directory?:boolean}
    if(!el||!frame)return;
    const top=window.scrollY+el.getBoundingClientRect().top;
    const distance=Math.max(0,el.offsetHeight-frame.offsetHeight);
-   window.scrollTo({top:top+distance*i/Math.max(1,count-1),behavior:instant?"instant":"smooth"});
+   scrollToFilm(top+distance*i/Math.max(1,count-1),instant);
  }
  function choose(e:MouseEvent<HTMLAnchorElement>,i:number){
    if(!cinematic||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
@@ -38,9 +39,7 @@ export default function ProjectExhibition({directory=false}:{directory?:boolean}
    const el=root.current;if(!el)return;
    const scenes=Array.from(el.querySelectorAll<HTMLElement>("[data-exhibit-scene]"));
    if(cinematic){
-     let raf=0;
      function update(){
-       raf=0;
        const frame=sticky.current,rail=track.current;if(!frame||!rail)return;
        const distance=Math.max(1,el!.offsetHeight-frame.offsetHeight);
        const p=Math.max(0,Math.min(1,-el!.getBoundingClientRect().top/distance));
@@ -57,11 +56,11 @@ export default function ProjectExhibition({directory=false}:{directory?:boolean}
        const n=Math.min(count-1,Math.round(shift));
        if(n!==indexRef.current){indexRef.current=n;setActive(n)}
      }
-     function schedule(){if(!raf)raf=requestAnimationFrame(update)}
+     const schedule=requestMotionFrame;
      function hash(){const n=scenes.findIndex(s=>"#"+s.id===location.hash);if(n>=0)jump(n,true)}
-     update();window.addEventListener("scroll",schedule,{passive:true});window.addEventListener("resize",schedule,{passive:true});window.addEventListener("hashchange",hash);
+     update();const unsubscribe=subscribeMotion(update);const ro=new ResizeObserver(schedule);ro.observe(el);window.addEventListener("hashchange",hash);
      if(location.hash.startsWith("#exhibit-"))hash();
-     return()=>{if(raf)cancelAnimationFrame(raf);window.removeEventListener("scroll",schedule);window.removeEventListener("resize",schedule);window.removeEventListener("hashchange",hash);railReset()};
+     return()=>{unsubscribe();ro.disconnect();window.removeEventListener("hashchange",hash);railReset()};
      function railReset(){track.current?.style.removeProperty("transform");sticky.current?.style.removeProperty("--exhibit-progress")}
    }
    if(!("IntersectionObserver" in window))return;

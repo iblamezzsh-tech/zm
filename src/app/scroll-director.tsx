@@ -1,5 +1,6 @@
 "use client";
 import {useEffect,useRef,useState} from "react";
+import {subscribeMotion,requestMotionFrame} from "./motion-clock";
 
 const chapters=[
  {selector:".home-hero",name:"The present"},
@@ -25,10 +26,10 @@ export default function ScrollDirector(){
   const reduced=matchMedia("(prefers-reduced-motion: reduce)");
   const items=Array.from(main.querySelectorAll<HTMLElement>(".work-heading,.field-heading,.personal-grid,.home-contact-grid,.interest-line,.field-stage,.home-contact,.exhibit-visual"));
   const positions=new Map<HTMLElement,number>();
-  let raf=0;
+  const headings=items.map(el=>({el,words:Array.from(el.querySelectorAll<HTMLElement>("[data-motion-word]"))})).filter(group=>group.words.length);
+
   function write(el:HTMLElement,name:string,value:number){el.style.setProperty(name,value.toFixed(4))}
   function measure(){
-   raf=0;
    const y=window.scrollY,h=window.innerHeight;
    const max=Math.max(1,document.documentElement.scrollHeight-h);
    progress.current?.style.setProperty("--film-progress",String(clamp(y/max)));
@@ -48,26 +49,27 @@ export default function ScrollDirector(){
    }
    // Read all geometry before writing transforms; direct scroll mapping works in both directions.
    for(const el of items){const r=el.getBoundingClientRect();positions.set(el,clamp((h*.96-r.top)/(h*.68)))}
+   for(const group of headings){const p=positions.get(group.el)??1;group.words.forEach((word,i)=>write(word,"--word-reveal",smooth(i*.07,.66+i*.07,p)))}
    for(const el of items){
     const p=positions.get(el)??1;
     write(el,"--scene-reveal",smooth(0,.92,p));
+    if(el.classList.contains("exhibit-visual"))write(el,"--poster-in",smooth(0,.85,p));
     if(el.classList.contains("field-stage"))write(el,"--paper-fan",smooth(.03,.90,p));
     if(el.classList.contains("interest-line"))write(el,"--interest-in",smooth(.02,.85,p));
     if(el.classList.contains("home-contact"))write(el,"--finale-write",smooth(.20,.95,p));
-    if(el.classList.contains("exhibit-visual"))write(el,"--poster-in",smooth(0,.85,p));
    }
   }
-  function schedule(){if(!raf)raf=requestAnimationFrame(measure)}
+  const schedule=requestMotionFrame;
   function mode(){
    main!.classList.toggle("film-pinned-hero",q.matches);
    main!.classList.toggle("film-motion-enabled",!reduced.matches);
    schedule();
   }
   const ro=new ResizeObserver(schedule);ro.observe(main);
-  window.addEventListener("scroll",schedule,{passive:true});window.addEventListener("resize",schedule,{passive:true});
+  const unsubscribe=subscribeMotion(measure);
   q.addEventListener("change",mode);reduced.addEventListener("change",mode);
   mode();measure();
-  return()=>{ro.disconnect();window.removeEventListener("scroll",schedule);window.removeEventListener("resize",schedule);q.removeEventListener("change",mode);reduced.removeEventListener("change",mode);if(raf)cancelAnimationFrame(raf);main.classList.remove("film-pinned-hero","film-motion-enabled","film-nav-floating")};
+  return()=>{ro.disconnect();unsubscribe();q.removeEventListener("change",mode);reduced.removeEventListener("change",mode);main.classList.remove("film-pinned-hero","film-motion-enabled","film-nav-floating")};
  },[]);
  return <div ref={progress} className={"film-progress"+(visible?" film-visible":"")} aria-hidden="true"><span className="film-progress-label"><b>{String(chapter+1).padStart(2,"0")}</b> / 06 <span>{chapters[chapter].name}</span></span><span className="film-progress-track"><i/></span></div>;
 }

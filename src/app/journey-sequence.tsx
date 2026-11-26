@@ -1,5 +1,6 @@
 "use client";
 import {useEffect,useRef,useState} from "react";
+import {subscribeMotion,requestMotionFrame,scrollToFilm} from "./motion-clock";
 import Link from "next/link";
 import Signature from "./signature";
 import type {FeaturedRecord} from "./featured-records";
@@ -15,9 +16,8 @@ export default function JourneySequence({records}:{records:FeaturedRecord[]}){
  useEffect(()=>{
   const el=root.current,canvas=stage.current;if(!el||!canvas)return;
   const query=matchMedia("(min-width: 760px) and (min-height: 460px) and (prefers-reduced-motion: no-preference)");
-  let raf=0;
   function measure(){
-   raf=0;if(!query.matches)return;
+   if(!query.matches)return;
    const rect=el!.getBoundingClientRect();
    const distance=rect.height-canvas!.offsetHeight;
    const p=Math.max(0,Math.min(1,-rect.top/Math.max(distance,1)));
@@ -30,13 +30,13 @@ export default function JourneySequence({records}:{records:FeaturedRecord[]}){
    canvas!.style.setProperty("--journey-papers",String(smooth(.26,.53,p)));
    if(index!==current.current){current.current=index;setActive(index)}
   }
-  function schedule(){if(!raf)raf=requestAnimationFrame(measure)}
+  const schedule=requestMotionFrame;
   function sync(){setEnhanced(query.matches);current.current=0;setActive(0);schedule()}
   sync();query.addEventListener("change",sync);
-  window.addEventListener("scroll",schedule,{passive:true});window.addEventListener("resize",schedule,{passive:true});
-  return()=>{query.removeEventListener("change",sync);window.removeEventListener("scroll",schedule);window.removeEventListener("resize",schedule);if(raf)cancelAnimationFrame(raf)}
+  const unsubscribe=subscribeMotion(measure);const ro=new ResizeObserver(schedule);ro.observe(el);
+  return()=>{query.removeEventListener("change",sync);unsubscribe();ro.disconnect()}
  },[]);
- function jump(i:number){if(!enhanced||!root.current||!stage.current)return;const y=window.scrollY+root.current.getBoundingClientRect().top;const distance=root.current.offsetHeight-stage.current.offsetHeight;window.scrollTo({top:y+distance*[.10,.50,.88][i],behavior:"smooth"})}
+ function jump(i:number){if(!enhanced||!root.current||!stage.current)return;const y=window.scrollY+root.current.getBoundingClientRect().top;const distance=root.current.offsetHeight-stage.current.offsetHeight;scrollToFilm(y+distance*[.10,.50,.88][i])}
  const archive=records.filter(r=>r.document).slice(0,3);
  return <section id="introduction" ref={root} className={"journey-sequence"+(enhanced?" journey-enhanced":"")} aria-label="From the present to the future">
  <div ref={stage} className="journey-stage" data-active={active}>

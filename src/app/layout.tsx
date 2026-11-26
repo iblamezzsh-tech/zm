@@ -5,6 +5,8 @@ import "@fontsource/instrument-serif/latin-400-italic.css";
 import "./styles.css";
 import "./design-refinement.css";
 import { RouteSignature } from "./signature-motion";
+import SmoothScroll from "./smooth-scroll";
+import "./motion-polish.css";
 
 export const metadata: Metadata = {
   title: "ZiyoMuhammad — Personal Portfolio",
@@ -18,6 +20,7 @@ export default function Layout({
     <html lang="en">
       <body>
         {children}
+        <SmoothScroll />
         <RouteSignature />
       </body>
     </html>
