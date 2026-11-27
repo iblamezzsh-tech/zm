@@ -30,6 +30,8 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   const mobile=matchMedia("(max-width: 899px) and (min-height: 500px)");
   const openingWindow=el.querySelector<HTMLElement>(".ed-opening-sticky");
   const futureWindow=el.querySelector<HTMLElement>(".zm-future-stage");
+  const headerContact=main.querySelector<HTMLAnchorElement>(".site-header .minimal-connect");
+  const headerMenu=main.querySelector<HTMLButtonElement>(".site-header .minimal-menu-trigger");
   const lookButton=el.querySelector<HTMLButtonElement>(".zm-mobile-look");
   const finaleInner=el.querySelector<HTMLElement>(".finale-inner");
   const finaleHeading=el.querySelector<HTMLElement>(".finale-heading");
@@ -122,7 +124,12 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    const near=new Set(bounds.filter(({r})=>r.bottom>=-h*.35&&r.top<=h*1.35).map(({s})=>s));
    const eligible=(node:HTMLElement)=>{const owner=owners.get(node);return !phone||initializing||!owner||near.has(owner)||previousNear.has(owner)};
    const activeBounds=phone&&!initializing?bounds.filter(({s})=>near.has(s)||previousNear.has(s)):bounds;
-   const header=()=>{main!.classList.toggle("ed-dark-header",dark);main!.classList.toggle("film-at-finale",finale);main!.classList.toggle("zm-v114-question-active",at?.s.id==="exhibit-overthink"||at?.s.classList.contains("ed-social")===true||finale===true)};
+   const header=()=>{
+    const projects=bounds.find(({s})=>s.id==="projects");
+    const hideContact=w<900&&Boolean(projects&&projects.r.top<h*.65&&projects.r.bottom>0);
+    if(headerContact&&headerContact.inert!==hideContact){if(hideContact&&document.activeElement===headerContact)headerMenu?.focus({preventScroll:true});headerContact.inert=hideContact;}
+    main!.classList.toggle("zm-v115-projects-active",hideContact);
+    main!.classList.toggle("ed-dark-header",dark);main!.classList.toggle("film-at-finale",finale);main!.classList.toggle("zm-v114-question-active",at?.s.id==="exhibit-overthink"||at?.s.classList.contains("ed-social")===true||finale===true)};
    if(!enabled){header();return}
    // All geometry reads precede style writes. Horizontal reveals are projected
    // into the new rail position, not one frame behind the artwork.
@@ -211,7 +218,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
       const {enter,rule,action}=signatureQuestionScore(edge);
       write(s,"--zm-question-enter",enter);write(s,"--zm-question-rule",rule);write(s,"--zm-question-action",action);
       write(s,"--v84-art",enter);
-     }else paced(s,"--v84-art",ease(.08,.65,edge),1150,r.bottom<0||r.top>h);
+     }else {write(s,"--v84-art",ease(.08,.65,edge));write(s,"--zm-v115-evidence",ease(.08,.62,edge));}
      if(w<=899){
       // Measure the stable article box, not the transformed poster.
       // Each artifact has its own stagger, but uses the same reversible clock.
@@ -320,7 +327,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   document.addEventListener("zm-boot-prepare",resize);
   mode();document.fonts.ready.then(()=>{if(alive)resize()});
   document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:true}}));
-  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();window.removeEventListener("resize",resize);reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,preferenceQuality);window.removeEventListener(sceneQualityEvent,quality);setActiveMotionScene(null);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);main.classList.remove("ed-dark-header","film-at-finale","zm-v114-question-active");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema};
+  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();window.removeEventListener("resize",resize);reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,preferenceQuality);window.removeEventListener(sceneQualityEvent,quality);setActiveMotionScene(null);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);if(headerContact)headerContact.inert=false;main.classList.remove("ed-dark-header","film-at-finale","zm-v114-question-active","zm-v115-projects-active");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema};
  },[]);
  return <div ref={root} className="editorial-flow" id="main-content" tabIndex={-1}>{children}</div>
 }

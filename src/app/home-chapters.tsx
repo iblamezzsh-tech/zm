@@ -3,6 +3,8 @@ import Link from "next/link";
 import Portrait from "./portrait";
 import Signature from "./signature";
 import ProjectEdition from "./project-edition";
+import ProjectStory from "./project-story-v115";
+import "./project-story-v115.css";
 import EditorialFlow from "./editorial-flow";
 import FilmWords from "./film-words";
 import {getFeaturedRecords} from "./featured-records";
@@ -105,12 +107,14 @@ export default function HomeChapters(){
   </section>
   <section className="ed-work" id="projects" data-motion-scene="projects" data-ed-scene data-ed-theme="dark"><PageAtmosphere kind="gallery" dark/>
    <div className="ed-gutter ed-caption"><span>04 / SELECTED INITIATIVES</span><span>01 — 03</span></div>
-   <div className="ed-work-banner" aria-hidden="true" data-running="false"><div className="qa-marquee-track">{[0,1].map(i=><div key={i} className="qa-marquee-unit"><span>QUESTIONS <ArrowIcon direction="right"/> ACTION.</span><span>QUESTIONS <ArrowIcon direction="right"/> ACTION.</span></div>)}</div></div><div className="ed-gutter ed-work-heading"><h2 className="kt-heading" aria-label="Ideas into action."><KineticText text="Ideas into" kind="assemble"/> <em><KineticText text="action." kind="engrave" index={1}/></em></h2><p>Three different interests. One desire to turn curiosity into something real.</p></div>
+   <div className="ed-work-banner" aria-hidden="true" data-running="false"><div className="qa-marquee-track">{[0,1].map(i=><div key={i} className="qa-marquee-unit"><span>QUESTIONS <ArrowIcon direction="right"/> ACTION.</span><span>QUESTIONS <ArrowIcon direction="right"/> ACTION.</span></div>)}</div></div><div className="ed-gutter ed-work-heading"><h2 className="kt-heading" aria-label="Ideas into action."><KineticText text="Ideas into" kind="assemble"/> <em><KineticText text="action." kind="engrave" index={1}/></em></h2><p>Three different interests. One desire to turn curiosity into something real.</p><Link href="/projects" className="ed-link zm-v115-projects-cta">Explore the projects <span><ArrowIcon direction="up-right"/></span></Link></div>
    <div className="ed-gutter ed-work-grid">
     {projects.map((p,i)=><article className={"ed-work-item ed-work-"+p.kind} id={i===0?"exhibit-overthink":"exhibit-"+p.slug} key={p.slug} data-ed-scene data-ed-theme="dark">
+     {p.kind!=="think"?<ProjectStory project={p}/>:<>
      <div className="zm-project-mobile-index" aria-hidden="true"><span>SELECTED INITIATIVE / {p.number}</span><span>{p.role}</span></div>
      <Link href={"/projects/"+p.slug} className="ed-work-image" data-ed-reveal aria-label={"Explore "+p.name}><ProjectEdition project={p} signatureQuestion={i===0}/></Link>
      <span className="ed-project-ghost" aria-hidden="true">{p.number}</span><div className="ed-work-copy"><span className="ed-kicker">{p.number} / {p.category}</span><h3 className="ed-project-name"><KineticText text={p.name} kind="press"/></h3><p>{p.summary}</p><Link href={"/projects/"+p.slug} className="ed-link">Inside the project <span><ArrowIcon direction="up-right"/></span></Link></div>
+     </>}
     </article>)}
    </div>
   </section>
