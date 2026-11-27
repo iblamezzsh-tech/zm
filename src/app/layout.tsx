@@ -25,6 +25,7 @@ import "./cursor-system.css";
 import "./interior-colors.css";
 import "./page-atmosphere.css";
 import "./typography-v73.css";
+import "./mobile-system-v96.css";
 
 
 export const metadata: Metadata = {

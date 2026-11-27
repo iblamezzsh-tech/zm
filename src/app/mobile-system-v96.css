@@ -1,0 +1,117 @@
+/* ZM Mobile System / V96 — foundational tokens, not a desktop redesign.
+   All consumers use the same breakpoint and scale. Scene-specific hero,
+   typography and finale rules remain in their own chapter stylesheets. */
+@media(max-width:899px){
+ :root{
+  --m-ink:#24291e;--m-olive:#354431;--m-paper:#f4f1e8;
+  --m-white:#fffdf7;--m-sage:#e2e5d9;--m-yellow:#ffda24;--m-lime:#d5ff00;
+  --m-muted:#515d45;--m-muted-on-dark:#cbd3bc;
+  --m-space-1:4px;--m-space-2:8px;--m-space-3:12px;
+  --m-space-4:16px;--m-space-5:24px;--m-space-6:32px;--m-space-7:48px;--m-space-8:64px;
+  --m-gutter:clamp(16px,4.8vw,34px);
+  --m-bleed:clamp(10px,3vw,20px);
+  --m-control:44px;--m-header-pad:10px;
+  --m-header-safe:calc(var(--m-control) + 2 * var(--m-header-pad) + env(safe-area-inset-top,0px));
+  --m-scene-safe:calc(var(--m-header-safe) + var(--m-space-4));
+  --m-body:clamp(15px,4vw,19px);--m-body-leading:1.58;
+  --m-meta:clamp(10px,2.65vw,12px);
+  --m-display:clamp(36px,9.7vw,76px);--m-display-leading:1.04;--m-display-tracking:-.055em;
+  --m-radius-control:7px;--m-radius-media:14px;
+  --m-ease:cubic-bezier(.22,1,.36,1);--m-press:150ms;--m-settle:360ms;
+ }
+ /* Alias existing chapter gutter names to one scale; selectors deliberately
+    outrank the older per-route CSS without resetting individual layouts. */
+ main.home-page.editorial-home{--ed-pad:var(--m-gutter)}
+ main.studio54:not(.home-page){
+  --page-pad:var(--m-gutter);--s54-gutter:var(--m-gutter);
+  --story-pad:var(--m-gutter);--project-gutter:var(--m-gutter);
+  --archive-pad:var(--m-gutter);--notebook-pad:var(--m-gutter);--contact-pad:var(--m-gutter);
+ }
+ /* Shared contact / brand / menu composition, with independent hit areas.
+    Keep the home fixed-header and interior sticky-header behaviors intact. */
+ main.editorial-home>.site-header.minimal-header,
+ main.studio54:not(.home-page)>.site-header.minimal-header,
+ main.studio54.site-controls-floating:not(.home-page)>.site-header.minimal-header{
+  display:grid;grid-template-columns:minmax(0,1fr) var(--m-control) minmax(0,1fr);
+  grid-template-rows:var(--m-control);align-items:center;gap:var(--m-space-2);
+  height:auto!important;min-height:var(--m-header-safe);
+  padding:calc(var(--m-header-pad) + env(safe-area-inset-top,0px)) max(var(--m-bleed),env(safe-area-inset-right,0px)) var(--m-header-pad) max(var(--m-bleed),env(safe-area-inset-left,0px));
+  box-sizing:border-box;
+ }
+ main.editorial-home>.site-header.minimal-header{pointer-events:none}
+ main.studio54:not(.home-page)>.site-header.minimal-header{background:var(--m-paper);border-bottom:1px solid #79846928}
+ :is(main.editorial-home,main.studio54:not(.home-page))>.site-header.minimal-header .minimal-actions{display:contents}
+ :is(main.editorial-home,main.studio54:not(.home-page))>.site-header.minimal-header .minimal-identity{
+  grid-area:1/2;justify-self:center;display:grid;place-items:center;
+  width:var(--m-control);height:var(--m-control);pointer-events:auto
+ }
+ :is(main.editorial-home,main.studio54:not(.home-page))>.site-header.minimal-header .minimal-identity img{
+  width:36px;height:36px;object-fit:contain
+ }
+ :is(main.editorial-home,main.studio54:not(.home-page))>.site-header.minimal-header .minimal-connect{
+  grid-area:1/1;justify-self:start;max-width:100%;min-width:0;min-height:var(--m-control);height:var(--m-control);
+  padding-inline:10px;gap:5px;font:700 11px/1.15 "DM Sans Variable",Arial,sans-serif;
+  white-space:nowrap;border-radius:var(--m-radius-control);pointer-events:auto
+ }
+ :is(main.editorial-home,main.studio54:not(.home-page))>.site-header.minimal-header .minimal-connect .minimal-arrow{font-size:14px;flex:none}
+ :is(main.editorial-home,main.studio54:not(.home-page))>.site-header.minimal-header .minimal-menu-trigger{
+  grid-area:1/3;justify-self:end;width:var(--m-control);height:var(--m-control);min-height:var(--m-control);
+  border-radius:var(--m-radius-control);background:var(--m-paper);color:var(--m-ink);border-color:var(--m-ink);pointer-events:auto
+ }
+ main.editorial-home.ed-dark-header>.site-header .minimal-menu-trigger{border-color:var(--m-paper)}
+ main.editorial-home.film-at-finale>.site-header .minimal-connect{display:none}
+ main.studio54:not(.home-page) :is(section,.story-entry,.exhibit-scene){scroll-margin-top:calc(var(--m-header-safe) + var(--m-space-3))}
+ main.studio54:not(.home-page) :is(.story-index-nav,.exhibition-index){top:calc(var(--m-header-safe) + var(--m-space-3))}
+ /* Reading text and metadata—not artwork typography or display wordmarks. */
+ main.studio54:not(.home-page) :is(.story-opening-copy,.entry-copy,.projects-intro,.exhibit-caption,.case-intro-grid,.case-detail-grid,.milestone-hero-bottom,.personal-intro,.music-copy,.books-layout,.letter-paper,.contact-opening-bottom) p{
+  font-size:var(--m-body);line-height:var(--m-body-leading);max-width:42ch;
+ }
+ main.studio54:not(.home-page) :is(.story-edition,.entry-top,.projects-rule,.archive-rule,.personal-rule,.contact-rule){
+  font-family:"DM Sans Variable",Arial,sans-serif;font-size:var(--m-meta);line-height:1.45;
+  letter-spacing:.065em;gap:var(--m-space-2);flex-wrap:wrap
+ }
+ main.studio54:not(.home-page) :is(.story-edition,.entry-top,.projects-rule,.archive-rule,.personal-rule,.contact-rule)>span{
+  min-width:0;overflow-wrap:break-word
+ }
+ :is(main.editorial-home,main.studio54) :is(.ed-link,.story-continue,.case-link,.archive-hero-link,.personal-link,.contact-direct,.contact-text-link,.desk-open,.archive-tabs button,.archive-close,.quiz-answers button){
+  min-height:var(--m-control)
+ }
+ :is(main.editorial-home,main.studio54) :is(a,button,summary):focus-visible{
+  outline:2px solid currentColor;outline-offset:4px
+ }
+ .zm-menu-dialog{overscroll-behavior:contain}
+ .zm-menu-dialog .zm-menu-top{
+  padding-top:calc(var(--m-header-pad) + env(safe-area-inset-top,0px));
+  padding-inline:max(var(--m-bleed),env(safe-area-inset-left,0px)) max(var(--m-bleed),env(safe-area-inset-right,0px));
+ }
+ .zm-menu-dialog :is(.zm-menu-close,.minimal-connect,.zm-menu-logo){min-height:var(--m-control)}
+ .zm-menu-dialog .zm-menu-close{width:var(--m-control);height:var(--m-control);border-radius:var(--m-radius-control)}
+ .zm-menu-dialog .zm-menu-links a{min-height:var(--m-control)}
+ .zm-menu-dialog .zm-menu-social :is(a,button){display:inline-flex;align-items:center;justify-content:center;min-height:var(--m-control)}
+}
+@media(max-width:700px){
+ .zm-menu-dialog .zm-menu-right{
+  padding:calc(var(--m-header-safe) + var(--m-space-5)) var(--m-gutter) var(--m-space-5);
+  gap:var(--m-space-3)
+ }
+ .zm-menu-dialog .zm-menu-label{
+  font-family:"DM Sans Variable",Arial,sans-serif;
+  font-size:clamp(25px,7.7vw,43px);line-height:1.08;letter-spacing:-.055em
+ }
+ .zm-menu-dialog .zm-menu-links a{justify-content:space-between;width:min(100%,430px);gap:var(--m-space-2)}
+ .zm-menu-dialog .zm-menu-label{flex:1;text-align:center}
+ .zm-menu-dialog .zm-menu-social{gap:var(--m-space-1)}
+ .zm-menu-dialog .zm-menu-contact-sheet{padding-inline:var(--m-gutter);padding-bottom:max(var(--m-space-4),env(safe-area-inset-bottom,0px))}
+}
+@media(max-width:359px){
+ :is(main.editorial-home,main.studio54:not(.home-page))>.site-header.minimal-header .minimal-connect{
+  padding-inline:7px;gap:3px;font-size:10px
+ }
+ .zm-menu-dialog .zm-menu-label{font-size:clamp(22px,7.6vw,27px)}
+}
+@media(max-width:899px) and (hover:none) and (prefers-reduced-motion:no-preference){
+ :is(main.editorial-home,main.studio54,.zm-menu-dialog) :is(.minimal-connect,.minimal-menu-trigger,.zm-menu-close,.zm-mobile-look,.archive-close,.archive-tabs button,.quiz-answers button){
+  transition:scale var(--m-press) var(--m-ease),background-color var(--m-settle) var(--m-ease),color var(--m-settle) var(--m-ease)
+ }
+ :is(main.editorial-home,main.studio54,.zm-menu-dialog) :is(.minimal-connect,.minimal-menu-trigger,.zm-menu-close,.zm-mobile-look,.archive-close,.archive-tabs button,.quiz-answers button):active{scale:.96}
+}
