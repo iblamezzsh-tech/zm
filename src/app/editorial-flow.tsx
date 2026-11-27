@@ -71,7 +71,12 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    const openingHeight=mobileCinema?(openingWindow?.clientHeight||h):h;
    const galleryHeight=mobileCinema?(collageWindow?.clientHeight||h):h;
    const finaleTop=finaleInner?.getBoundingClientRect().top??0;
-   const finaleEdge=(node:HTMLElement|null,fallback:number)=>mobileCinema&&node?clamp((h-finaleTop-node.offsetTop)/h):fallback;
+   // A short final panel may reach the bottom of the document before
+   // every element crosses the usual reveal threshold. Settle the last
+   // beats as native scrolling approaches the actual bottom.
+   const remaining=Math.max(0,document.documentElement.scrollHeight-window.scrollY-h);
+   const finaleEnd=mobileCinema?1-ease(0,h*.24,remaining):0;
+   const finaleEdge=(node:HTMLElement|null,fallback:number)=>mobileCinema&&node?Math.max(finaleEnd,clamp((h-finaleTop-node.offsetTop)/h)):fallback;
    const bounds=scenes.map(s=>({s,r:s.getBoundingClientRect()}));
    const at=bounds.filter(({r})=>r.top<=anchor&&r.bottom>anchor).at(-1);
    main!.classList.toggle("ed-dark-header",at?.s.dataset.edTheme==="dark"||Boolean(at?.s.id==="film-present"&&-at.r.top>h*.13));

@@ -34,6 +34,7 @@ import "./archive-v91.css";
 import "./finale-frame-v92.css";
 import "./mobile-v93.css";
 import "./mobile-hero-v94.css";
+import "./mobile-finale-v95.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -121,6 +122,7 @@ export default function HomeChapters(){
   <section className="film-shot film-shot-contact film-dark film-finale-shot" id="next-chapter" data-ed-scene data-ed-theme="dark" aria-label="The next chapter">
    <div className="film-finale">
     <div className="finale-inner"><PageAtmosphere kind="earth" dark/>
+     <div className="zm-mobile-finale-index" aria-hidden="true"><span>THE ART OF BECOMING</span><img src="/icon.svg" alt="" width="28" height="28"/><span>ZM / 2026</span></div>
      <div className="finale-heading">
       <p className="finale-edition">THE NEXT CHAPTER <span> / </span> A PORTRAIT IN PROGRESS</p>
       <h2><span className="finale-line-one"><FilmWords text="Always becoming."/></span><em className="finale-line-two"><FilmWords text="Never standing still."/></em></h2>
