@@ -32,6 +32,7 @@ import "./memory-v89.css";
 import "./work-marquee-v90.css";
 import "./archive-v91.css";
 import "./finale-frame-v92.css";
+import "./mobile-v93.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -44,7 +45,7 @@ export default function HomeChapters(){
   <section className="ed-opening" id="film-present" data-ed-scene data-ed-theme="light">
    <div className="ed-opening-sticky"><PageAtmosphere kind="story" dark/>
     <OpeningMarquee/>
-    <div className="ed-opening-credits" aria-hidden="true"><div className="ed-opening-signature"><Signature/></div><span className="ed-opening-credit-label">01 / THE ART OF BECOMING</span></div>
+    <div className="ed-opening-credits" aria-hidden="true"><div className="zm-mobile-credit-kicker"><img src="/icon.svg" width="38" height="38" alt=""/><span>A PORTRAIT IN PROGRESS</span></div><div className="ed-opening-signature"><Signature/></div><span className="ed-opening-credit-label">01 / THE ART OF BECOMING</span></div>
     <div className="home-hero zm-opening-portrait"><Portrait/></div>
    </div>
   </section>
@@ -114,7 +115,7 @@ export default function HomeChapters(){
   <section className="ed-social ed-paper" data-ed-scene data-ed-theme="light">
    <div className="ed-social-sticky"><PageAtmosphere kind="post"/><div className="ed-social-heading"><span className="ed-kicker">07 / STAY IN TOUCH</span><h2 className="kt-heading" aria-label="See you around."><KineticText text="See you" kind="press"/> <em><KineticText text="around." kind="swerve" index={1}/></em></h2></div>
    <div className="ed-fan ed-fan-without-portrait" aria-hidden="true">{[0,1,2,3].map(i=><div className={"ed-fan-card ed-fan-"+i} key={i} style={{"--fan-i":i-1.5} as React.CSSProperties}>{i===0||i===3?<ProjectEdition project={projects[i===0?0:2]}/>:records[i===1?0:records.length-1]?.document?<img src={records[i===1?0:records.length-1].document!.src} alt="" decoding="async" fetchPriority="low"/>:<Signature/>}</div>)}</div>
-   <div className="ed-social-links"><a href="https://t.me/Shoxruxbekovich">Telegram ↗</a><a href="https://www.instagram.com/the_zzsh/">Instagram ↗</a><a href="https://github.com/iblamezzsh-tech/zm">GitHub ↗</a></div></div>
+   <div className="zm-mobile-social-caption">Find me beyond the portfolio.</div><div className="ed-social-links"><a href="https://t.me/Shoxruxbekovich">Telegram ↗</a><a href="https://www.instagram.com/the_zzsh/">Instagram ↗</a><a href="https://github.com/iblamezzsh-tech/zm">GitHub ↗</a></div></div>
   </section>
   <section className="film-shot film-shot-contact film-dark film-finale-shot" id="next-chapter" data-ed-scene data-ed-theme="dark" aria-label="The next chapter">
    <div className="film-finale">

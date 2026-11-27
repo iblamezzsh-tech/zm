@@ -12,6 +12,8 @@ export default function Portrait() {
   const overlay = useRef<HTMLImageElement>(null);
   const lens = useRef<HTMLCanvasElement>(null);
   const [showLoading, setShowLoading] = useState(false);
+  const [attireReady,setAttireReady]=useState(false);
+  const [mobileLook,setMobileLook]=useState(false);
   // Only an actually pending base image warrants an indicator. Never gate
   // the page, wait for other assets, or delay a cached/finished portrait.
   useEffect(() => {
@@ -148,7 +150,7 @@ export default function Portrait() {
     const io=new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting??false;sync()},{threshold:.03});
     Promise.all([original.decode(),attire.decode()]).then(()=>{
       if(!alive)return;
-      loaded=true;resize();ro.observe(area);io.observe(area);
+      loaded=true;setAttireReady(true);resize();ro.observe(area);io.observe(area);
       area.addEventListener("pointerenter",enter,options);area.addEventListener("pointermove",track,options);area.addEventListener("pointerleave",leave,options);
       area.addEventListener("pointerdown",down,options);area.addEventListener("pointerup",up,options);area.addEventListener("pointercancel",up,options);area.addEventListener("lostpointercapture",up,options);
       window.addEventListener("scroll",refresh,{...options,capture:true});
@@ -162,7 +164,7 @@ export default function Portrait() {
     <section aria-label="Interactive portrait">
       <link rel="preload" as="image" href="/images/portrait-present.webp" />
       <link rel="preload" as="image" href="/images/portrait-academic-attire.svg" />
-      <div className="stage hero-composition hero-atmosphere" ref={stage}>
+      <div className="stage hero-composition hero-atmosphere" data-mobile-look={mobileLook?"future":"present"} ref={stage}>
         <div className="hero-world" aria-hidden="true"><ContourField paused={false}/></div>
         <h1 className="hero-name" aria-label="ZiyoMuhammad">
           <svg viewBox="0 0 1200 164" role="presentation" aria-hidden="true">
@@ -204,6 +206,8 @@ export default function Portrait() {
           <p>Student. Founder.<br />Always learning.</p>
         </aside>
         <HeroSignature />
+        <span className="zm-mobile-hero-kicker">STUDENT / FOUNDER / UZBEKISTAN</span>
+        <button className="zm-mobile-look" type="button" disabled={!attireReady} aria-pressed={mobileLook} onClick={()=>setMobileLook(v=>!v)}><span>{mobileLook?"BACK TO NOW":"TAP TO LOOK"}</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg></button>
         <a className="hero-scroll" href="#introduction"><span aria-hidden="true">↓</span> Scroll to discover</a>
         <span className="corner tl" />
         <span className="corner tr" />
