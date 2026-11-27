@@ -35,7 +35,7 @@ main>.site-header.minimal-header,main:not(.home-page)>.site-header.minimal-heade
 .zm-gallery-tile.is-highlighted{filter:saturate(.85) brightness(.98)}
 .zm-gallery-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .zm-gallery-tile.tile-portrait,.zm-gallery-tile.tile-future{background:linear-gradient(145deg,#9da18b,#5e6652)}
-.zm-gallery-tile.tile-portrait img,.zm-gallery-tile.tile-future img{inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:center 37%;transform-origin:center bottom;transform:scale(1.08)}
+.zm-gallery-tile.tile-portrait img,.zm-gallery-tile.tile-future img{inset:0;width:100%;height:100%;max-width:none;object-fit:contain;object-position:center bottom;transform-origin:center bottom;transform:none}
 /* Both portrait layers share identical geometry; keep the cutout anchored to the tile edge. */
 .zm-gallery-tile.tile-portrait::after,.zm-gallery-tile.tile-future::after{background:linear-gradient(0deg,#11180c88,transparent 23%)}
 .zm-gallery-tile.tile-document img{object-fit:contain;padding:8%;background:#8c907b}
