@@ -55,6 +55,7 @@ import "./audit-v112.css";
 import "./portrait-in-progress.css";
 import "./cinematic-recovery.css";
 import "./signature-scene-v114.css";
+import "./question-thread-v116.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -69,7 +70,7 @@ export default function HomeChapters(){
    <div className="ed-opening-sticky"><PageAtmosphere kind="story" dark/>
     <OpeningMarquee/>
     <div className="zm-lite-credit-portrait" aria-hidden="true"><img src="/images/portrait-present.webp" alt="" decoding="async"/></div>
-    <div className="ed-opening-credits" aria-hidden="true"><div className="zm-mobile-credit-kicker"><span>A PORTRAIT IN PROGRESS</span></div><div className="ed-opening-signature"><Signature/></div><span className="ed-opening-credit-label">01 / THE ART OF BECOMING</span></div>
+    <div className="ed-opening-credits" aria-hidden="true"><div className="zm-mobile-credit-kicker"><span>A PORTRAIT IN PROGRESS</span></div><div className="ed-opening-signature"><Signature continuation/></div><span className="ed-opening-credit-label">01 / THE ART OF BECOMING</span></div>
     <div className="home-hero zm-opening-portrait"><Portrait/></div>
    </div>
   </section>
@@ -90,7 +91,7 @@ export default function HomeChapters(){
   </section>
   <section className="ed-future ed-paper" id="film-future" data-motion-scene="future" data-ed-scene data-ed-theme="light"><div className="zm-future-stage"><PageAtmosphere kind="finance"/>
    <div className="ed-gutter ed-future-content"><span className="ed-kicker">03 / STILL BECOMING</span><h2 className="kt-heading" aria-label="Ideas worth acting on."><KineticText text="Ideas worth" kind="assemble"/><br/><em><KineticText text="acting on." kind="unfold" index={1}/></em></h2><p>Economics, technology, education and a desire to turn curiosity into something real.</p><Link href="/projects" className="ed-link">Explore my projects <span><ArrowIcon direction="up-right"/></span></Link></div>
-   <div className="ed-future-words" aria-hidden="true"><span>THINK.</span><em>LEARN.</em><span>BUILD.</span></div><div className="zm-future-timeline" aria-hidden="true"><span>01 / THINK</span><i/><span>02 / LEARN</span><i/><span>03 / BUILD</span></div></div>
+   <div className="ed-future-words" aria-hidden="true"><span>THINK<span className="zm-v116-think-dot"/></span><em>LEARN.</em><span>BUILD.</span></div><div className="zm-future-timeline" aria-hidden="true"><span>01 / THINK</span><i/><span>02 / LEARN</span><i/><span>03 / BUILD</span></div></div>
   </section>
   <section className="zm-worlds" data-motion-scene="worlds" aria-label="Two sides of my journey" data-ed-scene data-ed-theme="dark"><SurfaceSeam tone="ink"/><PageAtmosphere kind="think" dark/>
    <div className="ed-gutter ed-caption"><span>03 / TWO WORLDS</span><span>ONE CURIOSITY</span></div>

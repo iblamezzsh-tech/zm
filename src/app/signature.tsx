@@ -17,7 +17,7 @@ const strokes = [
   { id: "tail", guide: "M127 182 C213 139 479 95 571 131" },
 ];
 
-export default function Signature() {
+export default function Signature({continuation=false}:{continuation?:boolean}={}) {
   const instance = useId();
   return (
     <svg
@@ -57,6 +57,7 @@ export default function Signature() {
           </g>
         );
       })}
+      {continuation&&<path className="zm-v116-tail-continuation" d="M564 129 C573 132 578 137 569 144 C551 158 507 162 476 177" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" pathLength="1"/>}
     </svg>
   );
 }

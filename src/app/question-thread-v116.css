@@ -1,0 +1,46 @@
+/* V116 / Follow the question. The period is the only travelling object. */
+main.editorial-home .editorial-flow .zm-v116-think-dot{display:inline-block;width:.13em;height:.13em;margin-left:.035em;border-radius:50%;background:currentColor;vertical-align:.015em;letter-spacing:0}
+main.editorial-home .editorial-flow .zm-v116-coin-dock{display:inline-grid;place-items:center;flex:0 0 auto;width:clamp(30px,4.8cqw,56px);aspect-ratio:1;border:2px solid #24291e;background:#ffda24;color:#24291e;border-radius:50%;box-shadow:inset 0 0 0 3px #ffda24,inset 0 0 0 4px #24291e;font:800 clamp(14px,2.4cqw,25px)/1 "DM Sans Variable",Arial,sans-serif}
+main.editorial-home .editorial-flow .zm-v116-coin-dock b{font:inherit}
+main.editorial-home .editorial-flow .zm-v116-carrier{position:fixed;left:0;top:0;z-index:42;display:none;pointer-events:none;border-radius:50%;background:#ffda24;color:#24291e;box-sizing:border-box;border:calc(var(--coin-detail,0)*2px) solid #24291e;box-shadow:0 0 0 calc(var(--coin-detail,0)*1px) #ffda24;align-items:center;justify-content:center;transform-origin:center}
+main.editorial-home .editorial-flow .zm-v116-carrier b{font:800 clamp(12px,1.4vw,22px)/1 "DM Sans Variable",Arial,sans-serif;opacity:var(--coin-detail,0)}
+@media(prefers-reduced-motion:no-preference){
+ main.editorial-home .editorial-flow[data-thread-flight] .zm-v116-think-dot,main.editorial-home .editorial-flow[data-thread-flight] .zm-v116-coin-dock{visibility:hidden}
+ main.editorial-home .editorial-flow .zm-v116-carrier[data-active=true]{display:flex}
+ /* Let the worksheet own the movement. No whole-sheet floating or zoom. */
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .zm-v115-finance .zm-v115-artifact{transform:none!important}
+ main.editorial-home .editorial-flow[data-ed-motion=true] #next-chapter:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .finale-portrait img+img{opacity:var(--zm-v116-attire,1)}
+ main.editorial-home .editorial-flow[data-ed-motion=true] #next-chapter .finale-portrait{transform:translateY(calc((1 - var(--finale-portrait-in,1))*10px)) scale(calc(.985 + var(--finale-portrait-in,1)*.015))!important;opacity:1!important}
+ main.editorial-home .editorial-flow[data-ed-motion=true] #next-chapter .finale-cta a{transform:none!important;opacity:1!important}
+}
+/* The field note is evidence, not wallpaper. Quiet letterforms. */
+main.editorial-home .editorial-flow #projects .zm-v115-earth{background:#354431!important}
+/* Finance panel already has native ranges; render result after the curve visually
+   and semantically (the component order is updated as well). */
+main.editorial-home .editorial-flow #projects .zm-v115-finance .finance-chart{margin-top:8px}
+main.editorial-home .editorial-flow #projects .zm-v115-finance .finance-result{border-top:1px solid #35443155;padding-top:10px}
+/* The active coin remains in the page's existing outside gutter, never taking focus. */
+@media(max-width:899px){main.editorial-home .editorial-flow .zm-v116-carrier b{font-size:13px}}
+/* Extend the actual traced tail (endpoint tangent and nib weight), only once
+   at the opening's final scroll beat. The original brand outline is untouched. */
+.zm-v116-tail-continuation{display:none}
+@media(prefers-reduced-motion:no-preference){
+ main.editorial-home .editorial-flow[data-ed-motion=true] #film-present:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .zm-v116-tail-continuation{display:block;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--zm-v116-tail,0));opacity:calc(var(--zm-v116-tail,0)*.95)}
+ main.editorial-home .editorial-flow[data-thread-flight] .ed-work-banner .qa-marquee-track{animation-play-state:paused!important}
+}
+main.editorial-home .editorial-flow .zm-v116-coin-dock b{color:#24291e!important;font-size:inherit!important;letter-spacing:0!important}
+main.editorial-home .editorial-flow .zm-v116-carrier{background:color-mix(in srgb,#24291e calc((1 - var(--coin-detail,0))*100%),#ffda24);box-shadow:inset 0 0 0 calc(var(--coin-detail,0)*3px) #ffda24,inset 0 0 0 calc(var(--coin-detail,0)*4px) #24291e,0 0 0 calc(var(--coin-detail,0)*1px) #ffda24}
+/* Give the traced handwriting the frame. Keep the original opening at
+   progress zero; the card recedes intact instead of being cut mid-face. */
+@media(prefers-reduced-motion:no-preference){
+ main.editorial-home .editorial-flow[data-ed-cinema=true] #film-present .ed-opening-sticky>.zm-opening-portrait{
+  clip-path:none;opacity:calc(1 - var(--ed-credit,0)*.72 - var(--ed-hero-depart,0)*.28)!important;
+ }
+ main.editorial-home .editorial-flow[data-ed-cinema=true] #film-present .zm-opening-marquee,
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-present .zm-opening-marquee{
+  opacity:calc(var(--ed-credit,0)*.18*(1 - var(--zm-v116-tail,0)))!important;
+ }
+ main.editorial-home .editorial-flow[data-thread-flight] .ed-work-banner{background:#24291e;color:#e5e8d9}
+ main.editorial-home .editorial-flow[data-thread-flight] .ed-work-banner .qa-marquee-unit>span{color:#e5e8d9!important}
+}
+@media(max-width:899px){main.editorial-home .editorial-flow .zm-v116-carrier{background:color-mix(in srgb,#f4f1e8 calc((1 - var(--coin-detail,0))*100%),#ffda24)}}

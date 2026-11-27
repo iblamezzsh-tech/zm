@@ -4,6 +4,7 @@ import {subscribeMotion,requestMotionFrame,scrollToFilm} from "./motion-clock";
 import {advanceMotion,kineticEnvelope,mobileTextEnvelope} from "./motion-pacing";
 import {getNodeMotionTier,setActiveMotionScene,applySceneTiers,sceneQualityEvent,motionQualityEvent} from "./motion-quality-store";
 import {readingEmphasis} from "./reading-emphasis";
+import {questionThread} from "./question-thread";
 import {signatureQuestionScore} from "./signature-question-score";
 import type {SceneKey} from "./scene-motion-policy";
 const clamp=(x:number)=>Math.min(1,Math.max(0,x));
@@ -42,6 +43,33 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   const collage=el.querySelector<HTMLElement>(".ed-collage"),rail=el.querySelector<HTMLElement>(".ed-collage-grid");
   const collageWindow=el.querySelector<HTMLElement>(".ed-collage-sticky");
   const fan=el.querySelector<HTMLElement>(".ed-fan");
+  const threadSource=el.querySelector<HTMLElement>(".zm-v116-think-dot");
+  const threadDock=el.querySelector<HTMLElement>(".zm-v116-coin-dock");
+  const threadCarrier=el.querySelector<HTMLElement>(".zm-v116-carrier");
+  const threadWorlds=el.querySelector<HTMLElement>(".zm-worlds");
+  function paintThread(h:number,w:number){
+   if(!threadSource||!threadDock||!threadCarrier||!threadWorlds)return;
+   const hide=()=>{if(threadCarrier!.dataset.active!=="false")threadCarrier!.dataset.active="false";if(el!.hasAttribute("data-thread-flight"))el!.removeAttribute("data-thread-flight")};
+   if(!enabled||!railActive()||!["cinematic","balanced"].includes(getNodeMotionTier(threadSource))||!["cinematic","balanced"].includes(getNodeMotionTier(threadDock))||document.querySelector("dialog[open]")){hide();return}
+   const world=threadWorlds.getBoundingClientRect();
+   if(world.top>=h*.94){hide();return}
+   const b=threadDock.getBoundingClientRect();
+   // Release as the next act enters, keep the object in its margin, then
+   // dock into the real question header. No movement is driven by elapsed time.
+   const release=clamp((h*.94-world.top)/(h*(w<900?.30:.42)));
+   const landing=clamp((h*.84-(b.top+b.height/2))/(h*.38));
+   if(landing>=1){hide();return}
+   const a=threadSource.getBoundingClientRect();
+   const dot={x:a.left+a.width/2,y:a.top+a.height/2,size:Math.max(6,a.width)};
+   const rail={x:w-(w<900?19:34),y:h*.47,size:w<900?26:44};
+   const dock={x:b.left+b.width/2,y:b.top+b.height/2,size:b.width};
+   const frame=questionThread(dot,rail,dock,release,landing);
+   if(!frame.active||!a.width||!b.width){hide();return}
+   const {point,coin}=frame;if(threadCarrier.dataset.active!=="true")threadCarrier.dataset.active="true";if(!el!.hasAttribute("data-thread-flight"))el!.setAttribute("data-thread-flight","");
+   threadCarrier.style.transform=`translate3d(${point.x.toFixed(2)}px,${point.y.toFixed(2)}px,0) translate(-50%,-50%)`;
+   threadCarrier.style.width=threadCarrier.style.height=point.size.toFixed(2)+"px";
+   write(threadCarrier,"--coin-detail",coin);
+  }
   const documents=Array.from(el.querySelectorAll<HTMLElement>(".ed-document"));
   const kinetic=Array.from(el.querySelectorAll<HTMLElement>("[data-kinetic]")).map(node=>({node,horizontal:Boolean(node.closest(".ed-collage-grid")),compact:node.dataset.kinetic==="stamp"||node.dataset.kinetic==="caption"}));
   let manual=false,enabled=false,cinema=false,mobileCinema=false,railDistance=0,railX=0,alive=true;
@@ -130,7 +158,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     if(headerContact&&headerContact.inert!==hideContact){if(hideContact&&document.activeElement===headerContact)headerMenu?.focus({preventScroll:true});headerContact.inert=hideContact;}
     main!.classList.toggle("zm-v115-projects-active",hideContact);
     main!.classList.toggle("ed-dark-header",dark);main!.classList.toggle("film-at-finale",finale);main!.classList.toggle("zm-v114-question-active",at?.s.id==="exhibit-overthink"||at?.s.classList.contains("ed-social")===true||finale===true)};
-   if(!enabled){header();return}
+   if(!enabled){header();paintThread(h,w);return}
    // All geometry reads precede style writes. Horizontal reveals are projected
    // into the new rail position, not one frame behind the artwork.
    const revealBounds=reveals.filter(node=>eligible(node)&&!(getNodeMotionTier(node)==="lite"&&node.matches(".ed-document-image,.ed-archive-item"))).map(node=>({node,r:node.getBoundingClientRect()}));
@@ -158,6 +186,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     paced(s,"--seam-open",ease(.04,.78,edge),950,r.bottom<0||r.top>h);
     if(w<=899){write(s,"--m-scene-enter",ease(0,.72,edge));write(s,"--m-scene-exit",ease(.62,1,pass));}
     if(s.id==="film-present"){
+     write(s,"--zm-v116-tail",ease(.76,.96,local));
      if(mobileCinema){
       // A single reversible scroll score: identity, portrait, signature,
       // hold, then a handoff into the next chapter. No timer or scroll lock.
@@ -241,9 +270,10 @@ export default function EditorialFlow({children}:{children:ReactNode}){
      write(s,"--social-glow",ease(.32,.95,edge));
     }
     if(s.id==="next-chapter"){
-     paced(s,"--finale-portrait-in",ease(.04,.64,finaleEdge(finalePortrait,edge)),1150,r.bottom<0||r.top>h);
-     paced(s,"--finale-title-in",ease(.12,.80,finaleEdge(finaleHeading,edge)),1400,r.bottom<0||r.top>h);
-     paced(s,"--finale-nav-in",ease(mobileCinema ? .08 : .25,mobileCinema ? .65 : .92,finaleEdge(finalePages,edge)),1000,r.bottom<0||r.top>h);
+     write(s,"--finale-portrait-in",ease(.02,.48,Math.max(edge,finaleEnd)));
+     write(s,"--zm-v116-attire",ease(.18,.68,Math.max(edge,finaleEnd)));
+     write(s,"--finale-title-in",ease(.42,.82,Math.max(finaleEdge(finaleHeading,edge),finaleEnd)));
+     write(s,"--finale-nav-in",ease(.42,.86,Math.max(finaleEdge(finalePages,edge),finaleEnd)));
      if(mobileFinale){
       // Signature and contact are their own beats. On the last scroll pixel
       // the scene settles instead of leaving a partly drawn signature.
@@ -297,6 +327,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     const outside=r.bottom<0||r.top>h||(railActive()&&horizontal&&(right<0||left>w));
     paced(node,"--kt-progress",p,mobileType?(compact?560:1050):(compact?780:1280),outside);
    }
+   paintThread(h,w);
    initializing=false;previousNear=near;
    railX=nextRailX;
   }
@@ -327,7 +358,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   document.addEventListener("zm-boot-prepare",resize);
   mode();document.fonts.ready.then(()=>{if(alive)resize()});
   document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:true}}));
-  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();window.removeEventListener("resize",resize);reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,preferenceQuality);window.removeEventListener(sceneQualityEvent,quality);setActiveMotionScene(null);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);if(headerContact)headerContact.inert=false;main.classList.remove("ed-dark-header","film-at-finale","zm-v114-question-active","zm-v115-projects-active");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema};
+  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();window.removeEventListener("resize",resize);reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,preferenceQuality);window.removeEventListener(sceneQualityEvent,quality);setActiveMotionScene(null);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);if(headerContact)headerContact.inert=false;main.classList.remove("ed-dark-header","film-at-finale","zm-v114-question-active","zm-v115-projects-active");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema;el.removeAttribute("data-thread-flight")};
  },[]);
- return <div ref={root} className="editorial-flow" id="main-content" tabIndex={-1}>{children}</div>
+ return <div ref={root} className="editorial-flow" id="main-content" tabIndex={-1}>{children}<div className="zm-v116-carrier" data-active="false" aria-hidden="true"><b>H</b></div></div>
 }
