@@ -1,9 +1,9 @@
 "use client";
-import {effectiveTier,initialTier,type EffectiveTier,type Preference,type Tier} from "./motion-quality-policy";
+import {desktopMotionQuery,reducedMotionQuery,effectiveTier,initialTier,type EffectiveTier,type Preference,type Tier} from "./motion-quality-policy";
 import {sceneNames,initialReading,parseProfile,type SceneKey,type SceneReading} from "./scene-motion-policy";
 type Snapshot={preference:Preference;tier:EffectiveTier;ready:boolean;desktopLocked:boolean;scenes:Partial<Record<SceneKey,SceneReading>>;activeScene:SceneKey|null};
 const initial:Snapshot={preference:"auto",tier:"balanced",ready:false,desktopLocked:false,scenes:{},activeScene:null};
-export const desktopMotionQuery="(min-width:900px)";
+export {desktopMotionQuery} from "./motion-quality-policy";
 let state=initial,automatic:Tier="balanced",reduced=false,desktopLocked=false;
 let selectedPreference:Preference="auto";
 const listeners=new Set<()=>void>();
@@ -11,11 +11,17 @@ const profileKey="zm-scene-profile-v109";
 let learned:Partial<Record<SceneKey,Tier>>={};
 export const profileResetEvent="zm-motion-profile-reset";
 export const motionQualityEvent="zm-motion-quality";
-export const getMotionQuality=()=>state;
+// Motion consumers can run before AdaptiveMotion's layout effect. Keep the
+// server snapshot stable for hydration, but never expose Balanced on a desktop
+// browser before initialization. These snapshots are stable object identities.
+const desktopStartup:Snapshot={...initial,preference:"cinematic",tier:"cinematic",desktopLocked:true};
+const reducedStartup:Snapshot={...desktopStartup,tier:"reduced"};
+export const getMotionQuality=()=>!state.ready&&typeof window!=="undefined"&&typeof matchMedia==="function"&&matchMedia(desktopMotionQuery).matches?
+ (matchMedia(reducedMotionQuery).matches?reducedStartup:desktopStartup):state;
 export const getServerMotionQuality=()=>initial;
-export const getMotionTier=()=>state.tier;
+export const getMotionTier=()=>getMotionQuality().tier;
 export const sceneQualityEvent="zm-scene-motion-quality";
-export function getSceneTier(key:SceneKey|null):EffectiveTier{return state.preference==="auto"&&state.tier!=="reduced"&&key?state.scenes[key]?.tier??state.tier:state.tier}
+export function getSceneTier(key:SceneKey|null):EffectiveTier{const current=getMotionQuality();return current.preference==="auto"&&current.tier!=="reduced"&&key?current.scenes[key]?.tier??current.tier:current.tier}
 export function getNodeMotionTier(node:Element|null|undefined):EffectiveTier{const key=node?.closest<HTMLElement>("[data-motion-scene]")?.dataset.motionScene as SceneKey|undefined;return getSceneTier(key??null)}
 export function setActiveMotionScene(key:SceneKey|null){if(state.activeScene===key)return;state={...state,activeScene:key};for(const fn of listeners)fn()}
 export function setSceneReading(key:SceneKey,reading:SceneReading){if(desktopLocked)return;const changed=getSceneTier(key)!==reading.tier;state={...state,scenes:{...state.scenes,[key]:reading}};for(const fn of listeners)fn();if(changed){learned[key]=reading.tier;try{localStorage.setItem(profileKey,JSON.stringify({version:1,savedAt:Date.now(),scenes:learned}))}catch{}window.dispatchEvent(new CustomEvent(sceneQualityEvent,{detail:key}))}}
@@ -39,7 +45,7 @@ function viewportAutomaticTier(){
 export function initializeMotionQuality(){
  desktopLocked=matchMedia(desktopMotionQuery).matches;
  automatic=viewportAutomaticTier();
- reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+ reduced=matchMedia(reducedMotionQuery).matches;
  selectedPreference="auto";
  try{const value=localStorage.getItem("zm-motion-preference");if(value==="auto"||value==="lite"||value==="balanced"||value==="cinematic")selectedPreference=value}catch{}
  try{learned=parseProfile(localStorage.getItem(profileKey),Date.now())}catch{learned={}}

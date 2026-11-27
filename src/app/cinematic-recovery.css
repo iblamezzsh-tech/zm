@@ -74,3 +74,62 @@
   margin-top:clamp(24px,5svh,54px);
  }
 }
+
+/* V113.4 — reading-safe motion, scoped to the Future heading and OverThink.
+   Reserve the headline's travel in layout instead of letting ink cross the
+   next paragraph. Keep the original scroll clock, word stagger and 3D act. */
+main.editorial-home .editorial-flow #film-future .ed-future-content{min-width:0;position:relative;z-index:2}
+main.editorial-home .editorial-flow #film-future .ed-future-content h2{
+ line-height:1.15;margin-block:12px 0;padding-block:.18em .34em;
+ overflow:visible;max-width:100%;
+}
+main.editorial-home .editorial-flow #film-future .ed-future-content h2 em{line-height:1.10}
+main.editorial-home .editorial-flow #film-future .ed-future-content p{margin-block:clamp(12px,1.6vh,22px) 12px}
+@media(min-width:900px){
+ main.editorial-home .editorial-flow #film-future .ed-future-content h2{font-size:clamp(40px,min(5.5vw,10svh),106px)}
+}
+@media(prefers-reduced-motion:no-preference){
+ main.editorial-home .editorial-flow[data-ed-motion=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-content h2 .kt-glyph{
+  --zm-safe-q:clamp(0,var(--kt-q,0),1);
+  transform:translate3d(0,calc(var(--zm-safe-q)*.16em),0) rotate(calc(var(--zm-safe-q)*var(--kt-direction,1)*2deg))!important;
+  clip-path:none!important;opacity:1!important;
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-content h2 em .kt-glyph{
+  transform:perspective(850px) translateY(calc(var(--zm-safe-q)*.14em)) rotateX(calc(var(--zm-safe-q)*-22deg))!important;
+ }
+}
+/* The question is the hero of this particular poster, not a decorative crop.
+   Intrinsic height allows the complete question and answer choices to wrap. */
+main.editorial-home .editorial-flow #projects #exhibit-overthink .ed-work-image{clip-path:none!important;min-width:0}
+main.editorial-home .editorial-flow #projects #exhibit-overthink .ed-work-image .edition56{
+ width:100%;height:auto;aspect-ratio:auto;min-height:0;grid-template-rows:auto auto auto;
+ gap:clamp(12px,2cqw,24px);padding:5%;overflow:hidden;
+}
+main.editorial-home .editorial-flow #projects #exhibit-overthink .edition56-main{
+ grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:5%;min-height:0;align-items:center;
+}
+main.editorial-home .editorial-flow #projects #exhibit-overthink .edition56-quiz-title>strong{font-size:clamp(28px,12cqw,110px);line-height:.94}
+main.editorial-home .editorial-flow #projects #exhibit-overthink .edition56-answer-sheet{
+ display:block;width:100%;min-width:0;box-sizing:border-box;padding:clamp(12px,3cqw,26px);
+ transform:none;translate:none;rotate:none;justify-self:center;
+}
+main.editorial-home .editorial-flow #projects #exhibit-overthink .edition56-answer-sheet>strong{
+ font-size:clamp(14px,3.2cqw,27px);line-height:1.28;white-space:normal;overflow-wrap:anywhere;
+}
+main.editorial-home .editorial-flow #projects #exhibit-overthink .edition56-answer{font-size:clamp(11px,2.15cqw,18px);line-height:1.25;white-space:normal;overflow-wrap:anywhere}
+@media(max-width:599px){
+ main.editorial-home .editorial-flow #projects #exhibit-overthink .edition56-main{grid-template-columns:minmax(0,1fr);gap:18px}
+ main.editorial-home .editorial-flow #projects #exhibit-overthink .edition56-quiz-title>strong{font-size:clamp(44px,15cqw,86px)}
+}
+@media(prefers-reduced-motion:no-preference){
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects #exhibit-overthink .ed-work-image .edition56{
+  transform:scale(calc(.94 + clamp(0,var(--v84-art,1),1)*.06));transform-origin:center;
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects #exhibit-overthink .edition56-answer-sheet{
+  transform:scale(calc(.95 + clamp(0,var(--v84-art,1),1)*.05)) rotate(calc((1 - clamp(0,var(--v84-art,1),1))*1.5deg));
+  translate:none;rotate:none;transform-origin:center;
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects #exhibit-overthink .edition56-answer{transform:none;opacity:1}
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects #exhibit-overthink .ed-work-image:focus-visible .edition56,
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects #exhibit-overthink .ed-work-image:focus-visible .edition56-answer-sheet{transform:none!important}
+}

@@ -25,3 +25,8 @@ export function nextTier(tier:Tier,direction:-1|1):Tier{
 export function effectiveTier(preference:Preference,automatic:Tier,reduced:boolean):EffectiveTier{
  return reduced?"reduced":preference==="auto"?automatic:preference;
 }
+
+// Shared desktop breakpoint, including pre-hydration bootstrap.
+export const desktopMotionQuery="(min-width:900px)";
+export const reducedMotionQuery="(prefers-reduced-motion: reduce)";
+export const desktopMotionBootstrap=`if(window.matchMedia(${JSON.stringify(desktopMotionQuery)}).matches){document.documentElement.dataset.motionTier=window.matchMedia(${JSON.stringify(reducedMotionQuery)}).matches?'reduced':'cinematic'}`;

@@ -9,6 +9,7 @@ import SmoothScroll from "./smooth-scroll";
 import SiteMotion from "./site-motion";
 import FlowMotion from "./flow-motion";
 import AdaptiveMotion from "./adaptive-motion";
+import {desktopMotionBootstrap} from "./motion-quality-policy";
 import ReturnToRecord from "./return-to-record";
 import "./flow-motion.css";
 import "./site-motion.css";
@@ -47,6 +48,7 @@ export default function Layout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head><script dangerouslySetInnerHTML={{__html:desktopMotionBootstrap}} /></head>
       <body>
         <AdaptiveMotion />
         <ReturnToRecord />
