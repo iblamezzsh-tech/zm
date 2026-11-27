@@ -136,6 +136,12 @@ export default function EditorialFlow({children}:{children:ReactNode}){
      write(s,"--project-copy",ease(.05,.45,edge));write(s,"--project-body",ease(.10,.53,edge));
      write(s,"--project-float",(pass-.5)*2);
      paced(s,"--v84-art",ease(.08,.65,edge),1150,r.bottom<0||r.top>h);
+     if(w<=899){
+      // Measure the stable article box, not the transformed poster.
+      // Each artifact has its own stagger, but uses the same reversible clock.
+      paced(s,"--m-project-art",ease(.025,.70,edge),1250,r.bottom<0||r.top>h);
+      paced(s,"--m-project-detail",ease(.12,.86,edge),1450,r.bottom<0||r.top>h);
+     }
     }
     if(s.classList.contains("ed-social")){
      paced(s,"--fan-open",ease(.06,.76,fanEdge),1350,r.bottom<0||r.top>h);

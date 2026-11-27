@@ -1,0 +1,180 @@
+/* V101 — three distinct mobile editorial artifacts.
+   Only the homepage's full-size project exhibits change. Miniatures,
+   interior pages, desktop posters and the continuous belt are preserved. */
+.zm-project-mobile-index{display:none}
+@media(max-width:899px){
+ main.editorial-home .editorial-flow #projects .ed-work-grid{
+  gap:clamp(46px,13vw,100px);padding-inline:var(--ed-pad);
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-grid .ed-work-item{
+  display:flex;flex-direction:column;gap:12px;position:relative;isolation:isolate;
+  padding-top:14px;border-top:1px solid #b7c1a44a;
+ }
+ .zm-project-mobile-index{
+  display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+  color:#cbd3bc;font:650 clamp(9px,2.55vw,12px)/1.4 "DM Sans Variable",Arial,sans-serif;
+  letter-spacing:.045em;text-transform:uppercase;
+ }
+ .zm-project-mobile-index>span:last-child{text-align:right;color:#ffda24}
+ main.editorial-home .editorial-flow #projects .ed-work-item .ed-project-ghost{display:none}
+ main.editorial-home .editorial-flow #projects .ed-work-item .ed-work-image{
+  width:100%;max-width:none;display:block;min-width:0;border:0;overflow:visible;
+  background:transparent;transform:none;clip-path:none;box-shadow:none;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-item .ed-work-image .edition56{
+  width:100%;height:auto;aspect-ratio:auto;min-height:0;
+  padding:5%;gap:0;grid-template-rows:auto auto auto;
+  transform:none;box-shadow:none;overflow:hidden;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-item .edition56 :is(.edition-top,.edition-bottom){
+  font-size:clamp(9px,2.75cqw,12px);line-height:1.4;letter-spacing:.035em;
+  gap:10px;padding-block:0 10px;flex-wrap:wrap;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-item .edition56 .edition-bottom{padding-block:10px 0}
+ main.editorial-home .editorial-flow #projects .ed-work-item .edition56-main{
+  grid-template-columns:minmax(0,1fr);align-items:start;gap:16px;padding-block:18px 20px;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-item .edition56-main>div>span:first-child{
+  display:block;font-size:clamp(10px,3cqw,13px);line-height:1.4;margin-bottom:8px;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-item .edition56-main>div>small{
+  font-size:clamp(9px,2.6cqw,11px);line-height:1.45;letter-spacing:.025em;margin-top:10px;
+ }
+ /* 01 — Quiz poster: bold typesetting, offset question paper. */
+ main.editorial-home .editorial-flow #projects .ed-work-think .edition56{
+  background:#ffda24;color:#24291e;
+  border-radius:3px 3px 26px 3px;
+  background-image:radial-gradient(circle at 91% 18%,transparent 0 12%,#24291e14 12.3% 12.7%,transparent 13% 19%,#24291e14 19.3% 19.7%,transparent 20% 26%,#24291e14 26.3% 26.7%,transparent 27%);
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-think .edition56-quiz-title>strong{
+  font-size:clamp(44px,18cqw,116px);line-height:.92;letter-spacing:-.075em;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-think .edition56-quiz-title>span:last-child{
+  font-size:10px;line-height:1.4;margin-top:10px;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-think .edition56-answer-sheet{
+  display:block;width:91%;justify-self:end;padding:5%;box-sizing:border-box;
+  transform:rotate(-2deg);box-shadow:5px 6px 0 #24291e24;
+  background:#24291e;border:1px solid #24291e;border-radius:2px;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-think .edition56-sheet-meta{margin-bottom:10px;padding-bottom:8px}
+ main.editorial-home .editorial-flow #projects .ed-work-think .edition56-sheet-meta b{font-size:clamp(24px,9cqw,48px)}
+ main.editorial-home .editorial-flow #projects .ed-work-think .edition56-sheet-meta span{font-size:9px;line-height:1.25}
+ main.editorial-home .editorial-flow #projects .ed-work-think .edition56-answer-sheet>strong{
+  font-size:clamp(13px,4.2cqw,19px);line-height:1.36;letter-spacing:-.02em;margin-bottom:8px;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-think .edition56-answer{
+  font-size:clamp(11px,3.5cqw,15px);line-height:1.35;padding:7px 0;gap:8px;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-think .edition56-answer i{width:19px;height:19px;font-size:10px}
+ /* 02 — Finance broadsheet: an uninterrupted chart, not a miniature dashboard. */
+ main.editorial-home .editorial-flow #projects .ed-work-finance .edition56{
+  background:#e2e5d9;color:#24291e;border-radius:3px 24px 3px 3px;
+  background-image:linear-gradient(#3544310a 1px,transparent 1px);
+  background-size:100% 24px;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-finance .edition56-finance-copy>strong{
+  font-size:clamp(35px,13cqw,82px);line-height:.96;letter-spacing:-.06em;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-finance .edition56-chart{
+  display:block;border:0;border-top:1px solid #35443180;padding:12px 0 0;color:#354431;
+  background:none;box-shadow:none;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-finance .edition56-chart-caption{
+  display:flex;flex-direction:row;justify-content:space-between;align-items:end;gap:8px;flex-wrap:wrap;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-finance .edition56-chart-caption>span{font-size:10px;line-height:1.35}
+ main.editorial-home .editorial-flow #projects .ed-work-finance .edition56-chart-caption>strong{
+  font-size:clamp(35px,13cqw,73px);line-height:.95;letter-spacing:-.06em;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-finance .edition56-chart svg{
+  max-height:none;height:auto;width:100%;margin-top:12px;
+ }
+ /* 03 — Environmental field journal: organic outlines and tactile paper. */
+ main.editorial-home .editorial-flow #projects .ed-work-earth .edition56{
+  background:#354431;color:#f4f1e8;border:1px solid #b7c1a44a;
+  border-radius:44px 3px 44px 3px;
+  background-image:url("/atmosphere/home-contours-v80.svg");
+  background-size:850px auto;background-blend-mode:soft-light;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-earth .edition56-earth-copy>strong{
+  font-size:clamp(43px,16cqw,98px);line-height:.93;letter-spacing:-.035em;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-earth .edition56-fieldnote{
+  display:block;width:94%;padding:5%;box-sizing:border-box;transform:rotate(1.5deg);
+  justify-self:start;border-radius:2px;box-shadow:5px 6px 0 #17211766;
+  background:repeating-linear-gradient(0deg,#24291e09 0 1px,transparent 1px 22px),#e4e4d0;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-earth .edition56-fieldnote>strong{
+  font-size:clamp(27px,9.3cqw,48px);line-height:.98;margin-bottom:12px;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-earth .edition56-task{
+  gap:8px;padding:10px 0;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-earth .edition56-task b{font-size:10px}
+ main.editorial-home .editorial-flow #projects .ed-work-earth .edition56-task span{font-size:clamp(12px,3.8cqw,16px);line-height:1.35}
+ main.editorial-home .editorial-flow #projects .ed-work-earth .edition56-task i{width:13px;height:13px}
+ main.editorial-home .editorial-flow #projects .ed-work-copy{padding-top:6px}
+ main.editorial-home .editorial-flow #projects .ed-work-copy .ed-kicker{display:block}
+ main.editorial-home .editorial-flow #projects .ed-work-copy .ed-link{
+  min-height:44px;display:inline-flex;align-items:center;gap:14px;
+  padding:8px 0;border-bottom:1px solid #ffda24;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-image:focus-visible{
+  outline:2px solid #ffda24;outline-offset:5px;
+ }
+}
+@media(max-width:899px) and (min-width:600px){
+ main.editorial-home .editorial-flow #projects .ed-work-item .ed-work-image .edition56-main{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:24px;
+ }
+ main.editorial-home .editorial-flow #projects .ed-work-think .edition56-quiz-title>strong{font-size:clamp(54px,11cqw,90px)}
+ main.editorial-home .editorial-flow #projects .ed-work-finance .edition56-finance-copy>strong{font-size:clamp(44px,7.5cqw,68px)}
+ main.editorial-home .editorial-flow #projects .ed-work-earth .edition56-earth-copy>strong{font-size:clamp(54px,10cqw,86px)}
+}
+@media(max-width:899px) and (prefers-reduced-motion:no-preference){
+ /* No giant clip masks. Artwork stays readable even during fast swipes. */
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-item{
+  --m-art-q:calc(1 - var(--m-project-art,1));
+  --m-detail-q:calc(1 - var(--m-project-detail,1));
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-item .ed-work-image{
+  clip-path:none;transform:none;
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-item .ed-work-image .edition56{transform:none}
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-think .edition56-quiz-title{
+  transform:translate3d(0,calc(var(--m-art-q)*12px),0);
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-think .edition56-answer-sheet{
+  transform:translate3d(calc(var(--m-detail-q)*-8px),calc(var(--m-detail-q)*18px),0) rotate(calc(-2deg - var(--m-detail-q)*5deg));
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-think .edition56-answer{
+  transform:translateX(calc(var(--m-detail-q)*-5px));opacity:calc(.76 + var(--m-project-detail,1)*.24);
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-think .edition56-answer:nth-of-type(2){transform:translateX(calc(var(--m-detail-q)*-8px))}
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-think .edition56-answer:nth-of-type(3){transform:translateX(calc(var(--m-detail-q)*-11px))}
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-finance .edition56-finance-copy{
+  transform:translateY(calc(var(--m-art-q)*10px));
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-finance .edition56-chart svg path[pathLength]{
+  stroke-dasharray:1;stroke-dashoffset:var(--m-detail-q);
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-finance .edition56-chart svg path[fill="#b9c898"]{
+  opacity:calc(.18 + var(--m-project-detail,1)*.42);
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-finance .edition56-chart svg circle{
+  opacity:var(--m-project-detail,1);
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-earth .edition56-earth-copy{
+  transform:translateY(calc(var(--m-art-q)*10px));
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-earth .edition56-fieldnote{
+  transform:translate3d(0,calc(var(--m-detail-q)*15px),0) rotate(calc(1.5deg + var(--m-detail-q)*4deg));
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-earth .edition56-task{
+  opacity:calc(.80 + var(--m-project-detail,1)*.20);
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-item:focus-within{
+  --m-art-q:0;--m-detail-q:0;--m-project-detail:1;
+ }
+}

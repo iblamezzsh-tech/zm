@@ -40,6 +40,7 @@ import "./mobile-opening-v98.css";
 import "./mobile-editorial-v99.css";
 import MobileRecordViewer from "./mobile-record-viewer";
 import "./mobile-gallery-v100.css";
+import "./mobile-projects-v101.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -94,6 +95,7 @@ export default function HomeChapters(){
    <div className="ed-work-banner" aria-hidden="true"><div className="qa-marquee-track">{[0,1].map(i=><div key={i} className="qa-marquee-unit"><span>QUESTIONS → ACTION.</span><span>QUESTIONS → ACTION.</span></div>)}</div></div><div className="ed-gutter ed-work-heading"><h2 className="kt-heading" aria-label="Ideas into action."><KineticText text="Ideas into" kind="assemble"/> <em><KineticText text="action." kind="engrave" index={1}/></em></h2><p>Three different interests. One desire to turn curiosity into something real.</p></div>
    <div className="ed-gutter ed-work-grid">
     {projects.map((p,i)=><article className={"ed-work-item ed-work-"+p.kind} id={i===0?"exhibit-overthink":"exhibit-"+p.slug} key={p.slug} data-ed-scene data-ed-theme="dark">
+     <div className="zm-project-mobile-index" aria-hidden="true"><span>SELECTED INITIATIVE / {p.number}</span><span>{p.role}</span></div>
      <Link href={"/projects/"+p.slug} className="ed-work-image" data-ed-reveal aria-label={"Explore "+p.name}><ProjectEdition project={p}/></Link>
      <span className="ed-project-ghost" aria-hidden="true">{p.number}</span><div className="ed-work-copy"><span className="ed-kicker">{p.number} / {p.category}</span><h3 className="ed-project-name"><KineticText text={p.name} kind="press"/></h3><p>{p.summary}</p><Link href={"/projects/"+p.slug} className="ed-link">Inside the project <span>↗</span></Link></div>
     </article>)}
