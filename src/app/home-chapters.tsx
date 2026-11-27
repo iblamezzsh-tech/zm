@@ -143,22 +143,23 @@ export default function HomeChapters(){
   <section className="film-shot film-shot-contact film-dark film-finale-shot" id="next-chapter" data-ed-scene data-ed-theme="dark" aria-label="The next chapter">
    <div className="film-finale">
     <div className="finale-inner"><PageAtmosphere kind="earth" dark/>
-     <div className="zm-mobile-finale-index" aria-hidden="true"><span><i/> THE ART OF BECOMING</span><span>08 / THE NEXT CHAPTER</span></div>
+     <div className="zm-mobile-finale-index" aria-label="Selected initiatives">{projects.map(p=><Link href={"/projects/"+p.slug} key={p.slug} className={"zm-finale-project-"+p.kind}>{p.name}</Link>)}</div>
      <div className="finale-heading">
       <p className="finale-edition">THE NEXT CHAPTER <span> / </span> A PORTRAIT IN PROGRESS</p>
-      <h2><span className="finale-line-one"><FilmWords text="Always becoming."/></span><em className="finale-line-two"><FilmWords text="Never standing still."/></em></h2>
+      <h2 className="finale-desktop-title"><span className="finale-line-one"><FilmWords text="Always becoming."/></span><em className="finale-line-two"><FilmWords text="Never standing still."/></em></h2>
+      <h2 className="zm-finale-reference-title"><span><FilmWords text="Always"/> <em><FilmWords text="becoming."/></em></span><span><FilmWords text="Never standing"/> <em><FilmWords text="still."/></em></span></h2>
      </div>
      <div className="finale-portrait" role="img" aria-label="ZiyoMuhammad imagined in graduation attire">
       <img src="/images/portrait-present.webp" alt="" fetchPriority="low" decoding="async"/>
       <img src="/images/portrait-academic-attire.svg" alt="" fetchPriority="low" decoding="async"/>
      </div>
      <nav className="finale-nav finale-pages" aria-label="Explore the portfolio">
-      <span>01 / EXPLORE</span>
+      <span><span className="zm-finale-desktop-label">01 / EXPLORE</span><span className="zm-finale-reference-label">PAGES</span></span>
       {([{href:"#top",label:"Home"},{href:"/about",label:"My story"},{href:"/projects",label:"Projects"},{href:"/achievements",label:"Milestones"},{href:"/off-the-record",label:"Off the record"}]).map((item,i)=><Link key={item.href} href={item.href} style={{"--nav-i":i} as React.CSSProperties}><small>0{i+1}</small><span>{item.label}</span></Link>)}
      </nav>
      <div className="finale-right">
       <nav className="finale-nav finale-socials" aria-label="Social links">
-       <span>02 / ELSEWHERE</span>
+       <span><span className="zm-finale-desktop-label">02 / ELSEWHERE</span><span className="zm-finale-reference-label">FOLLOW ME</span></span>
        <a href="https://t.me/Shoxruxbekovich" style={{"--nav-i":0} as React.CSSProperties}><span>Telegram</span><small aria-hidden="true">↗</small></a>
        <a href="https://www.instagram.com/the_zzsh/" style={{"--nav-i":1} as React.CSSProperties}><span>Instagram</span><small aria-hidden="true">↗</small></a>
        <a href="https://github.com/iblamezzsh-tech/zm" style={{"--nav-i":2} as React.CSSProperties}><span>GitHub</span><small aria-hidden="true">↗</small></a>
@@ -167,7 +168,7 @@ export default function HomeChapters(){
      </div>
      <div className="finale-signature"><Signature/></div>
      <div className="zm-finale-mobile-colophon" aria-hidden="true"><span>ANDIJAN / UZBEKISTAN</span><span>THE JOURNEY CONTINUES.</span></div>
-     <svg className="zm-finale-mobile-cut" viewBox="0 0 400 28" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 0Q0 12 15 12H112Q124 12 135 22Q142 28 155 28H245Q258 28 265 22Q276 12 288 12H385Q400 12 400 0V28H0Z"/></svg>
+     <svg className="zm-finale-mobile-cut" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 0Q0 9 12 9H42Q51 9 59 18Q65 24 78 24H0Z M400 0Q400 9 388 9H358Q349 9 341 18Q335 24 322 24H400Z"/></svg>
      <div className="finale-location">ANDIJAN / UZBEKISTAN</div>
      <div className="finale-note">THE JOURNEY CONTINUES.</div>
     </div>
