@@ -25,6 +25,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   const mobile=matchMedia("(max-width: 899px) and (min-height: 500px)");
   const openingWindow=el.querySelector<HTMLElement>(".ed-opening-sticky");
   const futureWindow=el.querySelector<HTMLElement>(".zm-future-stage");
+  const lookButton=el.querySelector<HTMLButtonElement>(".zm-mobile-look");
   const finaleInner=el.querySelector<HTMLElement>(".finale-inner");
   const finaleHeading=el.querySelector<HTMLElement>(".finale-heading");
   const finalePortrait=el.querySelector<HTMLElement>(".finale-portrait");
@@ -118,13 +119,14 @@ export default function EditorialFlow({children}:{children:ReactNode}){
       write(s,"--ed-credit-in",ease(.23,.40,local));
       write(s,"--ed-hero-depart",ease(.83,1,local));
       write(s,"--ed-credit-away",ease(.90,1,local));
-      s.dataset.creditStage=String(local>.25);
+      const creditStage=String(local>.25);if(s.dataset.creditStage!==creditStage)s.dataset.creditStage=creditStage;
+      if(lookButton){if(creditStage==="true"&&document.activeElement===lookButton)el!.focus({preventScroll:true});lookButton.inert=creditStage==="true";}
      }else{
       write(s,"--ed-hero-exit",ease(.08,.65,local));
       write(s,"--ed-credit",ease(.22,.66,local));
       write(s,"--ed-hero-depart",ease(.78,1,local));
       write(s,"--ed-credit-away",ease(.88,1,local));
-      delete s.dataset.creditStage;
+      delete s.dataset.creditStage;if(lookButton)lookButton.inert=false;
      }
     }
     if(s===collage&&railActive()){
@@ -231,7 +233,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   function mode(){
    enabled=!manual&&!reduced.matches;cinema=enabled&&desktop.matches;mobileCinema=enabled&&mobile.matches;
    el!.dataset.edMotion=String(enabled);el!.dataset.edCinema=String(cinema);el!.dataset.edMobileCinema=String(mobileCinema);
-   stopPacing();initializing=true;
+   stopPacing();initializing=true;if(lookButton)lookButton.inert=false;if(!mobileCinema){const opening=scenes.find(s=>s.id==="film-present");if(opening)delete opening.dataset.creditStage;}
    if(!railActive()){railX=0;collage?.style.setProperty("--rail-x","0px")}layout();render();requestMotionFrame();
   }
   function change(){manual=!manual;mode()}

@@ -79,6 +79,6 @@ export default function SiteHeader({about=false,projects=false,achievements=fals
    </div>
   </div>
  </dialog>
- <div id="main-content" tabIndex={-1}/>
+ {current!=="/"&&<div id="main-content" tabIndex={-1}/>}
  </>;
 }

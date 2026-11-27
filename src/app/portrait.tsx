@@ -54,7 +54,7 @@ export default function Portrait() {
     let lookMix=0,mobile=false;
     let targetX=0,targetY=0,dx=0,dy=0;
     let imageData:ImageData|null=null;
-    const canMove=()=>visible&&!motion.matches&&!document.hidden;
+    const canMove=()=>loaded&&visible&&!motion.matches&&!document.hidden&&opening?.dataset.creditStage!=="true";
     function paint(){
       if(!loaded||!ctx||!maskCtx||!output||!attire||!imageData)return;
       const w=area!.clientWidth,h=area!.clientHeight;
@@ -175,16 +175,21 @@ export default function Portrait() {
     const controller=new AbortController(),options={signal:controller.signal,passive:true};
     const ro=new ResizeObserver(resize);
     const io=new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting??false;sync()},{threshold:.03});
+    const creditObserver=new MutationObserver(sync);
+    if(opening)creditObserver.observe(opening,{attributes:true,attributeFilter:["data-credit-stage"]});
+    // Geometry must also work if the optional graduation layer fails.
+    resize();ro.observe(area);const brand=area.querySelector<HTMLElement>(".zm-hero-brand");if(brand)ro.observe(brand);
+    io.observe(area);
     Promise.all([original.decode(),attire.decode()]).then(()=>{
       if(!alive)return;
-      loaded=true;setAttireReady(true);resize();ro.observe(area);const brand=area.querySelector<HTMLElement>(".zm-hero-brand");if(brand)ro.observe(brand);io.observe(area);
+      loaded=true;setAttireReady(true);resize();sync();
       area.addEventListener("pointerenter",enter,options);area.addEventListener("pointermove",track,options);area.addEventListener("pointerleave",leave,options);
       area.addEventListener("pointerdown",down,options);area.addEventListener("pointerup",up,options);area.addEventListener("pointercancel",up,options);area.addEventListener("lostpointercapture",up,options);
       window.addEventListener("scroll",refresh,{...options,capture:true});
       motion.addEventListener("change",sync,options);document.addEventListener("visibilitychange",sync,options);
       ready();
     }).catch(()=>{/* Keep the original portrait if the attire cannot be decoded. */if(alive)ready(false);});
-    return()=>{alive=false;controller.abort();ro.disconnect();io.disconnect();if(raf)cancelAnimationFrame(raf);heroFields.delete(area)};
+    return()=>{alive=false;controller.abort();ro.disconnect();io.disconnect();creditObserver.disconnect();if(raf)cancelAnimationFrame(raf);heroFields.delete(area)};
   }, []);
 
   return (

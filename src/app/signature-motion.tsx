@@ -29,6 +29,7 @@ export function RouteSignature(){
  const curtain=useRef<HTMLDivElement>(null),pending=useRef<string|null>(null);
  const coverTimer=useRef<ReturnType<typeof setTimeout>|null>(null),failTimer=useRef<ReturnType<typeof setTimeout>|null>(null),releaseTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
  const previous=useRef(path);
+ const pushed=useRef(false);
  const timing=useRef({cover:COVER_MS,minimum:MINIMUM_MS,reveal:REVEAL_MS});
  const match=useRef<{clone:HTMLElement;animation:Animation|null;destination:HTMLElement|null;stage:HTMLDivElement}|null>(null);
  function clearMatch(){
@@ -42,7 +43,7 @@ export function RouteSignature(){
  function startMatch(a:HTMLAnchorElement){
   const art=a.querySelector<HTMLElement>(".studio54-edition")??a.closest(".ed-work-item,.exhibit-scene")?.querySelector<HTMLElement>(".studio54-edition");
   const stage=curtain.current?.querySelector<HTMLDivElement>(".route-match-art");
-  if(!art||!stage)return false;
+  if(!art||!stage||typeof art.animate!=="function")return false;
   const r=art.getBoundingClientRect();if(r.width<100||r.height<70||r.top>=innerHeight*.9||r.bottom<=innerHeight*.1)return false;
   const clone=art.cloneNode(true) as HTMLElement;
   clone.querySelectorAll("[id]").forEach(n=>n.removeAttribute("id"));
@@ -86,7 +87,7 @@ export function RouteSignature(){
    if(!curtain.current||!names[url.pathname])return;
    e.preventDefault();if(pending.current||curtain.current.dataset.phase!=="idle")return;
    const href=url.pathname+url.search+url.hash;
-   clear();clearMatch();pending.current=href;started.current=performance.now();resetScrollMomentum();
+   clear();clearMatch();pending.current=href;pushed.current=false;started.current=performance.now();resetScrollMomentum();
    const phone=matchMedia("(max-width:899px)").matches;
    timing.current=phone?{cover:420,minimum:540,reveal:520}:{cover:COVER_MS,minimum:MINIMUM_MS,reveal:REVEAL_MS};
    curtain.current.style.setProperty("--zm-route-cover",timing.current.cover+"ms");
@@ -97,15 +98,18 @@ export function RouteSignature(){
    if(dest.startsWith("/projects/")&&startMatch(a))curtain.current.dataset.edit="match";
    curtain.current.dataset.phase="cover";
    const label=curtain.current.querySelector<HTMLElement>("[data-destination]");if(label)label.textContent=names[url.pathname];
-   coverTimer.current=setTimeout(()=>{router.push(href);coverTimer.current=null},timing.current.cover);
+   coverTimer.current=setTimeout(()=>{pushed.current=true;router.push(href);coverTimer.current=null},timing.current.cover);
    failTimer.current=setTimeout(reveal,FAILSAFE_MS);
   }
   // Capture before Next's link handler, without intercepting same-page anchors.
   document.addEventListener("click",onClick,true);
   const reduced=matchMedia("(prefers-reduced-motion: reduce)");
-  function cancelMotion(){if(!reduced.matches)return;const href=pending.current;clear();pending.current=null;if(curtain.current)curtain.current.dataset.phase="idle";clearMatch();if(href)router.push(href)}
+  function abortEdit(){clear();pending.current=null;if(curtain.current)curtain.current.dataset.phase="idle";clearMatch();resetScrollMomentum();}
+  function cancelMotion(){if(!reduced.matches)return;const href=pending.current,alreadyPushed=pushed.current;abortEdit();if(href&&!alreadyPushed)router.push(href)}
+  function onHistory(){abortEdit()}
+  window.addEventListener("popstate",onHistory);
   reduced.addEventListener("change",cancelMotion);
-  return()=>{document.removeEventListener("click",onClick,true);reduced.removeEventListener("change",cancelMotion);clear();clearMatch()};
+  return()=>{document.removeEventListener("click",onClick,true);window.removeEventListener("popstate",onHistory);reduced.removeEventListener("change",cancelMotion);clear();clearMatch()};
  },[router]);
  useLayoutEffect(()=>{
   if(previous.current===path)return;

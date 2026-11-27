@@ -43,6 +43,8 @@ import "./mobile-gallery-v100.css";
 import "./mobile-projects-v101.css";
 import "./mobile-social-v102.css";
 import "./mobile-finale-v103.css";
+import "./motion-score-v105.css";
+import "./mobile-qa-v106.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -68,7 +70,7 @@ export default function HomeChapters(){
    </h2>
    <div className="ed-gutter ed-manifesto-bottom"><p>Student. Founder. Always learning. I’m not there yet — and that is precisely what makes the journey interesting.</p><Link href="/about" className="ed-link">My story <span>↗</span></Link></div>
   </section>
-  <section className="ed-collage ed-paper" id="film-memory" data-ed-scene data-ed-theme="light">
+  <section className={"ed-collage ed-paper"+(records.length===0?" zm-memory-empty":"")} id="film-memory" data-ed-scene data-ed-theme="light">
    <div className="ed-collage-sticky"><PageAtmosphere kind="gallery"/><div className="ed-gutter ed-caption"><span>02 / THE THINGS I KEEP</span><span>ORIGINAL RECORDS</span></div>
    <div className="ed-collage-grid">
     <div className="ed-collage-intro"><h2 className="kt-heading" aria-label="Small moments."><KineticText text="Small" kind="marker"/><br/><em><KineticText text="moments." kind="marker" index={1}/></em></h2><p>On a court, around a Zakovat table, in a classroom. Little things that make up a life.</p><Link href="/about" className="ed-link">Read my journey <span>↗</span></Link></div>
@@ -106,6 +108,7 @@ export default function HomeChapters(){
   <section className="ed-archive" id="milestone-preview" data-ed-scene data-ed-theme="dark"><PageAtmosphere kind="archive" dark/>
    <div className="ed-gutter ed-caption"><span>05 / THE ARCHIVE</span><span>DOCUMENTED EXPERIENCES</span></div>
    <div className="ed-gutter ed-archive-heading"><h2 className="kt-heading" aria-label="Every step leaves a mark."><KineticText text="Every step" kind="press"/><br/><em><KineticText text="leaves a mark." kind="engrave" index={1}/></em></h2><Link href="/achievements" className="ed-link">All milestones <span>↗</span></Link></div>
+   {archive.length===0&&<div className="ed-gutter zm-archive-empty"><span>ZM / ARCHIVE NOTES</span><p>Original documents are not available in this build. You can still explore the personal records.</p><Link href="/achievements" className="ed-link">Explore milestones <span>↗</span></Link></div>}
    <div className="ed-gutter ed-archive-grid">{archive.map((r,i)=>r.document&&<Link href="/achievements" className="ed-archive-item" key={r.id} data-mobile-record={r.id} data-ed-reveal style={{"--ed-i":i} as React.CSSProperties}>
     <div className="ed-record-display">
      <svg className="ed-record-outline" viewBox="0 0 360 310" preserveAspectRatio="none" aria-hidden="true">

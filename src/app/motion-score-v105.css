@@ -79,6 +79,8 @@
  /* Shorter route edits; retain shared artwork flight when available. */
  .zm-route-curtain[data-edit][data-phase=cover]{animation-duration:var(--zm-route-cover,420ms)}
  .zm-route-curtain[data-edit][data-phase=reveal]{animation-duration:var(--zm-route-reveal,520ms)}
+ .zm-route-curtain[data-edit=match][data-phase=cover] .zm-route-curtain-inner{animation-duration:var(--zm-route-cover,420ms)}
+ .zm-route-curtain[data-edit=match][data-phase=reveal] .zm-route-curtain-inner{animation-duration:var(--zm-route-reveal,520ms)}
  .zm-route-curtain[data-edit]:not([data-edit=signature]):not([data-edit=match]) .route-motif{
   width:min(66vw,210px);height:64px
  }
