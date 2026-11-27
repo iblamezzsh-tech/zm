@@ -1,14 +1,4 @@
-/* V113 — A portrait in progress. Scoped to the approved Home and case/archive
-   routes. No hero geometry, portrait assets or document navigation changes. */
-main.editorial-home .editorial-flow{
- --zm-reading-paper:#f4f1e8;--zm-reading-ink:#24291e;--zm-reading-gold:#ffda24;
-}
-/* Three contour moments: opening field (identity), a drawn handoff (direction),
-   closing field (the distance ahead). Leave other chapters quiet. */
-main.editorial-home .editorial-flow :is(.ed-manifesto,.ed-collage-sticky,.zm-future-stage,.zm-worlds,.ed-work,.ed-archive,.ed-personal,.ed-social-sticky)>.zm-atmosphere,
-main.editorial-home .editorial-flow .zm-world-art>.zm-atmosphere{display:none}
-main.editorial-home .editorial-flow #next-chapter .finale-inner>.zm-atmosphere{--contour-strength:.16;--contour-tile:clamp(800px,110vw,1500px)}
-main.editorial-home .editorial-flow #next-chapter .finale-inner>.zm-atmosphere .atm-primary{animation:none;transform:none;translate:none;mask-position:center bottom;-webkit-mask-position:center bottom}
+/* V113.1: keep only verified mobile control styling and interior editorial improvements. */
 /* Opening: the high-contrast action belongs to the foreground, not the shirt. */
 @media(max-width:899px){
  main.editorial-home .editorial-flow #film-present .zm-mobile-look{
@@ -20,109 +10,6 @@ main.editorial-home .editorial-flow #next-chapter .finale-inner>.zm-atmosphere .
  main.editorial-home .editorial-flow #film-present .zm-mobile-look>span{display:block;white-space:normal}
  main.editorial-home .editorial-flow #film-present .zm-mobile-look>svg{width:36px;height:36px;padding:8px;flex:none;border-radius:4px}
  main.editorial-home .editorial-flow #film-present .zm-mobile-look:focus-visible{outline:2px solid #ffda24;outline-offset:3px}
-}
-/* Beat 01 — an unhurried first sentence; the single line is the motion. */
-main.editorial-home .editorial-flow #introduction{background:#24291e;color:#f4f1e8;padding-bottom:clamp(56px,9vw,138px)}
-main.editorial-home .editorial-flow #introduction .zm-manifesto-reading{max-width:1640px;margin:auto;padding-top:clamp(64px,12vh,150px)}
-.zm-beat-label{display:inline-block;font:700 11px/1.4 "DM Sans Variable",Arial,sans-serif;letter-spacing:.14em;color:#ffda24}
-main.editorial-home .editorial-flow #introduction .zm-manifesto-title{font:750 clamp(60px,10vw,180px)/.95 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.075em;margin:clamp(16px,3vw,38px) 0;color:#f4f1e8;clip-path:none;opacity:1;transform:none}
-.zm-manifesto-title em{font:400 1.08em/.92 "Instrument Serif",Georgia,serif;letter-spacing:-.04em;color:#ffda24}
-.zm-manifesto-aside{display:grid;grid-template-columns:minmax(32px,.28fr) minmax(0,1fr);gap:clamp(16px,4vw,52px);align-items:center;max-width:900px;margin:clamp(18px,4vw,56px) 0 0 auto}
-.zm-reading-rule{height:2px;background:#ffda24;transform-origin:left center}
-.zm-manifesto-aside p{font:400 clamp(25px,4.1vw,65px)/1.12 "Instrument Serif",Georgia,serif;letter-spacing:-.025em;margin:0;max-width:22ch}
-main.editorial-home .editorial-flow #introduction .ed-manifesto-bottom{max-width:1640px;margin:clamp(32px,6vw,86px) auto 0;align-items:end}
-@media(prefers-reduced-motion:no-preference){
- main.editorial-home .editorial-flow[data-ed-motion=true] #introduction:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .zm-reading-rule{transform:scaleX(calc(.20 + var(--ed-enter,1)*.80))}
-}
-/* Small Moments: one record at reading scale, no artwork masks, real title,
-   issuer and a keyboard-reachable action. The existing pinned rail remains. */
-main.editorial-home .editorial-flow #film-memory .ed-document{margin:0!important;transform:none;translate:none;min-width:0;align-self:center}
-main.editorial-home .editorial-flow #film-memory .ed-document-image{height:auto;aspect-ratio:1.46;clip-path:none;transform:none;overflow:hidden;padding:clamp(8px,1.2vw,18px);border:1px solid #d7d8cc;border-radius:2px;background:#fffdf7;box-shadow:0 9px 22px #24291e10}
-main.editorial-home .editorial-flow #film-memory .ed-document-image img{transform:none;translate:none;rotate:none;clip-path:none;filter:none;opacity:1;object-fit:contain}
-main.editorial-home .editorial-flow #film-memory .ed-document figcaption{gap:5px;padding-top:10px;min-width:0}
-main.editorial-home .editorial-flow #film-memory .ed-document figcaption>strong{font-size:clamp(17px,2vw,30px);line-height:1.16;overflow-wrap:anywhere}
-.zm-memory-issuer{margin:0;font-size:clamp(12px,1vw,16px);line-height:1.35;color:#515d45;overflow-wrap:anywhere}
-.zm-memory-record-link{color:#24291e;text-decoration:none;border-bottom:1px solid currentColor;display:inline-flex;align-items:center;justify-content:space-between;gap:16px;font-size:13px;font-weight:700;min-height:44px;max-width:100%}
-main.editorial-home .editorial-flow #film-memory .zm-memory-record-link:focus-visible{outline:2px solid #24291e;outline-offset:3px}
-@media(min-width:900px){
- main.editorial-home .editorial-flow:not([data-ed-cinema=true]) #film-memory .ed-collage-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto;gap:clamp(20px,4vw,55px)}
- main.editorial-home .editorial-flow:not([data-ed-cinema=true]) #film-memory .ed-collage-intro{grid-column:1/-1;grid-row:auto}
- main.editorial-home .editorial-flow:not([data-ed-cinema=true]) #film-memory .ed-document{grid-column:auto;grid-row:auto}
-}
-@media(min-width:900px) and (min-height:500px) and (pointer:fine) and (prefers-reduced-motion:no-preference){
- main.editorial-home .editorial-flow[data-ed-cinema=true] #film-memory .ed-collage-grid:has(.ed-document){display:flex;grid-template-columns:none;grid-template-rows:none;align-items:center;gap:clamp(24px,4vw,72px);padding:calc(var(--memory-nav-safe,100px) + 24px) 23vw 56px var(--ed-pad);height:100%;box-sizing:border-box}
- main.editorial-home .editorial-flow[data-ed-cinema=true] #film-memory .ed-collage-grid:has(.ed-document) .ed-collage-intro{flex:0 0 min(37vw,520px);width:min(37vw,520px)}
- main.editorial-home .editorial-flow[data-ed-cinema=true] #film-memory .ed-collage-grid:has(.ed-document) .ed-document{flex:0 0 min(54vw,920px);width:min(54vw,920px);max-width:none;transform:none;translate:none}
- main.editorial-home .editorial-flow[data-ed-cinema=true] #film-memory .ed-collage-grid:has(.ed-document) .ed-document .ed-document-image{height:min(48svh,35vw);aspect-ratio:auto;clip-path:none;transform:none}
-}
-@media(max-width:899px){
- main.editorial-home .editorial-flow:not([data-ed-mobile-cinema=true]) #film-memory .ed-collage-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:26px}
- main.editorial-home .editorial-flow:not([data-ed-mobile-cinema=true]) #film-memory :is(.ed-document,.ed-collage-intro){grid-column:1;grid-row:auto;width:100%;max-width:none}
- main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-memory .ed-collage-grid{gap:6vw;padding:calc(var(--m-scene-safe,88px) + 34px) 11vw 48px var(--ed-pad);align-items:center}
- main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-memory .ed-document:nth-of-type(n){flex:0 0 78vw;width:78vw;transform:none;translate:none}
- main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-memory .ed-document-image{height:min(37svh,56vw);aspect-ratio:auto;clip-path:none;transform:none}
- main.editorial-home .editorial-flow #film-memory .ed-document figcaption>strong{font-size:clamp(17px,4.8vw,22px);line-height:1.2}
- main.editorial-home .editorial-flow #film-memory .ed-document-image img{transform:none;clip-path:none}
-}
-/* Beat 02 — three legible words. Only their small index/rule changes emphasis.
-   This is a reversible scroll score; the words never translate out of frame. */
-main.editorial-home .editorial-flow #film-future .ed-future-words{transform:none;translate:none;gap:clamp(6px,1vw,14px);min-width:0}
-main.editorial-home .editorial-flow[data-ed-motion=true] #film-future .ed-future-words>*{transform:none!important;translate:none;opacity:1;clip-path:none!important}
-main.editorial-home .editorial-flow #film-future .ed-future-words>*{position:relative;box-sizing:border-box;isolation:isolate;max-width:100%;padding:.075em .11em .12em;line-height:.94;overflow:visible}
-main.editorial-home .editorial-flow #film-future .ed-future-words>span:first-child{background:#24291e;color:#f4f1e8;--zm-word-active:var(--zm-think-emphasis,.35)}
-main.editorial-home .editorial-flow #film-future .ed-future-words>em{background:#ffda24;color:#24291e;--zm-word-active:var(--zm-learn-emphasis,.75)}
-main.editorial-home .editorial-flow #film-future .ed-future-words>span:last-child{background:#354431;color:#f4f1e8;--zm-word-active:var(--zm-build-emphasis,.35)}
-main.editorial-home .editorial-flow #film-future .ed-future-words>*::after{content:"";position:absolute;left:0;bottom:0;right:0;height:3px;background:currentColor;transform-origin:left center;transform:scaleX(.33);opacity:.75;pointer-events:none}
-@media(prefers-reduced-motion:no-preference){
- main.editorial-home .editorial-flow #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-words>*::after{transform:scaleX(calc(.14 + .86 * var(--zm-word-active)));opacity:1}
-}
-@media(min-width:900px){main.editorial-home .editorial-flow #film-future .ed-future-words{align-items:stretch;font-size:clamp(58px,9vw,152px);padding-right:var(--ed-pad)}}
-/* Two Worlds: the work has a precise edge; the signature takes a softer beat.
-   Destinations are stable, solid-color reading surfaces, not overlaid artwork. */
-main.editorial-home .editorial-flow .zm-worlds .zm-world-build .zm-world-copy{background:#ffda24;color:#24291e}
-main.editorial-home .editorial-flow .zm-worlds .zm-world-life .zm-world-copy{background:#354431;color:#f4f1e8}
-main.editorial-home .editorial-flow[data-ed-motion=true] .zm-worlds .zm-world-copy>strong{transform:none;translate:none;clip-path:none;opacity:1}
-main.editorial-home .editorial-flow[data-ed-motion=true] .zm-worlds .zm-world-copy>small{transform:none;opacity:1;min-height:44px}
-@media(prefers-reduced-motion:no-preference){
- main.editorial-home .editorial-flow .zm-worlds:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .zm-world-build .zm-world-art{transform:translateY(calc((1 - var(--ed-reveal,1))*-2%)) scale(calc(.98 + var(--ed-reveal,1)*.02))}
- main.editorial-home .editorial-flow .zm-worlds:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .zm-world-life .zm-world-art{transform:scale(calc(.98 + var(--ed-reveal,1)*.02))}
-}
-/* Beat 03 — the line leads toward work; no repeated marquee. */
-.zm-work-handoff{display:flex;align-items:center;gap:clamp(8px,1.5vw,24px);margin-top:clamp(20px,4vw,56px);color:#ffda24;font:650 clamp(9px,.8vw,12px)/1.4 "DM Sans Variable",Arial,sans-serif;letter-spacing:.12em}
-.zm-work-handoff svg{flex:1;min-width:0;height:clamp(35px,6vw,82px);overflow:visible;fill:currentColor}
-.zm-work-handoff path{fill:none;stroke:currentColor;stroke-width:1.5;vector-effect:non-scaling-stroke}
-.zm-work-handoff .zm-handoff-echo{opacity:.28}
-@media(prefers-reduced-motion:no-preference){
- main.editorial-home .editorial-flow[data-ed-motion=true] #projects:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .zm-handoff-line{stroke-dasharray:1;stroke-dashoffset:calc(.82 - var(--ed-enter,1)*.82)}
-}
-main.editorial-home .editorial-flow #projects .ed-work-item{display:flex;flex-direction:column;align-items:stretch;gap:clamp(14px,2vw,26px);min-width:0}
-main.editorial-home .editorial-flow #projects .ed-work-copy{order:0;transform:none;translate:none;padding-top:0;margin:0;max-width:none}
-main.editorial-home .editorial-flow #projects .ed-work-copy :is(h3,p,.ed-link){transform:none;translate:none;clip-path:none;opacity:1}
-main.editorial-home .editorial-flow #projects .ed-work-copy .ed-kicker{color:#d5dfc8;line-height:1.5;letter-spacing:.08em}
-main.editorial-home .editorial-flow #projects .ed-work-copy p{margin:10px 0 4px}
-main.editorial-home .editorial-flow #projects .ed-work-image{order:1;min-width:0;clip-path:none;opacity:1;transform:none;margin:0}
-main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-item .ed-work-image .studio54-edition{transform:none}
-@media(min-width:900px){
- main.editorial-home .editorial-flow #projects .ed-work-grid .ed-work-earth{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);align-items:center;gap:clamp(18px,4vw,52px)}
-}
-/* The archive and Social are evidence and an invitation, not additional title reveals. */
-main.editorial-home .editorial-flow #milestone-preview .ed-archive-grid .ed-archive-item .ed-archive-image{clip-path:none;transform:none;opacity:1}
-main.editorial-home .editorial-flow .ed-social-sticky .ed-social-links{background:#f4f1e8;color:#24291e;border:1px solid #79846960;border-radius:6px;padding:8px clamp(8px,2vw,24px);gap:clamp(6px,2vw,24px);max-width:100%;box-sizing:border-box;flex-wrap:wrap;justify-content:center}
-main.editorial-home .editorial-flow .ed-social-sticky .ed-social-links a{color:#24291e;padding:4px 10px}
-/* Beat 04 — keep the existing imagined portrait, signature, and footer but make
-   the contact action dominant. Static contour framing ends the journey. */
-main.editorial-home .editorial-flow #next-chapter .finale-heading{clip-path:none;opacity:1}
-main.editorial-home .editorial-flow #next-chapter .finale-heading h2{color:#f4f1e8;transform:none;opacity:1}
-main.editorial-home .editorial-flow #next-chapter .finale-line-two{color:#ffda24}
-main.editorial-home .editorial-flow #next-chapter :is(.finale-pages,.finale-right,.finale-socials,.finale-cta){opacity:1;transform:none;translate:none;clip-path:none}
-main.editorial-home .editorial-flow #next-chapter .finale-nav>a{translate:none;min-height:44px}
-main.editorial-home .editorial-flow #next-chapter .finale-cta>a{min-height:44px;background:#ffda24;color:#24291e;display:inline-flex;align-items:center;justify-content:center;gap:12px}
-@media(max-width:899px){
- main.editorial-home .editorial-flow #introduction .zm-manifesto-title{font-size:clamp(48px,13vw,100px);max-width:12ch;line-height:.98}
- .zm-manifesto-aside{grid-template-columns:32px minmax(0,1fr);margin-top:24px;gap:12px}
- main.editorial-home .editorial-flow #introduction .ed-manifesto-bottom{margin-top:34px}
- main.editorial-home .editorial-flow .ed-social-sticky .ed-social-links{gap:3px;padding:5px;justify-content:space-evenly;width:100%}
- main.editorial-home .editorial-flow .ed-social-sticky .ed-social-links a{padding:4px 6px;font-size:13px;min-height:44px}
 }
 /* Interior reading editions. The original project illustrations are explicitly
    illustrative. No added imagery, no invented project measurements. */
@@ -164,28 +51,6 @@ main.studio54.milestones-page .archive-desk .desk-paper img{object-fit:contain}
  main.studio54.case-page .finance-panel .finance-result{grid-template-columns:minmax(0,1fr);gap:15px}
  main.studio54.case-page .experiment-label{flex-wrap:wrap;font-size:10px}
 }
-/* Final reading positions remain stationary; retain desktop vertical centering. */
-@media(min-width:900px){
- main.editorial-home .editorial-flow[data-ed-motion=true] #next-chapter :is(.finale-pages,.finale-right),
- main.editorial-home .editorial-flow #next-chapter :is(.finale-pages,.finale-right){transform:translateY(-50%)}
- main.editorial-home .editorial-flow[data-ed-cinema=true] #projects .ed-work-grid .ed-work-item{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);align-items:center;gap:clamp(20px,4vw,64px)}
-}
-@media(max-width:899px){
- main.editorial-home .editorial-flow #next-chapter .zm-finale-reference-title>span,
- main.editorial-home .editorial-flow #next-chapter .zm-finale-reference-title>span:last-child{white-space:normal;font-size:1em;line-height:1}
- main.editorial-home .editorial-flow[data-ed-motion=true] #next-chapter :is(.finale-pages,.finale-socials,.finale-cta){transform:none;opacity:1;translate:none}
- main.editorial-home .editorial-flow #next-chapter .finale-edition{display:block}
- main.editorial-home .editorial-flow #film-future .ed-future-words,
- main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future .ed-future-words{font-size:clamp(44px,13vw,96px);align-items:stretch}
- main.editorial-home .editorial-flow[data-ed-motion=true][data-ed-mobile-cinema=true] #film-future[data-scene-tier=lite] .ed-future-words>:is(span:first-child,em,span:last-child){transform:none!important;clip-path:none!important}
-}
 main.studio54.case-page .zm-case-lead .zm-case-question{font:400 clamp(28px,4vw,58px)/1.02 "Instrument Serif",Georgia,serif;letter-spacing:-.035em;margin-bottom:18px}
-main.editorial-home .editorial-flow #projects .ed-work-earth .ed-work-copy{display:block;max-width:none;margin:0}
-main.editorial-home .editorial-flow #projects .ed-work-earth .ed-work-copy p{margin:10px 0 4px}
-@media(min-width:900px){
- main.editorial-home .editorial-flow[data-ed-cinema=true] #projects .ed-work-grid .ed-work-item>.ed-work-copy{grid-column:1;grid-row:1}
- main.editorial-home .editorial-flow[data-ed-cinema=true] #projects .ed-work-grid .ed-work-item>.ed-work-image{grid-column:2;grid-row:1}
-}
-@media(max-width:899px){
- main.editorial-home .editorial-flow #film-present .zm-mobile-look[aria-pressed=true]>svg{transform:none}
-}
+
+@media(max-width:899px){main.editorial-home .editorial-flow #film-present .zm-mobile-look[aria-pressed=true]>svg{transform:none}}

@@ -1,0 +1,54 @@
+/* V113.1 — recover the film, not the slideshow. The V112.1 scene structure,
+   physical collage, reveal nodes, posters and fan are reinstated. Preserve
+   complete readable words and keep the original scroll/motion-quality clock. */
+@media(prefers-reduced-motion:no-preference){
+ /* All transforms here are reversible; never mask the primary glyphs. */
+ main.editorial-home .editorial-flow[data-ed-motion=true] [data-scene-tier=cinematic] :is(h2,h3,.ed-statement-line,.zm-world-copy) .kt-glyph{
+  transform:translate3d(0,calc(var(--kt-q,0)*.40em),0) rotate(calc(var(--kt-q,0)*var(--kt-direction,1)*4deg));
+  opacity:1!important;clip-path:none!important;
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] [data-scene-tier=cinematic].ed-manifesto .ed-statement-line .kt-glyph{
+  transform:translate3d(calc(var(--kt-q,0)*var(--kt-direction,1)*.18em),calc(var(--kt-q,0)*.28em),0) skewX(calc(var(--kt-q,0)*var(--kt-direction,1)*-7deg));
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] [data-scene-tier=balanced] :is(h2,h3,.ed-statement-line,.zm-world-copy) .kt-glyph{
+  transform:translateY(calc(var(--kt-q,0)*.20em));opacity:1!important;clip-path:none!important;
+ }
+ /* The project posters unfold as before; links themselves remain readable. */
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-image:focus-visible,
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-image:focus-visible .studio54-edition{clip-path:none!important;transform:none!important}
+ /* A moving camera through the original typographic stack, not three cards. */
+ main.editorial-home .editorial-flow[data-ed-motion=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-words>*{clip-path:none!important;opacity:1!important;transform-origin:50% 70%}
+ main.editorial-home .editorial-flow[data-ed-motion=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-words>span:first-child{
+  transform:translate3d(calc((1 - var(--future-think,1))*-6%),calc((1 - var(--future-think,1))*-.22em),0) rotate(calc((1 - var(--future-think,1))*-5deg)) scale(calc(.89 + var(--future-think,1)*.11))!important;
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-words>em{
+  transform:translate3d(calc((1 - var(--future-learn,1))*8%),0,0) rotateY(calc((1 - var(--future-learn,1))*22deg)) scale(calc(.86 + var(--future-learn,1)*.14))!important;
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-words>span:last-child{
+  transform:translate3d(calc((1 - var(--future-build,1))*-5%),calc((1 - var(--future-build,1))*.24em),0) rotate(calc((1 - var(--future-build,1))*4deg)) scale(calc(.88 + var(--future-build,1)*.12))!important;
+ }
+ /* Focus beats must resolve immediately, including keyboard traversal. */
+ main.editorial-home .editorial-flow[data-ed-motion=true] :is(a,button):focus-visible .kt-glyph{transform:none!important;opacity:1!important;clip-path:none!important}
+}
+@media(min-width:900px) and (min-height:500px) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ /* One new pinned sequence. Sticky only in the existing cinema layout;
+    the extra height is native scroll, not hijacking or forced snapping. */
+ main.editorial-home .editorial-flow[data-ed-cinema=true] #film-future{display:block;position:relative;height:170svh;min-height:0;padding:0;overflow:visible;border:0}
+ main.editorial-home .editorial-flow[data-ed-cinema=true] #film-future .zm-future-stage{position:sticky;top:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:4vw;height:100svh;padding-block:clamp(24px,7vh,95px);box-sizing:border-box;overflow:hidden;isolation:isolate;background:#f4f1e8}
+ main.editorial-home .editorial-flow[data-ed-cinema=true] #film-future .ed-future-words{font-size:clamp(60px,min(10vw,20svh),170px);perspective:900px;min-width:0;align-items:flex-start;transform:none}
+ main.editorial-home .editorial-flow[data-ed-cinema=true] #film-future .ed-future-words>*{max-width:100%;transform-origin:50% 70%}
+ main.editorial-home .editorial-flow[data-ed-cinema=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-words>span:first-child{
+  transform:translate3d(calc((1 - var(--zm-cine-think,1))*-6%),calc((1 - var(--zm-cine-think,1))*-.30em - var(--zm-cine-exit,0)*.13em),0) rotate(calc((1 - var(--zm-cine-think,1))*-7deg)) scale(calc(.83 + var(--zm-cine-think,1)*.17 + var(--zm-think-emphasis,0)*.035))!important;
+ }
+ main.editorial-home .editorial-flow[data-ed-cinema=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-words>em{
+  transform:translate3d(calc((1 - var(--zm-cine-learn,1))*12%),0,0) rotateY(calc((1 - var(--zm-cine-learn,1))*28deg)) scale(calc(.79 + var(--zm-cine-learn,1)*.21 + var(--zm-learn-emphasis,0)*.035))!important;
+ }
+ main.editorial-home .editorial-flow[data-ed-cinema=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-words>span:last-child{
+  transform:translate3d(calc((1 - var(--zm-cine-build,1))*-6%),calc((1 - var(--zm-cine-build,1))*.36em + var(--zm-cine-exit,0)*.13em),0) rotate(calc((1 - var(--zm-cine-build,1))*7deg)) scale(calc(.81 + var(--zm-cine-build,1)*.19 + var(--zm-build-emphasis,0)*.035))!important;
+ }
+}
+@media(max-width:899px) and (min-height:650px) and (prefers-reduced-motion:no-preference){
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-words>span:first-child{transform:translateX(calc((1 - var(--m-think,1))*-4%)) rotateY(calc((1 - var(--m-think,1))*-16deg)) scale(calc(.90 + var(--m-think,1)*.10))!important}
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-words>em{transform:translateX(calc((1 - var(--m-learn,1))*4%)) rotateY(calc((1 - var(--m-learn,1))*16deg)) scale(calc(.90 + var(--m-learn,1)*.10))!important}
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-words>span:last-child{transform:translateY(calc((1 - var(--m-build,1))*.15em)) rotateX(calc((1 - var(--m-build,1))*-18deg)) scale(calc(.90 + var(--m-build,1)*.10))!important}
+}

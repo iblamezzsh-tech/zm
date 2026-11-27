@@ -178,11 +178,18 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     if(s.classList.contains("ed-future")){
      // Sequential reading emphasis, driven by reversible scene progress.
      // Keep all three words visible; only their short accent rules change.
-     const beat=mobileCinema&&h>=650?local:pass;
+     const beat=(cinema||mobileCinema&&h>=650)?local:pass;
      const [think,learn,build]=readingEmphasis(beat);
      write(s,"--zm-think-emphasis",think);
      write(s,"--zm-learn-emphasis",learn);
      write(s,"--zm-build-emphasis",build);
+     if(cinema){
+      // A single native pinned act, with a real reading hold and an exit.
+      write(s,"--zm-cine-think",ease(0,.25,local));
+      write(s,"--zm-cine-learn",ease(.16,.49,local));
+      write(s,"--zm-cine-build",ease(.36,.70,local));
+      write(s,"--zm-cine-exit",ease(.86,1,local));
+     }
      if(mobileCinema&&h>=650){
       // A short native sticky typographic act: each word occupies a separate
       // phase, then all three lock into the final composition before release.

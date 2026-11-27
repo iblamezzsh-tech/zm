@@ -4,6 +4,7 @@ import Portrait from "./portrait";
 import Signature from "./signature";
 import ProjectEdition from "./project-edition";
 import EditorialFlow from "./editorial-flow";
+import FilmWords from "./film-words";
 import {getFeaturedRecords} from "./featured-records";
 import {certificateRecords} from "./achievements/data";
 import {existsSync} from "node:fs";
@@ -25,6 +26,7 @@ import "./home-atmosphere-v78.css";
 import "./home-contours-v80.css";
 import OpeningMarquee from "./opening-marquee";
 import "./opening-v81.css";
+import KineticText from "./kinetic-text";
 import "./kinetic-v84.css";
 import "./motion-v84.css";
 import "./memory-v89.css";
@@ -49,6 +51,7 @@ import "./adaptive-motion-v107.css";
 import "./audit-v111.css";
 import "./audit-v112.css";
 import "./portrait-in-progress.css";
+import "./cinematic-recovery.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -68,55 +71,51 @@ export default function HomeChapters(){
    </div>
   </section>
   <section className="ed-manifesto" id="introduction" data-motion-scene="manifesto" data-ed-scene data-ed-theme="dark"><PageAtmosphere kind="story" dark/>
-   <div className="ed-gutter ed-caption"><span>ANDIJAN, UZBEKISTAN</span><span>A PORTRAIT IN PROGRESS</span></div>
-   <div className="zm-manifesto-reading ed-gutter">
-    <span className="zm-beat-label">01 / MEET THE PERSON</span>
-    <h2 className="zm-manifesto-title">Curious by <em>nature.</em></h2>
-    <div className="zm-manifesto-aside"><span className="zm-reading-rule" aria-hidden="true"/><p>Turning questions into ideas and ideas into action.</p></div>
-   </div>
+   <div className="ed-gutter ed-caption"><span>01 / ANDIJAN, UZBEKISTAN</span><span>A PORTRAIT IN PROGRESS</span></div>
+   <div className="ed-manifesto-portrait" data-ed-reveal><img src="/images/portrait-present.webp" alt="ZiyoMuhammad" fetchPriority="low" decoding="async"/><span>FIG. 01 — THE PRESENT</span></div>
+   <h2 className="ed-statement" aria-label="Curious by nature. Turning questions into ideas and ideas into action.">
+    {["Curious by nature.","Turning questions","into ideas and","ideas into action."].map((line,i)=><span className={"ed-statement-line line-"+i} key={line} data-ed-line style={{"--ed-i":i} as React.CSSProperties}><KineticText text={line} kind="marker" index={i}/></span>)}
+   </h2>
    <div className="ed-gutter ed-manifesto-bottom"><p>Student. Founder. Always learning. I’m not there yet — and that is precisely what makes the journey interesting.</p><Link href="/about" className="ed-link">My story <span><ArrowIcon direction="up-right"/></span></Link></div>
   </section>
   <section className={"ed-collage ed-paper"+(records.length===0?" zm-memory-empty":"")} id="film-memory" data-motion-scene="memory" data-ed-scene data-ed-theme="light">
-   <div className="ed-collage-sticky"><PageAtmosphere kind="gallery"/><div className="ed-gutter ed-caption"><span>FIELD NOTES / THE THINGS I KEEP</span><span>ORIGINAL RECORDS</span></div>
+   <div className="ed-collage-sticky"><PageAtmosphere kind="gallery"/><div className="ed-gutter ed-caption"><span>02 / THE THINGS I KEEP</span><span>ORIGINAL RECORDS</span></div>
    <div className="ed-collage-grid">
-    <div className="ed-collage-intro"><h2 className="kt-heading" aria-label="Small moments.">Small<br/><em>moments.</em></h2><p>On a court, around a Zakovat table, in a classroom. Little things that make up a life.</p><Link href="/about" className="ed-link">Read my journey <span><ArrowIcon direction="up-right"/></span></Link></div>
-    {records.map((r,i)=>r.document&&<figure className={"ed-document ed-document-"+i} key={r.id} data-ed-drift style={{"--ed-tilt":"0deg","--ed-depth":0} as React.CSSProperties}>
-     <div className="ed-document-image"><img src={r.document.src} alt={r.document.alt} decoding="async" fetchPriority="low"/></div>
-     <figcaption><span>{String(i+1).padStart(2,"0")} / {r.dateLabel} / {r.chapter}</span><strong>{r.title}</strong><p className="zm-memory-issuer">{r.organization}</p><Link href={"/achievements#record-"+r.id} className="zm-memory-record-link" data-mobile-record={r.id}>Inspect original <ArrowIcon direction="up-right"/></Link></figcaption>
-    </figure>)}
+    <div className="ed-collage-intro"><h2 className="kt-heading" aria-label="Small moments."><KineticText text="Small" kind="marker"/><br/><em><KineticText text="moments." kind="marker" index={1}/></em></h2><p>On a court, around a Zakovat table, in a classroom. Little things that make up a life.</p><Link href="/about" className="ed-link">Read my journey <span><ArrowIcon direction="up-right"/></span></Link></div>
+    {records.map((r,i)=>r.document&&<figure className={"ed-document ed-document-"+i} key={r.id} data-ed-drift style={{"--ed-tilt":[-2,2,-1,2,-2][i%5]+"deg","--ed-depth":[.28,-.18,.43,-.28,.20][i%5]} as React.CSSProperties}><div className="ed-document-image" data-ed-reveal><img src={r.document.src} alt={r.document.alt} decoding="async" fetchPriority="low"/><button type="button" className="zm-memory-inspect" data-mobile-record={r.id} aria-label={"Inspect "+r.title}><span aria-hidden="true"><ArrowIcon direction="up-right"/></span></button></div><figcaption><span><KineticText text={r.dateLabel+" / "+r.chapter} kind="stamp"/></span><strong><KineticText text={r.headline} kind="caption" index={1}/></strong></figcaption></figure>)}
    </div><div className="zm-memory-rail-meter" aria-hidden="true"><span>SCROLL / EXPLORE</span><i><b/></i><span>{String(records.length).padStart(2,"0")} RECORDS</span></div></div>
   </section>
   <section className="ed-future ed-paper" id="film-future" data-motion-scene="future" data-ed-scene data-ed-theme="light"><div className="zm-future-stage"><PageAtmosphere kind="finance"/>
-   <div className="ed-gutter ed-future-content"><span className="ed-kicker">02 / HOW I THINK</span><h2 className="kt-heading" aria-label="Ideas worth acting on.">Ideas worth<br/><em>acting on.</em></h2><p>Economics, technology, education and a desire to turn curiosity into something real.</p><Link href="/projects" className="ed-link">Explore my projects <span><ArrowIcon direction="up-right"/></span></Link></div>
+   <div className="ed-gutter ed-future-content"><span className="ed-kicker">03 / STILL BECOMING</span><h2 className="kt-heading" aria-label="Ideas worth acting on."><KineticText text="Ideas worth" kind="assemble"/><br/><em><KineticText text="acting on." kind="unfold" index={1}/></em></h2><p>Economics, technology, education and a desire to turn curiosity into something real.</p><Link href="/projects" className="ed-link">Explore my projects <span><ArrowIcon direction="up-right"/></span></Link></div>
    <div className="ed-future-words" aria-hidden="true"><span>THINK.</span><em>LEARN.</em><span>BUILD.</span></div><div className="zm-future-timeline" aria-hidden="true"><span>01 / THINK</span><i/><span>02 / LEARN</span><i/><span>03 / BUILD</span></div></div>
   </section>
   <section className="zm-worlds" data-motion-scene="worlds" aria-label="Two sides of my journey" data-ed-scene data-ed-theme="dark"><SurfaceSeam tone="ink"/><PageAtmosphere kind="think" dark/>
-   <div className="ed-gutter ed-caption"><span>02 / TWO WORLDS</span><span>ONE CURIOSITY</span></div>
+   <div className="ed-gutter ed-caption"><span>03 / TWO WORLDS</span><span>ONE CURIOSITY</span></div>
    <div className="zm-worlds-grid">
     <Link href="/projects" className="zm-world zm-world-build" data-ed-reveal>
      <div className="zm-world-art" aria-hidden="true"><PageAtmosphere kind="think"/><ProjectEdition project={projects[0]}/></div>
-     <div className="zm-world-copy"><span>01 / THE WORK</span><strong>What I <em>build.</em></strong><small>Projects &amp; decisions <b aria-hidden="true"><ArrowIcon direction="up-right"/></b></small></div>
+     <div className="zm-world-copy"><span>01 / THE WORK</span><strong><KineticText text="What I" kind="assemble"/> <em><KineticText text="build." kind="engrave" index={1}/></em></strong><small>Explore the projects <b aria-hidden="true"><ArrowIcon direction="up-right"/></b></small></div>
     </Link>
     <Link href="/off-the-record" className="zm-world zm-world-life" data-ed-reveal>
      <div className="zm-world-art" aria-hidden="true"><PageAtmosphere kind="notebook" dark/><div className="zm-world-sig"><Signature/></div></div>
-     <div className="zm-world-copy"><span>02 / OFF THE RECORD</span><strong>What I <em>love.</em></strong><small>Interests &amp; personal life <b aria-hidden="true"><ArrowIcon direction="up-right"/></b></small></div>
+     <div className="zm-world-copy"><span>02 / OFF THE RECORD</span><strong><KineticText text="What I" kind="unfold"/> <em><KineticText text="love." kind="swerve" index={1}/></em></strong><small>Beyond the résumé <b aria-hidden="true"><ArrowIcon direction="up-right"/></b></small></div>
     </Link>
    </div>
   </section>
   <section className="ed-work" id="projects" data-motion-scene="projects" data-ed-scene data-ed-theme="dark"><PageAtmosphere kind="gallery" dark/>
-   <div className="ed-gutter ed-caption"><span>03 / WHAT I MAKE</span><span>SELECTED INITIATIVES / 01 — 03</span></div>
-   <div className="zm-work-handoff ed-gutter" aria-hidden="true"><span>QUESTIONS</span><svg viewBox="0 0 1000 82" preserveAspectRatio="none"><path className="zm-handoff-echo" d="M0 57C190 57 202 9 370 9S626 72 775 51 910 28 1000 28"/><path className="zm-handoff-line" pathLength="1" d="M0 41C190 41 202 0 370 0S626 63 775 42 910 13 1000 13"/><circle cx="995" cy="13" r="4"/></svg><span>ACTION</span></div><div className="ed-gutter ed-work-heading"><h2 className="kt-heading" aria-label="Ideas into action.">Ideas into <em>action.</em></h2><p>Three different interests. One desire to turn curiosity into something real.</p></div>
+   <div className="ed-gutter ed-caption"><span>04 / SELECTED INITIATIVES</span><span>01 — 03</span></div>
+   <div className="ed-work-banner" aria-hidden="true" data-running="false"><div className="qa-marquee-track">{[0,1].map(i=><div key={i} className="qa-marquee-unit"><span>QUESTIONS <ArrowIcon direction="right"/> ACTION.</span><span>QUESTIONS <ArrowIcon direction="right"/> ACTION.</span></div>)}</div></div><div className="ed-gutter ed-work-heading"><h2 className="kt-heading" aria-label="Ideas into action."><KineticText text="Ideas into" kind="assemble"/> <em><KineticText text="action." kind="engrave" index={1}/></em></h2><p>Three different interests. One desire to turn curiosity into something real.</p></div>
    <div className="ed-gutter ed-work-grid">
     {projects.map((p,i)=><article className={"ed-work-item ed-work-"+p.kind} id={i===0?"exhibit-overthink":"exhibit-"+p.slug} key={p.slug} data-ed-scene data-ed-theme="dark">
      <div className="zm-project-mobile-index" aria-hidden="true"><span>SELECTED INITIATIVE / {p.number}</span><span>{p.role}</span></div>
-     <div className="ed-work-copy"><span className="ed-kicker">{p.number} / {p.category} / {p.role}</span><h3 className="ed-project-name">{p.name}</h3><p>{p.summary}</p><Link href={"/projects/"+p.slug} className="ed-link">Inside the project <span><ArrowIcon direction="up-right"/></span></Link></div>
      <Link href={"/projects/"+p.slug} className="ed-work-image" data-ed-reveal aria-label={"Explore "+p.name}><ProjectEdition project={p}/></Link>
+     <span className="ed-project-ghost" aria-hidden="true">{p.number}</span><div className="ed-work-copy"><span className="ed-kicker">{p.number} / {p.category}</span><h3 className="ed-project-name"><KineticText text={p.name} kind="press"/></h3><p>{p.summary}</p><Link href={"/projects/"+p.slug} className="ed-link">Inside the project <span><ArrowIcon direction="up-right"/></span></Link></div>
     </article>)}
    </div>
   </section>
   <section className="ed-archive" id="milestone-preview" data-motion-scene="archive" data-ed-scene data-ed-theme="dark"><PageAtmosphere kind="archive" dark/>
-   <div className="ed-gutter ed-caption"><span>03 / THE ARCHIVE</span><span>DOCUMENTED EXPERIENCES</span></div>
-   <div className="ed-gutter ed-archive-heading"><h2 className="kt-heading" aria-label="Every step leaves a mark.">Every step<br/><em>leaves a mark.</em></h2><Link href="/achievements" className="ed-link">All milestones <span><ArrowIcon direction="up-right"/></span></Link></div>
+   <div className="ed-gutter ed-caption"><span>05 / THE ARCHIVE</span><span>DOCUMENTED EXPERIENCES</span></div>
+   <div className="ed-gutter ed-archive-heading"><h2 className="kt-heading" aria-label="Every step leaves a mark."><KineticText text="Every step" kind="press"/><br/><em><KineticText text="leaves a mark." kind="engrave" index={1}/></em></h2><Link href="/achievements" className="ed-link">All milestones <span><ArrowIcon direction="up-right"/></span></Link></div>
    {archive.length===0&&<div className="ed-gutter zm-archive-empty"><span>ZM / ARCHIVE NOTES</span><p>Original documents are not available in this build. You can still explore the personal records.</p><Link href="/achievements" className="ed-link">Explore milestones <span><ArrowIcon direction="up-right"/></span></Link></div>}
    <div className="ed-gutter ed-archive-grid">{archive.map((r,i)=>r.document&&<Link href={"/achievements#record-"+r.id} className="ed-archive-item" key={r.id} data-return-record={r.id} data-ed-reveal style={{"--ed-i":i} as React.CSSProperties}>
     <div className="ed-record-display">
@@ -131,13 +130,13 @@ export default function HomeChapters(){
    </Link>)}</div>
   </section>
   <section className="ed-personal ed-paper" id="interests" data-motion-scene="personal" data-ed-scene data-ed-theme="light"><SurfaceSeam tone="paper"/><PageAtmosphere kind="notebook"/>
-   <div className="ed-gutter ed-caption"><span>INTERLUDE / OFF THE RECORD</span><span>MORE THAN ONE THING</span></div>
-   <div className="ed-gutter ed-personal-head"><h2 className="kt-heading" aria-label="What keeps me curious?">What keeps<br/><em>me curious?</em></h2><p>Not everything I do belongs on a résumé. A few things I enjoy, even without a deadline.</p></div>
+   <div className="ed-gutter ed-caption"><span>06 / OFF THE RECORD</span><span>MORE THAN ONE THING</span></div>
+   <div className="ed-gutter ed-personal-head"><h2 className="kt-heading" aria-label="What keeps me curious?"><KineticText text="What keeps" kind="unfold"/><br/><em><KineticText text="me curious?" kind="swerve" index={1}/></em></h2><p>Not everything I do belongs on a résumé. A few things I enjoy, even without a deadline.</p></div>
    <div className="ed-gutter ed-interest-list">{interests.map((s,i)=><Link href={"/off-the-record#"+s.toLowerCase()} data-ed-reveal key={s} style={{"--ed-i":i} as React.CSSProperties}><small>0{i+1}</small><span className="zm-interest-label"><span className="zm-interest-text">{s}</span></span><b><ArrowIcon direction="up-right"/></b></Link>)}</div>
    <div className="ed-gutter ed-personal-end"><Link href="/off-the-record" className="ed-link">Get to know me <span><ArrowIcon direction="up-right"/></span></Link></div>
   </section>
   <section className="ed-social ed-paper" data-motion-scene="social" data-ed-scene data-ed-theme="light">
-   <div className="ed-social-sticky"><PageAtmosphere kind="post"/><div className="ed-social-heading"><span className="ed-kicker">INTERLUDE / STAY IN TOUCH</span><h2 className="kt-heading" aria-label="See you around.">See you <em>around.</em></h2></div>
+   <div className="ed-social-sticky"><PageAtmosphere kind="post"/><div className="ed-social-heading"><span className="ed-kicker">07 / STAY IN TOUCH</span><h2 className="kt-heading" aria-label="See you around."><KineticText text="See you" kind="press"/> <em><KineticText text="around." kind="swerve" index={1}/></em></h2></div>
    <div className="ed-fan ed-fan-without-portrait" aria-hidden="true">
     {[0,1,2,3].map(i=><div className={"ed-fan-card ed-fan-"+i} key={i} style={{"--fan-i":i-1.5} as React.CSSProperties}>
      {i===0||i===3?<ProjectEdition project={projects[i===0?0:2]}/>:records[i===1?0:records.length-1]?.document?<img src={records[i===1?0:records.length-1].document!.src} alt="" loading="lazy" decoding="async" fetchPriority="low"/>:<>
@@ -154,9 +153,9 @@ export default function HomeChapters(){
     <div className="finale-inner"><PageAtmosphere kind="earth" dark/>
      <div className="zm-mobile-finale-index" aria-label="Selected initiatives">{projects.map(p=><Link href={"/projects/"+p.slug} key={p.slug} className={"zm-finale-project-"+p.kind}>{p.name}</Link>)}</div>
      <div className="finale-heading">
-      <p className="finale-edition">04 / WHERE I AM GOING <span> / </span> IMAGINED FUTURE</p>
-      <h2 className="finale-desktop-title"><span className="finale-line-one">Always</span><em className="finale-line-two">becoming.</em></h2>
-      <h2 className="zm-finale-reference-title"><span>Always <em>becoming.</em></span></h2>
+      <p className="finale-edition">THE NEXT CHAPTER <span> / </span> IMAGINED FUTURE</p>
+      <h2 className="finale-desktop-title"><span className="finale-line-one"><FilmWords text="Always becoming."/></span><em className="finale-line-two"><FilmWords text="Never standing still."/></em></h2>
+      <h2 className="zm-finale-reference-title"><span><FilmWords text="Always"/> <em><FilmWords text="becoming."/></em></span><span><FilmWords text="Never standing"/> <em><FilmWords text="still."/></em></span></h2>
      </div>
      <div className="finale-portrait" role="img" aria-label="ZiyoMuhammad imagined in graduation attire">
       <img src="/images/portrait-present.webp" alt="" loading="lazy" fetchPriority="low" decoding="async"/>
