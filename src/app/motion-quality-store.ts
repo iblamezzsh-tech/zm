@@ -14,7 +14,7 @@ export const getServerMotionQuality=()=>initial;
 export const getMotionTier=()=>state.tier;
 export const sceneQualityEvent="zm-scene-motion-quality";
 export function getSceneTier(key:SceneKey|null):EffectiveTier{return state.preference==="auto"&&state.tier!=="reduced"&&key?state.scenes[key]?.tier??state.tier:state.tier}
-export function getNodeMotionTier(node:Element|null):EffectiveTier{const key=node?.closest<HTMLElement>("[data-motion-scene]")?.dataset.motionScene as SceneKey|undefined;return getSceneTier(key??null)}
+export function getNodeMotionTier(node:Element|null|undefined):EffectiveTier{const key=node?.closest<HTMLElement>("[data-motion-scene]")?.dataset.motionScene as SceneKey|undefined;return getSceneTier(key??null)}
 export function setActiveMotionScene(key:SceneKey|null){if(state.activeScene===key)return;state={...state,activeScene:key};for(const fn of listeners)fn()}
 export function setSceneReading(key:SceneKey,reading:SceneReading){const changed=getSceneTier(key)!==reading.tier;state={...state,scenes:{...state.scenes,[key]:reading}};for(const fn of listeners)fn();if(changed){learned[key]=reading.tier;try{localStorage.setItem(profileKey,JSON.stringify({version:1,savedAt:Date.now(),scenes:learned}))}catch{}window.dispatchEvent(new CustomEvent(sceneQualityEvent,{detail:key}))}}
 export function applySceneTiers(root:HTMLElement){root.querySelectorAll<HTMLElement>("[data-motion-scene]").forEach(node=>{const key=node.dataset.motionScene as SceneKey;if(key in sceneNames){const tier=getSceneTier(key);if(node.dataset.sceneTier!==tier)node.dataset.sceneTier=tier}})}
