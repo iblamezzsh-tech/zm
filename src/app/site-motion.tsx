@@ -58,7 +58,8 @@ export default function SiteMotion(){
    for(const {node,r} of values){
     const {el,kind,words}=node;
     const start=h*(kind==="opening"?1.18:.97);
-    const travel=Math.min(h*.8,Math.max(h*.34,r.height*.64));
+    const phone=window.innerWidth<=899;
+    const travel=Math.min(h*(phone ? .62:.8),Math.max(h*(phone ? .27:.34),r.height*(phone ? .49:.64)));
     const p=clamp((start-r.top)/travel);
     const draw=ease(.03,.88,p);
     write(el,"--site-in",draw);

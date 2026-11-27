@@ -28,8 +28,10 @@ const columns:Tile[][]=[
  ]
 ];
 function GalleryTile({tile,active}:{tile:Tile;active:boolean}){
+ const [unavailable,setUnavailable]=useState(false);
  return <div className={"zm-gallery-tile tile-"+tile.kind+(active?" is-highlighted":"")}>
-  {tile.image&&<img src={tile.image} alt="" draggable={false}/>}
+  {tile.image&&!unavailable&&<img src={tile.image} alt="" draggable={false} onError={()=>setUnavailable(true)}/>}
+  {tile.kind==="document"&&unavailable&&<div className="zm-menu-record-fallback"><span>ZM / PERSONAL ARCHIVE</span><strong>{tile.id==="story"?"My story.":"Milestones."}</strong><small>Document unavailable</small></div>}
   {tile.kind==="future"&&<img className="tile-attire" src="/images/portrait-academic-attire.svg" alt="" draggable={false}/>}
   {tile.kind==="project"&&<ProjectEdition project={portfolioProjects[0]}/>}
   {tile.kind==="notebook"&&<div className="tile-notebook-mark"><span>FIELD NOTES</span><b>Stay<br/><em>curious.</em></b><span>ZM / PERSONAL NOTEBOOK</span></div>}{tile.kind==="signature"&&<div className="tile-signature-mark"><Signature/></div>}
