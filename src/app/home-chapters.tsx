@@ -119,7 +119,7 @@ export default function HomeChapters(){
       <path d="M9 1H351Q359 1 359 9V252Q359 260 351 260H227Q215 260 207 270L181 298Q171 309 157 309H9Q1 309 1 301V9Q1 1 9 1Z" vectorEffect="non-scaling-stroke"/>
      </svg>
      <div className="ed-record-index" aria-hidden="true">{String(i+1).padStart(2,"0")}</div>
-     <div className="ed-archive-image"><img src={r.document.src} alt={r.document.alt} decoding="async" fetchPriority="low"/></div>
+     <div className="ed-archive-image"><img src={r.document.src} alt={r.document.alt} loading="lazy" decoding="async" fetchPriority="low"/></div>
      <div className="ed-record-tab"><span>{r.category}</span><b className={r.period?"":"ed-record-undated"}>{r.period?.match(/(?:19|20)\d{2}/g)?.at(-1)??String(i+1).padStart(2,"0")}</b></div>
     </div>
     <div className="ed-archive-label"><strong>{r.title}</strong><span className="ed-record-arrow" aria-hidden="true"><ArrowIcon direction="up-right"/></span></div>
@@ -135,7 +135,7 @@ export default function HomeChapters(){
    <div className="ed-social-sticky"><PageAtmosphere kind="post"/><div className="ed-social-heading"><span className="ed-kicker">07 / STAY IN TOUCH</span><h2 className="kt-heading" aria-label="See you around."><KineticText text="See you" kind="press"/> <em><KineticText text="around." kind="swerve" index={1}/></em></h2></div>
    <div className="ed-fan ed-fan-without-portrait" aria-hidden="true">
     {[0,1,2,3].map(i=><div className={"ed-fan-card ed-fan-"+i} key={i} style={{"--fan-i":i-1.5} as React.CSSProperties}>
-     {i===0||i===3?<ProjectEdition project={projects[i===0?0:2]}/>:records[i===1?0:records.length-1]?.document?<img src={records[i===1?0:records.length-1].document!.src} alt="" decoding="async" fetchPriority="low"/>:<>
+     {i===0||i===3?<ProjectEdition project={projects[i===0?0:2]}/>:records[i===1?0:records.length-1]?.document?<img src={records[i===1?0:records.length-1].document!.src} alt="" loading="lazy" decoding="async" fetchPriority="low"/>:<>
       <span className="zm-fan-desktop-fallback"><Signature/></span>
       <div className={"zm-fan-note zm-fan-note-"+i}><span>ZM / OFF THE RECORD</span>{i===1?<><strong>Stay<br/><em>curious.</em></strong><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="36"/><ellipse cx="50" cy="50" rx="17" ry="36" transform="rotate(45 50 50)"/><path d="M14 50H86M50 14V86"/></svg><small>THINK. LEARN. BUILD.</small></>:<><strong>Always<br/><em>learning.</em></strong><Signature/><small>THE NEXT CHAPTER</small></>}</div>
      </>}
@@ -154,8 +154,8 @@ export default function HomeChapters(){
       <h2 className="zm-finale-reference-title"><span><FilmWords text="Always"/> <em><FilmWords text="becoming."/></em></span><span><FilmWords text="Never standing"/> <em><FilmWords text="still."/></em></span></h2>
      </div>
      <div className="finale-portrait" role="img" aria-label="ZiyoMuhammad imagined in graduation attire">
-      <img src="/images/portrait-present.webp" alt="" fetchPriority="low" decoding="async"/>
-      <img src="/images/portrait-academic-attire.svg" alt="" fetchPriority="low" decoding="async"/>
+      <img src="/images/portrait-present.webp" alt="" loading="lazy" fetchPriority="low" decoding="async"/>
+      <img src="/images/portrait-academic-attire.svg" alt="" loading="lazy" fetchPriority="low" decoding="async"/>
      </div>
      <nav className="finale-nav finale-pages" aria-label="Explore the portfolio">
       <span><span className="zm-finale-desktop-label">01 / EXPLORE</span><span className="zm-finale-reference-label">PAGES</span></span>

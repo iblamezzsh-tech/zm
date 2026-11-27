@@ -1,0 +1,18 @@
+import assert from "node:assert/strict";
+import {initialReading,urgentFrameWindow,assessScene,mergePendingTier,parseProfile,profileLifetime} from "../src/app/scene-motion-policy.ts";
+const a=initialReading("cinematic",0);
+assert.equal(urgentFrameWindow(Array(12).fill(60)),true);
+assert.equal(urgentFrameWindow(Array(11).fill(60)),false);
+assert.equal(urgentFrameWindow([...Array(9).fill(16),120,135,160]),true);
+assert.equal(urgentFrameWindow(Array(12).fill(16)),false);
+assert.equal(assessScene(a,Array(12).fill(60),100).pending,"balanced");
+assert.equal(assessScene(a,Array(12).fill(16),100).pending,null);
+assert.equal(mergePendingTier("lite","cinematic"),"lite");
+assert.equal(mergePendingTier("cinematic","balanced"),"balanced");
+assert.equal(mergePendingTier(undefined,"balanced"),"balanced");
+assert.equal(parseProfile(JSON.stringify({version:1,savedAt:100,scenes:{memory:"lite",opening:"garbage",unknown:"cinematic"}}),101).memory,"lite");
+assert.equal(parseProfile(JSON.stringify({version:1,savedAt:100,scenes:{memory:"lite"}}),100+profileLifetime+1).memory,undefined);
+assert.equal(parseProfile(JSON.stringify({version:1,savedAt:200,scenes:{memory:"lite"}}),100).memory,undefined);
+assert.equal(parseProfile("not JSON",100).memory,undefined);
+assert.equal(parseProfile(JSON.stringify({version:2,savedAt:100,scenes:{memory:"lite"}}),101).memory,undefined);
+console.log("PASS 14 refinement assertions");

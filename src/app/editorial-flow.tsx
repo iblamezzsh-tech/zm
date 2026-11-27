@@ -6,7 +6,7 @@ import {getNodeMotionTier,setActiveMotionScene,applySceneTiers,sceneQualityEvent
 import type {SceneKey} from "./scene-motion-policy";
 const clamp=(x:number)=>Math.min(1,Math.max(0,x));
 const ease=(a:number,b:number,x:number)=>{const t=clamp((x-a)/(b-a));return t*t*(3-2*t)};
-const write=(el:HTMLElement,key:string,value:number)=>{const next=value.toFixed(5);if(el.style.getPropertyValue(key)!==next)el.style.setProperty(key,next)};
+const write=(el:HTMLElement,key:string,value:number)=>{const next=value.toFixed(4);if(el.style.getPropertyValue(key)!==next)el.style.setProperty(key,next)};
 // Smooth acceleration at both ends, almost linear in the reading interval.
 // The inverse uses this exact curve, including keyboard navigation.
 function railProgress(x:number){
@@ -44,6 +44,9 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   const owners=new Map<HTMLElement,HTMLElement|null>();
   [...reveals,...archiveNodes,...documents,...kinetic.map(k=>k.node)].forEach(node=>owners.set(node,node.closest<HTMLElement>("[data-ed-scene]")));
   let previousNear=new Set<HTMLElement>();
+  const sceneMetrics=new Map<HTMLElement,{top:number;height:number}>();
+  let metricsDirty=true,metricsWidth=0,metricsHeight=0,openingHeightCache=0,galleryHeightCache=0,futureHeightCache=0,documentHeightCache=0;
+  const finaleOffsets=new Map<HTMLElement,number>();
   let previousWorkVisible=false;
   const belt=el.querySelector<HTMLElement>(".ed-work-banner");
   const railActive=()=>cinema||mobileCinema;
@@ -73,6 +76,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   function stopPacing(){if(pacingRaf)cancelAnimationFrame(pacingRaf);pacingRaf=0;moving.clear();for(const list of channels.values())for(const c of list.values()){c.value=c.target;write(c.node,c.key,c.value)}}
 
   function layout(){
+   metricsDirty=true;
    if(!alive||!collage||!rail||!collageWindow)return;
    railDistance=railActive()?Math.max(0,rail.scrollWidth-collageWindow.clientWidth):0;
    collage.style.setProperty("--rail-distance",railDistance+"px");
@@ -80,21 +84,34 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   function render(){
    if(!alive)return;
    const h=window.innerHeight,w=window.innerWidth,anchor=Math.min(70,h*.12);
-   const openingHeight=mobileCinema?(openingWindow?.clientHeight||h):h;
-   const galleryHeight=mobileCinema?(collageWindow?.clientHeight||h):h;
-   const finaleTop=finaleInner?.getBoundingClientRect().top??0;
+   const y=window.scrollY;
+   const phone=w<=899;
+   if(metricsDirty||metricsWidth!==w||metricsHeight!==h){
+    metricsDirty=false;metricsWidth=w;metricsHeight=h;
+    openingHeightCache=openingWindow?.clientHeight||h;galleryHeightCache=collageWindow?.clientHeight||h;futureHeightCache=futureWindow?.clientHeight||h;
+    documentHeightCache=document.documentElement.scrollHeight;
+    for(const s of scenes){const r=s.getBoundingClientRect();sceneMetrics.set(s,{top:r.top+y,height:r.height})}
+    for(const node of [finaleHeading,finalePortrait,finalePages,finaleSignature,finaleCta])if(node)finaleOffsets.set(node,node.offsetTop);
+   }
+   const openingHeight=mobileCinema?openingHeightCache:h;
+   const galleryHeight=mobileCinema?galleryHeightCache:h;
+   const finaleScene=scenes.find(s=>s.id==="next-chapter");
+   const finaleMetric=finaleScene?sceneMetrics.get(finaleScene):undefined;
+   const finaleNear=!phone||!finaleMetric||finaleMetric.top-y<=h*1.35;
+   const finaleTop=finaleNear?(finaleInner?.getBoundingClientRect().top??0):0;
    // A short final panel may reach the bottom of the document before
    // every element crosses the usual reveal threshold. Settle the last
    // beats as native scrolling approaches the actual bottom.
-   const remaining=Math.max(0,document.documentElement.scrollHeight-window.scrollY-h);
+   const remaining=Math.max(0,(phone?documentHeightCache:document.documentElement.scrollHeight)-y-h);
    const mobileFinale=w<=899;
    const finaleEnd=mobileFinale?1-ease(0,h*.24,remaining):0;
-   const finaleEdge=(node:HTMLElement|null,fallback:number)=>mobileFinale&&node?Math.max(finaleEnd,clamp((h-finaleTop-node.offsetTop)/h)):fallback;
-   const bounds=scenes.map(s=>({s,r:s.getBoundingClientRect()}));
+   const finaleEdge=(node:HTMLElement|null,fallback:number)=>mobileFinale&&node?Math.max(finaleEnd,clamp((h-finaleTop-(phone?(finaleOffsets.get(node)??0):node.offsetTop))/h)):fallback;
+   // The outer scene wrappers are stationary on mobile. Read their layout
+   // once per resize/content change; scroll progress comes from scrollY.
+   const bounds=scenes.map(s=>{const metric=sceneMetrics.get(s);if(phone&&metric){const top=metric.top-y;return {s,r:{top,bottom:top+metric.height,height:metric.height}}}return {s,r:s.getBoundingClientRect()}});
    const at=bounds.filter(({r})=>r.top<=anchor&&r.bottom>anchor).at(-1);
    const dark=at?.s.dataset.edTheme==="dark"||Boolean(at?.s.id==="film-present"&&-at.r.top>h*.13);
    const finale=at?.s.id==="next-chapter";
-   const phone=w<=899;
    // Prefer the dominant visible chapter for frame attribution; nested
    // project articles belong to their parent Projects chapter.
    const dominant=bounds.filter(({s})=>s.hasAttribute("data-motion-scene")).map(({s,r})=>({s,visible:Math.max(0,Math.min(h,r.bottom)-Math.max(0,r.top))})).sort((a,b)=>b.visible-a.visible)[0];
@@ -107,9 +124,10 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    if(!enabled){header();return}
    // All geometry reads precede style writes. Horizontal reveals are projected
    // into the new rail position, not one frame behind the artwork.
-   const revealBounds=reveals.filter(eligible).map(node=>({node,r:node.getBoundingClientRect()}));
+   const revealBounds=reveals.filter(node=>eligible(node)&&!(getNodeMotionTier(node)==="lite"&&node.matches(".ed-document-image,.ed-archive-item"))).map(node=>({node,r:node.getBoundingClientRect()}));
    const archives=archiveNodes.filter(node=>eligible(node)&&getNodeMotionTier(node)!=="lite").map(node=>({node,r:node.getBoundingClientRect()}));
-   const fanRect=fan?.getBoundingClientRect();
+   const socialScene=scenes.find(s=>s.classList.contains("ed-social"));
+   const fanRect=(!phone||initializing||!socialScene||near.has(socialScene)||previousNear.has(socialScene))?fan?.getBoundingClientRect():undefined;
    const fanEdge=fanRect?clamp((h-fanRect.top)/h):1;
    const docBounds=documents.filter(node=>eligible(node)&&getNodeMotionTier(node)!=="lite").map(node=>({node,r:node.getBoundingClientRect()}));
    const kineticBounds=kinetic.filter(item=>eligible(item.node)&&getNodeMotionTier(item.node)!=="lite").map(item=>({...item,r:item.node.getBoundingClientRect()}));
@@ -123,7 +141,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    if(belt&&workVisible!==previousWorkVisible){belt.dataset.running=String(workVisible);previousWorkVisible=workVisible}
    for(const {s,r} of activeBounds){
     const pass=clamp((h-r.top)/(h+r.height));
-    const local=clamp(-r.top/Math.max(1,r.height-(s.id==="film-present"?openingHeight:s.id==="film-future"&&mobileCinema&&futureWindow?futureWindow.clientHeight:h)));
+    const local=clamp(-r.top/Math.max(1,r.height-(s.id==="film-present"?openingHeight:s.id==="film-future"&&mobileCinema&&futureWindow?futureHeightCache:h)));
     const edge=clamp((h-r.top)/h);
     const enter=ease(.04,.53,edge);
     write(s,"--ed-pass",pass);write(s,"--ed-enter",enter);write(s,"--ed-travel",(pass-.5)*2);
@@ -273,12 +291,12 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    let lo=0,hi=1;for(let i=0;i<16;i++){const m=(lo+hi)/2;if(railProgress(m)<target)lo=m;else hi=m}
    scrollToFilm(top+(collage.offsetHeight-(mobileCinema?(collageWindow?.clientHeight||innerHeight):innerHeight))*(lo+hi)/2,true);
   }
-  const unsub=subscribeMotion(render),ro=new ResizeObserver(resize);ro.observe(el);if(rail)ro.observe(rail);
+  const unsub=subscribeMotion(render),ro=new ResizeObserver(resize);ro.observe(el);if(rail)ro.observe(rail);for(const scene of scenes)ro.observe(scene);window.addEventListener("resize",resize,{passive:true});
   reduced.addEventListener("change",mode);desktop.addEventListener("change",mode);mobile.addEventListener("change",mode);window.addEventListener("zm-film-mode",change);window.addEventListener(motionQualityEvent,mode);window.addEventListener(sceneQualityEvent,quality);el.addEventListener("focusin",focus);
   document.addEventListener("zm-boot-prepare",resize);
   mode();document.fonts.ready.then(()=>{if(alive)resize()});
   document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:true}}));
-  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,mode);window.removeEventListener(sceneQualityEvent,quality);setActiveMotionScene(null);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);main.classList.remove("ed-dark-header","film-at-finale");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema};
+  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();window.removeEventListener("resize",resize);reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,mode);window.removeEventListener(sceneQualityEvent,quality);setActiveMotionScene(null);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);main.classList.remove("ed-dark-header","film-at-finale");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema};
  },[]);
  return <div ref={root} className="editorial-flow" id="main-content" tabIndex={-1}>{children}</div>
 }

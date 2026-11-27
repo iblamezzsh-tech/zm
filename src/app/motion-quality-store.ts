@@ -1,10 +1,13 @@
 "use client";
 import {effectiveTier,initialTier,type EffectiveTier,type Preference,type Tier} from "./motion-quality-policy";
-import {sceneNames,type SceneKey,type SceneReading} from "./scene-motion-policy";
+import {sceneNames,initialReading,parseProfile,type SceneKey,type SceneReading} from "./scene-motion-policy";
 type Snapshot={preference:Preference;tier:EffectiveTier;ready:boolean;scenes:Partial<Record<SceneKey,SceneReading>>;activeScene:SceneKey|null};
 const initial:Snapshot={preference:"auto",tier:"balanced",ready:false,scenes:{},activeScene:null};
 let state=initial,automatic:Tier="balanced",reduced=false;
 const listeners=new Set<()=>void>();
+const profileKey="zm-scene-profile-v109";
+let learned:Partial<Record<SceneKey,Tier>>={};
+export const profileResetEvent="zm-motion-profile-reset";
 export const motionQualityEvent="zm-motion-quality";
 export const getMotionQuality=()=>state;
 export const getServerMotionQuality=()=>initial;
@@ -13,7 +16,7 @@ export const sceneQualityEvent="zm-scene-motion-quality";
 export function getSceneTier(key:SceneKey|null):EffectiveTier{return state.preference==="auto"&&state.tier!=="reduced"&&key?state.scenes[key]?.tier??state.tier:state.tier}
 export function getNodeMotionTier(node:Element|null):EffectiveTier{const key=node?.closest<HTMLElement>("[data-motion-scene]")?.dataset.motionScene as SceneKey|undefined;return getSceneTier(key??null)}
 export function setActiveMotionScene(key:SceneKey|null){if(state.activeScene===key)return;state={...state,activeScene:key};for(const fn of listeners)fn()}
-export function setSceneReading(key:SceneKey,reading:SceneReading){const changed=getSceneTier(key)!==reading.tier;state={...state,scenes:{...state.scenes,[key]:reading}};for(const fn of listeners)fn();if(changed)window.dispatchEvent(new CustomEvent(sceneQualityEvent,{detail:key}))}
+export function setSceneReading(key:SceneKey,reading:SceneReading){const changed=getSceneTier(key)!==reading.tier;state={...state,scenes:{...state.scenes,[key]:reading}};for(const fn of listeners)fn();if(changed){learned[key]=reading.tier;try{localStorage.setItem(profileKey,JSON.stringify({version:1,savedAt:Date.now(),scenes:learned}))}catch{}window.dispatchEvent(new CustomEvent(sceneQualityEvent,{detail:key}))}}
 export function applySceneTiers(root:HTMLElement){root.querySelectorAll<HTMLElement>("[data-motion-scene]").forEach(node=>{const key=node.dataset.motionScene as SceneKey;if(key in sceneNames){const tier=getSceneTier(key);if(node.dataset.sceneTier!==tier)node.dataset.sceneTier=tier}})}
 export function subscribeMotionQuality(fn:()=>void){listeners.add(fn);return()=>{listeners.delete(fn)}}
 function publish(preference:Preference){
@@ -31,7 +34,14 @@ export function initializeMotionQuality(){
  reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
  let preference:Preference="auto";
  try{const value=localStorage.getItem("zm-motion-preference");if(value==="auto"||value==="lite"||value==="balanced"||value==="cinematic")preference=value}catch{}
+ try{learned=parseProfile(localStorage.getItem(profileKey),Date.now())}catch{learned={}}
+ const scenes:Partial<Record<SceneKey,SceneReading>>={};for(const key of Object.keys(learned) as SceneKey[]){const tier=learned[key];if(tier)scenes[key]=initialReading(tier,performance.now())}
+ state={...state,scenes};
  publish(preference);
+}
+export function resetMotionProfile(){
+ learned={};try{localStorage.removeItem(profileKey)}catch{}
+ state={...state,scenes:{}};for(const fn of listeners)fn();window.dispatchEvent(new Event(profileResetEvent));window.dispatchEvent(new CustomEvent(sceneQualityEvent,{detail:null}));
 }
 export function setMotionPreference(preference:Preference){
  try{localStorage.setItem("zm-motion-preference",preference)}catch{}

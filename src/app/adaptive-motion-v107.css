@@ -65,3 +65,8 @@ main.editorial-home .editorial-flow[data-ed-motion=true] [data-scene-tier=lite] 
 .zm-scene-diagnostics-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #b7c1a42a}
 .zm-scene-diagnostics-row strong{color:#ffda24;font-size:10px}
 .zm-scene-diagnostics-row span:last-child{font-variant-numeric:tabular-nums;text-align:right}
+
+/* V109 — Lite keeps navigable artwork without per-card clipping. */
+main.editorial-home .editorial-flow[data-ed-motion=true] [data-scene-tier=lite] :is(.ed-archive-item,.ed-document-image){clip-path:none!important;opacity:1!important}
+.zm-motion-reset{min-height:44px;width:100%;border:1px solid #b7c1a45c;border-radius:4px;background:transparent;color:#f4f1e8;font:650 11px/1.2 "DM Sans Variable",Arial,sans-serif;margin-top:7px;cursor:pointer}
+.zm-motion-reset:focus-visible{outline:2px solid #ffda24;outline-offset:2px}

@@ -1,8 +1,8 @@
 "use client";
 import {useLayoutEffect} from "react";
 import {frameHealth,nextTier,type Tier} from "./motion-quality-policy";
-import {assessScene,initialReading,type SceneKey} from "./scene-motion-policy";
-import {getMotionQuality,getSceneTier,initializeMotionQuality,setAutomaticTier,setSystemReduced,setSceneReading,motionQualityEvent} from "./motion-quality-store";
+import {assessScene,initialReading,urgentFrameWindow,mergePendingTier,type SceneKey} from "./scene-motion-policy";
+import {getMotionQuality,getSceneTier,initializeMotionQuality,setAutomaticTier,setSystemReduced,setSceneReading,motionQualityEvent,profileResetEvent} from "./motion-quality-store";
 
 // Observe actual active scroll. The existing editorial clock supplies the
 // scene identifier; no second per-frame geometry scan is necessary.
@@ -32,7 +32,7 @@ export default function AdaptiveMotion(){
   function assess(key:SceneKey|"route",samples:number[],now:number){
    if(key==="route"){
     const tier=getMotionQuality().tier;if(tier==="reduced")return;
-    const health=frameHealth(samples);
+    const health=urgentFrameWindow(samples)?"severe":frameHealth(samples);
     routePoor=health==="poor"?routePoor+1:0;routeGood=health==="good"?routeGood+1:0;
     if(health==="severe"||routePoor>=2)routePending=nextTier(tier,-1);
     else if(!routePending&&routeGood>=4&&now-lastChange>20000)routePending=nextTier(tier,1);
@@ -43,19 +43,21 @@ export default function AdaptiveMotion(){
    const result=assessScene(prior,samples,now);
    setSceneReading(key,result.reading);
    // A later good window must never cancel an already queued downgrade.
-   if(result.pending&&(!pending.has(key)||result.pending==="lite"||(result.pending==="balanced"&&prior.tier==="cinematic")))pending.set(key,result.pending);
+   if(result.pending)pending.set(key,mergePendingTier(pending.get(key),result.pending));
   }
   function frame(now:number){
    raf=0;
-   if(!allowed()||now-lastScroll>180){last=0;lastKey=null;return}
+   if(!allowed()){last=0;lastKey=null;return}
+   const stale=now-lastScroll>180;
    const key=getMotionQuality().activeScene??"route";
    if(last&&lastKey===key){
     const dt=now-last;
-    if(dt>=4&&dt<=500){
-     const bucket=buffers.get(key)??[];bucket.push(dt);
-     if(bucket.length>=48){assess(key,bucket,now);buffers.delete(key)}else buffers.set(key,bucket);
+    if(dt>=4&&(!stale||dt>=120)){
+     const bucket=buffers.get(key)??[];bucket.push(Math.min(dt,1000));
+     if(bucket.length>=48||urgentFrameWindow(bucket)){assess(key,bucket,now);buffers.delete(key)}else buffers.set(key,bucket);
     }
    }
+   if(stale){last=0;lastKey=null;return}
    last=now;lastKey=key;raf=requestAnimationFrame(frame);
   }
   function scroll(){
@@ -69,10 +71,10 @@ export default function AdaptiveMotion(){
   function systemChanged(){reset();setSystemReduced(reduced.matches)}
   function visibility(){reset()}
   window.addEventListener("scroll",scroll,{passive:true});
-  window.addEventListener(motionQualityEvent,preferenceChanged);
+  window.addEventListener(motionQualityEvent,preferenceChanged);window.addEventListener(profileResetEvent,preferenceChanged);
   reduced.addEventListener("change",systemChanged);
   document.addEventListener("visibilitychange",visibility);
-  return()=>{reset();window.removeEventListener("scroll",scroll);window.removeEventListener(motionQualityEvent,preferenceChanged);reduced.removeEventListener("change",systemChanged);document.removeEventListener("visibilitychange",visibility)}
+  return()=>{reset();window.removeEventListener("scroll",scroll);window.removeEventListener(motionQualityEvent,preferenceChanged);window.removeEventListener(profileResetEvent,preferenceChanged);reduced.removeEventListener("change",systemChanged);document.removeEventListener("visibilitychange",visibility)}
  },[]);
  return null;
 }
