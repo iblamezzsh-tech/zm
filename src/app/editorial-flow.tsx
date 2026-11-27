@@ -3,6 +3,7 @@ import {useLayoutEffect,useRef,type ReactNode} from "react";
 import {subscribeMotion,requestMotionFrame,scrollToFilm} from "./motion-clock";
 import {advanceMotion,kineticEnvelope,mobileTextEnvelope} from "./motion-pacing";
 import {getNodeMotionTier,setActiveMotionScene,applySceneTiers,sceneQualityEvent,motionQualityEvent} from "./motion-quality-store";
+import {readingEmphasis} from "./reading-emphasis";
 import type {SceneKey} from "./scene-motion-policy";
 const clamp=(x:number)=>Math.min(1,Math.max(0,x));
 const ease=(a:number,b:number,x:number)=>{const t=clamp((x-a)/(b-a));return t*t*(3-2*t)};
@@ -175,6 +176,13 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     }
     if(s.classList.contains("ed-manifesto"))write(s,"--ed-manifesto-pass",clamp((h-r.top)/(r.height+h*.5)));
     if(s.classList.contains("ed-future")){
+     // Sequential reading emphasis, driven by reversible scene progress.
+     // Keep all three words visible; only their short accent rules change.
+     const beat=mobileCinema&&h>=650?local:pass;
+     const [think,learn,build]=readingEmphasis(beat);
+     write(s,"--zm-think-emphasis",think);
+     write(s,"--zm-learn-emphasis",learn);
+     write(s,"--zm-build-emphasis",build);
      if(mobileCinema&&h>=650){
       // A short native sticky typographic act: each word occupies a separate
       // phase, then all three lock into the final composition before release.
