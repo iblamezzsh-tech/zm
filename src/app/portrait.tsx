@@ -51,24 +51,28 @@ export default function Portrait() {
     let bounds=area.getBoundingClientRect(), scale=1, dpr=1, alive=true, loaded=false, visible=false;
     let pointer:number|null=null, lastPoint:{x:number;y:number}|null=null;
     let raf=0,last=0,acc=0,age=0,lastInput=-3;
-    let idleAge=0,idleMix=0,lastPaint=0;
+    let idleAge=0,idleMix=0,lastPaint=0,lastScroll=-Infinity;
+    let canvasW=0,canvasH=0,lastFull=false;
+    const raster=document.createElement("canvas"),rasterCtx=raster.getContext("2d");
     let lookMix=0,mobile=false;
     let targetX=0,targetY=0,dx=0,dy=0;
     let imageData:ImageData|null=null;
     const canMove=()=>loaded&&visible&&!motion.matches&&!document.hidden&&opening?.dataset.creditStage!=="true";
     function paint(){
       if(!loaded||!ctx||!maskCtx||!output||!attire||!imageData)return;
-      const w=area!.clientWidth,h=area!.clientHeight;
+      const w=canvasW,h=canvasH;
       if(!w||!h)return;
+      const full=mobile&&lookMix>=1;
+      if(full&&lastFull)return;lastFull=full;
       ctx.setTransform(dpr,0,0,dpr,0,0);
       ctx.globalCompositeOperation="source-over";ctx.clearRect(0,0,w,h);
       if(!field.hasInk&&idleMix<.005&&lookMix<=0)return;
       const fit=Math.min(w/attire.naturalWidth,h/attire.naturalHeight);
       const iw=attire.naturalWidth*fit,ih=attire.naturalHeight*fit;
-      ctx.drawImage(attire,(w-iw)/2,h-ih,iw,ih);
+      if(mobile&&rasterCtx&&raster.width)ctx.drawImage(raster,0,0,w,h);else ctx.drawImage(attire,(w-iw)/2,h-ih,iw,ih);
       if(mobile&&lookMix>=1)return;
       // Alpha comes from the evolving density field, not a circular CSS mask.
-      field.writeMask(imageData.data);
+      if(mobile){const data=imageData.data;for(let i=0;i<data.length;i+=4){data[i]=data[i+1]=data[i+2]=255;data[i+3]=0}}else field.writeMask(imageData.data);
       // A time-driven, softly feathered ribbon reveals real attire pixels even
       // without pointer velocity. Combine it with the original interactive field.
       if(mobile&&lookMix>0){
@@ -107,23 +111,24 @@ export default function Portrait() {
       ctx.globalCompositeOperation="source-over";
     }
     function depth(){
-      area!.style.setProperty("--hero-dx",dx+"px");area!.style.setProperty("--hero-dy",dy+"px");
+      const x=dx.toFixed(2)+"px",y=dy.toFixed(2)+"px";if(area!.style.getPropertyValue("--hero-dx")!==x)area!.style.setProperty("--hero-dx",x);if(area!.style.getPropertyValue("--hero-dy")!==y)area!.style.setProperty("--hero-dy",y);
     }
     function frame(now:number){
       raf=0;if(!alive||!canMove()){last=0;return}
+      if(mobile&&(now-lastScroll<100||now-lastPaint<1000/30)){if(now-lastScroll<100)last=0;raf=requestAnimationFrame(frame);return}
       const dt=last?Math.min(.05,(now-last)/1000):1/60;last=now;age+=dt;acc+=dt;
       lookMix=mobile?approachLook(lookMix,lookTarget.current?1:0,dt):0;
       const idle=pointer===null&&age-lastInput>1.25&&!(mobile&&(lookTarget.current||lookMix>0));
       idleMix+=((idle?1:0)-idleMix)*(1-Math.exp(-dt*(idle?1.7:5.5)));
       if(idleMix>.005)idleAge+=dt;
-      const amp=area!.clientWidth<600?1.5:3.5;
+      const amp=canvasW<600?1.5:3.5;
       const driftX=Math.sin(idleAge*Math.PI*2/8)*amp*idleMix;
       const driftY=(1-Math.cos(idleAge*Math.PI*2/10))*.9*idleMix;
       const ease=1-Math.exp(-dt*6);
       dx+=(targetX+driftX-dx)*ease;dy+=(targetY+driftY-dy)*ease;depth();
-      while(acc>=1/60){field.step();acc-=1/60}
+      if(mobile)acc=0;else while(acc>=1/60){field.step();acc-=1/60}
       // Idle compositing at 30fps; pointer interaction stays at display cadence.
-      if(!idle||now-lastPaint>=1000/30){paint();lastPaint=now}
+      if(mobile||!idle||now-lastPaint>=1000/30){paint();lastPaint=now}
       raf=requestAnimationFrame(frame);
     }
     function sync(){
@@ -150,16 +155,20 @@ export default function Portrait() {
         if(mobile){const frame=mobileCreditFrame(w,h);const values=[frame.top+"px",frame.side+"px",frame.bottom+"px",frame.scale.toFixed(5)];props.forEach((key,i)=>opening.style.setProperty(key,values[i]));}
         else props.forEach(key=>opening.style.removeProperty(key));
       }
-      dpr=mobile?Math.min((devicePixelRatio||1)*Math.max(1,scale),2.5):Math.min(devicePixelRatio||1,1.6);
-      output!.width=Math.round(w*dpr);output!.height=Math.round(h*dpr);
-      field.resize(w,h);
+      dpr=mobile?Math.min(devicePixelRatio||1,1.25):Math.min(devicePixelRatio||1,1.6);
+      const resized=canvasW!==w||canvasH!==h||output!.width!==Math.round(w*dpr)||output!.height!==Math.round(h*dpr);
+      canvasW=w;canvasH=h;
+      if(resized){output!.width=Math.round(w*dpr);output!.height=Math.round(h*dpr);field.resize(w,h);}
+      lastFull=false;
+      if(mobile&&loaded&&rasterCtx){raster.width=output!.width;raster.height=output!.height;rasterCtx.setTransform(dpr,0,0,dpr,0,0);const fit=Math.min(w/attire!.naturalWidth,h/attire!.naturalHeight);const iw=attire!.naturalWidth*fit,ih=attire!.naturalHeight*fit;rasterCtx.drawImage(attire!,(w-iw)/2,h-ih,iw,ih);}
+      else raster.width=0;
       mask.width=field.width;mask.height=field.height;
       imageData=maskCtx!.createImageData(field.width,field.height);
       paint();
     }
-    function refresh(){bounds=area!.getBoundingClientRect()}
+    function refresh(){if(mobile){lastScroll=performance.now();return}if(visible)bounds=area!.getBoundingClientRect()}
     function track(e:PointerEvent){
-      if(e.pointerType!=="mouse"&&pointer!==e.pointerId)return;
+      if(mobile||e.pointerType!=="mouse"&&pointer!==e.pointerId)return;
       lastInput=age;
       const x=Math.max(0,Math.min(1,(e.clientX-bounds.left)/Math.max(1,bounds.width)));
       const y=Math.max(0,Math.min(1,(e.clientY-bounds.top)/Math.max(1,bounds.height)));
@@ -171,7 +180,7 @@ export default function Portrait() {
     }
     function enter(e:PointerEvent){refresh();track(e)}
     function leave(){lastPoint=null;targetX=targetY=0;if(!canMove()){field.clear();paint()}}
-    function down(e:PointerEvent){if(!e.isPrimary||e.pointerType==="mouse"||(e.target instanceof Element&&e.target.closest("a,button")))return;pointer=e.pointerId;area!.setPointerCapture(e.pointerId);enter(e)}
+    function down(e:PointerEvent){if(mobile||!e.isPrimary||e.pointerType==="mouse"||(e.target instanceof Element&&e.target.closest("a,button")))return;pointer=e.pointerId;area!.setPointerCapture(e.pointerId);enter(e)}
     function up(e:PointerEvent){if(e.pointerId===pointer){pointer=null;leave()}}
     const controller=new AbortController(),options={signal:controller.signal,passive:true};
     const ro=new ResizeObserver(resize);

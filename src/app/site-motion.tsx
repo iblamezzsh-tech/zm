@@ -36,7 +36,7 @@ export default function SiteMotion(){
   const visualNodes=Array.from(main.querySelectorAll<HTMLElement>(".entry-spread,.case-feature-art,.exhibit-scene,.music-layout,.books-layout,.contact-letter-grid,.field-stage"));
   const rootNodes=new Set<HTMLElement>([...visualNodes,...nodes.map(n=>n.el)]);
   function mark(el:HTMLElement,k:string){el.dataset.motionKind=k;decorated.add(el)}
-  function write(el:HTMLElement,k:string,v:number){el.style.setProperty(k,v.toFixed(4))}
+  function write(el:HTMLElement,k:string,v:number){const next=v.toFixed(3);if(el.style.getPropertyValue(k)!==next)el.style.setProperty(k,next)}
   nodes.forEach(({el,kind})=>mark(el,kind));
   // Use an observer to avoid continually measuring every archive card.
   const cards=new Set<HTMLElement>();

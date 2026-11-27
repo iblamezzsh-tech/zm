@@ -20,6 +20,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   if(!el||!main){document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:false}}));return;}
   const scenes=Array.from(el.querySelectorAll<HTMLElement>("[data-ed-scene]"));
   const reveals=Array.from(el.querySelectorAll<HTMLElement>("[data-ed-reveal],[data-ed-line]"));
+  const archiveNodes=Array.from(el.querySelectorAll<HTMLElement>(".ed-archive-item"));
   const reduced=matchMedia("(prefers-reduced-motion: reduce)");
   const desktop=matchMedia("(min-width: 900px) and (min-height: 500px) and (pointer: fine)");
   const mobile=matchMedia("(max-width: 899px) and (min-height: 500px)");
@@ -38,6 +39,11 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   const documents=Array.from(el.querySelectorAll<HTMLElement>(".ed-document"));
   const kinetic=Array.from(el.querySelectorAll<HTMLElement>("[data-kinetic]")).map(node=>({node,horizontal:Boolean(node.closest(".ed-collage-grid")),compact:node.dataset.kinetic==="stamp"||node.dataset.kinetic==="caption"}));
   let manual=false,enabled=false,cinema=false,mobileCinema=false,railDistance=0,railX=0,alive=true;
+  const owners=new Map<HTMLElement,HTMLElement|null>();
+  [...reveals,...archiveNodes,...documents,...kinetic.map(k=>k.node)].forEach(node=>owners.set(node,node.closest<HTMLElement>("[data-ed-scene]")));
+  let previousNear=new Set<HTMLElement>();
+  let previousWorkVisible=false;
+  const belt=el.querySelector<HTMLElement>(".ed-work-banner");
   const railActive=()=>cinema||mobileCinema;
   type Channel={node:HTMLElement;key:string;value:number;target:number;duration:number};
   const channels=new Map<HTMLElement,Map<string,Channel>>();
@@ -49,7 +55,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    let c=byKey.get(key);
    if(!c){c={node,key,value:target,target,duration};byKey.set(key,c);write(node,key,target);return}
    c.target=target;c.duration=duration;
-   if(snap||initializing){c.value=target;moving.delete(c);write(node,key,target);return}
+   if(snap||initializing||mobileCinema||window.innerWidth<=899){c.value=target;moving.delete(c);write(node,key,target);return}
    if(Math.abs(c.value-target)>.0005){moving.add(c);if(!pacingRaf){lastPace=performance.now();pacingRaf=requestAnimationFrame(tickPacing)}}
   }
   function tickPacing(now:number){
@@ -84,22 +90,31 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    const finaleEdge=(node:HTMLElement|null,fallback:number)=>mobileFinale&&node?Math.max(finaleEnd,clamp((h-finaleTop-node.offsetTop)/h)):fallback;
    const bounds=scenes.map(s=>({s,r:s.getBoundingClientRect()}));
    const at=bounds.filter(({r})=>r.top<=anchor&&r.bottom>anchor).at(-1);
-   main!.classList.toggle("ed-dark-header",at?.s.dataset.edTheme==="dark"||Boolean(at?.s.id==="film-present"&&-at.r.top>h*.13));
-   main!.classList.toggle("film-at-finale",at?.s.id==="next-chapter");
-   if(!enabled)return;
+   const dark=at?.s.dataset.edTheme==="dark"||Boolean(at?.s.id==="film-present"&&-at.r.top>h*.13);
+   const finale=at?.s.id==="next-chapter";
+   const phone=w<=899;
+   const near=new Set(bounds.filter(({r})=>r.bottom>=-h*.35&&r.top<=h*1.35).map(({s})=>s));
+   const eligible=(node:HTMLElement)=>{const owner=owners.get(node);return !phone||initializing||!owner||near.has(owner)||previousNear.has(owner)};
+   const activeBounds=phone&&!initializing?bounds.filter(({s})=>near.has(s)||previousNear.has(s)):bounds;
+   const header=()=>{main!.classList.toggle("ed-dark-header",dark);main!.classList.toggle("film-at-finale",finale)};
+   if(!enabled){header();return}
    // All geometry reads precede style writes. Horizontal reveals are projected
    // into the new rail position, not one frame behind the artwork.
-   const revealBounds=reveals.map(node=>({node,r:node.getBoundingClientRect()}));
-   const archives=Array.from(el!.querySelectorAll<HTMLElement>(".ed-archive-item")).map(node=>({node,r:node.getBoundingClientRect()}));
+   const revealBounds=reveals.filter(eligible).map(node=>({node,r:node.getBoundingClientRect()}));
+   const archives=archiveNodes.filter(eligible).map(node=>({node,r:node.getBoundingClientRect()}));
    const fanRect=fan?.getBoundingClientRect();
    const fanEdge=fanRect?clamp((h-fanRect.top)/h):1;
-   const docBounds=documents.map(node=>({node,r:node.getBoundingClientRect()}));
-   const kineticBounds=kinetic.map(item=>({...item,r:item.node.getBoundingClientRect()}));
+   const docBounds=documents.filter(eligible).map(node=>({node,r:node.getBoundingClientRect()}));
+   const kineticBounds=kinetic.filter(item=>eligible(item.node)).map(item=>({...item,r:item.node.getBoundingClientRect()}));
    const gallery=bounds.find(({s})=>s===collage);
    const railLocal=gallery?clamp(-gallery.r.top/Math.max(1,gallery.r.height-galleryHeight)):0;
    const nextRailX=railActive()?-railDistance*railProgress(railLocal):0;
    const railDelta=nextRailX-railX;
-   for(const {s,r} of bounds){
+   const beltRect=belt?.getBoundingClientRect();
+   const workVisible=Boolean(beltRect&&beltRect.bottom>=0&&beltRect.top<=h);
+   header();
+   if(belt&&workVisible!==previousWorkVisible){belt.dataset.running=String(workVisible);previousWorkVisible=workVisible}
+   for(const {s,r} of activeBounds){
     const pass=clamp((h-r.top)/(h+r.height));
     const local=clamp(-r.top/Math.max(1,r.height-(s.id==="film-present"?openingHeight:s.id==="film-future"&&mobileCinema&&futureWindow?futureWindow.clientHeight:h)));
     const edge=clamp((h-r.top)/h);
@@ -120,7 +135,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
       write(s,"--ed-hero-depart",ease(.83,1,local));
       write(s,"--ed-credit-away",ease(.90,1,local));
       const creditStage=String(local>.25);if(s.dataset.creditStage!==creditStage)s.dataset.creditStage=creditStage;
-      if(lookButton){if(creditStage==="true"&&document.activeElement===lookButton)el!.focus({preventScroll:true});lookButton.inert=creditStage==="true";}
+      if(lookButton&&lookButton.inert!==(creditStage==="true")){if(creditStage==="true"&&document.activeElement===lookButton)el!.focus({preventScroll:true});lookButton.inert=creditStage==="true";}
      }else{
       write(s,"--ed-hero-exit",ease(.08,.65,local));
       write(s,"--ed-credit",ease(.22,.66,local));
@@ -130,7 +145,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
      }
     }
     if(s===collage&&railActive()){
-     s.style.setProperty("--rail-x",nextRailX.toFixed(2)+"px");
+     const railValue=nextRailX.toFixed(2)+"px";if(s.style.getPropertyValue("--rail-x")!==railValue)s.style.setProperty("--rail-x",railValue);
      write(s,"--rail-p",railProgress(railLocal));
     }
     if(s.classList.contains("ed-manifesto"))write(s,"--ed-manifesto-pass",clamp((h-r.top)/(r.height+h*.5)));
@@ -227,13 +242,13 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     const outside=r.bottom<0||r.top>h||(railActive()&&horizontal&&(right<0||left>w));
     paced(node,"--kt-progress",p,mobileType?(compact?560:1050):(compact?780:1280),outside);
    }
-   initializing=false;
+   initializing=false;previousNear=near;
    railX=nextRailX;
   }
   function mode(){
    enabled=!manual&&!reduced.matches;cinema=enabled&&desktop.matches;mobileCinema=enabled&&mobile.matches;
    el!.dataset.edMotion=String(enabled);el!.dataset.edCinema=String(cinema);el!.dataset.edMobileCinema=String(mobileCinema);
-   stopPacing();initializing=true;if(lookButton)lookButton.inert=false;if(!mobileCinema){const opening=scenes.find(s=>s.id==="film-present");if(opening)delete opening.dataset.creditStage;}
+   stopPacing();initializing=true;previousNear.clear();if(lookButton)lookButton.inert=false;if(!mobileCinema){const opening=scenes.find(s=>s.id==="film-present");if(opening)delete opening.dataset.creditStage;}
    if(!railActive()){railX=0;collage?.style.setProperty("--rail-x","0px")}layout();render();requestMotionFrame();
   }
   function change(){manual=!manual;mode()}

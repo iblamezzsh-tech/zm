@@ -46,6 +46,7 @@ import "./mobile-social-v102.css";
 import "./mobile-finale-v103.css";
 import "./motion-score-v105.css";
 import "./mobile-qa-v106.css";
+import "./mobile-performance-v106-3.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -97,7 +98,7 @@ export default function HomeChapters(){
   </section>
   <section className="ed-work" id="projects" data-ed-scene data-ed-theme="dark"><PageAtmosphere kind="gallery" dark/>
    <div className="ed-gutter ed-caption"><span>04 / SELECTED INITIATIVES</span><span>01 — 03</span></div>
-   <div className="ed-work-banner" aria-hidden="true"><div className="qa-marquee-track">{[0,1].map(i=><div key={i} className="qa-marquee-unit"><span>QUESTIONS <ArrowIcon direction="right"/> ACTION.</span><span>QUESTIONS <ArrowIcon direction="right"/> ACTION.</span></div>)}</div></div><div className="ed-gutter ed-work-heading"><h2 className="kt-heading" aria-label="Ideas into action."><KineticText text="Ideas into" kind="assemble"/> <em><KineticText text="action." kind="engrave" index={1}/></em></h2><p>Three different interests. One desire to turn curiosity into something real.</p></div>
+   <div className="ed-work-banner" aria-hidden="true" data-running="false"><div className="qa-marquee-track">{[0,1].map(i=><div key={i} className="qa-marquee-unit"><span>QUESTIONS <ArrowIcon direction="right"/> ACTION.</span><span>QUESTIONS <ArrowIcon direction="right"/> ACTION.</span></div>)}</div></div><div className="ed-gutter ed-work-heading"><h2 className="kt-heading" aria-label="Ideas into action."><KineticText text="Ideas into" kind="assemble"/> <em><KineticText text="action." kind="engrave" index={1}/></em></h2><p>Three different interests. One desire to turn curiosity into something real.</p></div>
    <div className="ed-gutter ed-work-grid">
     {projects.map((p,i)=><article className={"ed-work-item ed-work-"+p.kind} id={i===0?"exhibit-overthink":"exhibit-"+p.slug} key={p.slug} data-ed-scene data-ed-theme="dark">
      <div className="zm-project-mobile-index" aria-hidden="true"><span>SELECTED INITIATIVE / {p.number}</span><span>{p.role}</span></div>

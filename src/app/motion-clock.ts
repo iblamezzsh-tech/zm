@@ -19,10 +19,11 @@ function flush(now:number){
  const target=motion&&lastTime?scrollImpulseTarget(y-lastY,dt,innerHeight):0;
  impulse=motion?dampImpulse(impulse,target,dt):0;lastY=y;lastTime=now;
  const root=document.documentElement;
- const set=(key:string,v:number)=>{const next=v.toFixed(4);if(root.style.getPropertyValue(key)!==next)root.style.setProperty(key,next)};
- set("--zm-impulse",impulse);set("--zm-speed",Math.abs(impulse));
- // Tail frames update two CSS values only, never rescan the page geometry.
+ // Read scroll geometry first, then change inherited styles. Quantize tiny
+ // impulse changes so every glyph does not require a style update per tick.
  if(work)for(const fn of listeners)fn();
+ const set=(key:string,v:number)=>{const next=(Math.round(v*32)/32).toFixed(4);if(root.style.getPropertyValue(key)!==next)root.style.setProperty(key,next)};
+ set("--zm-impulse",impulse);set("--zm-speed",Math.abs(impulse));
  if((dirty||impulse!==0)&&!raf&&listeners.size)raf=requestAnimationFrame(flush);
 }
 export function requestMotionFrame(){dirty=true;if(!raf)raf=requestAnimationFrame(flush)}

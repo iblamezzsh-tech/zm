@@ -1,0 +1,35 @@
+/* Mobile GPU/CPU budget: retain the original artwork and scroll beats. */
+@media(max-width:899px){
+ .hero-fluid-color{display:none}
+ .hero-portrait-plane{will-change:auto}
+ .zm-atmosphere .atm-secondary,.zm-atmosphere .atm-light{animation:none!important}
+ .zm-atmosphere[data-running=false] .atm-primary{will-change:auto}
+ .zm-atmosphere.atm-dark .atm-primary{filter:none}
+ .editorial-home .editorial-flow .zm-atmosphere .atm-primary,
+ .editorial-home .editorial-flow .hero-editorial-lines{
+  mask:none;-webkit-mask:none;background:transparent url("/atmosphere/contours-mobile-light.svg") center top/var(--contour-tile,850px) auto repeat;filter:none;
+ }
+ .editorial-home .editorial-flow .zm-atmosphere.atm-dark .atm-primary,
+ .editorial-home .editorial-flow .zm-world-life .atm-primary{
+  background-image:url("/atmosphere/contours-mobile-dark.svg")
+ }
+ main.editorial-home .editorial-flow #film-present .hero-editorial-lines{
+  background-size:clamp(1000px,270vw,1500px) auto;
+ }
+ main.editorial-home .editorial-flow #film-memory .ed-document-image img{filter:none}
+ main.editorial-home .editorial-flow #film-present .hero-portrait-plane>.photo{filter:none!important}
+ main.editorial-home .editorial-flow #film-present .zm-opening-portrait::after{
+  background:#24291e;opacity:calc(var(--ed-portrait-tone,0)*.30)
+ }
+}
+@media(max-width:899px) and (prefers-reduced-motion:no-preference){
+ main.editorial-home .editorial-flow .ed-work-banner .qa-marquee-track{animation-play-state:paused;will-change:auto}
+ main.editorial-home .editorial-flow .ed-work-banner[data-running=true] .qa-marquee-track{animation-play-state:running;will-change:transform}
+ main.editorial-home .editorial-flow[data-ed-motion=true] #film-memory .ed-document-image img{
+  transform:translateY(calc(var(--zm-impulse,0)*-6px)) scale(calc(.98 + var(--v84-document,1)*.02))
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] .zm-atmosphere .atm-primary{translate:none}
+ main.editorial-home .editorial-flow[data-ed-motion=true] .ed-surface-seam{
+  transform:scaleY(calc(.24 + var(--seam-open,1)*.76))
+ }
+}
