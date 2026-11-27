@@ -12,15 +12,21 @@ main.editorial-home .editorial-flow .ed-interest-list a>.zm-interest-label>.zm-i
  }
  main.editorial-home .editorial-flow[data-ed-motion=true] [data-motion-scene=personal] .ed-interest-list a:focus-visible>.zm-interest-label>.zm-interest-text{transform:none!important}
 }
-/* Compact independent wordmark and cap-safe shared portrait geometry. The
-   full portrait becomes larger; both source layers retain identical registration. */
+/* V112.1: let the portrait own the central opening. Keep the full name
+   in the left header lane, independent of the shared present/attire plane. */
 @media(min-width:900px){
- main.editorial-home .editorial-flow #film-present .hero-composition{--portrait-scale:.91}
+ main.editorial-home .editorial-flow #film-present .hero-composition{--portrait-scale:1}
  main.editorial-home .editorial-flow #film-present .hero-name{
-  inset:clamp(16px,2.5svh,28px) auto auto 50%;width:min(55vw,760px);max-width:calc(100% - 260px);
-  z-index:3;transform:translateX(-50%);opacity:1;
+  inset:clamp(20px,3.8svh,34px) auto auto clamp(82px,6.7vw,110px);
+  width:clamp(150px,calc(32vw - 90px),400px);max-width:none;
+  z-index:3;transform:none;opacity:1;
  }
  main.editorial-home .editorial-flow #film-present .hero-name svg{max-height:none}
+}
+@media(min-width:900px) and (max-width:1100px){
+ main.editorial-home .editorial-flow #film-present .hero-name{
+  width:clamp(145px,calc(23vw - 50px),205px);
+ }
 }
 /* Accessible typography: never clip essential glyphs. A short scene-specific
    entry/exit envelope moves whole words; the reading hold resolves to zero. */

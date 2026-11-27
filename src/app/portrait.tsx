@@ -129,11 +129,12 @@ export default function Portrait() {
         const titleBottom=brand?brand.offsetTop+brand.offsetHeight:0;
         area!.style.setProperty("--portrait-scale",mobilePortraitScale(w,h,titleBottom).toFixed(4));
       }else if(!mobile){
-        const title=area!.querySelector<HTMLElement>(".hero-name");
-        const inkBottom=title?title.offsetTop+title.offsetHeight*.82:80;
+        // The wordmark now occupies its own left header lane. Scale to the
+        // shared graduation silhouette, not the old centered title band.
+        // Leave room for the +/-6px pointer drift at the tallest cap landmark.
         const fit=Math.min(w/1070,h/850);
-        const maxScale=(h-inkBottom-12)/(830*fit);
-        area!.style.setProperty("--portrait-scale",Math.max(.35,Math.min(1.02,maxScale)).toFixed(4));
+        const maxScale=(h-12)/(830*fit);
+        area!.style.setProperty("--portrait-scale",Math.max(.35,Math.min(1.12,maxScale)).toFixed(4));
       }else area!.style.removeProperty("--portrait-scale");
       scale=Number.parseFloat(getComputedStyle(area!).getPropertyValue("--portrait-scale"))||1;
       if(opening){
