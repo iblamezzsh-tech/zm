@@ -42,6 +42,7 @@ import MobileRecordViewer from "./mobile-record-viewer";
 import "./mobile-gallery-v100.css";
 import "./mobile-projects-v101.css";
 import "./mobile-social-v102.css";
+import "./mobile-finale-v103.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -139,7 +140,7 @@ export default function HomeChapters(){
   <section className="film-shot film-shot-contact film-dark film-finale-shot" id="next-chapter" data-ed-scene data-ed-theme="dark" aria-label="The next chapter">
    <div className="film-finale">
     <div className="finale-inner"><PageAtmosphere kind="earth" dark/>
-     <div className="zm-mobile-finale-index" aria-hidden="true"><span>THE ART OF BECOMING</span><span>ZM / 2026</span></div>
+     <div className="zm-mobile-finale-index" aria-hidden="true"><span><i/> THE ART OF BECOMING</span><span>08 / THE NEXT CHAPTER</span></div>
      <div className="finale-heading">
       <p className="finale-edition">THE NEXT CHAPTER <span> / </span> A PORTRAIT IN PROGRESS</p>
       <h2><span className="finale-line-one"><FilmWords text="Always becoming."/></span><em className="finale-line-two"><FilmWords text="Never standing still."/></em></h2>
@@ -162,6 +163,8 @@ export default function HomeChapters(){
       <div className="finale-cta"><Link href="/contact">Let’s connect <span aria-hidden="true">↗</span></Link></div>
      </div>
      <div className="finale-signature"><Signature/></div>
+     <div className="zm-finale-mobile-colophon" aria-hidden="true"><span>ANDIJAN / UZBEKISTAN</span><span>THE JOURNEY CONTINUES.</span></div>
+     <svg className="zm-finale-mobile-cut" viewBox="0 0 400 28" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 0Q0 12 15 12H112Q124 12 135 22Q142 28 155 28H245Q258 28 265 22Q276 12 288 12H385Q400 12 400 0V28H0Z"/></svg>
      <div className="finale-location">ANDIJAN / UZBEKISTAN</div>
      <div className="finale-note">THE JOURNEY CONTINUES.</div>
     </div>

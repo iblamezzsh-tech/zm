@@ -28,6 +28,8 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   const finaleHeading=el.querySelector<HTMLElement>(".finale-heading");
   const finalePortrait=el.querySelector<HTMLElement>(".finale-portrait");
   const finalePages=el.querySelector<HTMLElement>(".finale-pages");
+  const finaleSignature=el.querySelector<HTMLElement>(".finale-signature");
+  const finaleCta=el.querySelector<HTMLElement>(".finale-cta");
   const collage=el.querySelector<HTMLElement>(".ed-collage"),rail=el.querySelector<HTMLElement>(".ed-collage-grid");
   const collageWindow=el.querySelector<HTMLElement>(".ed-collage-sticky");
   const fan=el.querySelector<HTMLElement>(".ed-fan");
@@ -75,8 +77,9 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    // every element crosses the usual reveal threshold. Settle the last
    // beats as native scrolling approaches the actual bottom.
    const remaining=Math.max(0,document.documentElement.scrollHeight-window.scrollY-h);
-   const finaleEnd=mobileCinema?1-ease(0,h*.24,remaining):0;
-   const finaleEdge=(node:HTMLElement|null,fallback:number)=>mobileCinema&&node?Math.max(finaleEnd,clamp((h-finaleTop-node.offsetTop)/h)):fallback;
+   const mobileFinale=w<=899;
+   const finaleEnd=mobileFinale?1-ease(0,h*.24,remaining):0;
+   const finaleEdge=(node:HTMLElement|null,fallback:number)=>mobileFinale&&node?Math.max(finaleEnd,clamp((h-finaleTop-node.offsetTop)/h)):fallback;
    const bounds=scenes.map(s=>({s,r:s.getBoundingClientRect()}));
    const at=bounds.filter(({r})=>r.top<=anchor&&r.bottom>anchor).at(-1);
    main!.classList.toggle("ed-dark-header",at?.s.dataset.edTheme==="dark"||Boolean(at?.s.id==="film-present"&&-at.r.top>h*.13));
@@ -159,6 +162,15 @@ export default function EditorialFlow({children}:{children:ReactNode}){
      paced(s,"--finale-portrait-in",ease(.04,.64,finaleEdge(finalePortrait,edge)),1150,r.bottom<0||r.top>h);
      paced(s,"--finale-title-in",ease(.12,.80,finaleEdge(finaleHeading,edge)),1400,r.bottom<0||r.top>h);
      paced(s,"--finale-nav-in",ease(mobileCinema ? .08 : .25,mobileCinema ? .65 : .92,finaleEdge(finalePages,edge)),1000,r.bottom<0||r.top>h);
+     if(mobileFinale){
+      // Signature and contact are their own beats. On the last scroll pixel
+      // the scene settles instead of leaving a partly drawn signature.
+      const off=r.bottom<0||r.top>h;
+      const settled=remaining<=2;
+      paced(s,"--m-finale-frame",ease(.02,.52,Math.max(edge,finaleEnd)),1100,off||settled);
+      paced(s,"--m-finale-sign",ease(.04,.56,finaleEdge(finaleSignature,edge)),1550,off||settled);
+      paced(s,"--m-finale-contact",ease(.02,.48,finaleEdge(finaleCta,edge)),900,off||settled);
+     }
     }
    }
    for(const {node,r} of revealBounds){
