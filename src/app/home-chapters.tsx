@@ -41,6 +41,7 @@ import "./mobile-editorial-v99.css";
 import MobileRecordViewer from "./mobile-record-viewer";
 import "./mobile-gallery-v100.css";
 import "./mobile-projects-v101.css";
+import "./mobile-social-v102.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -124,8 +125,16 @@ export default function HomeChapters(){
   </section>
   <section className="ed-social ed-paper" data-ed-scene data-ed-theme="light">
    <div className="ed-social-sticky"><PageAtmosphere kind="post"/><div className="ed-social-heading"><span className="ed-kicker">07 / STAY IN TOUCH</span><h2 className="kt-heading" aria-label="See you around."><KineticText text="See you" kind="press"/> <em><KineticText text="around." kind="swerve" index={1}/></em></h2></div>
-   <div className="ed-fan ed-fan-without-portrait" aria-hidden="true">{[0,1,2,3].map(i=><div className={"ed-fan-card ed-fan-"+i} key={i} style={{"--fan-i":i-1.5} as React.CSSProperties}>{i===0||i===3?<ProjectEdition project={projects[i===0?0:2]}/>:records[i===1?0:records.length-1]?.document?<img src={records[i===1?0:records.length-1].document!.src} alt="" decoding="async" fetchPriority="low"/>:<Signature/>}</div>)}</div>
-   <div className="zm-mobile-social-caption">Find me beyond the portfolio.</div><div className="ed-social-links"><a href="https://t.me/Shoxruxbekovich">Telegram ↗</a><a href="https://www.instagram.com/the_zzsh/">Instagram ↗</a><a href="https://github.com/iblamezzsh-tech/zm">GitHub ↗</a></div></div>
+   <div className="ed-fan ed-fan-without-portrait" aria-hidden="true">
+    {[0,1,2,3].map(i=><div className={"ed-fan-card ed-fan-"+i} key={i} style={{"--fan-i":i-1.5} as React.CSSProperties}>
+     {i===0||i===3?<ProjectEdition project={projects[i===0?0:2]}/>:records[i===1?0:records.length-1]?.document?<img src={records[i===1?0:records.length-1].document!.src} alt="" decoding="async" fetchPriority="low"/>:<>
+      <span className="zm-fan-desktop-fallback"><Signature/></span>
+      <div className={"zm-fan-note zm-fan-note-"+i}><span>ZM / OFF THE RECORD</span>{i===1?<><strong>Stay<br/><em>curious.</em></strong><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="36"/><ellipse cx="50" cy="50" rx="17" ry="36" transform="rotate(45 50 50)"/><path d="M14 50H86M50 14V86"/></svg><small>THINK. LEARN. BUILD.</small></>:<><strong>Always<br/><em>learning.</em></strong><Signature/><small>THE NEXT CHAPTER</small></>}</div>
+     </>}
+    </div>)}
+    <div className="ed-fan-card zm-fan-center"><ProjectEdition project={projects[1]}/></div>
+   </div>
+   <div className="zm-mobile-social-caption">Find me beyond the portfolio.</div><div className="ed-social-links"><a href="https://t.me/Shoxruxbekovich">Telegram ↗</a><a href="https://www.instagram.com/the_zzsh/">Instagram ↗</a><a href="https://github.com/iblamezzsh-tech/zm">GitHub ↗</a></div><div className="zm-social-handoff" aria-hidden="true"><span>07 / STAY CURIOUS</span><span>08 / THE NEXT CHAPTER ↓</span><svg viewBox="0 0 400 46" preserveAspectRatio="none"><path d="M0 29C65 29 98 12 155 12H173L185 2H215L227 12H245C302 12 335 29 400 29V46H0Z"/></svg></div></div>
   </section>
   <section className="film-shot film-shot-contact film-dark film-finale-shot" id="next-chapter" data-ed-scene data-ed-theme="dark" aria-label="The next chapter">
    <div className="film-finale">

@@ -145,6 +145,12 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     }
     if(s.classList.contains("ed-social")){
      paced(s,"--fan-open",ease(.06,.76,fanEdge),1350,r.bottom<0||r.top>h);
+     if(w<=899){
+      // The untransformed fan box is the clock; card transforms cannot feed back into it.
+      paced(s,"--m-social-spread",ease(.025,.68,fanEdge),1600,r.bottom<0||r.top>h);
+      const leave=clamp((h-r.bottom)/h);
+      paced(s,"--m-social-handoff",ease(.02,.74,leave),950,r.bottom<0||r.top>h);
+     }
      write(s,"--fan-away",0);
      write(s,"--social-links",ease(.10,.58,edge));
      write(s,"--social-glow",ease(.32,.95,edge));
