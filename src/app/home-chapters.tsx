@@ -37,6 +37,7 @@ import "./mobile-hero-v94.css";
 import "./mobile-hero-v97.css";
 import "./mobile-finale-v95.css";
 import "./mobile-opening-v98.css";
+import "./mobile-editorial-v99.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>

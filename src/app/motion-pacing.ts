@@ -14,3 +14,14 @@ export function advanceMotion(current:number,target:number,dt:number,duration:nu
  const step=Math.min(Math.abs(diff),dt/duration,Math.abs(diff)*(1-Math.exp(-dt/145)));
  return current+Math.sign(diff)*step
 }
+
+// Phone typography enters earlier and holds its resolved state throughout
+// the reading interval. It still reverses when the reader scrolls back.
+// Compact metadata has a shorter entrance; horizontal rail text uses the
+// same envelope along its actual reading axis.
+export function mobileTextEnvelope(start:number,end:number,extent:number,compact:boolean){
+ if(extent<=0)return 1;
+ const enter=smooth(((extent-start)/extent+.025)/(compact ? .28:.46));
+ const exit=smooth((end/extent)/(compact ? .055:.075));
+ return Math.min(enter,exit);
+}

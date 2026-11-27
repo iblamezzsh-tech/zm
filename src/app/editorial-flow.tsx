@@ -1,7 +1,7 @@
 "use client";
 import {useLayoutEffect,useRef,type ReactNode} from "react";
 import {subscribeMotion,requestMotionFrame,scrollToFilm} from "./motion-clock";
-import {advanceMotion,kineticEnvelope} from "./motion-pacing";
+import {advanceMotion,kineticEnvelope,mobileTextEnvelope} from "./motion-pacing";
 const clamp=(x:number)=>Math.min(1,Math.max(0,x));
 const ease=(a:number,b:number,x:number)=>{const t=clamp((x-a)/(b-a));return t*t*(3-2*t)};
 const write=(el:HTMLElement,key:string,value:number)=>{const next=value.toFixed(5);if(el.style.getPropertyValue(key)!==next)el.style.setProperty(key,next)};
@@ -180,15 +180,16 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    for(const {node,r,horizontal,compact} of kineticBounds){
     const x=railActive()&&horizontal?railDelta:0;
     const left=r.left+x,right=r.right+x;
-    let p=kineticEnvelope(r.top,r.bottom,h,compact);
+    const mobileType=w<=899;
+    let p=mobileType?mobileTextEnvelope(r.top,r.bottom,h,compact):kineticEnvelope(r.top,r.bottom,h,compact);
     if(railActive()&&horizontal){
-     const horizontalProgress=kineticEnvelope(left,right,w,compact);
+     const horizontalProgress=mobileType?mobileTextEnvelope(left,right,w,compact):kineticEnvelope(left,right,w,compact);
      // Captions in the pinned rail do not enter from below: avoid masking
      // their text simply because the record sits in the lower row.
-     p=compact?horizontalProgress:Math.min(p,horizontalProgress);
+     p=mobileType||compact?horizontalProgress:Math.min(p,horizontalProgress);
     }
     const outside=r.bottom<0||r.top>h||(railActive()&&horizontal&&(right<0||left>w));
-    paced(node,"--kt-progress",p,compact?780:1280,outside);
+    paced(node,"--kt-progress",p,mobileType?(compact?560:1050):(compact?780:1280),outside);
    }
    initializing=false;
    railX=nextRailX;
