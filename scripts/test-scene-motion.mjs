@@ -1,0 +1,20 @@
+import assert from "node:assert/strict";
+import {initialReading,assessScene} from "../src/app/scene-motion-policy.ts";
+const opening=initialReading("cinematic",0),memory=initialReading("balanced",0);
+let a=assessScene(opening,Array(48).fill(38),100);
+assert.equal(a.pending,"balanced");
+assert.equal(memory.tier,"balanced");
+assert.equal(memory.frames,0);
+assert.equal(a.reading.frames,48);
+assert.equal(a.reading.p90,38);
+const mix=[...Array(30).fill(16),...Array(18).fill(37)];
+let b=assessScene(memory,mix,1000);
+assert.equal(b.pending,null);
+b=assessScene(b.reading,mix,2000);
+assert.equal(b.pending,"lite");
+let c=initialReading("lite",0);
+for(let i=1;i<=3;i++){const v=assessScene(c,Array(48).fill(16.7),i*7000);assert.equal(v.pending,null);c=v.reading}
+assert.equal(assessScene(c,Array(48).fill(16.7),28000).pending,"balanced");
+assert.equal(assessScene(c,[16,17],30000).reading,c);
+assert.equal(assessScene(initialReading("lite",0),Array(48).fill(70),100).pending,null);
+console.log("PASS 13 scene policy assertions");

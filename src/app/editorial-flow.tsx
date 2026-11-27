@@ -2,7 +2,8 @@
 import {useLayoutEffect,useRef,type ReactNode} from "react";
 import {subscribeMotion,requestMotionFrame,scrollToFilm} from "./motion-clock";
 import {advanceMotion,kineticEnvelope,mobileTextEnvelope} from "./motion-pacing";
-import {getMotionTier,motionQualityEvent} from "./motion-quality-store";
+import {getNodeMotionTier,setActiveMotionScene,applySceneTiers,sceneQualityEvent,motionQualityEvent} from "./motion-quality-store";
+import type {SceneKey} from "./scene-motion-policy";
 const clamp=(x:number)=>Math.min(1,Math.max(0,x));
 const ease=(a:number,b:number,x:number)=>{const t=clamp((x-a)/(b-a));return t*t*(3-2*t)};
 const write=(el:HTMLElement,key:string,value:number)=>{const next=value.toFixed(5);if(el.style.getPropertyValue(key)!==next)el.style.setProperty(key,next)};
@@ -94,6 +95,11 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    const dark=at?.s.dataset.edTheme==="dark"||Boolean(at?.s.id==="film-present"&&-at.r.top>h*.13);
    const finale=at?.s.id==="next-chapter";
    const phone=w<=899;
+   // Prefer the dominant visible chapter for frame attribution; nested
+   // project articles belong to their parent Projects chapter.
+   const dominant=bounds.filter(({s})=>s.hasAttribute("data-motion-scene")).map(({s,r})=>({s,visible:Math.max(0,Math.min(h,r.bottom)-Math.max(0,r.top))})).sort((a,b)=>b.visible-a.visible)[0];
+   const activeKey=dominant&&dominant.visible>0?dominant.s.dataset.motionScene as SceneKey:null;
+   setActiveMotionScene(activeKey);
    const near=new Set(bounds.filter(({r})=>r.bottom>=-h*.35&&r.top<=h*1.35).map(({s})=>s));
    const eligible=(node:HTMLElement)=>{const owner=owners.get(node);return !phone||initializing||!owner||near.has(owner)||previousNear.has(owner)};
    const activeBounds=phone&&!initializing?bounds.filter(({s})=>near.has(s)||previousNear.has(s)):bounds;
@@ -102,11 +108,11 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    // All geometry reads precede style writes. Horizontal reveals are projected
    // into the new rail position, not one frame behind the artwork.
    const revealBounds=reveals.filter(eligible).map(node=>({node,r:node.getBoundingClientRect()}));
-   const archives=archiveNodes.filter(eligible).map(node=>({node,r:node.getBoundingClientRect()}));
+   const archives=archiveNodes.filter(node=>eligible(node)&&getNodeMotionTier(node)!=="lite").map(node=>({node,r:node.getBoundingClientRect()}));
    const fanRect=fan?.getBoundingClientRect();
    const fanEdge=fanRect?clamp((h-fanRect.top)/h):1;
-   const docBounds=documents.filter(eligible).map(node=>({node,r:node.getBoundingClientRect()}));
-   const kineticBounds=(getMotionTier()==="lite"?[]:kinetic.filter(item=>eligible(item.node))).map(item=>({...item,r:item.node.getBoundingClientRect()}));
+   const docBounds=documents.filter(node=>eligible(node)&&getNodeMotionTier(node)!=="lite").map(node=>({node,r:node.getBoundingClientRect()}));
+   const kineticBounds=kinetic.filter(item=>eligible(item.node)&&getNodeMotionTier(item.node)!=="lite").map(item=>({...item,r:item.node.getBoundingClientRect()}));
    const gallery=bounds.find(({s})=>s===collage);
    const railLocal=gallery?clamp(-gallery.r.top/Math.max(1,gallery.r.height-galleryHeight)):0;
    const nextRailX=railActive()?-railDistance*railProgress(railLocal):0;
@@ -246,7 +252,9 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    initializing=false;previousNear=near;
    railX=nextRailX;
   }
+  function quality(){applySceneTiers(el!);requestMotionFrame()}
   function mode(){
+   applySceneTiers(el!);
    enabled=!manual&&!reduced.matches;cinema=enabled&&desktop.matches;mobileCinema=enabled&&mobile.matches;
    el!.dataset.edMotion=String(enabled);el!.dataset.edCinema=String(cinema);el!.dataset.edMobileCinema=String(mobileCinema);
    stopPacing();initializing=true;previousNear.clear();if(lookButton)lookButton.inert=false;if(!mobileCinema){const opening=scenes.find(s=>s.id==="film-present");if(opening)delete opening.dataset.creditStage;}
@@ -266,11 +274,11 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    scrollToFilm(top+(collage.offsetHeight-(mobileCinema?(collageWindow?.clientHeight||innerHeight):innerHeight))*(lo+hi)/2,true);
   }
   const unsub=subscribeMotion(render),ro=new ResizeObserver(resize);ro.observe(el);if(rail)ro.observe(rail);
-  reduced.addEventListener("change",mode);desktop.addEventListener("change",mode);mobile.addEventListener("change",mode);window.addEventListener("zm-film-mode",change);window.addEventListener(motionQualityEvent,mode);el.addEventListener("focusin",focus);
+  reduced.addEventListener("change",mode);desktop.addEventListener("change",mode);mobile.addEventListener("change",mode);window.addEventListener("zm-film-mode",change);window.addEventListener(motionQualityEvent,mode);window.addEventListener(sceneQualityEvent,quality);el.addEventListener("focusin",focus);
   document.addEventListener("zm-boot-prepare",resize);
   mode();document.fonts.ready.then(()=>{if(alive)resize()});
   document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:true}}));
-  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,mode);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);main.classList.remove("ed-dark-header","film-at-finale");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema};
+  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,mode);window.removeEventListener(sceneQualityEvent,quality);setActiveMotionScene(null);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);main.classList.remove("ed-dark-header","film-at-finale");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema};
  },[]);
  return <div ref={root} className="editorial-flow" id="main-content" tabIndex={-1}>{children}</div>
 }

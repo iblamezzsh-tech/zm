@@ -1,49 +1,67 @@
 "use client";
 import {useLayoutEffect} from "react";
-import {frameHealth,nextTier} from "./motion-quality-policy";
-import {getMotionQuality,initializeMotionQuality,setAutomaticTier,setSystemReduced,motionQualityEvent} from "./motion-quality-store";
+import {frameHealth,nextTier,type Tier} from "./motion-quality-policy";
+import {assessScene,initialReading,type SceneKey} from "./scene-motion-policy";
+import {getMotionQuality,getSceneTier,initializeMotionQuality,setAutomaticTier,setSystemReduced,setSceneReading,motionQualityEvent} from "./motion-quality-store";
 
+// Observe actual active scroll. The existing editorial clock supplies the
+// scene identifier; no second per-frame geometry scan is necessary.
 export default function AdaptiveMotion(){
  useLayoutEffect(()=>{
   initializeMotionQuality();
   const reduced=matchMedia("(prefers-reduced-motion: reduce)");
-  let raf=0,idle=0,last=0,lastScroll=-Infinity,lastChange=performance.now(),poor=0,good=0;
-  let samples:number[]=[];
-  let pending:-1|1|0=0;
+  let raf=0,idle=0,last=0,lastScroll=-Infinity,lastChange=performance.now();
+  let lastKey:SceneKey|"route"|null=null;
+  const buffers=new Map<SceneKey|"route",number[]>();
+  const pending=new Map<SceneKey,Tier>();
+  let routePending:Tier|null=null,routePoor=0,routeGood=0;
   const allowed=()=>getMotionQuality().preference==="auto"&&!reduced.matches&&!document.hidden&&!document.querySelector("dialog[open],.zm-route-curtain[data-phase=cover],.zm-route-curtain[data-phase=reveal]");
-  function reset(){if(raf)cancelAnimationFrame(raf);if(idle)clearTimeout(idle);raf=idle=last=0;samples=[];poor=good=0;pending=0}
+  function reset(){if(raf)cancelAnimationFrame(raf);if(idle)clearTimeout(idle);raf=idle=last=0;lastKey=null;buffers.clear();pending.clear();routePending=null;routePoor=routeGood=0}
   function commit(){
    idle=0;
-   if(!allowed()||!pending)return;
-   // Never alter the active visual effect mid-swipe. Layout geometry
-   // is identical across quality tiers.
-   const state=getMotionQuality();if(state.tier==="reduced")return;
-   const next=nextTier(state.tier,pending);
-   pending=0;poor=good=0;
-   if(next!==state.tier){lastChange=performance.now();setAutomaticTier(next)}
+   if(!allowed()){pending.clear();routePending=null;return}
+   const now=performance.now();
+   for(const [key,tier] of pending){
+    const current=getMotionQuality().scenes[key];if(!current||current.tier===tier)continue;
+    setSceneReading(key,{...current,tier,poor:0,good:0,lastChange:now});
+    buffers.delete(key);
+   }
+   pending.clear();
+   if(routePending){const tier=routePending;routePending=null;lastChange=now;routePoor=routeGood=0;setAutomaticTier(tier)}
+  }
+  function assess(key:SceneKey|"route",samples:number[],now:number){
+   if(key==="route"){
+    const tier=getMotionQuality().tier;if(tier==="reduced")return;
+    const health=frameHealth(samples);
+    routePoor=health==="poor"?routePoor+1:0;routeGood=health==="good"?routeGood+1:0;
+    if(health==="severe"||routePoor>=2)routePending=nextTier(tier,-1);
+    else if(!routePending&&routeGood>=4&&now-lastChange>20000)routePending=nextTier(tier,1);
+    return;
+   }
+   const tier=getSceneTier(key);if(tier==="reduced")return;
+   const prior=getMotionQuality().scenes[key]??initialReading(tier,now);
+   const result=assessScene(prior,samples,now);
+   setSceneReading(key,result.reading);
+   // A later good window must never cancel an already queued downgrade.
+   if(result.pending&&(!pending.has(key)||result.pending==="lite"||(result.pending==="balanced"&&prior.tier==="cinematic")))pending.set(key,result.pending);
   }
   function frame(now:number){
    raf=0;
-   if(!allowed()||now-lastScroll>180){last=0;return}
-   if(last){
+   if(!allowed()||now-lastScroll>180){last=0;lastKey=null;return}
+   const key=getMotionQuality().activeScene??"route";
+   if(last&&lastKey===key){
     const dt=now-last;
-    // Exclude gaps from stopping/starting a trace; retain actual slow frames.
-    if(dt>=4&&dt<=500)samples.push(dt);
-    if(samples.length>=48){
-     const health=frameHealth(samples);samples=[];
-     if(health==="severe"){pending=-1;good=0;poor=0}
-     else if(health==="poor"){poor++;good=0;if(poor>=2)pending=-1}
-     else if(health==="good"){good++;poor=0;if(good>=4&&!pending&&now-lastChange>15000)pending=1}
-     else{poor=good=0}
+    if(dt>=4&&dt<=500){
+     const bucket=buffers.get(key)??[];bucket.push(dt);
+     if(bucket.length>=48){assess(key,bucket,now);buffers.delete(key)}else buffers.set(key,bucket);
     }
    }
-   last=now;
-   raf=requestAnimationFrame(frame);
+   last=now;lastKey=key;raf=requestAnimationFrame(frame);
   }
   function scroll(){
    if(!allowed())return;
    lastScroll=performance.now();
-   if(!raf){last=0;raf=requestAnimationFrame(frame)}
+   if(!raf){last=0;lastKey=null;raf=requestAnimationFrame(frame)}
    if(idle)clearTimeout(idle);
    idle=window.setTimeout(commit,260);
   }
