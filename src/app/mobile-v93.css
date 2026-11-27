@@ -29,12 +29,6 @@
   left:5%;right:5%;text-align:center;z-index:3;color:#354431;
   font:700 clamp(8px,2vw,11px)/1.4 "DM Sans Variable",Arial,sans-serif;letter-spacing:.09em;pointer-events:none
  }
- main.editorial-home .editorial-flow #film-present .hero-scroll{
-  left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:4;
-  padding:5px 10px 5px 6px;background:#24291eea;color:#f4f1e8;
-  border-radius:6px;gap:6px;font-size:8px;letter-spacing:.06em;min-height:44px
- }
- main.editorial-home .editorial-flow #film-present .hero-scroll span{width:27px;height:27px;flex:none}
  .zm-mobile-look{
   position:absolute;bottom:calc(12px + env(safe-area-inset-bottom,0px));right:12px;z-index:5;
   display:flex;align-items:center;gap:7px;min-height:44px;padding:6px 8px 6px 12px;

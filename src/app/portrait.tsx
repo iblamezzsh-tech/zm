@@ -5,6 +5,7 @@ import { LiquidField, heroFields } from "./liquid-field";
 import "./hero-atmosphere.css";
 import "./portrait-loading.css";
 import ContourField from "./contour-field";
+import {mobilePortraitScale,approachLook,lookAlpha} from "./mobile-portrait-geometry";
 
 export default function Portrait() {
   const stage = useRef<HTMLDivElement>(null);
@@ -14,6 +15,8 @@ export default function Portrait() {
   const [showLoading, setShowLoading] = useState(false);
   const [attireReady,setAttireReady]=useState(false);
   const [mobileLook,setMobileLook]=useState(false);
+  const lookTarget=useRef(false);
+  function toggleLook(){lookTarget.current=!lookTarget.current;setMobileLook(lookTarget.current)}
   // Only an actually pending base image warrants an indicator. Never gate
   // the page, wait for other assets, or delay a cached/finished portrait.
   useEffect(() => {
@@ -47,6 +50,7 @@ export default function Portrait() {
     let pointer:number|null=null, lastPoint:{x:number;y:number}|null=null;
     let raf=0,last=0,acc=0,age=0,lastInput=-3;
     let idleAge=0,idleMix=0,lastPaint=0;
+    let lookMix=0,mobile=false;
     let targetX=0,targetY=0,dx=0,dy=0;
     let imageData:ImageData|null=null;
     const canMove=()=>visible&&!motion.matches&&!document.hidden;
@@ -56,15 +60,22 @@ export default function Portrait() {
       if(!w||!h)return;
       ctx.setTransform(dpr,0,0,dpr,0,0);
       ctx.globalCompositeOperation="source-over";ctx.clearRect(0,0,w,h);
-      if(!field.hasInk&&idleMix<.005)return;
+      if(!field.hasInk&&idleMix<.005&&lookMix<=0)return;
       const fit=Math.min(w/attire.naturalWidth,h/attire.naturalHeight);
       const iw=attire.naturalWidth*fit,ih=attire.naturalHeight*fit;
       ctx.drawImage(attire,(w-iw)/2,h-ih,iw,ih);
+      if(mobile&&lookMix>=1)return;
       // Alpha comes from the evolving density field, not a circular CSS mask.
       field.writeMask(imageData.data);
       // A time-driven, softly feathered ribbon reveals real attire pixels even
       // without pointer velocity. Combine it with the original interactive field.
-      if(idleMix>.005){
+      if(mobile&&lookMix>0){
+        const W=field.width,H=field.height,data=imageData.data;
+        for(let j=0;j<H;j++)for(let i=0;i<W;i++){
+          const k=(j*W+i)*4+3;
+          data[k]=lookAlpha(i/(W-1),j/(H-1),lookMix);
+        }
+      }else if(idleMix>.005){
         const W=field.width,H=field.height,data=imageData.data;
         const phase=idleAge*Math.PI*2/11;
         const center=.49-.67*Math.cos(phase);
@@ -99,7 +110,8 @@ export default function Portrait() {
     function frame(now:number){
       raf=0;if(!alive||!canMove()){last=0;return}
       const dt=last?Math.min(.05,(now-last)/1000):1/60;last=now;age+=dt;acc+=dt;
-      const idle=pointer===null&&age-lastInput>1.25;
+      lookMix=mobile?approachLook(lookMix,lookTarget.current?1:0,dt):0;
+      const idle=pointer===null&&age-lastInput>1.25&&!(mobile&&(lookTarget.current||lookMix>0));
       idleMix+=((idle?1:0)-idleMix)*(1-Math.exp(-dt*(idle?1.7:5.5)));
       if(idleMix>.005)idleAge+=dt;
       const amp=area!.clientWidth<600?1.5:3.5;
@@ -115,7 +127,7 @@ export default function Portrait() {
     function sync(){
       if(!alive)return;
       if(canMove()){if(!raf){last=0;raf=requestAnimationFrame(frame)}}
-      else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;lastPoint=null;idleMix=0;lastPaint=0;depth();field.clear();paint()}
+      else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;lastPoint=null;idleMix=0;lastPaint=0;lookMix=mobile&&lookTarget.current?1:0;depth();field.clear();paint()}
     }
     function resize(){
       bounds=area!.getBoundingClientRect();
@@ -124,11 +136,15 @@ export default function Portrait() {
       // The mobile hero uses a viewport-height composition rather than
       // a width-constrained thumbnail. Match the canvas and both photos
       // to one numeric scale; the same fit is used by the fluid mask.
-      if(matchMedia("(max-width: 599px) and (min-height: 500px) and (orientation: portrait)").matches){
-        area!.style.setProperty("--portrait-scale",Math.min(3.1,Math.max(1.55,1.08*h/w)).toFixed(4));
+      mobile=matchMedia("(max-width:899px)").matches;
+      if(matchMedia("(max-width:599px) and (min-height:500px) and (orientation:portrait)").matches){
+        const title=area!.querySelector<HTMLElement>(".hero-name");
+        const kicker=area!.querySelector<HTMLElement>(".zm-mobile-hero-kicker");
+        const titleBottom=Math.max(title?title.offsetTop+title.offsetHeight:0,kicker?kicker.offsetTop+kicker.offsetHeight:0);
+        area!.style.setProperty("--portrait-scale",mobilePortraitScale(w,h,titleBottom).toFixed(4));
       }else area!.style.removeProperty("--portrait-scale");
       scale=Number.parseFloat(getComputedStyle(area!).getPropertyValue("--portrait-scale"))||1;
-      dpr=Math.min(devicePixelRatio||1,1.6);
+      dpr=mobile?Math.min((devicePixelRatio||1)*Math.max(1,scale),2.5):Math.min(devicePixelRatio||1,1.6);
       output!.width=Math.round(w*dpr);output!.height=Math.round(h*dpr);
       field.resize(w,h);
       mask.width=field.width;mask.height=field.height;
@@ -213,7 +229,7 @@ export default function Portrait() {
         </aside>
         <HeroSignature />
         <span className="zm-mobile-hero-kicker">STUDENT / FOUNDER / UZBEKISTAN</span>
-        <button className="zm-mobile-look" type="button" disabled={!attireReady} aria-label={mobileLook?"Return to present portrait":"Reveal graduation portrait"} aria-pressed={mobileLook} onClick={()=>setMobileLook(v=>!v)}><span>{mobileLook?"BACK TO NOW":"TAP TO LOOK"}</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg></button>
+        <button className="zm-mobile-look" type="button" disabled={!attireReady} aria-label={mobileLook?"Return to present portrait":"Reveal graduation portrait"} aria-pressed={mobileLook} onClick={toggleLook}><span>{mobileLook?"BACK TO NOW":"TAP TO LOOK"}</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5v4m0 9v4M3.5 12h4m9 0h4M6 6l2.5 2.5m7 7L18 18m0-12-2.5 2.5m-7 7L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="12" cy="12" r="2.5" stroke="currentColor" strokeWidth="1.5"/></svg></button>
         <a className="hero-scroll" href="#introduction"><span aria-hidden="true">↓</span> Scroll to discover</a>
         <span className="corner tl" />
         <span className="corner tr" />

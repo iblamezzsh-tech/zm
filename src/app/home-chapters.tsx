@@ -34,6 +34,7 @@ import "./archive-v91.css";
 import "./finale-frame-v92.css";
 import "./mobile-v93.css";
 import "./mobile-hero-v94.css";
+import "./mobile-hero-v97.css";
 import "./mobile-finale-v95.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
