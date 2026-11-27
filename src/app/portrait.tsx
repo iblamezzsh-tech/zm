@@ -121,6 +121,12 @@ export default function Portrait() {
       bounds=area!.getBoundingClientRect();
       const w=area!.clientWidth,h=area!.clientHeight;
       if(!w||!h)return;
+      // The mobile hero uses a viewport-height composition rather than
+      // a width-constrained thumbnail. Match the canvas and both photos
+      // to one numeric scale; the same fit is used by the fluid mask.
+      if(matchMedia("(max-width: 599px) and (min-height: 500px) and (orientation: portrait)").matches){
+        area!.style.setProperty("--portrait-scale",Math.min(3.1,Math.max(1.55,1.08*h/w)).toFixed(4));
+      }else area!.style.removeProperty("--portrait-scale");
       scale=Number.parseFloat(getComputedStyle(area!).getPropertyValue("--portrait-scale"))||1;
       dpr=Math.min(devicePixelRatio||1,1.6);
       output!.width=Math.round(w*dpr);output!.height=Math.round(h*dpr);
@@ -207,7 +213,7 @@ export default function Portrait() {
         </aside>
         <HeroSignature />
         <span className="zm-mobile-hero-kicker">STUDENT / FOUNDER / UZBEKISTAN</span>
-        <button className="zm-mobile-look" type="button" disabled={!attireReady} aria-pressed={mobileLook} onClick={()=>setMobileLook(v=>!v)}><span>{mobileLook?"BACK TO NOW":"TAP TO LOOK"}</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg></button>
+        <button className="zm-mobile-look" type="button" disabled={!attireReady} aria-label={mobileLook?"Return to present portrait":"Reveal graduation portrait"} aria-pressed={mobileLook} onClick={()=>setMobileLook(v=>!v)}><span>{mobileLook?"BACK TO NOW":"TAP TO LOOK"}</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg></button>
         <a className="hero-scroll" href="#introduction"><span aria-hidden="true">↓</span> Scroll to discover</a>
         <span className="corner tl" />
         <span className="corner tr" />

@@ -1,0 +1,61 @@
+/* V94 — mobile hero art direction: the portrait is the composition.
+   Match the supplied screenshot's roughly three-quarter-height subject.
+   The numeric responsive scale is synchronized with the liquid canvas. */
+@media(max-width:599px) and (min-height:500px) and (orientation:portrait){
+ main.editorial-home .editorial-flow #film-present .hero-composition{
+  --portrait-scale:2.4;
+  --mobile-name-top:clamp(68px,13svh,122px);
+  background:#f8f7f1;
+ }
+ main.editorial-home .editorial-flow #film-present .hero-world,
+ main.editorial-home .editorial-flow #film-present .hero-editorial-background{
+  background:#f8f7f1;
+ }
+ main.editorial-home .editorial-flow #film-present .hero-editorial-lines{
+  opacity:.20;mask-size:1050px auto;-webkit-mask-size:1050px auto;
+ }
+ main.editorial-home .editorial-flow #film-present .hero-name{
+  inset:var(--mobile-name-top) 16% auto;
+  z-index:3;opacity:1;color:#24291e;
+ }
+ main.editorial-home .editorial-flow #film-present .hero-name svg{
+  display:block;width:100%;height:auto;
+ }
+ main.editorial-home .editorial-flow #film-present .zm-mobile-hero-kicker{
+  top:calc(var(--mobile-name-top) + 10.1vw);
+  color:#354431;font-size:clamp(7px,1.95vw,10px);letter-spacing:.10em;
+ }
+ main.editorial-home .editorial-flow #film-present .hero-portrait-plane{
+  transform:translate3d(var(--hero-dx,0px),var(--hero-dy,0px),0) scale(var(--portrait-scale));
+  transform-origin:50% 100%;
+ }
+ main.editorial-home .editorial-flow #film-present .hero-portrait-plane .photo{
+  object-fit:contain;object-position:center bottom;
+ }
+ main.editorial-home .editorial-flow #film-present .hero-scroll{
+  left:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));min-width:44px;min-height:44px;
+  display:grid;place-items:center;padding:0;gap:0;background:transparent;
+  color:transparent;font-size:0;letter-spacing:0;box-shadow:none;
+ }
+ main.editorial-home .editorial-flow #film-present .hero-scroll span{
+  width:30px;height:30px;border-radius:50%;background:#24291eaf;color:#f4f1e8;
+  border:1px solid #f4f1e875;font-size:18px;
+ }
+ main.editorial-home .editorial-flow #film-present .zm-mobile-look{
+  right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  min-height:44px;display:flex;align-items:center;gap:8px;
+  padding:0;border-radius:0;background:transparent;color:#f4f1e8;
+  font-size:9px;text-shadow:0 1px 4px #151713,0 1px 8px #151713;
+ }
+ main.editorial-home .editorial-flow #film-present .zm-mobile-look svg{
+  width:44px;height:44px;padding:10px;box-sizing:border-box;background:#ffda24;
+  color:#24291e;border-radius:7px;filter:none;
+ }
+ main.editorial-home .editorial-flow #film-present .zm-mobile-look[aria-pressed=true] svg{
+  background:#f4f1e8;transform:rotate(45deg);
+ }
+ /* Preserve the opaque portrait plane during the signature reveal. */
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-present .zm-opening-portrait{
+  background:#f8f7f1!important;
+ }
+}
