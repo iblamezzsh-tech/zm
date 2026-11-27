@@ -4,6 +4,7 @@ import MotionWords from "../motion-words";
 import Link from "next/link";
 import SiteHeader from "../site-header";
 import Signature from "../signature";
+import CopyEmail from "./copy-email";
 import "./contact.css";
 import "../studio54.css";
 
@@ -23,6 +24,7 @@ export default function ContactPage(){
  <div className="contact-letter-grid"><div className="letter-paper"><span className="letter-date">TO: THE CURIOUS</span><h2 id="letter-title"><MotionWords text="Dear"/> <em><MotionWords text="stranger,"/></em></h2><p>I believe that interesting things often begin with a conversation. Whether you’re working on a project, exploring an idea, or simply want to exchange perspectives, I’m glad you stopped by.</p><p>Thanks for taking the time to explore my little corner of the internet.</p><span className="letter-signoff">Until next time,</span><div className="letter-signature"><Signature/></div></div>
  <div className="contact-methods"><span className="contact-kicker">WHERE TO FIND ME</span>
  <a className="contact-channel" href={"mailto:"+email}><span><small>01 / CORRESPONDENCE</small><strong>Email</strong><span>{email}</span></span><b aria-hidden="true"><ArrowIcon direction="up-right"/></b></a>
+ <CopyEmail email={email}/>
  <a className="contact-channel" href="https://t.me/Shoxruxbekovich"><span><small>02 / MESSAGE ME</small><strong>Telegram</strong><span>@Shoxruxbekovich</span></span><b aria-hidden="true"><ArrowIcon direction="up-right"/></b></a>
  <a className="contact-channel" href="https://www.instagram.com/the_zzsh/"><span><small>03 / SOCIAL</small><strong>Instagram</strong><span>@the_zzsh</span></span><b aria-hidden="true"><ArrowIcon direction="up-right"/></b></a>
  <a className="contact-channel" href="https://github.com/iblamezzsh-tech/zm"><span><small>04 / WEBSITE CODE</small><strong>GitHub</strong><span>Explore this portfolio’s repository.</span></span><b aria-hidden="true"><ArrowIcon direction="up-right"/></b></a>

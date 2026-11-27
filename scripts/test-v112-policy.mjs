@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {parseReturnMarker,desiredCardOffset} from '../src/app/record-return-policy.mjs';
+import {refinePresentFringe} from './portrait-fringe.mjs';
+const marker={id:'school-honor-2026',y:8725,top:155,width:390,height:640};
+assert.deepEqual(parseReturnMarker(marker),marker);
+for(const bad of [null,{}, {...marker,id:'" invalid'}, {...marker,y:NaN},{...marker,width:0}])assert.equal(parseReturnMarker(bad),null);
+assert.equal(desiredCardOffset(155,210,640,86),155);
+assert.equal(desiredCardOffset(-30,210,640,86),86);
+assert.equal(desiredCardOffset(610,210,640,86),418);
+assert.equal(desiredCardOffset(200,900,640,86),86);
+assert.equal(desiredCardOffset(250,210,844,86),250);
+const w=1070,h=850,b=Buffer.alloc(w*h*4),put=(x,y,r,g,b0,a)=>{const i=(y*w+x)*4;b.set([r,g,b0,a],i);return i};
+const dark=put(501,110,40,34,30,255),edge=put(500,110,145,143,140,145),skin=put(502,110,195,148,120,160),shirt=put(500,800,235,235,235,255),core=put(500,112,150,149,148,255),far=put(700,110,145,145,145,150);
+const result=refinePresentFringe(b,w,h);assert.equal(result.changed,1);assert.ok(result.data[edge]<b[edge]);assert.equal(result.data[edge+3],b[edge+3]);for(const i of [dark,skin,shirt,core,far])assert.deepEqual(result.data.subarray(i,i+4),b.subarray(i,i+4));assert.equal(b[edge],145);
+console.log('PASS 20 return geometry / edge-matte assertions');

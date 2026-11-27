@@ -1,0 +1,49 @@
+/* V111 audit pass: scoped horizontal clipping preserves native vertical scroll.
+   Do not set overflow:hidden on html/body; clip is not a scroll container. */
+main.editorial-home .editorial-flow :is(.ed-collage,.ed-personal,.zm-worlds,.ed-social){max-width:100%;min-width:0}
+main.editorial-home .editorial-flow :is(a,button):focus-visible{outline:2px solid #ffda24;outline-offset:3px}
+main.editorial-home .editorial-flow .ed-archive-item:focus-visible{outline-offset:-3px}
+/* Keep primary links and headings accessible; V112 owns scene typography. */
+main.editorial-home .editorial-flow[data-ed-motion=true] :is(h2,h3,.ed-statement-line,.ed-link,.ed-interest-list a,.zm-world-copy,.finale-nav a,.finale-cta){clip-path:none!important;opacity:1!important}
+main.editorial-home .editorial-flow[data-ed-motion=true] .ed-social-links{position:relative;inset:auto;z-index:6;transform:none!important;opacity:1!important;margin-top:clamp(30px,6vw,90px)}
+main.editorial-home .editorial-flow .ed-social-links a{min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:5px}
+main.editorial-home .editorial-flow .ed-social-links a:focus-visible{outline:2px solid #24291e;outline-offset:2px}
+main.editorial-home .editorial-flow .ed-fan{pointer-events:none}
+main.editorial-home .editorial-flow .ed-archive-image{background:#eeece3}
+main.editorial-home .editorial-flow .ed-record-undated{font-size:9px;letter-spacing:0}
+main.editorial-home .editorial-flow .finale-edition{max-width:100%;overflow-wrap:anywhere}
+main.studio54 :is([id^="record-"],#economics,#psychology,#politics,#music,#literature,#project-demo){scroll-margin-top:100px}
+main.studio54.milestones-page .archive-dialog.audit-viewer{width:min(1120px,calc(100% - 32px));max-height:calc(100dvh - 32px);box-sizing:border-box;padding:20px;overflow:auto;overscroll-behavior:contain}
+.audit-viewer .audit-viewer-grid{display:grid;grid-template-columns:minmax(210px,.7fr) minmax(0,1.5fr);gap:20px;align-items:start}
+.audit-viewer .audit-viewer-meta{min-width:0;padding-top:18px}
+main.studio54 .archive-dialog.audit-viewer h2{font-size:clamp(24px,3.2vw,44px);line-height:1.05;margin:12px 0}
+main.studio54 .archive-dialog.audit-viewer p{font-size:14px;line-height:1.5;margin:12px 0}
+.audit-viewer .archive-document{min-width:0;overflow:auto;max-height:calc(100dvh - 110px);overscroll-behavior:contain}
+main.studio54 .archive-dialog.audit-viewer .archive-document img{display:block;width:100%;height:auto;max-height:calc(100dvh - 125px);object-fit:contain}
+main.studio54 .archive-dialog.audit-viewer.is-zoomed .archive-document img{width:175%;max-width:none;max-height:none}
+.audit-viewer .archive-close{position:sticky;top:0;left:auto;right:auto;z-index:5;display:block;margin-left:auto;min-width:44px;min-height:44px}
+.audit-viewer-actions{display:flex;gap:8px;flex-wrap:wrap}
+.audit-viewer-actions :is(a,button){font:inherit;color:inherit;min-height:44px;padding:8px 12px;border:1px solid currentColor;background:transparent;display:inline-flex;align-items:center;gap:4px}
+.audit-project-evidence{background:#f4f1e8;color:#24291e;padding:clamp(18px,3vw,48px) clamp(22px,5vw,96px)}
+.audit-project-evidence dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0}
+.audit-project-evidence dt{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px}
+.audit-project-evidence dd{margin:0;font-size:15px;line-height:1.45;overflow-wrap:anywhere}
+@media(max-width:899px){
+ main.studio54.milestones-page .archive-dialog.audit-viewer{width:calc(100% - 20px);padding:12px;max-height:calc(100dvh - 20px)}
+ .audit-viewer .audit-viewer-grid{grid-template-columns:minmax(0,1fr);gap:8px}
+ .audit-viewer .audit-viewer-meta{padding-top:0}
+ main.studio54 .archive-dialog.audit-viewer h2{font-size:clamp(22px,5vw,32px);margin:6px 0}
+ .audit-viewer .audit-viewer-meta p{margin:6px 0}
+ main.studio54 .archive-dialog.audit-viewer .archive-document img{max-height:55dvh}
+ .audit-viewer .archive-document{max-height:55dvh}
+ .audit-project-evidence dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:899px){
+ main.editorial-home .editorial-flow #next-chapter .finale-edition{display:block;margin:0 0 8px;color:#f4f1e8;font-size:9px;line-height:1.4;letter-spacing:.08em}
+ main.editorial-home .editorial-flow #next-chapter .finale-nav>a{min-height:44px}
+ main.editorial-home .editorial-flow #next-chapter .finale-cta>a{min-height:44px}
+}
+/* Long menu labels must fit the grid, including the arrow and number. */
+.zm-menu-dialog .zm-menu-links a .zm-menu-label{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.zm-motion-settings-head{flex-wrap:wrap}
+.zm-scene-diagnostics-row{grid-template-columns:minmax(0,1fr) auto minmax(0,100px);overflow-wrap:anywhere}

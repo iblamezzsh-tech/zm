@@ -1,5 +1,6 @@
 // Correct pale matte contamination in the registered 1070x850 cutouts.
 // Never expand existing alpha. Preserve dark strands, skin and clothing.
+import {refinePresentFringe} from "./portrait-fringe.mjs";
 const clamp=(x,lo=0,hi=1)=>Math.max(lo,Math.min(hi,x));
 const lum=(r,g,b)=>.2126*r+.7152*g+.0722*b;
 export function refinePortraitRGBA(input,w,h,{kind="present"}={}){
@@ -38,5 +39,6 @@ export function refinePortraitRGBA(input,w,h,{kind="present"}={}){
   for(let c=0;c<3;c++)out[i+c]=Math.round(clamp((input[i+c]-227*(1-divisor))/divisor,22,145));
   out[i+3]=alpha;
  }
+ if(kind==="present"){const fringe=refinePresentFringe(out,w,h);return {data:fringe.data,changed:changed+fringe.changed,removed};}
  return {data:out,changed,removed};
 }

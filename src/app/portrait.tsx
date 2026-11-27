@@ -67,7 +67,7 @@ export default function Portrait() {
       if(full&&lastFull)return;lastFull=full;
       ctx.setTransform(dpr,0,0,dpr,0,0);
       ctx.globalCompositeOperation="source-over";ctx.clearRect(0,0,w,h);
-      if(!field.hasInk&&idleMix<.005&&lookMix<=0)return;
+      if(!field.hasInk&&lookMix<=0)return;
       const fit=Math.min(w/attire.naturalWidth,h/attire.naturalHeight);
       const iw=attire.naturalWidth*fit,ih=attire.naturalHeight*fit;
       if(mobile&&rasterCtx&&raster.width)ctx.drawImage(raster,0,0,w,h);else ctx.drawImage(attire,(w-iw)/2,h-ih,iw,ih);
@@ -81,27 +81,6 @@ export default function Portrait() {
         for(let j=0;j<H;j++)for(let i=0;i<W;i++){
           const k=(j*W+i)*4+3;
           data[k]=lookAlpha(i/(W-1),j/(H-1),lookMix);
-        }
-      }else if(idleMix>.005){
-        const W=field.width,H=field.height,data=imageData.data;
-        const phase=idleAge*Math.PI*2/11;
-        const center=.49-.67*Math.cos(phase);
-        const left=(w-iw)/2,top=h-ih;
-        for(let j=0;j<H;j++){
-          const py=(j/(H-1)*h-dy-h*(1-scale))/scale;
-          const y=(py-top)/ih;
-          if(y<-.15||y>1.15)continue;
-          for(let i=0;i<W;i++){
-            const px=(i/(W-1)*w-dx-w*(1-scale)/2)/scale;
-            const x=(px-left)/iw;
-            if(x<-.15||x>1.15)continue;
-            const wave=.09*Math.sin(x*6.8-phase*1.4)+.035*Math.sin(x*15+phase);
-            const d=Math.abs(y-center-wave);
-            const t=Math.max(0,Math.min(1,(.29-d)/.16));
-            const alpha=Math.round(255*idleMix*.96*t*t*(3-2*t));
-            const k=(j*W+i)*4+3;
-            data[k]=Math.max(data[k],alpha);
-          }
         }
       }
       maskCtx.putImageData(imageData,0,0);
@@ -149,6 +128,12 @@ export default function Portrait() {
         const brand=area!.querySelector<HTMLElement>(".zm-hero-brand");
         const titleBottom=brand?brand.offsetTop+brand.offsetHeight:0;
         area!.style.setProperty("--portrait-scale",mobilePortraitScale(w,h,titleBottom).toFixed(4));
+      }else if(!mobile){
+        const title=area!.querySelector<HTMLElement>(".hero-name");
+        const inkBottom=title?title.offsetTop+title.offsetHeight*.82:80;
+        const fit=Math.min(w/1070,h/850);
+        const maxScale=(h-inkBottom-12)/(830*fit);
+        area!.style.setProperty("--portrait-scale",Math.max(.35,Math.min(1.02,maxScale)).toFixed(4));
       }else area!.style.removeProperty("--portrait-scale");
       scale=Number.parseFloat(getComputedStyle(area!).getPropertyValue("--portrait-scale"))||1;
       if(opening){
@@ -193,7 +178,7 @@ export default function Portrait() {
     resize();ro.observe(area);const brand=area.querySelector<HTMLElement>(".zm-hero-brand");if(brand)ro.observe(brand);
     io.observe(area);
     window.addEventListener(motionQualityEvent,qualityChanged,options);
-    window.addEventListener(sceneQualityEvent,e=>{if((e as CustomEvent).detail==="opening")qualityChanged()},options);
+    window.addEventListener(sceneQualityEvent,e=>{if((e as CustomEvent).detail==="opening"||(e as CustomEvent).detail===null)qualityChanged()},options);
     Promise.all([original.decode(),attire.decode()]).then(()=>{
       if(!alive)return;
       loaded=true;setAttireReady(true);resize();sync();

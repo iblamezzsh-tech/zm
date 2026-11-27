@@ -1,7 +1,7 @@
 /* V92 — sculpted graduation finale, based on the approved acid-lime mockup.
    Live portrait, links and contour animation remain native HTML. */
 main.editorial-home .editorial-flow #next-chapter.film-finale-shot{
- --finale-frame:#d5ff00;--finale-frame-gap:clamp(10px,1.15vw,20px);
+ --finale-frame:#ffda24;--finale-frame-gap:clamp(10px,1.15vw,20px);
  --finale-cut-height:clamp(26px,5.5vh,42px);
  --finale-cut-width:clamp(180px,20vw,310px);
  position:relative;isolation:isolate;display:block;

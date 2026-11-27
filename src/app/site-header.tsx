@@ -60,7 +60,7 @@ export default function SiteHeader({about=false,projects=false,achievements=fals
  <header className="site-header minimal-header">
   <Link className="identity minimal-identity" href="/" aria-label="ZiyoMuhammad home"><img src="/icon.svg" alt="" width="50" height="50"/></Link>
   <div className="minimal-actions">
-   <Link className="minimal-connect" href="/contact" aria-current={contact?"page":undefined}>Let's Connect <span className="minimal-arrow" aria-hidden="true"><ArrowIcon direction="up-right"/></span></Link>
+   <Link className="minimal-connect" href="/contact" aria-current={contact?"page":undefined}>Let&apos;s Connect <span className="minimal-arrow" aria-hidden="true"><ArrowIcon direction="up-right"/></span></Link>
    <button ref={trigger} className="minimal-menu-trigger" type="button" onClick={show} aria-label="Open navigation menu" aria-haspopup="dialog" aria-expanded={open} aria-controls={menuId}><span className="minimal-menu-glyph" aria-hidden="true"><i/><i/></span></button>
   </div>
  </header>
@@ -68,7 +68,7 @@ export default function SiteHeader({about=false,projects=false,achievements=fals
   <div className="zm-menu-shell">
    <div className="zm-menu-top">
     <Link className="zm-menu-logo" href="/" onClick={()=>close(false)} aria-label="ZiyoMuhammad home"><img src="/icon.svg" alt="" width="50" height="50"/></Link>
-    <div className="minimal-actions"><Link className="minimal-connect zm-menu-connect" href="/contact" onClick={()=>close(false)}>Let's Connect <span aria-hidden="true"><ArrowIcon direction="up-right"/></span></Link><button className="zm-menu-close" type="button" aria-label="Close navigation menu" onClick={()=>close()} autoFocus><span aria-hidden="true">×</span></button></div>
+    <div className="minimal-actions"><Link className="minimal-connect zm-menu-connect" href="/contact" onClick={()=>close(false)}>Let&apos;s Connect <span aria-hidden="true"><ArrowIcon direction="up-right"/></span></Link><button className="zm-menu-close" type="button" aria-label="Close navigation menu" onClick={()=>close()} autoFocus><span aria-hidden="true">×</span></button></div>
    </div>
    <div className="zm-menu-gallery zm-menu-contact-sheet" aria-hidden="true">
     {open&&<><div className="zm-menu-feature">{columns.flat().map(tile=><div className={"zm-menu-feature-frame"+(selected===tile.id?" is-selected":"")} key={tile.id}><GalleryTile tile={tile} active={selected===tile.id}/></div>)}</div><div className="zm-menu-filmstrip">{columns.flat().map(tile=><div className={"zm-menu-filmstrip-item"+(selected===tile.id?" is-selected":"")} key={tile.id}><GalleryTile tile={tile} active={selected===tile.id}/></div>)}</div><div className="zm-menu-gallery-caption"><span>THE PORTFOLIO / CONTACT SHEET</span><span>{pages.find(p=>p.visual===selected)?.note??"The present"}</span></div></>}

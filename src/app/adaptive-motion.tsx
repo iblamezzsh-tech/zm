@@ -19,7 +19,7 @@ export default function AdaptiveMotion(){
   function reset(){if(raf)cancelAnimationFrame(raf);if(idle)clearTimeout(idle);raf=idle=last=0;lastKey=null;buffers.clear();pending.clear();routePending=null;routePoor=routeGood=0}
   function commit(){
    idle=0;
-   if(!allowed()){pending.clear();routePending=null;return}
+   if(!allowed())return;
    const now=performance.now();
    for(const [key,tier] of pending){
     const current=getMotionQuality().scenes[key];if(!current||current.tier===tier)continue;
@@ -57,7 +57,7 @@ export default function AdaptiveMotion(){
      if(bucket.length>=48||urgentFrameWindow(bucket)){assess(key,bucket,now);buffers.delete(key)}else buffers.set(key,bucket);
     }
    }
-   if(stale){last=0;lastKey=null;return}
+   if(stale){last=0;lastKey=null;if(!idle&&(pending.size||routePending))idle=window.setTimeout(commit,0);return}
    last=now;lastKey=key;raf=requestAnimationFrame(frame);
   }
   function scroll(){

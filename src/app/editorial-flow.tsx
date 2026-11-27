@@ -271,6 +271,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    railX=nextRailX;
   }
   function quality(){applySceneTiers(el!);requestMotionFrame()}
+  function preferenceQuality(){if(enabled!==(!manual&&!reduced.matches))mode();else quality()}
   function mode(){
    applySceneTiers(el!);
    enabled=!manual&&!reduced.matches;cinema=enabled&&desktop.matches;mobileCinema=enabled&&mobile.matches;
@@ -292,11 +293,11 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    scrollToFilm(top+(collage.offsetHeight-(mobileCinema?(collageWindow?.clientHeight||innerHeight):innerHeight))*(lo+hi)/2,true);
   }
   const unsub=subscribeMotion(render),ro=new ResizeObserver(resize);ro.observe(el);if(rail)ro.observe(rail);for(const scene of scenes)ro.observe(scene);window.addEventListener("resize",resize,{passive:true});
-  reduced.addEventListener("change",mode);desktop.addEventListener("change",mode);mobile.addEventListener("change",mode);window.addEventListener("zm-film-mode",change);window.addEventListener(motionQualityEvent,mode);window.addEventListener(sceneQualityEvent,quality);el.addEventListener("focusin",focus);
+  reduced.addEventListener("change",mode);desktop.addEventListener("change",mode);mobile.addEventListener("change",mode);window.addEventListener("zm-film-mode",change);window.addEventListener(motionQualityEvent,preferenceQuality);window.addEventListener(sceneQualityEvent,quality);el.addEventListener("focusin",focus);
   document.addEventListener("zm-boot-prepare",resize);
   mode();document.fonts.ready.then(()=>{if(alive)resize()});
   document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:true}}));
-  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();window.removeEventListener("resize",resize);reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,mode);window.removeEventListener(sceneQualityEvent,quality);setActiveMotionScene(null);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);main.classList.remove("ed-dark-header","film-at-finale");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema};
+  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();window.removeEventListener("resize",resize);reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,preferenceQuality);window.removeEventListener(sceneQualityEvent,quality);setActiveMotionScene(null);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);main.classList.remove("ed-dark-header","film-at-finale");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema};
  },[]);
  return <div ref={root} className="editorial-flow" id="main-content" tabIndex={-1}>{children}</div>
 }

@@ -48,6 +48,8 @@ import "./motion-score-v105.css";
 import "./mobile-qa-v106.css";
 import "./mobile-performance-v106-3.css";
 import "./adaptive-motion-v107.css";
+import "./audit-v111.css";
+import "./audit-v112.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -113,14 +115,14 @@ export default function HomeChapters(){
    <div className="ed-gutter ed-caption"><span>05 / THE ARCHIVE</span><span>DOCUMENTED EXPERIENCES</span></div>
    <div className="ed-gutter ed-archive-heading"><h2 className="kt-heading" aria-label="Every step leaves a mark."><KineticText text="Every step" kind="press"/><br/><em><KineticText text="leaves a mark." kind="engrave" index={1}/></em></h2><Link href="/achievements" className="ed-link">All milestones <span><ArrowIcon direction="up-right"/></span></Link></div>
    {archive.length===0&&<div className="ed-gutter zm-archive-empty"><span>ZM / ARCHIVE NOTES</span><p>Original documents are not available in this build. You can still explore the personal records.</p><Link href="/achievements" className="ed-link">Explore milestones <span><ArrowIcon direction="up-right"/></span></Link></div>}
-   <div className="ed-gutter ed-archive-grid">{archive.map((r,i)=>r.document&&<Link href="/achievements" className="ed-archive-item" key={r.id} data-mobile-record={r.id} data-ed-reveal style={{"--ed-i":i} as React.CSSProperties}>
+   <div className="ed-gutter ed-archive-grid">{archive.map((r,i)=>r.document&&<Link href={"/achievements#record-"+r.id} className="ed-archive-item" key={r.id} data-return-record={r.id} data-ed-reveal style={{"--ed-i":i} as React.CSSProperties}>
     <div className="ed-record-display">
      <svg className="ed-record-outline" viewBox="0 0 360 310" preserveAspectRatio="none" aria-hidden="true">
       <path d="M9 1H351Q359 1 359 9V252Q359 260 351 260H227Q215 260 207 270L181 298Q171 309 157 309H9Q1 309 1 301V9Q1 1 9 1Z" vectorEffect="non-scaling-stroke"/>
      </svg>
      <div className="ed-record-index" aria-hidden="true">{String(i+1).padStart(2,"0")}</div>
      <div className="ed-archive-image"><img src={r.document.src} alt={r.document.alt} loading="lazy" decoding="async" fetchPriority="low"/></div>
-     <div className="ed-record-tab"><span>{r.category}</span><b className={r.period?"":"ed-record-undated"}>{r.period?.match(/(?:19|20)\d{2}/g)?.at(-1)??String(i+1).padStart(2,"0")}</b></div>
+     <div className="ed-record-tab"><span>{r.category}</span><b className={r.period?"":"ed-record-undated"}>{r.period?.match(/(?:19|20)\d{2}/g)?.at(-1)??"Undated"}</b></div>
     </div>
     <div className="ed-archive-label"><strong>{r.title}</strong><span className="ed-record-arrow" aria-hidden="true"><ArrowIcon direction="up-right"/></span></div>
    </Link>)}</div>
@@ -128,7 +130,7 @@ export default function HomeChapters(){
   <section className="ed-personal ed-paper" id="interests" data-motion-scene="personal" data-ed-scene data-ed-theme="light"><SurfaceSeam tone="paper"/><PageAtmosphere kind="notebook"/>
    <div className="ed-gutter ed-caption"><span>06 / OFF THE RECORD</span><span>MORE THAN ONE THING</span></div>
    <div className="ed-gutter ed-personal-head"><h2 className="kt-heading" aria-label="What keeps me curious?"><KineticText text="What keeps" kind="unfold"/><br/><em><KineticText text="me curious?" kind="swerve" index={1}/></em></h2><p>Not everything I do belongs on a résumé. A few things I enjoy, even without a deadline.</p></div>
-   <div className="ed-gutter ed-interest-list">{interests.map((s,i)=><Link href="/off-the-record" data-ed-reveal key={s} style={{"--ed-i":i} as React.CSSProperties}><small>0{i+1}</small><span>{s}</span><b><ArrowIcon direction="up-right"/></b></Link>)}</div>
+   <div className="ed-gutter ed-interest-list">{interests.map((s,i)=><Link href={"/off-the-record#"+s.toLowerCase()} data-ed-reveal key={s} style={{"--ed-i":i} as React.CSSProperties}><small>0{i+1}</small><span className="zm-interest-label"><span className="zm-interest-text">{s}</span></span><b><ArrowIcon direction="up-right"/></b></Link>)}</div>
    <div className="ed-gutter ed-personal-end"><Link href="/off-the-record" className="ed-link">Get to know me <span><ArrowIcon direction="up-right"/></span></Link></div>
   </section>
   <section className="ed-social ed-paper" data-motion-scene="social" data-ed-scene data-ed-theme="light">
@@ -149,7 +151,7 @@ export default function HomeChapters(){
     <div className="finale-inner"><PageAtmosphere kind="earth" dark/>
      <div className="zm-mobile-finale-index" aria-label="Selected initiatives">{projects.map(p=><Link href={"/projects/"+p.slug} key={p.slug} className={"zm-finale-project-"+p.kind}>{p.name}</Link>)}</div>
      <div className="finale-heading">
-      <p className="finale-edition">THE NEXT CHAPTER <span> / </span> A PORTRAIT IN PROGRESS</p>
+      <p className="finale-edition">THE NEXT CHAPTER <span> / </span> IMAGINED FUTURE</p>
       <h2 className="finale-desktop-title"><span className="finale-line-one"><FilmWords text="Always becoming."/></span><em className="finale-line-two"><FilmWords text="Never standing still."/></em></h2>
       <h2 className="zm-finale-reference-title"><span><FilmWords text="Always"/> <em><FilmWords text="becoming."/></em></span><span><FilmWords text="Never standing"/> <em><FilmWords text="still."/></em></span></h2>
      </div>

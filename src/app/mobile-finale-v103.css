@@ -6,7 +6,7 @@
 .zm-finale-mobile-cut,.zm-finale-mobile-colophon,.zm-finale-reference-title,.zm-finale-reference-label{display:none}
 @media(max-width:899px){
  main.editorial-home .editorial-flow #next-chapter.film-finale-shot{
-  --finale-frame:#d5ff00;
+  --finale-frame:#ffda24;
   --finale-frame-gap:clamp(12px,5.1vw,30px);
   --finale-gutter:clamp(13px,4.6vw,27px);
   --finale-cut:clamp(12px,3.6vw,24px);
@@ -43,7 +43,7 @@
  main.editorial-home .editorial-flow #next-chapter .zm-mobile-finale-index{
   display:flex;grid-area:1/1/2/-1;justify-content:space-between;align-items:center;
   gap:6px;min-height:32px;margin:0 0 clamp(20px,7vw,40px);padding:0;
-  border:0;color:#d5ff00;
+  border:0;color:#ffda24;
  }
  main.editorial-home .editorial-flow #next-chapter .zm-mobile-finale-index>a{
   color:inherit;text-decoration:none;min-width:0;display:inline-flex;
@@ -73,20 +73,20 @@
  }
  main.editorial-home .editorial-flow #next-chapter .finale-nav>a{
   display:flex;align-items:center;justify-content:center;text-align:center;
-  min-height:clamp(27px,7.3vw,38px);width:100%;box-sizing:border-box;
+  min-height:44px;width:100%;box-sizing:border-box;
   padding:2px 0;gap:0;border:0;white-space:normal;
   text-transform:uppercase;color:#f4f1e8;
   font:850 clamp(12px,4.55cqw,25px)/1 "DM Sans Variable",Arial,sans-serif;
   letter-spacing:-.065em;
  }
  main.editorial-home .editorial-flow #next-chapter .finale-nav>a small{display:none}
- main.editorial-home .editorial-flow #next-chapter .finale-nav>a:is(:hover,:focus-visible){color:#d5ff00;translate:none}
+ main.editorial-home .editorial-flow #next-chapter .finale-nav>a:is(:hover,:focus-visible){color:#ffda24;translate:none}
  /* This is intentionally a compact editorial link list (at least 27px),
     not a dashboard with full-width dividers or forty-four-pixel rows. */
  main.editorial-home .editorial-flow #next-chapter .finale-signature{
   position:relative;inset:auto;grid-area:3/1/4/-1;justify-self:center;align-self:end;
   width:clamp(104px,42cqw,250px);margin:clamp(17px,6vw,36px) auto -9px;
-  color:#d5ff00;opacity:1;transform:rotate(-9deg);z-index:5;
+  color:#ffda24;opacity:1;transform:rotate(-9deg);z-index:5;
  }
  main.editorial-home .editorial-flow #next-chapter .finale-heading{
   position:relative;inset:auto;grid-area:4/1/5/-1;align-self:start;
@@ -106,7 +106,7 @@
   font-size:.83em;margin-top:2px;
  }
  main.editorial-home .editorial-flow #next-chapter .zm-finale-reference-title em{
-  font:400 1.12em/.93 "Instrument Serif",Georgia,serif;letter-spacing:-.045em;color:#d5ff00;
+  font:400 1.12em/.93 "Instrument Serif",Georgia,serif;letter-spacing:-.045em;color:#ffda24;
  }
  main.editorial-home .editorial-flow #next-chapter .finale-heading .film-word{overflow:visible}
  /* The image width is the panel width, NOT 132% of it. The visible cap
@@ -129,7 +129,7 @@
  }
  main.editorial-home .editorial-flow #next-chapter .finale-cta a{
   width:auto;min-height:34px;box-sizing:border-box;justify-content:center;
-  padding:7px 13px;gap:10px;background:#d5ff00;color:#24291e;
+  padding:7px 13px;gap:10px;background:#ffda24;color:#24291e;
   border-radius:5px;text-transform:uppercase;
   font:850 clamp(9px,2.9cqw,14px)/1.1 "DM Sans Variable",Arial,sans-serif;
   letter-spacing:-.02em;
@@ -139,12 +139,12 @@
  main.editorial-home .editorial-flow #next-chapter :is(.finale-location,.finale-note,.zm-finale-mobile-colophon,.finale-frame-cut){display:none}
  main.editorial-home .editorial-flow #next-chapter .zm-finale-mobile-cut{
   display:block;position:absolute;bottom:-1px;left:0;width:100%;height:var(--finale-cut);
-  fill:#d5ff00;z-index:7;pointer-events:none;
+  fill:#ffda24;z-index:7;pointer-events:none;
  }
  main.editorial-home .editorial-flow #next-chapter .finale-footer{
   display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
   gap:4px 14px;min-height:34px;padding:3px 0 0;
-  background:#d5ff00;color:#24291e;border:0;
+  background:#ffda24;color:#24291e;border:0;
   font:750 clamp(8px,2.45vw,12px)/1.3 "DM Sans Variable",Arial,sans-serif;
  }
  main.editorial-home .editorial-flow #next-chapter .finale-footer-caption{display:none}
@@ -157,7 +157,7 @@
     a second decorative header, label row or duplicate raised shape. */
  main.editorial-home .editorial-flow .ed-social .zm-social-handoff{
   min-height:clamp(88px,30vw,170px);height:clamp(88px,30vw,170px);
-  padding:0;margin-top:16px;background:linear-gradient(180deg,#d5ff0000,#d5ff00);
+  padding:0;margin-top:16px;background:linear-gradient(180deg,#ffda2400,#ffda24);
  }
  main.editorial-home .editorial-flow .ed-social .zm-social-handoff>*{display:none}
 }

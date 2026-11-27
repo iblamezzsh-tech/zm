@@ -12,7 +12,7 @@ function Mark({category}:{category:RecordEntry["category"]}){
  </g></svg>
 }
 function EntryCard({entry,onOpen}:{entry:RecordEntry;onOpen:(button:HTMLButtonElement)=>void}){
- return <button type="button" className={"archive-record"+(entry.document?" record-has-document":" record-experience")} onClick={event=>onOpen(event.currentTarget)}>
+ return <button type="button" id={"record-"+entry.id} className={"archive-record"+(entry.document?" record-has-document":" record-experience")} onClick={event=>onOpen(event.currentTarget)}>
  <span className={"record-cover"+(entry.document?.type==="image"?" record-cover-photo":"")}><span>{entry.document?"ZM / ORIGINAL RECORD":"ZM / PERSONAL RECORD"}</span>{entry.document?.type==="image"?<img src={entry.document.src} alt={entry.document.alt} loading="lazy" decoding="async"/>:<Mark category={entry.category}/>}<span>{entry.type.toUpperCase()}</span></span>
  <span className="record-info"><span>{entry.category}{entry.period?" / "+entry.period:""}</span><span className="record-title">{entry.title}</span><span className="record-org">{entry.organization}</span><span className="record-open">Read record <span aria-hidden="true"><ArrowIcon direction="up-right"/></span></span></span>
  </button>
@@ -20,6 +20,9 @@ function EntryCard({entry,onOpen}:{entry:RecordEntry;onOpen:(button:HTMLButtonEl
 export default function Archive({records}:{records:RecordEntry[]}){
  const [category,setCategory]=useState<Category>("All");
  const [selected,setSelected]=useState<RecordEntry|null>(null);
+ const [zoom,setZoom]=useState(false);
+ const deepOrigin=useRef<string|null>(null);
+ const paper=useRef<HTMLDivElement>(null);
  const [featuredId,setFeaturedId]=useState(records[0]?.id??"");
  const deskTrigger=useRef<HTMLButtonElement>(null);
  const dialog=useRef<HTMLDialogElement>(null);
@@ -28,12 +31,33 @@ export default function Archive({records}:{records:RecordEntry[]}){
  const featured=items.find(r=>r.id===featuredId)??items[0];
  const index=items.findIndex(r=>r.id===featured?.id);
  function move(delta:number){if(items.length)setFeaturedId(items[(index+delta+items.length)%items.length].id)}
- useEffect(()=>{const el=dialog.current;if(!selected||!el)return;if(!el.open)el.showModal();const previous=document.body.style.overflow;document.body.style.overflow="hidden";return()=>{document.body.style.overflow=previous}},[selected]);
- function open(entry:RecordEntry,button:HTMLButtonElement){trigger.current=button;setSelected(entry)}
+ const opened=selected!==null;
+ const browsing=selected?.document?items.filter(item=>Boolean(item.document)):items;
+ const browseIndex=browsing.findIndex(item=>item.id===selected?.id);
+ function browse(delta:number){
+  if(browseIndex<0||browsing.length<2)return;
+  const next=browsing[(browseIndex+delta+browsing.length)%browsing.length];
+  setZoom(false);setSelected(next);setFeaturedId(next.id);
+  history.replaceState(history.state,"","#record-"+next.id);
+ }
+ useEffect(()=>{const el=dialog.current;if(!opened||!el)return;if(!el.open)el.showModal();const previous=document.body.style.overflow;document.body.style.overflow="hidden";return()=>{document.body.style.overflow=previous}},[opened]);
+ useEffect(()=>{if(paper.current){paper.current.scrollTop=0;paper.current.scrollLeft=0}},[selected?.id,zoom]);
+ useEffect(()=>{
+  function followRecord(){
+   const hash=window.location.hash;
+   const record=records.find(item=>hash==="#record-"+item.id);
+   if(!record){if(dialog.current?.open)dialog.current.close();return}
+   if(!deepOrigin.current)deepOrigin.current=record.id;
+   setCategory("All");setFeaturedId(record.id);setZoom(false);setSelected(record);
+  }
+  followRecord();window.addEventListener("hashchange",followRecord);window.addEventListener("popstate",followRecord);
+  return()=>{window.removeEventListener("hashchange",followRecord);window.removeEventListener("popstate",followRecord)};
+ },[records]);
+ function open(entry:RecordEntry,button:HTMLButtonElement){trigger.current=button;deepOrigin.current=null;setZoom(false);setSelected(entry);history.replaceState(history.state,"","#record-"+entry.id)}
  function close(){dialog.current?.close()}
  return <section className="archive-section" id="featured" aria-labelledby="archive-title"><PageAtmosphere kind="archive"/>
  <div className="archive-rule"><span>01 / Personal records</span><span>Experiences &amp; evidence</span></div>
- <div className="archive-heading"><h2 id="archive-title"><MotionWords text="The"/> <em><MotionWords text="archive."/></em></h2><p>School days, competitions, volunteering and the documents I've kept along the way.</p></div>
+ <div className="archive-heading"><h2 id="archive-title"><MotionWords text="The"/> <em><MotionWords text="archive."/></em></h2><p>School days, competitions, volunteering and the documents I&apos;ve kept along the way.</p></div>
  <div className="archive-tabs" role="group" aria-label="Filter archive">{categories.map(c=><button type="button" key={c} aria-pressed={category===c} onClick={()=>{setCategory(c);setFeaturedId("")}}>{c}</button>)}</div>
  <div className="archive-count" aria-live="polite">{String(items.length).padStart(2,"0")} {items.length===1?"record":"records"} / {category}</div>
  {featured&&<div className="archive-desk" aria-label="Selected archive record"><PageAtmosphere kind="archive" dark/>
@@ -45,9 +69,9 @@ export default function Archive({records}:{records:RecordEntry[]}){
  <div className="desk-controls"><button type="button" onClick={()=>move(-1)} disabled={items.length<2} aria-label="Previous archive record"><ArrowIcon direction="left"/></button><span>TURN THE PAGE</span><button type="button" onClick={()=>move(1)} disabled={items.length<2} aria-label="Next archive record"><ArrowIcon direction="right"/></button></div>
  </div>}
  {items.length?<div className="archive-grid studio54-index" key={category}>{items.map(entry=><EntryCard entry={entry} key={entry.id} onOpen={button=>open(entry,button)}/>)}</div>:<div className="archive-empty"><span>ZM / ARCHIVE NOTES</span><h3>{category==="Certificates"?"Documents yet to be added.":"A chapter still unfolding."}</h3><p>{category==="Certificates"?"No certificate files have been published in this archive yet.":"There are no published records in this category yet."}</p><button type="button" onClick={()=>setCategory("All")}>Browse all records <ArrowIcon direction="up-right"/></button></div>}
- <dialog data-lenis-prevent className="archive-dialog" ref={dialog} aria-label={selected?.title ?? "Archive record"} onClose={()=>{setSelected(null);trigger.current?.focus({preventScroll:true});trigger.current=null}} onClick={e=>{if(e.target===e.currentTarget){const rect=e.currentTarget.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)close()}}}>
+ <dialog data-lenis-prevent className={"archive-dialog audit-viewer"+(zoom?" is-zoomed":"")} ref={dialog} aria-label={selected?.title ?? "Archive record"} onClose={()=>{const original=trigger.current;const id=deepOrigin.current??selected?.id;const target=original??(id?document.getElementById("record-"+id):null);setSelected(null);setZoom(false);if(location.hash.startsWith("#record-"))history.replaceState(history.state,"","#featured");trigger.current=null;deepOrigin.current=null;requestAnimationFrame(()=>target?.focus({preventScroll:Boolean(original)}))}} onKeyDown={e=>{if(zoom||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)return;if(e.key==="ArrowLeft"){e.preventDefault();browse(-1)}else if(e.key==="ArrowRight"){e.preventDefault();browse(1)}}} onClick={e=>{if(e.target===e.currentTarget){const rect=e.currentTarget.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)close()}}}>
  <button type="button" autoFocus className="archive-close" aria-label="Close record" onClick={close}>×</button>
- {selected&&<><div className="dialog-meta">{selected.type} / {selected.category}{selected.period?" / "+selected.period:""}</div><h2 id="record-title">{selected.title}</h2><div className="dialog-org">{selected.organization}</div><p>{selected.description}</p>{selected.document?(<div className="archive-document">{selected.document.type==="image"?<img src={selected.document.src} alt={selected.document.alt}/>:<object data={selected.document.src} type="application/pdf" aria-label={selected.document.alt}><a href={selected.document.src}>Open PDF</a></object>}<a href={selected.document.src} target="_blank" rel="noreferrer">Open original document <ArrowIcon direction="up-right"/></a></div>):<div className="dialog-evidence">Personal record · No supporting certificate published.</div>}</>}
+ {selected&&<div className="audit-viewer-grid"><div className="audit-viewer-meta"><div className="dialog-meta">{selected.type} / {selected.category}{selected.period?" / "+selected.period:""}</div><h2 id="record-title">{selected.title}</h2><div className="dialog-org">{selected.organization}</div><p>{selected.description}</p><div className="audit-viewer-nav" role="group" aria-label="Browse records"><button type="button" disabled={browsing.length<2} aria-label="Previous certificate" onClick={()=>browse(-1)}><ArrowIcon direction="left"/></button><span aria-live="polite">{String(browseIndex+1).padStart(2,"0")} / {String(browsing.length).padStart(2,"0")}</span><button type="button" disabled={browsing.length<2} aria-label="Next certificate" onClick={()=>browse(1)}><ArrowIcon direction="right"/></button></div>{selected.document&&<div className="audit-viewer-actions">{selected.document.type==="image"&&<button type="button" aria-pressed={zoom} onClick={()=>setZoom(v=>!v)}>{zoom?"Fit":"Zoom +"}</button>}<a href={selected.document.src} target="_blank" rel="noreferrer">Original <ArrowIcon direction="up-right"/></a></div>}</div>{selected.document?(<div className="archive-document" ref={paper} tabIndex={zoom?0:undefined} aria-label={zoom?"Zoomed document, scroll to pan":undefined}>{selected.document.type==="image"?<img src={selected.document.src} alt={selected.document.alt}/>:<object data={selected.document.src} type="application/pdf" aria-label={selected.document.alt}><a href={selected.document.src}>Open PDF</a></object>}</div>):<div className="dialog-evidence">Personal record · No supporting certificate published.</div>}</div>}
  </dialog>
  </section>
 }

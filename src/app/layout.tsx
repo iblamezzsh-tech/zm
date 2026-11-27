@@ -9,6 +9,7 @@ import SmoothScroll from "./smooth-scroll";
 import SiteMotion from "./site-motion";
 import FlowMotion from "./flow-motion";
 import AdaptiveMotion from "./adaptive-motion";
+import ReturnToRecord from "./return-to-record";
 import "./flow-motion.css";
 import "./site-motion.css";
 import "./motion-polish.css";
@@ -32,6 +33,8 @@ import "./motion-score-v105.css";
 import "./mobile-qa-v106.css";
 import "./mobile-performance-v106-3.css";
 import "./adaptive-motion-v107.css";
+import "./audit-v111.css";
+import "./audit-v112.css";
 
 
 export const metadata: Metadata = {
@@ -46,6 +49,7 @@ export default function Layout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <AdaptiveMotion />
+        <ReturnToRecord />
         {children}
         <SmoothScroll />
         <SiteMotion />

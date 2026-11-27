@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect,useLayoutEffect,useRef } from "react";
+import { useCallback,useEffect,useLayoutEffect,useRef } from "react";
 import { usePathname,useRouter } from "next/navigation";
 import {resetScrollMomentum,requestMotionFrame} from "./motion-clock";
 import Signature from "./signature";
@@ -24,6 +24,10 @@ export function HeroSignature() {
 
 // Timings shared with motion-polish.css: 600ms cover, 350ms minimum hold after cover, 700ms exit.
 const COVER_MS=600, MINIMUM_MS=950, REVEAL_MS=700, FAILSAFE_MS=6500;
+const names:Record<string,string>={"/":"The Present","/about":"My Story","/projects":"Projects","/achievements":"Milestones","/off-the-record":"Off the Record","/contact":"Let’s Connect","/projects/overthink":"OverThink","/projects/finance4youth":"Finance4Youth","/projects/rezamin":"ReZamin"};
+function artFrame(rect:{left:number;top:number;width:number;height:number}){
+  return {left:rect.left+"px",top:rect.top+"px",width:rect.width+"px",height:rect.height+"px"};
+ }
 export function RouteSignature(){
  const path=usePathname(),router=useRouter();
  const curtain=useRef<HTMLDivElement>(null),pending=useRef<string|null>(null);
@@ -32,15 +36,13 @@ export function RouteSignature(){
  const pushed=useRef(false);
  const timing=useRef({cover:COVER_MS,minimum:MINIMUM_MS,reveal:REVEAL_MS});
  const match=useRef<{clone:HTMLElement;animation:Animation|null;destination:HTMLElement|null;stage:HTMLDivElement}|null>(null);
- function clearMatch(){
+ const clearMatch=useCallback(()=>{
   const m=match.current;if(!m)return;
   m.animation?.cancel();if(m.destination)m.destination.style.removeProperty("opacity");
   m.stage.replaceChildren();match.current=null;
- }
- function artFrame(rect:{left:number;top:number;width:number;height:number}){
-  return {left:rect.left+"px",top:rect.top+"px",width:rect.width+"px",height:rect.height+"px"};
- }
- function startMatch(a:HTMLAnchorElement){
+ },[]);
+
+ const startMatch=useCallback((a:HTMLAnchorElement)=>{
   const art=a.querySelector<HTMLElement>(".studio54-edition")??a.closest(".ed-work-item,.exhibit-scene")?.querySelector<HTMLElement>(".studio54-edition");
   const stage=curtain.current?.querySelector<HTMLDivElement>(".route-match-art");
   if(!art||!stage||typeof art.animate!=="function")return false;
@@ -53,8 +55,8 @@ export function RouteSignature(){
   Object.assign(clone.style,artFrame(r));stage.replaceChildren(clone);
   const animation=clone.animate([artFrame(r),artFrame(target)],{duration:timing.current.cover,easing:"cubic-bezier(.76,0,.24,1)",fill:"forwards"});
   match.current={clone,animation,destination:null,stage};return true;
- }
- function landMatch(){
+ },[]);
+ const landMatch=useCallback(()=>{
   const m=match.current;if(!m)return;
   const target=document.querySelector<HTMLElement>("main.case-page .case-feature-art .studio54-edition");
   const from=m.clone.getBoundingClientRect(),to=target?.getBoundingClientRect();
@@ -62,19 +64,19 @@ export function RouteSignature(){
   m.destination=target;target.style.opacity="0";m.animation?.cancel();
   Object.assign(m.clone.style,artFrame(from));
   m.animation=m.clone.animate([artFrame(from),artFrame(to)],{duration:timing.current.reveal,easing:"cubic-bezier(.22,1,.36,1)",fill:"forwards"});
- }
+ },[]);
 
  const started=useRef(0);
  const holdTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
- const names:Record<string,string>={"/":"The Present","/about":"My Story","/projects":"Projects","/achievements":"Milestones","/off-the-record":"Off the Record","/contact":"Let’s Connect","/projects/overthink":"OverThink","/projects/finance4youth":"Finance4Youth","/projects/rezamin":"ReZamin"};
- function clear(){if(holdTimer.current)clearTimeout(holdTimer.current);holdTimer.current=null;if(coverTimer.current)clearTimeout(coverTimer.current);if(failTimer.current)clearTimeout(failTimer.current);if(releaseTimer.current)clearTimeout(releaseTimer.current);coverTimer.current=failTimer.current=releaseTimer.current=null}
- function reveal(){
+
+ const clear=useCallback(()=>{if(holdTimer.current)clearTimeout(holdTimer.current);holdTimer.current=null;if(coverTimer.current)clearTimeout(coverTimer.current);if(failTimer.current)clearTimeout(failTimer.current);if(releaseTimer.current)clearTimeout(releaseTimer.current);coverTimer.current=failTimer.current=releaseTimer.current=null},[]);
+ const reveal=useCallback(()=>{
   clear();pending.current=null;
   const el=curtain.current;if(!el)return;
   if(el.dataset.edit==="match")landMatch();
   el.dataset.phase="reveal";
   releaseTimer.current=setTimeout(()=>{el.dataset.phase="idle";clearMatch();releaseTimer.current=null},timing.current.reveal);
- }
+ },[clear,clearMatch,landMatch]);
  useEffect(()=>{
   function onClick(e:MouseEvent){
    if(document.documentElement.dataset.motionTier==="lite"||document.documentElement.dataset.motionTier==="reduced")return;
@@ -111,7 +113,7 @@ export function RouteSignature(){
   window.addEventListener("popstate",onHistory);
   reduced.addEventListener("change",cancelMotion);
   return()=>{document.removeEventListener("click",onClick,true);window.removeEventListener("popstate",onHistory);reduced.removeEventListener("change",cancelMotion);clear();clearMatch()};
- },[router]);
+ },[router,clear,clearMatch,startMatch,reveal]);
  useLayoutEffect(()=>{
   if(previous.current===path)return;
   previous.current=path;
@@ -121,6 +123,6 @@ export function RouteSignature(){
    if(holdTimer.current)clearTimeout(holdTimer.current);
    holdTimer.current=setTimeout(reveal,remaining);
   }
- },[path]);
+ },[path,reveal]);
  return <div className="zm-route-curtain" ref={curtain} data-phase="idle" aria-hidden="true"><div className="zm-route-curtain-inner"><span>ZM / THE JOURNEY CONTINUES</span><Signature/><div className="route-motif" aria-hidden="true"><i/><i/><i/></div><span className="route-destination" data-destination>NOW &amp; NEXT</span></div><div className="route-match-art" aria-hidden="true"/></div>;
 }
