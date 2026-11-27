@@ -1,3 +1,4 @@
+import ArrowIcon from "./arrow-icon";
 import Link from "next/link";
 import Signature from "./signature";
 import type {FeaturedRecord} from "./featured-records";
@@ -21,7 +22,7 @@ export default function JourneySequence({records}:{records:FeaturedRecord[]}){
   <div className="flow-future journey-scene journey-next" data-flow-scene="future">
    <div className="journey-mast"><span>ZM / THE DISTANCE BETWEEN</span><span>03 / THE FUTURE</span></div>
    <div className="flow-future-landscape" aria-hidden="true"><svg viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="currentColor">{Array.from({length:22},(_,i)=><ellipse key={i} cx="720" cy="300" rx={45+i*23} ry={24+i*17} transform={`rotate(${i*8} 720 300)`}/>)}</g></svg></div>
-   <div className="journey-next-copy"><span className="journey-overline">STILL BECOMING</span><h2><span className="flow-line"><span>The future</span></span><br/><span className="flow-line"><span>isn’t <em>written.</em></span></span></h2><p>Economics, technology, education and ideas worth turning into action. This is where the next chapter begins.</p><Link className="chapter-link" href="/about">Read my story <span aria-hidden="true">↗</span></Link></div>
+   <div className="journey-next-copy"><span className="journey-overline">STILL BECOMING</span><h2><span className="flow-line"><span>The future</span></span><br/><span className="flow-line"><span>isn’t <em>written.</em></span></span></h2><p>Economics, technology, education and ideas worth turning into action. This is where the next chapter begins.</p><Link className="chapter-link" href="/about">Read my story <span aria-hidden="true"><ArrowIcon direction="up-right"/></span></Link></div>
    <div className="journey-signature"><Signature/></div>
   </div>
  </section>

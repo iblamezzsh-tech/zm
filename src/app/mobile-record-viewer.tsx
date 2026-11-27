@@ -1,4 +1,5 @@
 "use client";
+import ArrowIcon from "./arrow-icon";
 import {useEffect,useRef,useState} from "react";
 import type {RecordEntry} from "./achievements/data";
 import {resetScrollMomentum} from "./motion-clock";
@@ -45,15 +46,15 @@ export default function MobileRecordViewer({records}:{records:RecordEntry[]}){
    <header className="zm-record-viewer-header"><span>ZM / ORIGINAL RECORDS</span><button type="button" autoFocus onClick={()=>dialog.current?.close()} aria-label="Close certificate viewer">×</button></header>
    <div className="zm-record-viewer-title"><span>{selected.category}{selected.period?" / "+selected.period:""}</span><h2>{selected.title}</h2><p>{selected.organization}</p></div>
    <div ref={paper} className={"zm-record-viewer-paper"+(zoom?" is-zoomed":"")}>
-    {selected.document?.type==="image"?<img key={selected.id} src={selected.document.src} alt={selected.document.alt} decoding="async"/>:<a href={selected.document?.src} target="_blank" rel="noreferrer">Open original PDF ↗</a>}
+    {selected.document?.type==="image"?<img key={selected.id} src={selected.document.src} alt={selected.document.alt} decoding="async"/>:<a href={selected.document?.src} target="_blank" rel="noreferrer">Open original PDF <ArrowIcon direction="up-right"/></a>}
    </div>
    <div className="zm-record-viewer-controls">
-    <button type="button" onClick={()=>move(-1)} disabled={records.length<2} aria-label="Previous certificate">←</button>
+    <button type="button" onClick={()=>move(-1)} disabled={records.length<2} aria-label="Previous certificate"><ArrowIcon direction="left"/></button>
     <span aria-live="polite">{String(index+1).padStart(2,"0")} / {String(records.length).padStart(2,"0")}</span>
-    <button type="button" onClick={()=>move(1)} disabled={records.length<2} aria-label="Next certificate">→</button>
+    <button type="button" onClick={()=>move(1)} disabled={records.length<2} aria-label="Next certificate"><ArrowIcon direction="right"/></button>
     {selected.document?.type==="image"&&<button type="button" aria-pressed={zoom} onClick={()=>setZoom(v=>!v)}>{zoom?"Fit":"Zoom +"}</button>}
    </div>
-   <div className="zm-record-viewer-description"><p>{selected.description}</p><a href={selected.document?.src} target="_blank" rel="noreferrer">Open original ↗</a></div>
+   <div className="zm-record-viewer-description"><p>{selected.description}</p><a href={selected.document?.src} target="_blank" rel="noreferrer">Open original <ArrowIcon direction="up-right"/></a></div>
   </div>}
  </dialog>
 }

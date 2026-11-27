@@ -1,4 +1,5 @@
 "use client";
+import ArrowIcon from "./arrow-icon";
 import { useEffect, useRef, useState } from "react";
 import { HeroSignature } from "./signature-motion";
 import { LiquidField, heroFields } from "./liquid-field";
@@ -243,12 +244,12 @@ export default function Portrait() {
         </aside>
         <HeroSignature />
         <button className="zm-mobile-look" type="button" disabled={!attireReady} aria-label={mobileLook?"Return to present portrait":"Reveal graduation portrait"} aria-pressed={mobileLook} onClick={toggleLook}><span>{mobileLook?"BACK TO NOW":"TAP TO LOOK"}</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5v4m0 9v4M3.5 12h4m9 0h4M6 6l2.5 2.5m7 7L18 18m0-12-2.5 2.5m-7 7L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="12" cy="12" r="2.5" stroke="currentColor" strokeWidth="1.5"/></svg></button>
-        <a className="hero-scroll" href="#introduction"><span aria-hidden="true">↓</span> Scroll to discover</a>
+        <a className="hero-scroll" href="#introduction"><span aria-hidden="true"><ArrowIcon direction="down"/></span> Scroll to discover</a>
         <span className="corner tl" />
         <span className="corner tr" />
         <span className="corner bl" />
         <span className="corner br" />
-        <div className="film-hero-curtain" aria-hidden="true"><div className="film-curtain-top"><span>ZM / 01—02</span><span>THE DISTANCE BETWEEN</span></div><svg className="film-curtain-engraving" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="currentColor" strokeWidth=".8">{Array.from({length:18},(_,i)=><ellipse key={i} cx="965" cy="380" rx={55+i*24} ry={40+i*16} transform={`rotate(${i*9-30} 965 380)`}/>)}</g></svg><div className="film-curtain-word"><span>NOW.</span><span>NEXT.</span></div><span className="film-curtain-bottom">KEEP SCROLLING ↓</span></div>
+        <div className="film-hero-curtain" aria-hidden="true"><div className="film-curtain-top"><span>ZM / 01—02</span><span>THE DISTANCE BETWEEN</span></div><svg className="film-curtain-engraving" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="currentColor" strokeWidth=".8">{Array.from({length:18},(_,i)=><ellipse key={i} cx="965" cy="380" rx={55+i*24} ry={40+i*16} transform={`rotate(${i*9-30} 965 380)`}/>)}</g></svg><div className="film-curtain-word"><span>NOW.</span><span>NEXT.</span></div><span className="film-curtain-bottom">KEEP SCROLLING <ArrowIcon direction="down"/></span></div>
       </div>
     </section>
   );

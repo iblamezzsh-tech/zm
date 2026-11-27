@@ -1,4 +1,5 @@
 "use client";
+import ArrowIcon from "./arrow-icon";
 import Link from "next/link";
 import {useEffect,useRef,useState,useId} from "react";
 import Signature from "./signature";
@@ -58,7 +59,7 @@ export default function SiteHeader({about=false,projects=false,achievements=fals
  <header className="site-header minimal-header">
   <Link className="identity minimal-identity" href="/" aria-label="ZiyoMuhammad home"><img src="/icon.svg" alt="" width="50" height="50"/></Link>
   <div className="minimal-actions">
-   <Link className="minimal-connect" href="/contact" aria-current={contact?"page":undefined}>Let's Connect <span className="minimal-arrow" aria-hidden="true">↗</span></Link>
+   <Link className="minimal-connect" href="/contact" aria-current={contact?"page":undefined}>Let's Connect <span className="minimal-arrow" aria-hidden="true"><ArrowIcon direction="up-right"/></span></Link>
    <button ref={trigger} className="minimal-menu-trigger" type="button" onClick={show} aria-label="Open navigation menu" aria-haspopup="dialog" aria-expanded={open} aria-controls={menuId}><span className="minimal-menu-glyph" aria-hidden="true"><i/><i/></span></button>
   </div>
  </header>
@@ -66,16 +67,16 @@ export default function SiteHeader({about=false,projects=false,achievements=fals
   <div className="zm-menu-shell">
    <div className="zm-menu-top">
     <Link className="zm-menu-logo" href="/" onClick={()=>close(false)} aria-label="ZiyoMuhammad home"><img src="/icon.svg" alt="" width="50" height="50"/></Link>
-    <div className="minimal-actions"><Link className="minimal-connect zm-menu-connect" href="/contact" onClick={()=>close(false)}>Let's Connect <span aria-hidden="true">↗</span></Link><button className="zm-menu-close" type="button" aria-label="Close navigation menu" onClick={()=>close()} autoFocus><span aria-hidden="true">×</span></button></div>
+    <div className="minimal-actions"><Link className="minimal-connect zm-menu-connect" href="/contact" onClick={()=>close(false)}>Let's Connect <span aria-hidden="true"><ArrowIcon direction="up-right"/></span></Link><button className="zm-menu-close" type="button" aria-label="Close navigation menu" onClick={()=>close()} autoFocus><span aria-hidden="true">×</span></button></div>
    </div>
    <div className="zm-menu-gallery zm-menu-contact-sheet" aria-hidden="true">
     {open&&<><div className="zm-menu-feature">{columns.flat().map(tile=><div className={"zm-menu-feature-frame"+(selected===tile.id?" is-selected":"")} key={tile.id}><GalleryTile tile={tile} active={selected===tile.id}/></div>)}</div><div className="zm-menu-filmstrip">{columns.flat().map(tile=><div className={"zm-menu-filmstrip-item"+(selected===tile.id?" is-selected":"")} key={tile.id}><GalleryTile tile={tile} active={selected===tile.id}/></div>)}</div><div className="zm-menu-gallery-caption"><span>THE PORTFOLIO / CONTACT SHEET</span><span>{pages.find(p=>p.visual===selected)?.note??"The present"}</span></div></>}
    </div>
    <div className="zm-menu-right">
     <div className="zm-menu-index"><span>ZM / INDEX</span><span>01—06</span></div>
-    <nav className="zm-menu-links" aria-label="Primary navigation" onMouseLeave={()=>setHovered(null)}>{pages.map((page,i)=><Link key={page.href} href={page.href} onClick={()=>close(false)} onMouseEnter={()=>setHovered(page.visual)} onFocus={()=>setHovered(page.visual)} onBlur={()=>setHovered(null)} aria-current={current===page.href?"page":undefined} style={{"--item":i} as React.CSSProperties}><span className="zm-menu-number" aria-hidden="true">{page.number}</span><span className="zm-menu-label" aria-label={page.label}>{Array.from(page.label).map((ch,index)=><span key={index} aria-hidden="true" className="zm-menu-letter" style={{"--letter":index} as React.CSSProperties}>{ch===" "?"\u00a0":ch}</span>)}<svg className="zm-menu-strike" viewBox="0 0 240 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10H45Q52 10 58 15H101Q108 15 115 5H163Q170 5 178 15H240" fill="none" stroke="currentColor" strokeWidth="2.8" vectorEffect="non-scaling-stroke" pathLength="1"/></svg></span><span className="zm-menu-link-arrow" aria-hidden="true">↗</span></Link>)}</nav>
+    <nav className="zm-menu-links" aria-label="Primary navigation" onMouseLeave={()=>setHovered(null)}>{pages.map((page,i)=><Link key={page.href} href={page.href} onClick={()=>close(false)} onMouseEnter={()=>setHovered(page.visual)} onFocus={()=>setHovered(page.visual)} onBlur={()=>setHovered(null)} aria-current={current===page.href?"page":undefined} style={{"--item":i} as React.CSSProperties}><span className="zm-menu-number" aria-hidden="true">{page.number}</span><span className="zm-menu-label" aria-label={page.label}>{Array.from(page.label).map((ch,index)=><span key={index} aria-hidden="true" className="zm-menu-letter" style={{"--letter":index} as React.CSSProperties}>{ch===" "?"\u00a0":ch}</span>)}<svg className="zm-menu-strike" viewBox="0 0 240 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10H45Q52 10 58 15H101Q108 15 115 5H163Q170 5 178 15H240" fill="none" stroke="currentColor" strokeWidth="2.8" vectorEffect="non-scaling-stroke" pathLength="1"/></svg></span><span className="zm-menu-link-arrow" aria-hidden="true"><ArrowIcon direction="up-right"/></span></Link>)}</nav>
     <div className="zm-menu-signoff"><Signature/><span>Curious by nature. / Uzbekistan</span></div>
-    <div className="zm-menu-social">{current==="/"&&<button type="button" className="zm-reading-option" onClick={()=>{close(false);window.dispatchEvent(new Event("zm-film-mode"))}}>Switch reading mode</button>}<Link href="/contact" onClick={()=>close(false)}>Get in touch ↗</Link><div><a href="https://t.me/Shoxruxbekovich" target="_blank" rel="noreferrer">Telegram</a><a href="https://www.instagram.com/the_zzsh/" target="_blank" rel="noreferrer">Instagram</a><a href="https://github.com/iblamezzsh-tech/zm" target="_blank" rel="noreferrer">GitHub</a></div></div>
+    <div className="zm-menu-social">{current==="/"&&<button type="button" className="zm-reading-option" onClick={()=>{close(false);window.dispatchEvent(new Event("zm-film-mode"))}}>Switch reading mode</button>}<Link href="/contact" onClick={()=>close(false)}>Get in touch <ArrowIcon direction="up-right"/></Link><div><a href="https://t.me/Shoxruxbekovich" target="_blank" rel="noreferrer">Telegram</a><a href="https://www.instagram.com/the_zzsh/" target="_blank" rel="noreferrer">Instagram</a><a href="https://github.com/iblamezzsh-tech/zm" target="_blank" rel="noreferrer">GitHub</a></div></div>
    </div>
   </div>
  </dialog>

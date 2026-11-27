@@ -1,4 +1,5 @@
 "use client";
+import ArrowIcon from "./arrow-icon";
 import PageAtmosphere from "./page-atmosphere";
 
 import {useEffect,useRef,useState} from "react";
@@ -20,13 +21,13 @@ export default function ProjectExhibition({directory=false}:{directory?:boolean}
  <div className="exhibition-sticky">
  <aside className="exhibition-index" aria-label="Project exhibition navigation">
    <div className="exhibition-index-top"><span>THE WORK / 01—03</span><span className="exhibition-count">{String(active+1).padStart(2,"0")}<small>/03</small></span></div>
-   <nav aria-label="Jump to a project">{projects.map((p,i)=><a key={p.slug} href={"#exhibit-"+p.slug} aria-current={active===i?"location":undefined}><span>{p.number}</span><strong>{p.name}</strong><span aria-hidden="true">↘</span></a>)}</nav>
-   <div className="exhibition-index-bottom"><span>Curiosity in practice.</span>{!directory&&<Link href="/projects">All projects ↗</Link>}</div>
+   <nav aria-label="Jump to a project">{projects.map((p,i)=><a key={p.slug} href={"#exhibit-"+p.slug} aria-current={active===i?"location":undefined}><span>{p.number}</span><strong>{p.name}</strong><span aria-hidden="true"><ArrowIcon direction="down-right"/></span></a>)}</nav>
+   <div className="exhibition-index-bottom"><span>Curiosity in practice.</span>{!directory&&<Link href="/projects">All projects <ArrowIcon direction="up-right"/></Link>}</div>
  </aside>
  <div className="exhibition-window"><div className="exhibition-scenes">
  {projects.map((p,i)=><article className={"exhibit-scene exhibit-"+p.kind+(active===i?" is-current":"")} key={p.slug} id={"exhibit-"+p.slug} data-exhibit-scene data-flow-scene="project">{directory&&<PageAtmosphere kind={p.kind}/>}
- <Link className="exhibit-visual" href={"/projects/"+p.slug} aria-label={"Explore "+p.name}>{directory?<ProjectEdition project={p}/>:<ProjectArt kind={p.kind}/>}<span className="exhibit-badge" aria-hidden="true">OPEN<br/>PROJECT <b>↗</b></span></Link>
- <div className="exhibit-caption"><div><span className="exhibit-kicker">{p.number} / {p.category} — {p.role}</span><h3>{captions[i]}</h3></div><div><p>{p.summary}</p><Link className="exhibit-link" href={"/projects/"+p.slug}>Inside {p.name} <span aria-hidden="true">↗</span></Link></div></div>
+ <Link className="exhibit-visual" href={"/projects/"+p.slug} aria-label={"Explore "+p.name}>{directory?<ProjectEdition project={p}/>:<ProjectArt kind={p.kind}/>}<span className="exhibit-badge" aria-hidden="true">OPEN<br/>PROJECT <b><ArrowIcon direction="up-right"/></b></span></Link>
+ <div className="exhibit-caption"><div><span className="exhibit-kicker">{p.number} / {p.category} — {p.role}</span><h3>{captions[i]}</h3></div><div><p>{p.summary}</p><Link className="exhibit-link" href={"/projects/"+p.slug}>Inside {p.name} <span aria-hidden="true"><ArrowIcon direction="up-right"/></span></Link></div></div>
  </article>)}
  </div></div>
 
