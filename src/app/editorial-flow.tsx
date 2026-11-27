@@ -42,7 +42,6 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   const finaleCta=el.querySelector<HTMLElement>(".finale-cta");
   const collage=el.querySelector<HTMLElement>(".ed-collage"),rail=el.querySelector<HTMLElement>(".ed-collage-grid");
   const collageWindow=el.querySelector<HTMLElement>(".ed-collage-sticky");
-  const fan=el.querySelector<HTMLElement>(".ed-fan");
   const threadSource=el.querySelector<HTMLElement>(".zm-v116-think-dot");
   const threadDock=el.querySelector<HTMLElement>(".zm-v116-coin-dock");
   const threadCarrier=el.querySelector<HTMLElement>(".zm-v116-carrier");
@@ -157,15 +156,12 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     const hideContact=w<900&&Boolean(projects&&projects.r.top<h*.65&&projects.r.bottom>0);
     if(headerContact&&headerContact.inert!==hideContact){if(hideContact&&document.activeElement===headerContact)headerMenu?.focus({preventScroll:true});headerContact.inert=hideContact;}
     main!.classList.toggle("zm-v115-projects-active",hideContact);
-    main!.classList.toggle("ed-dark-header",dark);main!.classList.toggle("film-at-finale",finale);main!.classList.toggle("zm-v114-question-active",at?.s.id==="exhibit-overthink"||at?.s.classList.contains("ed-social")===true||finale===true)};
+    main!.classList.toggle("ed-dark-header",dark);main!.classList.toggle("film-at-finale",finale);main!.classList.toggle("zm-v114-question-active",at?.s.id==="exhibit-overthink"||finale===true)};
    if(!enabled){header();paintThread(h,w);return}
    // All geometry reads precede style writes. Horizontal reveals are projected
    // into the new rail position, not one frame behind the artwork.
    const revealBounds=reveals.filter(node=>eligible(node)&&!(getNodeMotionTier(node)==="lite"&&node.matches(".ed-document-image,.ed-archive-item"))).map(node=>({node,r:node.getBoundingClientRect()}));
    const archives=archiveNodes.filter(node=>eligible(node)&&getNodeMotionTier(node)!=="lite").map(node=>({node,r:node.getBoundingClientRect()}));
-   const socialScene=scenes.find(s=>s.classList.contains("ed-social"));
-   const fanRect=(!phone||initializing||!socialScene||near.has(socialScene)||previousNear.has(socialScene))?fan?.getBoundingClientRect():undefined;
-   const fanEdge=fanRect?clamp((h-fanRect.top)/h):1;
    const docBounds=documents.filter(node=>eligible(node)&&getNodeMotionTier(node)!=="lite").map(node=>({node,r:node.getBoundingClientRect()}));
    const kineticBounds=kinetic.filter(item=>eligible(item.node)&&getNodeMotionTier(item.node)!=="lite").map(item=>({...item,r:item.node.getBoundingClientRect()}));
    const gallery=bounds.find(({s})=>s===collage);
@@ -254,20 +250,6 @@ export default function EditorialFlow({children}:{children:ReactNode}){
       paced(s,"--m-project-art",ease(.025,.70,edge),1250,r.bottom<0||r.top>h);
       paced(s,"--m-project-detail",ease(.12,.86,edge),1450,r.bottom<0||r.top>h);
      }
-    }
-    if(s.classList.contains("ed-social")){
-     // Native scrolling already moves this scene; do not add a second time-based
-     // smoothing clock. The spread resolves during entry and reverses on scroll.
-     write(s,"--fan-open",ease(.025,.68,fanEdge));
-     if(w<=899){
-      // The untransformed fan box is the clock; card transforms cannot feed back into it.
-      write(s,"--m-social-spread",ease(.025,.68,fanEdge));
-      const leave=clamp((h-r.bottom)/h);
-      paced(s,"--m-social-handoff",ease(.02,.74,leave),950,r.bottom<0||r.top>h);
-     }
-     write(s,"--fan-away",0);
-     write(s,"--social-links",ease(.10,.58,edge));
-     write(s,"--social-glow",ease(.32,.95,edge));
     }
     if(s.id==="next-chapter"){
      write(s,"--finale-portrait-in",ease(.02,.48,Math.max(edge,finaleEnd)));
