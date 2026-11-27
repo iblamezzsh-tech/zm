@@ -206,7 +206,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   function focus(e:FocusEvent){
    if(!railActive()||!collage||!rail||!(e.target instanceof HTMLElement)||!rail.contains(e.target))return;
    const r=e.target.getBoundingClientRect();if(r.left>=0&&r.right<=innerWidth)return;
-   const delta=Math.max(0,Math.min(railDistance,r.left-railX-innerWidth*.2));
+   const delta=Math.max(0,Math.min(railDistance,mobileCinema?r.left-railX+r.width*.5-innerWidth*.5:r.left-railX-innerWidth*.2));
    const top=window.scrollY+collage.getBoundingClientRect().top;
    const target=railDistance?delta/railDistance:0;
    // Invert the eased rail trajectory to align a keyboard-selected link.

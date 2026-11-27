@@ -38,6 +38,8 @@ import "./mobile-hero-v97.css";
 import "./mobile-finale-v95.css";
 import "./mobile-opening-v98.css";
 import "./mobile-editorial-v99.css";
+import MobileRecordViewer from "./mobile-record-viewer";
+import "./mobile-gallery-v100.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -47,6 +49,7 @@ export default function HomeChapters(){
  const archive=certificateRecords.filter(r=>r.document&&existsSync(join(process.cwd(),"public",r.document.src.replace(/^\//,"")))).slice(0,8);
  const interests=["Economics","Psychology","Politics","Literature","Music"];
  return <EditorialFlow>
+  <MobileRecordViewer records={Array.from(new Map([...records,...archive].map(r=>[r.id,r])).values())}/>
   <section className="ed-opening" id="film-present" data-ed-scene data-ed-theme="light">
    <div className="ed-opening-sticky"><PageAtmosphere kind="story" dark/>
     <OpeningMarquee/>
@@ -66,8 +69,8 @@ export default function HomeChapters(){
    <div className="ed-collage-sticky"><PageAtmosphere kind="gallery"/><div className="ed-gutter ed-caption"><span>02 / THE THINGS I KEEP</span><span>ORIGINAL RECORDS</span></div>
    <div className="ed-collage-grid">
     <div className="ed-collage-intro"><h2 className="kt-heading" aria-label="Small moments."><KineticText text="Small" kind="marker"/><br/><em><KineticText text="moments." kind="marker" index={1}/></em></h2><p>On a court, around a Zakovat table, in a classroom. Little things that make up a life.</p><Link href="/about" className="ed-link">Read my journey <span>↗</span></Link></div>
-    {records.map((r,i)=>r.document&&<figure className={"ed-document ed-document-"+i} key={r.id} data-ed-drift style={{"--ed-tilt":[-2,2,-1,2,-2][i%5]+"deg","--ed-depth":[.28,-.18,.43,-.28,.20][i%5]} as React.CSSProperties}><div className="ed-document-image" data-ed-reveal><img src={r.document.src} alt={r.document.alt} decoding="async" fetchPriority="low"/></div><figcaption><span><KineticText text={r.dateLabel+" / "+r.chapter} kind="stamp"/></span><strong><KineticText text={r.headline} kind="caption" index={1}/></strong></figcaption></figure>)}
-   </div></div>
+    {records.map((r,i)=>r.document&&<figure className={"ed-document ed-document-"+i} key={r.id} data-ed-drift style={{"--ed-tilt":[-2,2,-1,2,-2][i%5]+"deg","--ed-depth":[.28,-.18,.43,-.28,.20][i%5]} as React.CSSProperties}><div className="ed-document-image" data-ed-reveal><img src={r.document.src} alt={r.document.alt} decoding="async" fetchPriority="low"/><button type="button" className="zm-memory-inspect" data-mobile-record={r.id} aria-label={"Inspect "+r.title}><span aria-hidden="true">↗</span></button></div><figcaption><span><KineticText text={r.dateLabel+" / "+r.chapter} kind="stamp"/></span><strong><KineticText text={r.headline} kind="caption" index={1}/></strong></figcaption></figure>)}
+   </div><div className="zm-memory-rail-meter" aria-hidden="true"><span>SCROLL / EXPLORE</span><i><b/></i><span>{String(records.length).padStart(2,"0")} RECORDS</span></div></div>
   </section>
   <section className="ed-future ed-paper" id="film-future" data-ed-scene data-ed-theme="light"><PageAtmosphere kind="finance"/>
    <div className="ed-gutter ed-future-content"><span className="ed-kicker">03 / STILL BECOMING</span><h2 className="kt-heading" aria-label="Ideas worth acting on."><KineticText text="Ideas worth" kind="assemble"/><br/><em><KineticText text="acting on." kind="unfold" index={1}/></em></h2><p>Economics, technology, education and a desire to turn curiosity into something real.</p><Link href="/projects" className="ed-link">Explore my projects <span>↗</span></Link></div>
@@ -99,14 +102,14 @@ export default function HomeChapters(){
   <section className="ed-archive" id="milestone-preview" data-ed-scene data-ed-theme="dark"><PageAtmosphere kind="archive" dark/>
    <div className="ed-gutter ed-caption"><span>05 / THE ARCHIVE</span><span>DOCUMENTED EXPERIENCES</span></div>
    <div className="ed-gutter ed-archive-heading"><h2 className="kt-heading" aria-label="Every step leaves a mark."><KineticText text="Every step" kind="press"/><br/><em><KineticText text="leaves a mark." kind="engrave" index={1}/></em></h2><Link href="/achievements" className="ed-link">All milestones <span>↗</span></Link></div>
-   <div className="ed-gutter ed-archive-grid">{archive.map((r,i)=>r.document&&<Link href="/achievements" className="ed-archive-item" key={r.id} data-ed-reveal style={{"--ed-i":i} as React.CSSProperties}>
+   <div className="ed-gutter ed-archive-grid">{archive.map((r,i)=>r.document&&<Link href="/achievements" className="ed-archive-item" key={r.id} data-mobile-record={r.id} data-ed-reveal style={{"--ed-i":i} as React.CSSProperties}>
     <div className="ed-record-display">
      <svg className="ed-record-outline" viewBox="0 0 360 310" preserveAspectRatio="none" aria-hidden="true">
       <path d="M9 1H351Q359 1 359 9V252Q359 260 351 260H227Q215 260 207 270L181 298Q171 309 157 309H9Q1 309 1 301V9Q1 1 9 1Z" vectorEffect="non-scaling-stroke"/>
      </svg>
      <div className="ed-record-index" aria-hidden="true">{String(i+1).padStart(2,"0")}</div>
      <div className="ed-archive-image"><img src={r.document.src} alt={r.document.alt} decoding="async" fetchPriority="low"/></div>
-     <div className="ed-record-tab"><span>{r.category}</span><b>{r.period?.match(/(?:19|20)\d{2}/g)?.at(-1)??String(i+1).padStart(2,"0")}</b></div>
+     <div className="ed-record-tab"><span>{r.category}</span><b className={r.period?"":"ed-record-undated"}>{r.period?.match(/(?:19|20)\d{2}/g)?.at(-1)??String(i+1).padStart(2,"0")}</b></div>
     </div>
     <div className="ed-archive-label"><strong>{r.title}</strong><span className="ed-record-arrow" aria-hidden="true">↗</span></div>
    </Link>)}</div>
