@@ -7,6 +7,7 @@ const choices:{value:Preference;label:string}[]=[{value:"auto",label:"Auto"},{va
 const labels={cinematic:"Cinematic",balanced:"Balanced",lite:"Lite",reduced:"Reduced motion"};
 export default function MotionQualityControl(){
  const state=useSyncExternalStore(subscribeMotionQuality,getMotionQuality,getServerMotionQuality);
+ if(state.desktopLocked)return null;
  return <section className="zm-motion-settings" aria-label="Motion quality">
   <div className="zm-motion-settings-head"><span>SELECTED / {choices.find(c=>c.value===state.preference)?.label}</span><strong aria-live="polite">Effective: {state.ready?labels[state.preference==="auto"&&state.tier!=="reduced"&&state.activeScene?(state.scenes[state.activeScene]?.tier??state.tier):state.tier]:"Auto"}</strong></div>
   <div className="zm-motion-settings-choices" role="group" aria-label="Choose motion quality">{choices.map(c=><button key={c.value} type="button" aria-pressed={state.preference===c.value} onClick={()=>setMotionPreference(c.value)}>{c.label}</button>)}</div>

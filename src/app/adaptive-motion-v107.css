@@ -70,3 +70,6 @@ main.editorial-home .editorial-flow[data-ed-motion=true] [data-scene-tier=lite] 
 main.editorial-home .editorial-flow[data-ed-motion=true] [data-scene-tier=lite] :is(.ed-archive-item,.ed-document-image){clip-path:none!important;opacity:1!important}
 .zm-motion-reset{min-height:44px;width:100%;border:1px solid #b7c1a45c;border-radius:4px;background:transparent;color:#f4f1e8;font:650 11px/1.2 "DM Sans Variable",Arial,sans-serif;margin-top:7px;cursor:pointer}
 .zm-motion-reset:focus-visible{outline:2px solid #ffda24;outline-offset:2px}
+
+/* Desktop always uses Cinematic; hide the mobile control even before hydration. */
+@media(min-width:900px){.zm-motion-settings{display:none!important}}

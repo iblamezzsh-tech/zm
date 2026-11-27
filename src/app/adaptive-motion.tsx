@@ -2,7 +2,7 @@
 import {useLayoutEffect} from "react";
 import {frameHealth,nextTier,type Tier} from "./motion-quality-policy";
 import {assessScene,initialReading,urgentFrameWindow,mergePendingTier,type SceneKey} from "./scene-motion-policy";
-import {getMotionQuality,getSceneTier,initializeMotionQuality,setAutomaticTier,setSystemReduced,setSceneReading,motionQualityEvent,profileResetEvent} from "./motion-quality-store";
+import {getMotionQuality,getSceneTier,initializeMotionQuality,desktopMotionQuery,syncMotionViewport,setAutomaticTier,setSystemReduced,setSceneReading,motionQualityEvent,profileResetEvent} from "./motion-quality-store";
 
 // Observe actual active scroll. The existing editorial clock supplies the
 // scene identifier; no second per-frame geometry scan is necessary.
@@ -10,6 +10,7 @@ export default function AdaptiveMotion(){
  useLayoutEffect(()=>{
   initializeMotionQuality();
   const reduced=matchMedia("(prefers-reduced-motion: reduce)");
+  const desktop=matchMedia(desktopMotionQuery);
   let raf=0,idle=0,last=0,lastScroll=-Infinity,lastChange=performance.now();
   let lastKey:SceneKey|"route"|null=null;
   const buffers=new Map<SceneKey|"route",number[]>();
@@ -73,8 +74,9 @@ export default function AdaptiveMotion(){
   window.addEventListener("scroll",scroll,{passive:true});
   window.addEventListener(motionQualityEvent,preferenceChanged);window.addEventListener(profileResetEvent,preferenceChanged);
   reduced.addEventListener("change",systemChanged);
+  desktop.addEventListener("change",syncMotionViewport);
   document.addEventListener("visibilitychange",visibility);
-  return()=>{reset();window.removeEventListener("scroll",scroll);window.removeEventListener(motionQualityEvent,preferenceChanged);window.removeEventListener(profileResetEvent,preferenceChanged);reduced.removeEventListener("change",systemChanged);document.removeEventListener("visibilitychange",visibility)}
+  return()=>{reset();window.removeEventListener("scroll",scroll);window.removeEventListener(motionQualityEvent,preferenceChanged);window.removeEventListener(profileResetEvent,preferenceChanged);reduced.removeEventListener("change",systemChanged);desktop.removeEventListener("change",syncMotionViewport);document.removeEventListener("visibilitychange",visibility)}
  },[]);
  return null;
 }
