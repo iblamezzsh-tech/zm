@@ -24,6 +24,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   const desktop=matchMedia("(min-width: 900px) and (min-height: 500px) and (pointer: fine)");
   const mobile=matchMedia("(max-width: 899px) and (min-height: 500px)");
   const openingWindow=el.querySelector<HTMLElement>(".ed-opening-sticky");
+  const futureWindow=el.querySelector<HTMLElement>(".zm-future-stage");
   const finaleInner=el.querySelector<HTMLElement>(".finale-inner");
   const finaleHeading=el.querySelector<HTMLElement>(".finale-heading");
   const finalePortrait=el.querySelector<HTMLElement>(".finale-portrait");
@@ -99,12 +100,13 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    const railDelta=nextRailX-railX;
    for(const {s,r} of bounds){
     const pass=clamp((h-r.top)/(h+r.height));
-    const local=clamp(-r.top/Math.max(1,r.height-(s.id==="film-present"?openingHeight:h)));
+    const local=clamp(-r.top/Math.max(1,r.height-(s.id==="film-present"?openingHeight:s.id==="film-future"&&mobileCinema&&futureWindow?futureWindow.clientHeight:h)));
     const edge=clamp((h-r.top)/h);
     const enter=ease(.04,.53,edge);
     write(s,"--ed-pass",pass);write(s,"--ed-enter",enter);write(s,"--ed-travel",(pass-.5)*2);
     write(s,"--ed-local",local);write(s,"--ed-edge",edge);
     paced(s,"--seam-open",ease(.04,.78,edge),950,r.bottom<0||r.top>h);
+    if(w<=899){write(s,"--m-scene-enter",ease(0,.72,edge));write(s,"--m-scene-exit",ease(.62,1,pass));}
     if(s.id==="film-present"){
      if(mobileCinema){
       // A single reversible scroll score: identity, portrait, signature,
@@ -131,6 +133,14 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     }
     if(s.classList.contains("ed-manifesto"))write(s,"--ed-manifesto-pass",clamp((h-r.top)/(r.height+h*.5)));
     if(s.classList.contains("ed-future")){
+     if(mobileCinema&&h>=650){
+      // A short native sticky typographic act: each word occupies a separate
+      // phase, then all three lock into the final composition before release.
+      write(s,"--m-future-act",local);
+      write(s,"--m-think",ease(0,.27,local));
+      write(s,"--m-learn",ease(.22,.56,local));
+      write(s,"--m-build",ease(.51,.85,local));
+     }
      paced(s,"--future-think",ease(.12,.68,edge),1100,r.bottom<0||r.top>h);
      paced(s,"--future-learn",ease(.20,.80,edge),1200,r.bottom<0||r.top>h);
      paced(s,"--future-build",ease(.28,.92,edge),1250,r.bottom<0||r.top>h);

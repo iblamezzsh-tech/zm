@@ -75,9 +75,9 @@ export default function HomeChapters(){
     {records.map((r,i)=>r.document&&<figure className={"ed-document ed-document-"+i} key={r.id} data-ed-drift style={{"--ed-tilt":[-2,2,-1,2,-2][i%5]+"deg","--ed-depth":[.28,-.18,.43,-.28,.20][i%5]} as React.CSSProperties}><div className="ed-document-image" data-ed-reveal><img src={r.document.src} alt={r.document.alt} decoding="async" fetchPriority="low"/><button type="button" className="zm-memory-inspect" data-mobile-record={r.id} aria-label={"Inspect "+r.title}><span aria-hidden="true">↗</span></button></div><figcaption><span><KineticText text={r.dateLabel+" / "+r.chapter} kind="stamp"/></span><strong><KineticText text={r.headline} kind="caption" index={1}/></strong></figcaption></figure>)}
    </div><div className="zm-memory-rail-meter" aria-hidden="true"><span>SCROLL / EXPLORE</span><i><b/></i><span>{String(records.length).padStart(2,"0")} RECORDS</span></div></div>
   </section>
-  <section className="ed-future ed-paper" id="film-future" data-ed-scene data-ed-theme="light"><PageAtmosphere kind="finance"/>
+  <section className="ed-future ed-paper" id="film-future" data-ed-scene data-ed-theme="light"><div className="zm-future-stage"><PageAtmosphere kind="finance"/>
    <div className="ed-gutter ed-future-content"><span className="ed-kicker">03 / STILL BECOMING</span><h2 className="kt-heading" aria-label="Ideas worth acting on."><KineticText text="Ideas worth" kind="assemble"/><br/><em><KineticText text="acting on." kind="unfold" index={1}/></em></h2><p>Economics, technology, education and a desire to turn curiosity into something real.</p><Link href="/projects" className="ed-link">Explore my projects <span>↗</span></Link></div>
-   <div className="ed-future-words" aria-hidden="true"><span>THINK.</span><em>LEARN.</em><span>BUILD.</span></div>
+   <div className="ed-future-words" aria-hidden="true"><span>THINK.</span><em>LEARN.</em><span>BUILD.</span></div><div className="zm-future-timeline" aria-hidden="true"><span>01 / THINK</span><i/><span>02 / LEARN</span><i/><span>03 / BUILD</span></div></div>
   </section>
   <section className="zm-worlds" aria-label="Two sides of my journey" data-ed-scene data-ed-theme="dark"><SurfaceSeam tone="ink"/><PageAtmosphere kind="think" dark/>
    <div className="ed-gutter ed-caption"><span>03 / TWO WORLDS</span><span>ONE CURIOSITY</span></div>

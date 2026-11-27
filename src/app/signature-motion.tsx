@@ -29,6 +29,7 @@ export function RouteSignature(){
  const curtain=useRef<HTMLDivElement>(null),pending=useRef<string|null>(null);
  const coverTimer=useRef<ReturnType<typeof setTimeout>|null>(null),failTimer=useRef<ReturnType<typeof setTimeout>|null>(null),releaseTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
  const previous=useRef(path);
+ const timing=useRef({cover:COVER_MS,minimum:MINIMUM_MS,reveal:REVEAL_MS});
  const match=useRef<{clone:HTMLElement;animation:Animation|null;destination:HTMLElement|null;stage:HTMLDivElement}|null>(null);
  function clearMatch(){
   const m=match.current;if(!m)return;
@@ -49,7 +50,7 @@ export function RouteSignature(){
   const w=Math.min(innerWidth*.83,innerHeight*.79*r.width/r.height),h=w*r.height/r.width;
   const target={left:(innerWidth-w)/2,top:(innerHeight-h)/2,width:w,height:h};
   Object.assign(clone.style,artFrame(r));stage.replaceChildren(clone);
-  const animation=clone.animate([artFrame(r),artFrame(target)],{duration:COVER_MS,easing:"cubic-bezier(.76,0,.24,1)",fill:"forwards"});
+  const animation=clone.animate([artFrame(r),artFrame(target)],{duration:timing.current.cover,easing:"cubic-bezier(.76,0,.24,1)",fill:"forwards"});
   match.current={clone,animation,destination:null,stage};return true;
  }
  function landMatch(){
@@ -59,7 +60,7 @@ export function RouteSignature(){
   if(!target||!to||to.width<100||to.height<70||to.top>=innerHeight||!["think","finance","earth"].some(k=>target.classList.contains("edition-"+k)&&m.clone.classList.contains("edition-"+k))){m.animation?.cancel();Object.assign(m.clone.style,artFrame(from));return;}
   m.destination=target;target.style.opacity="0";m.animation?.cancel();
   Object.assign(m.clone.style,artFrame(from));
-  m.animation=m.clone.animate([artFrame(from),artFrame(to)],{duration:REVEAL_MS,easing:"cubic-bezier(.22,1,.36,1)",fill:"forwards"});
+  m.animation=m.clone.animate([artFrame(from),artFrame(to)],{duration:timing.current.reveal,easing:"cubic-bezier(.22,1,.36,1)",fill:"forwards"});
  }
 
  const started=useRef(0);
@@ -71,26 +72,32 @@ export function RouteSignature(){
   const el=curtain.current;if(!el)return;
   if(el.dataset.edit==="match")landMatch();
   el.dataset.phase="reveal";
-  releaseTimer.current=setTimeout(()=>{el.dataset.phase="idle";clearMatch();releaseTimer.current=null},REVEAL_MS);
+  releaseTimer.current=setTimeout(()=>{el.dataset.phase="idle";clearMatch();releaseTimer.current=null},timing.current.reveal);
  }
  useEffect(()=>{
   function onClick(e:MouseEvent){
    if(e.defaultPrevented||e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||matchMedia("(prefers-reduced-motion: reduce)").matches||!(e.target instanceof Element))return;
    const a=e.target.closest<HTMLAnchorElement>("a[href]");
    if(!a||a.target||a.hasAttribute("download")||a.hasAttribute("data-no-transition"))return;
+   // Mobile record links belong to the native certificate viewer.
+   if(matchMedia("(max-width:899px)").matches&&a.hasAttribute("data-mobile-record"))return;
    const url=new URL(a.href,location.href);
    if(url.origin!==location.origin||url.pathname===location.pathname||!["http:","https:"].includes(url.protocol))return;
    if(!curtain.current||!names[url.pathname])return;
    e.preventDefault();if(pending.current||curtain.current.dataset.phase!=="idle")return;
    const href=url.pathname+url.search+url.hash;
    clear();clearMatch();pending.current=href;started.current=performance.now();resetScrollMomentum();
+   const phone=matchMedia("(max-width:899px)").matches;
+   timing.current=phone?{cover:420,minimum:540,reveal:520}:{cover:COVER_MS,minimum:MINIMUM_MS,reveal:REVEAL_MS};
+   curtain.current.style.setProperty("--zm-route-cover",timing.current.cover+"ms");
+   curtain.current.style.setProperty("--zm-route-reveal",timing.current.reveal+"ms");
    router.prefetch(href);
    const dest=url.pathname;
    curtain.current.dataset.edit=dest==="/about"?"paper":dest==="/achievements"?"archive":dest==="/off-the-record"?"notebook":dest==="/projects/overthink"?"think":dest==="/projects/finance4youth"?"finance":dest==="/projects/rezamin"?"earth":dest==="/projects"?"project":dest==="/contact"?"letter":"signature";
    if(dest.startsWith("/projects/")&&startMatch(a))curtain.current.dataset.edit="match";
    curtain.current.dataset.phase="cover";
    const label=curtain.current.querySelector<HTMLElement>("[data-destination]");if(label)label.textContent=names[url.pathname];
-   coverTimer.current=setTimeout(()=>{router.push(href);coverTimer.current=null},COVER_MS);
+   coverTimer.current=setTimeout(()=>{router.push(href);coverTimer.current=null},timing.current.cover);
    failTimer.current=setTimeout(reveal,FAILSAFE_MS);
   }
   // Capture before Next's link handler, without intercepting same-page anchors.
@@ -105,10 +112,10 @@ export function RouteSignature(){
   previous.current=path;
   resetScrollMomentum();requestMotionFrame();
   if(pending.current){
-   const remaining=Math.max(0,MINIMUM_MS-(performance.now()-started.current));
+   const remaining=Math.max(0,timing.current.minimum-(performance.now()-started.current));
    if(holdTimer.current)clearTimeout(holdTimer.current);
    holdTimer.current=setTimeout(reveal,remaining);
   }
  },[path]);
- return <div className="zm-route-curtain" ref={curtain} data-phase="idle" aria-hidden="true"><div className="zm-route-curtain-inner"><span>ZM / THE JOURNEY CONTINUES</span><Signature/><span className="route-destination" data-destination>NOW &amp; NEXT</span></div><div className="route-match-art" aria-hidden="true"/></div>;
+ return <div className="zm-route-curtain" ref={curtain} data-phase="idle" aria-hidden="true"><div className="zm-route-curtain-inner"><span>ZM / THE JOURNEY CONTINUES</span><Signature/><div className="route-motif" aria-hidden="true"><i/><i/><i/></div><span className="route-destination" data-destination>NOW &amp; NEXT</span></div><div className="route-match-art" aria-hidden="true"/></div>;
 }

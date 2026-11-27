@@ -1,0 +1,151 @@
+/* V105 — motion score. Every movement has a physical or editorial role.
+   Native touch scrolling; no wheel/touch cancellation or compulsory snapping. */
+.zm-future-stage{display:contents}
+.zm-future-timeline{display:none}
+@media(max-width:899px) and (prefers-reduced-motion:no-preference){
+ main.editorial-home .editorial-flow[data-ed-motion=true]{
+  --motion-impulse:var(--zm-impulse,0);--motion-speed:var(--zm-speed,0)
+ }
+ /* Scroll impulse is signed. A swipe down and swipe up bend the material
+    in opposite directions, then damp back to its actual resting position. */
+ main.editorial-home .editorial-flow[data-ed-motion=true] .zm-atmosphere .atm-primary{
+  translate:calc(var(--motion-impulse)*-13px) calc(var(--motion-impulse)*-24px);
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] .ed-surface-seam{
+  transform-origin:50% 100%;transform:scaleY(calc(.16 + var(--seam-open,1)*.84 + var(--motion-speed)*.24)) skewX(calc(var(--motion-impulse)*-7deg));
+ }
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-present .ed-opening-signature .signature{
+  translate:0 calc(var(--motion-impulse)*-5px);
+ }
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-memory .ed-document-image{
+  perspective:650px;
+ }
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-memory .ed-document-image img{
+  transform:translateY(calc(var(--motion-impulse)*-8px)) rotateY(calc(var(--motion-impulse)*-7deg)) scale(calc(.96 + var(--v84-document,1)*.04));
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] .zm-worlds .zm-world-art{
+  transform:translateY(calc((1 - var(--ed-reveal,1))*-10% + var(--motion-impulse)*-9px)) scale(calc(1.10 - var(--ed-reveal,1)*.10));
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] .zm-worlds .zm-world-life .zm-world-art{
+  transform:translateY(calc((1 - var(--ed-reveal,1))*10% + var(--motion-impulse)*9px)) scale(calc(1.10 - var(--ed-reveal,1)*.10));
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-think .edition56-answer-sheet{
+  rotate:calc(var(--motion-impulse)*-2.5deg);translate:0 calc(var(--motion-impulse)*-7px);
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-finance .edition56-chart{
+  translate:0 calc(var(--motion-impulse)*-6px)
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #projects .ed-work-earth .edition56-fieldnote{
+  rotate:calc(var(--motion-impulse)*2deg);translate:0 calc(var(--motion-impulse)*-8px)
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #milestone-preview .ed-record-display{
+  rotate:calc(var(--motion-impulse)*-1.4deg);
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #milestone-preview .ed-archive-item:nth-child(even) .ed-record-display{
+  rotate:calc(var(--motion-impulse)*1.4deg);
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] .ed-interest-list a{
+  position:relative;isolation:isolate;clip-path:none;opacity:1;
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] .ed-interest-list a::before{
+  content:"";position:absolute;inset:0;z-index:-1;background:#e2e5d9;
+  transform-origin:left center;transform:scaleX(var(--ed-reveal,1));opacity:.66
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] .ed-interest-list a span{
+  transform:translateX(calc((1 - var(--ed-reveal,1))*-7px));
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] .ed-interest-list a:nth-child(even) span{
+  transform:translateX(calc((1 - var(--ed-reveal,1))*7px));
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] .ed-interest-list a b{
+  transform:rotate(calc((1 - var(--ed-reveal,1))*-55deg + var(--motion-impulse)*8deg));
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] .ed-interest-list a:is(:focus-visible,:active)::before{background:#ffda24}
+ main.editorial-home .editorial-flow[data-ed-motion=true] .ed-fan-without-portrait .ed-fan-card{
+  rotate:calc(var(--slot,0)*var(--motion-impulse)*1.4deg);translate:0 calc(var(--slot,0)*var(--motion-impulse)*3px)
+ }
+ main.editorial-home .editorial-flow[data-ed-motion=true] #next-chapter .finale-portrait{
+  translate:0 calc(var(--motion-impulse)*-7px)
+ }
+ /* Material-specific interior motion. Only artwork, never form controls
+    or the geometry parents used for scroll measurement. */
+ main.studio54.site-motion-ready:not(.home-page) .studio54-document.doc-0{rotate:calc(var(--zm-impulse,0)*-2deg)}
+ main.studio54.site-motion-ready:not(.home-page) .studio54-document.doc-1{rotate:calc(var(--zm-impulse,0)*2deg)}
+ main.studio54.site-motion-ready:not(.home-page) .book-spine{translate:calc(var(--zm-impulse,0)*5px) 0}
+ main.studio54.site-motion-ready:not(.home-page) .letter-paper{rotate:calc(var(--zm-impulse,0)*1.3deg)}
+ main.studio54.site-motion-ready:not(.home-page) .music-art svg{rotate:calc(var(--zm-impulse,0)*2.5deg)}
+ main.studio54.site-motion-ready:not(.home-page) .edition56-answer-sheet{translate:0 calc(var(--zm-impulse,0)*-5px)}
+ main.studio54.site-motion-ready:not(.home-page) .edition56-fieldnote{rotate:calc(var(--zm-impulse,0)*1.5deg)}
+ /* Shorter route edits; retain shared artwork flight when available. */
+ .zm-route-curtain[data-edit][data-phase=cover]{animation-duration:var(--zm-route-cover,420ms)}
+ .zm-route-curtain[data-edit][data-phase=reveal]{animation-duration:var(--zm-route-reveal,520ms)}
+ .zm-route-curtain[data-edit]:not([data-edit=signature]):not([data-edit=match]) .route-motif{
+  width:min(66vw,210px);height:64px
+ }
+ .zm-route-curtain[data-edit]:not([data-edit=signature]):not([data-edit=match])[data-phase=cover] .route-motif i{
+  animation:zm105-motif .38s cubic-bezier(.22,1,.36,1) both;
+ }
+ .zm-route-curtain[data-edit][data-phase=cover] .route-motif i:nth-child(2){animation-delay:.045s}
+ .zm-route-curtain[data-edit][data-phase=cover] .route-motif i:nth-child(3){animation-delay:.09s}
+ .zm-route-curtain[data-edit]:not([data-edit=signature])[data-phase=cover] .route-destination{
+  animation-duration:.36s;animation-delay:.08s
+ }
+ .zm-route-curtain[data-edit=match] .route-motif{display:none}
+ @keyframes zm105-motif{from{opacity:.15;scale:.55;translate:0 18px}to{opacity:1;scale:1;translate:0 0}}
+}
+ /* One new short cinematic act, only on taller phones. A compact sticky
+    scene preserves the natural scroll; landscape/short screens retain
+    their existing fully readable flow. */
+@media(max-width:899px) and (min-height:650px) and (prefers-reduced-motion:no-preference){
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future{
+  display:block;position:relative;height:168svh;min-height:0;
+  padding:0;border-top:0;overflow:visible;background:#f4f1e8;
+ }
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future .zm-future-stage{
+  position:sticky;top:0;display:flex;flex-direction:column;justify-content:center;
+  height:100svh;box-sizing:border-box;overflow:hidden;isolation:isolate;
+  padding:var(--m-scene-safe) 0 20px;gap:clamp(14px,3svh,28px);
+  background:linear-gradient(156deg,#f4f1e8 42%,#e2e5d9 100%);
+ }
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future .ed-future-content h2{
+  font-size:clamp(29px,min(8.8vw,5.8svh),66px);line-height:1.05;margin:8px 0
+ }
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future .ed-future-content p{
+  font-size:clamp(14px,3.7vw,17px);line-height:1.45;margin:10px 0
+ }
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future .ed-future-content .ed-link{min-height:44px}
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future .ed-future-words{
+  display:flex;flex-direction:column;align-items:stretch;gap:7px;
+  width:100%;box-sizing:border-box;padding-inline:var(--ed-pad);
+  font-size:clamp(42px,min(16.2vw,9.4svh),110px);line-height:.96;
+  transform:none;perspective:780px;letter-spacing:-.085em;
+ }
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future .ed-future-words>*{
+  display:block;position:relative;width:100%;box-sizing:border-box;
+  padding:.045em .10em .11em;overflow:hidden;white-space:nowrap;
+  transform-origin:50% 100%;
+ }
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future .ed-future-words>span:first-child{
+  background:#24291e;color:#f4f1e8;text-align:left;
+  transform:translateX(calc((1 - var(--m-think,1))*-12%)) rotateY(calc((1 - var(--m-think,1))*-17deg)) skewX(calc(var(--motion-impulse)*-3deg));
+  clip-path:inset(0 calc((1 - var(--m-think,1))*11%) 0 0);
+ }
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future .ed-future-words>em{
+  background:#ffda24;color:#24291e;text-align:center;font-size:1.04em;line-height:.97;
+  transform:translateX(calc((1 - var(--m-learn,1))*12%)) rotateY(calc((1 - var(--m-learn,1))*17deg)) skewX(calc(var(--motion-impulse)*3deg));
+  clip-path:inset(0 0 0 calc((1 - var(--m-learn,1))*11%));
+ }
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future .ed-future-words>span:last-child{
+  background:#354431;color:#f4f1e8;text-align:right;
+  transform:translateY(calc((1 - var(--m-build,1))*17%)) rotateX(calc((1 - var(--m-build,1))*-22deg));
+  clip-path:inset(calc((1 - var(--m-build,1))*12%) 0 0);
+ }
+ .zm-future-timeline{
+  display:flex;align-items:center;justify-content:space-between;gap:5px;
+  padding-inline:var(--ed-pad);font:700 clamp(7px,2vw,10px)/1.3 "DM Sans Variable",Arial,sans-serif;color:#515d45;
+ }
+ .zm-future-timeline i{height:1px;flex:1;min-width:5px;background:#798469}
+ .zm-future-timeline>span:first-child{color:#24291e}
+ .zm-future-timeline>span:nth-of-type(2){opacity:calc(.55 + var(--m-learn,1)*.45)}
+ .zm-future-timeline>span:last-child{opacity:calc(.55 + var(--m-build,1)*.45)}
+}

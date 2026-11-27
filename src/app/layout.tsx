@@ -27,6 +27,7 @@ import "./page-atmosphere.css";
 import "./typography-v73.css";
 import "./mobile-system-v96.css";
 import "./mobile-interiors-v104.css";
+import "./motion-score-v105.css";
 
 
 export const metadata: Metadata = {
