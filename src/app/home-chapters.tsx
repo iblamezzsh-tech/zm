@@ -52,6 +52,7 @@ import "./audit-v111.css";
 import "./audit-v112.css";
 import "./portrait-in-progress.css";
 import "./cinematic-recovery.css";
+import "./signature-scene-v114.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -108,7 +109,7 @@ export default function HomeChapters(){
    <div className="ed-gutter ed-work-grid">
     {projects.map((p,i)=><article className={"ed-work-item ed-work-"+p.kind} id={i===0?"exhibit-overthink":"exhibit-"+p.slug} key={p.slug} data-ed-scene data-ed-theme="dark">
      <div className="zm-project-mobile-index" aria-hidden="true"><span>SELECTED INITIATIVE / {p.number}</span><span>{p.role}</span></div>
-     <Link href={"/projects/"+p.slug} className="ed-work-image" data-ed-reveal aria-label={"Explore "+p.name}><ProjectEdition project={p}/></Link>
+     <Link href={"/projects/"+p.slug} className="ed-work-image" data-ed-reveal aria-label={"Explore "+p.name}><ProjectEdition project={p} signatureQuestion={i===0}/></Link>
      <span className="ed-project-ghost" aria-hidden="true">{p.number}</span><div className="ed-work-copy"><span className="ed-kicker">{p.number} / {p.category}</span><h3 className="ed-project-name"><KineticText text={p.name} kind="press"/></h3><p>{p.summary}</p><Link href={"/projects/"+p.slug} className="ed-link">Inside the project <span><ArrowIcon direction="up-right"/></span></Link></div>
     </article>)}
    </div>
@@ -136,7 +137,7 @@ export default function HomeChapters(){
    <div className="ed-gutter ed-personal-end"><Link href="/off-the-record" className="ed-link">Get to know me <span><ArrowIcon direction="up-right"/></span></Link></div>
   </section>
   <section className="ed-social ed-paper" data-motion-scene="social" data-ed-scene data-ed-theme="light">
-   <div className="ed-social-sticky"><PageAtmosphere kind="post"/><div className="ed-social-heading"><span className="ed-kicker">07 / STAY IN TOUCH</span><h2 className="kt-heading" aria-label="See you around."><KineticText text="See you" kind="press"/> <em><KineticText text="around." kind="swerve" index={1}/></em></h2></div>
+   <div className="ed-social-sticky"><PageAtmosphere kind="post"/><div className="zm-v114-fan-kicker ed-gutter"><span>07 / WHAT I CARRY FORWARD</span><span>THE NEXT CHAPTER <ArrowIcon direction="down"/></span></div>
    <div className="ed-fan ed-fan-without-portrait" aria-hidden="true">
     {[0,1,2,3].map(i=><div className={"ed-fan-card ed-fan-"+i} key={i} style={{"--fan-i":i-1.5} as React.CSSProperties}>
      {i===0||i===3?<ProjectEdition project={projects[i===0?0:2]}/>:records[i===1?0:records.length-1]?.document?<img src={records[i===1?0:records.length-1].document!.src} alt="" loading="lazy" decoding="async" fetchPriority="low"/>:<>
@@ -146,25 +147,20 @@ export default function HomeChapters(){
     </div>)}
     <div className="ed-fan-card zm-fan-center"><ProjectEdition project={projects[1]}/></div>
    </div>
-   <div className="zm-mobile-social-caption">Find me beyond the portfolio.</div><div className="ed-social-links"><a href="https://t.me/Shoxruxbekovich">Telegram <ArrowIcon direction="up-right"/></a><a href="https://www.instagram.com/the_zzsh/">Instagram <ArrowIcon direction="up-right"/></a><a href="https://github.com/iblamezzsh-tech/zm">GitHub <ArrowIcon direction="up-right"/></a></div><div className="zm-social-handoff" aria-hidden="true"><span>07 / STAY CURIOUS</span><span>08 / THE NEXT CHAPTER <ArrowIcon direction="down"/></span><svg viewBox="0 0 400 46" preserveAspectRatio="none"><path d="M0 29C65 29 98 12 155 12H173L185 2H215L227 12H245C302 12 335 29 400 29V46H0Z"/></svg></div></div>
+   <div className="zm-social-handoff" aria-hidden="true"><svg viewBox="0 0 400 46" preserveAspectRatio="none"><path d="M0 29C65 29 98 12 155 12H173L185 2H215L227 12H245C302 12 335 29 400 29V46H0Z"/></svg></div></div>
   </section>
   <section className="film-shot film-shot-contact film-dark film-finale-shot" id="next-chapter" data-motion-scene="finale" data-ed-scene data-ed-theme="dark" aria-label="The next chapter">
    <div className="film-finale">
     <div className="finale-inner"><PageAtmosphere kind="earth" dark/>
-     <div className="zm-mobile-finale-index" aria-label="Selected initiatives">{projects.map(p=><Link href={"/projects/"+p.slug} key={p.slug} className={"zm-finale-project-"+p.kind}>{p.name}</Link>)}</div>
      <div className="finale-heading">
       <p className="finale-edition">THE NEXT CHAPTER <span> / </span> IMAGINED FUTURE</p>
-      <h2 className="finale-desktop-title"><span className="finale-line-one"><FilmWords text="Always becoming."/></span><em className="finale-line-two"><FilmWords text="Never standing still."/></em></h2>
-      <h2 className="zm-finale-reference-title"><span><FilmWords text="Always"/> <em><FilmWords text="becoming."/></em></span><span><FilmWords text="Never standing"/> <em><FilmWords text="still."/></em></span></h2>
+      <h2 className="finale-desktop-title"><span className="finale-line-one"><FilmWords text="Always"/></span> <em className="finale-line-two"><FilmWords text="becoming."/></em></h2>
+      <h2 className="zm-finale-reference-title"><span><FilmWords text="Always"/> <em><FilmWords text="becoming."/></em></span></h2>
      </div>
      <div className="finale-portrait" role="img" aria-label="ZiyoMuhammad imagined in graduation attire">
       <img src="/images/portrait-present.webp" alt="" loading="lazy" fetchPriority="low" decoding="async"/>
       <img src="/images/portrait-academic-attire.svg" alt="" loading="lazy" fetchPriority="low" decoding="async"/>
      </div>
-     <nav className="finale-nav finale-pages" aria-label="Explore the portfolio">
-      <span><span className="zm-finale-desktop-label">01 / EXPLORE</span><span className="zm-finale-reference-label">PAGES</span></span>
-      {([{href:"#top",label:"Home"},{href:"/about",label:"My story"},{href:"/projects",label:"Projects"},{href:"/achievements",label:"Milestones"},{href:"/off-the-record",label:"Off the record"}]).map((item,i)=><Link key={item.href} href={item.href} style={{"--nav-i":i} as React.CSSProperties}><small>0{i+1}</small><span>{item.label}</span></Link>)}
-     </nav>
      <div className="finale-right">
       <nav className="finale-nav finale-socials" aria-label="Social links">
        <span><span className="zm-finale-desktop-label">02 / ELSEWHERE</span><span className="zm-finale-reference-label">FOLLOW ME</span></span>
