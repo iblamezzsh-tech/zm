@@ -52,3 +52,25 @@
  main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-words>em{transform:translateX(calc((1 - var(--m-learn,1))*4%)) rotateY(calc((1 - var(--m-learn,1))*16deg)) scale(calc(.90 + var(--m-learn,1)*.10))!important}
  main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-future:is([data-scene-tier=cinematic],[data-scene-tier=balanced]) .ed-future-words>span:last-child{transform:translateY(calc((1 - var(--m-build,1))*.15em)) rotateX(calc((1 - var(--m-build,1))*-18deg)) scale(calc(.90 + var(--m-build,1)*.10))!important}
 }
+
+/* V113.2 — social fan is a moving editorial beat, never a pinned scene.
+   Override the legacy 155/165svh desktop cut independently of CSS chunk order.
+   Its untransformed fan box remains the scroll clock. */
+@media(min-width:900px){
+ main.editorial-home .editorial-flow[data-ed-cinema=true] .ed-social[data-motion-scene=social]{
+  height:auto;min-height:0;max-height:none;position:relative;overflow:hidden;padding:0;
+ }
+ main.editorial-home .editorial-flow[data-ed-cinema=true] .ed-social[data-motion-scene=social]>.ed-social-sticky{
+  height:auto;min-height:0;max-height:none;position:relative;inset:auto;overflow:hidden;
+  padding:clamp(84px,12svh,110px) var(--ed-pad) clamp(32px,6svh,76px);
+ }
+ main.editorial-home .editorial-flow[data-ed-cinema=true] .ed-social[data-motion-scene=social] .ed-fan{
+  height:clamp(210px,48svh,470px);transform:none;opacity:1;
+ }
+ main.editorial-home .editorial-flow[data-ed-cinema=true] .ed-social[data-motion-scene=social] .ed-social-heading h2{
+  font-size:clamp(42px,min(7.6vw,13svh),126px);
+ }
+ main.editorial-home .editorial-flow[data-ed-cinema=true] .ed-social[data-motion-scene=social] .ed-social-links{
+  margin-top:clamp(24px,5svh,54px);
+ }
+}

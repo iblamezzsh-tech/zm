@@ -214,7 +214,9 @@ export default function EditorialFlow({children}:{children:ReactNode}){
      }
     }
     if(s.classList.contains("ed-social")){
-     paced(s,"--fan-open",ease(.06,.76,fanEdge),1350,r.bottom<0||r.top>h);
+     // Native scrolling already moves this scene; do not add a second time-based
+     // smoothing clock. The spread resolves during entry and reverses on scroll.
+     write(s,"--fan-open",ease(.025,.68,fanEdge));
      if(w<=899){
       // The untransformed fan box is the clock; card transforms cannot feed back into it.
       paced(s,"--m-social-spread",ease(.025,.68,fanEdge),1600,r.bottom<0||r.top>h);
