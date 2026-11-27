@@ -21,3 +21,16 @@ export function lookAlpha(x:number,y:number,progress:number){
  const t=Math.max(0,Math.min(1,(edge-y+.07)/.14));
  return Math.round(255*t*t*(3-2*t));
 }
+
+// Reframe the original image, not the already zoomed hero screenshot.
+// The supplied reference has a 160×185 panel on a 234×514 screen.
+export function mobileCreditFrame(w:number,h:number){
+ const fit=Math.min(w/1070,h/850);
+ const width=Math.min(w*.69,h*.44*(160/185),360);
+ const height=width*(185/160);
+ const top=h*.45-height/2;
+ const side=(w-width)/2;
+ const bottom=h-top-height;
+ const sourceFit=Math.min(height*.84/746,width*.72/400);
+ return {width,height,top,side,bottom,scale:fit>0?sourceFit/fit:1};
+}

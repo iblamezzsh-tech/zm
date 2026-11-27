@@ -5,7 +5,7 @@ import { LiquidField, heroFields } from "./liquid-field";
 import "./hero-atmosphere.css";
 import "./portrait-loading.css";
 import ContourField from "./contour-field";
-import {mobilePortraitScale,approachLook,lookAlpha} from "./mobile-portrait-geometry";
+import {mobilePortraitScale,mobileCreditFrame,approachLook,lookAlpha} from "./mobile-portrait-geometry";
 
 export default function Portrait() {
   const stage = useRef<HTMLDivElement>(null);
@@ -44,6 +44,7 @@ export default function Portrait() {
     const maskCtx=mask.getContext("2d");
     if(!maskCtx){ready(false);return;}
     const motion=matchMedia("(prefers-reduced-motion: reduce)");
+    const opening=area.closest<HTMLElement>("#film-present");
     const field=new LiquidField();
     heroFields.set(area,field);
     let bounds=area.getBoundingClientRect(), scale=1, dpr=1, alive=true, loaded=false, visible=false;
@@ -143,6 +144,11 @@ export default function Portrait() {
         area!.style.setProperty("--portrait-scale",mobilePortraitScale(w,h,titleBottom).toFixed(4));
       }else area!.style.removeProperty("--portrait-scale");
       scale=Number.parseFloat(getComputedStyle(area!).getPropertyValue("--portrait-scale"))||1;
+      if(opening){
+        const props=["--credit-frame-top","--credit-frame-side","--credit-frame-bottom","--credit-frame-scale"];
+        if(mobile){const frame=mobileCreditFrame(w,h);const values=[frame.top+"px",frame.side+"px",frame.bottom+"px",frame.scale.toFixed(5)];props.forEach((key,i)=>opening.style.setProperty(key,values[i]));}
+        else props.forEach(key=>opening.style.removeProperty(key));
+      }
       dpr=mobile?Math.min((devicePixelRatio||1)*Math.max(1,scale),2.5):Math.min(devicePixelRatio||1,1.6);
       output!.width=Math.round(w*dpr);output!.height=Math.round(h*dpr);
       field.resize(w,h);
