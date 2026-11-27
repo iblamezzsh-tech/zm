@@ -104,11 +104,16 @@ export default function EditorialFlow({children}:{children:ReactNode}){
     paced(s,"--seam-open",ease(.04,.78,edge),950,r.bottom<0||r.top>h);
     if(s.id==="film-present"){
      if(mobileCinema){
-      write(s,"--ed-hero-exit",ease(.06,.49,local));
-      write(s,"--ed-credit",ease(.23,.67,local));
-      write(s,"--ed-hero-depart",ease(.84,1,local));
+      // A single reversible scroll score: identity, portrait, signature,
+      // hold, then a handoff into the next chapter. No timer or scroll lock.
+      write(s,"--ed-hero-exit",ease(.04,.43,local));
+      write(s,"--ed-brand-away",ease(.03,.25,local));
+      write(s,"--ed-portrait-tone",ease(.16,.45,local));
+      write(s,"--ed-credit",ease(.30,.70,local));
+      write(s,"--ed-credit-in",ease(.23,.40,local));
+      write(s,"--ed-hero-depart",ease(.83,1,local));
       write(s,"--ed-credit-away",ease(.90,1,local));
-      s.dataset.creditStage=String(local>.30);
+      s.dataset.creditStage=String(local>.25);
      }else{
       write(s,"--ed-hero-exit",ease(.08,.65,local));
       write(s,"--ed-credit",ease(.22,.66,local));

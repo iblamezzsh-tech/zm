@@ -138,9 +138,8 @@ export default function Portrait() {
       // to one numeric scale; the same fit is used by the fluid mask.
       mobile=matchMedia("(max-width:899px)").matches;
       if(matchMedia("(max-width:599px) and (min-height:500px) and (orientation:portrait)").matches){
-        const title=area!.querySelector<HTMLElement>(".hero-name");
-        const kicker=area!.querySelector<HTMLElement>(".zm-mobile-hero-kicker");
-        const titleBottom=Math.max(title?title.offsetTop+title.offsetHeight:0,kicker?kicker.offsetTop+kicker.offsetHeight:0);
+        const brand=area!.querySelector<HTMLElement>(".zm-hero-brand");
+        const titleBottom=brand?brand.offsetTop+brand.offsetHeight:0;
         area!.style.setProperty("--portrait-scale",mobilePortraitScale(w,h,titleBottom).toFixed(4));
       }else area!.style.removeProperty("--portrait-scale");
       scale=Number.parseFloat(getComputedStyle(area!).getPropertyValue("--portrait-scale"))||1;
@@ -172,7 +171,7 @@ export default function Portrait() {
     const io=new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting??false;sync()},{threshold:.03});
     Promise.all([original.decode(),attire.decode()]).then(()=>{
       if(!alive)return;
-      loaded=true;setAttireReady(true);resize();ro.observe(area);io.observe(area);
+      loaded=true;setAttireReady(true);resize();ro.observe(area);const brand=area.querySelector<HTMLElement>(".zm-hero-brand");if(brand)ro.observe(brand);io.observe(area);
       area.addEventListener("pointerenter",enter,options);area.addEventListener("pointermove",track,options);area.addEventListener("pointerleave",leave,options);
       area.addEventListener("pointerdown",down,options);area.addEventListener("pointerup",up,options);area.addEventListener("pointercancel",up,options);area.addEventListener("lostpointercapture",up,options);
       window.addEventListener("scroll",refresh,{...options,capture:true});
@@ -188,11 +187,15 @@ export default function Portrait() {
       <link rel="preload" as="image" href="/images/portrait-academic-attire.svg" />
       <div className="stage hero-composition hero-atmosphere" data-mobile-look={mobileLook?"future":"present"} ref={stage}>
         <div className="hero-world" aria-hidden="true"><ContourField paused={false}/></div>
+        <div className="zm-hero-brand">
+          <img className="zm-mobile-brand-mark" src="/icon.svg" width="30" height="30" alt="" aria-hidden="true"/>
         <h1 className="hero-name" aria-label="ZiyoMuhammad">
           <svg viewBox="0 0 1200 164" role="presentation" aria-hidden="true">
             <text x="10" y="124" textLength="1180" lengthAdjust="spacingAndGlyphs">ZiyoMuhammad</text>
           </svg>
         </h1>
+          <span className="zm-mobile-hero-kicker">STUDENT / FOUNDER / UZBEKISTAN</span>
+        </div>
         <div className="hero-portrait-plane">
         <img
           className="photo"
@@ -228,7 +231,6 @@ export default function Portrait() {
           <p>Student. Founder.<br />Always learning.</p>
         </aside>
         <HeroSignature />
-        <span className="zm-mobile-hero-kicker">STUDENT / FOUNDER / UZBEKISTAN</span>
         <button className="zm-mobile-look" type="button" disabled={!attireReady} aria-label={mobileLook?"Return to present portrait":"Reveal graduation portrait"} aria-pressed={mobileLook} onClick={toggleLook}><span>{mobileLook?"BACK TO NOW":"TAP TO LOOK"}</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5v4m0 9v4M3.5 12h4m9 0h4M6 6l2.5 2.5m7 7L18 18m0-12-2.5 2.5m-7 7L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="12" cy="12" r="2.5" stroke="currentColor" strokeWidth="1.5"/></svg></button>
         <a className="hero-scroll" href="#introduction"><span aria-hidden="true">↓</span> Scroll to discover</a>
         <span className="corner tl" />

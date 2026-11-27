@@ -199,7 +199,7 @@
   transform:translateY(calc(var(--ed-hero-exit,0)*-2svh)) scale(calc(1 - var(--ed-hero-exit,0)*.39));
   clip-path:inset(0 round calc(var(--ed-hero-exit,0)*10px));transform-origin:center center
  }
- main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-present[data-credit-stage=true] .zm-opening-portrait :is(.hero-name,.hero-scroll,.zm-mobile-hero-kicker,.zm-mobile-look){
+ main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-present[data-credit-stage=true] .zm-opening-portrait :is(.zm-hero-brand,.hero-scroll,.zm-mobile-look){
   visibility:hidden;pointer-events:none
  }
  main.editorial-home .editorial-flow[data-ed-mobile-cinema=true] #film-present .ed-opening-credits{
