@@ -1,0 +1,18 @@
+import assert from "node:assert/strict";
+import {initialTier,frameHealth,nextTier,effectiveTier} from "../src/app/motion-quality-policy.ts";
+assert.equal(initialTier(true,8,2),"lite");
+assert.equal(initialTier(true,8,8),"balanced");
+assert.equal(initialTier(false,8,8),"cinematic");
+assert.equal(initialTier(false,8,8,true),"lite");
+assert.equal(frameHealth(Array(48).fill(16.7)),"good");
+assert.equal(frameHealth(Array(48).fill(33.3)),"severe");
+assert.equal(frameHealth([...Array(30).fill(16),...Array(18).fill(37)]),"poor");
+assert.equal(frameHealth([16,17]),"insufficient");
+assert.equal(nextTier("lite",-1),"lite");
+assert.equal(nextTier("cinematic",1),"cinematic");
+assert.equal(nextTier("balanced",-1),"lite");
+assert.equal(nextTier("balanced",1),"cinematic");
+assert.equal(effectiveTier("cinematic","lite",true),"reduced");
+assert.equal(effectiveTier("auto","lite",false),"lite");
+assert.equal(effectiveTier("balanced","lite",false),"balanced");
+console.log("PASS 15 quality policy assertions");

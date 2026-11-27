@@ -1,6 +1,7 @@
 "use client";
 import {useEffect,useRef} from "react";
 import {heroFields} from "./liquid-field";
+import {getMotionTier,motionQualityEvent} from "./motion-quality-store";
 
 // Continuous contour backdrop plus the existing cursor-fluid color.
 export default function ContourField({paused}:{paused:boolean}){
@@ -48,15 +49,15 @@ export default function ContourField({paused}:{paused:boolean}){
   }
   function sync(){
    const active=running();el!.dataset.running=String(active);
-   if(active&&!phone.matches){if(!raf)raf=requestAnimationFrame(draw)}
+   if(active&&!phone.matches&&getMotionTier()==="cinematic"){if(!raf)raf=requestAnimationFrame(draw)}
    else{if(raf)cancelAnimationFrame(raf);raf=0;clear()}
   }
   const observer=new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting??false;sync()},{threshold:.01});
   observer.observe(el);
-  reduced.addEventListener("change",sync);phone.addEventListener("change",sync);
+  reduced.addEventListener("change",sync);phone.addEventListener("change",sync);window.addEventListener(motionQualityEvent,sync);
   document.addEventListener("visibilitychange",sync);
   sync();
-  return()=>{disposed=true;if(raf)cancelAnimationFrame(raf);clear();observer.disconnect();reduced.removeEventListener("change",sync);phone.removeEventListener("change",sync);document.removeEventListener("visibilitychange",sync)};
+  return()=>{disposed=true;if(raf)cancelAnimationFrame(raf);clear();observer.disconnect();reduced.removeEventListener("change",sync);phone.removeEventListener("change",sync);window.removeEventListener(motionQualityEvent,sync);document.removeEventListener("visibilitychange",sync)};
  },[paused]);
  return <div ref={root} className="hero-editorial-background" data-running="false" aria-hidden="true">
   <div className="hero-editorial-light"/>

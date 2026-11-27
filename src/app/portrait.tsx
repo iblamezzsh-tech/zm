@@ -6,6 +6,7 @@ import { LiquidField, heroFields } from "./liquid-field";
 import "./hero-atmosphere.css";
 import "./portrait-loading.css";
 import ContourField from "./contour-field";
+import {getMotionTier,motionQualityEvent} from "./motion-quality-store";
 import {mobilePortraitScale,mobileCreditFrame,approachLook,lookAlpha} from "./mobile-portrait-geometry";
 
 export default function Portrait() {
@@ -57,7 +58,7 @@ export default function Portrait() {
     let lookMix=0,mobile=false;
     let targetX=0,targetY=0,dx=0,dy=0;
     let imageData:ImageData|null=null;
-    const canMove=()=>loaded&&visible&&!motion.matches&&!document.hidden&&opening?.dataset.creditStage!=="true";
+    const canMove=()=>getMotionTier()!=="lite"&&getMotionTier()!=="reduced"&&(!mobile||getMotionTier()==="cinematic")&&loaded&&visible&&!motion.matches&&!document.hidden&&opening?.dataset.creditStage!=="true";
     function paint(){
       if(!loaded||!ctx||!maskCtx||!output||!attire||!imageData)return;
       const w=canvasW,h=canvasH;
@@ -134,7 +135,7 @@ export default function Portrait() {
     function sync(){
       if(!alive)return;
       if(canMove()){if(!raf){last=0;raf=requestAnimationFrame(frame)}}
-      else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;lastPoint=null;idleMix=0;lastPaint=0;lookMix=mobile&&lookTarget.current?1:0;depth();field.clear();paint()}
+      else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;lastPoint=null;idleMix=0;lastPaint=0;lookMix=mobile&&lookTarget.current?1:0;depth();field.clear();if(getMotionTier()==="lite"||getMotionTier()==="reduced"||(mobile&&getMotionTier()!=="cinematic")){ctx!.clearRect(0,0,output!.width,output!.height);lastFull=false}else paint()}
     }
     function resize(){
       bounds=area!.getBoundingClientRect();
@@ -160,15 +161,16 @@ export default function Portrait() {
       canvasW=w;canvasH=h;
       if(resized){output!.width=Math.round(w*dpr);output!.height=Math.round(h*dpr);field.resize(w,h);}
       lastFull=false;
-      if(mobile&&loaded&&rasterCtx){raster.width=output!.width;raster.height=output!.height;rasterCtx.setTransform(dpr,0,0,dpr,0,0);const fit=Math.min(w/attire!.naturalWidth,h/attire!.naturalHeight);const iw=attire!.naturalWidth*fit,ih=attire!.naturalHeight*fit;rasterCtx.drawImage(attire!,(w-iw)/2,h-ih,iw,ih);}
+      if(mobile&&loaded&&rasterCtx&&getMotionTier()==="cinematic"){raster.width=output!.width;raster.height=output!.height;rasterCtx.setTransform(dpr,0,0,dpr,0,0);const fit=Math.min(w/attire!.naturalWidth,h/attire!.naturalHeight);const iw=attire!.naturalWidth*fit,ih=attire!.naturalHeight*fit;rasterCtx.drawImage(attire!,(w-iw)/2,h-ih,iw,ih);}
       else raster.width=0;
       mask.width=field.width;mask.height=field.height;
       imageData=maskCtx!.createImageData(field.width,field.height);
-      paint();
+      if(canMove())paint();
     }
+    function qualityChanged(){resize();sync()}
     function refresh(){if(mobile){lastScroll=performance.now();return}if(visible)bounds=area!.getBoundingClientRect()}
     function track(e:PointerEvent){
-      if(mobile||e.pointerType!=="mouse"&&pointer!==e.pointerId)return;
+      if(getMotionTier()==="lite"||getMotionTier()==="reduced"||mobile||e.pointerType!=="mouse"&&pointer!==e.pointerId)return;
       lastInput=age;
       const x=Math.max(0,Math.min(1,(e.clientX-bounds.left)/Math.max(1,bounds.width)));
       const y=Math.max(0,Math.min(1,(e.clientY-bounds.top)/Math.max(1,bounds.height)));
@@ -190,6 +192,7 @@ export default function Portrait() {
     // Geometry must also work if the optional graduation layer fails.
     resize();ro.observe(area);const brand=area.querySelector<HTMLElement>(".zm-hero-brand");if(brand)ro.observe(brand);
     io.observe(area);
+    window.addEventListener(motionQualityEvent,qualityChanged,options);
     Promise.all([original.decode(),attire.decode()]).then(()=>{
       if(!alive)return;
       loaded=true;setAttireReady(true);resize();sync();

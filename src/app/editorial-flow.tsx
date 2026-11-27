@@ -2,6 +2,7 @@
 import {useLayoutEffect,useRef,type ReactNode} from "react";
 import {subscribeMotion,requestMotionFrame,scrollToFilm} from "./motion-clock";
 import {advanceMotion,kineticEnvelope,mobileTextEnvelope} from "./motion-pacing";
+import {getMotionTier,motionQualityEvent} from "./motion-quality-store";
 const clamp=(x:number)=>Math.min(1,Math.max(0,x));
 const ease=(a:number,b:number,x:number)=>{const t=clamp((x-a)/(b-a));return t*t*(3-2*t)};
 const write=(el:HTMLElement,key:string,value:number)=>{const next=value.toFixed(5);if(el.style.getPropertyValue(key)!==next)el.style.setProperty(key,next)};
@@ -105,7 +106,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    const fanRect=fan?.getBoundingClientRect();
    const fanEdge=fanRect?clamp((h-fanRect.top)/h):1;
    const docBounds=documents.filter(eligible).map(node=>({node,r:node.getBoundingClientRect()}));
-   const kineticBounds=kinetic.filter(item=>eligible(item.node)).map(item=>({...item,r:item.node.getBoundingClientRect()}));
+   const kineticBounds=(getMotionTier()==="lite"?[]:kinetic.filter(item=>eligible(item.node))).map(item=>({...item,r:item.node.getBoundingClientRect()}));
    const gallery=bounds.find(({s})=>s===collage);
    const railLocal=gallery?clamp(-gallery.r.top/Math.max(1,gallery.r.height-galleryHeight)):0;
    const nextRailX=railActive()?-railDistance*railProgress(railLocal):0;
@@ -265,11 +266,11 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    scrollToFilm(top+(collage.offsetHeight-(mobileCinema?(collageWindow?.clientHeight||innerHeight):innerHeight))*(lo+hi)/2,true);
   }
   const unsub=subscribeMotion(render),ro=new ResizeObserver(resize);ro.observe(el);if(rail)ro.observe(rail);
-  reduced.addEventListener("change",mode);desktop.addEventListener("change",mode);mobile.addEventListener("change",mode);window.addEventListener("zm-film-mode",change);el.addEventListener("focusin",focus);
+  reduced.addEventListener("change",mode);desktop.addEventListener("change",mode);mobile.addEventListener("change",mode);window.addEventListener("zm-film-mode",change);window.addEventListener(motionQualityEvent,mode);el.addEventListener("focusin",focus);
   document.addEventListener("zm-boot-prepare",resize);
   mode();document.fonts.ready.then(()=>{if(alive)resize()});
   document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:true}}));
-  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);main.classList.remove("ed-dark-header","film-at-finale");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema};
+  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,mode);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);main.classList.remove("ed-dark-header","film-at-finale");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema};
  },[]);
  return <div ref={root} className="editorial-flow" id="main-content" tabIndex={-1}>{children}</div>
 }

@@ -3,6 +3,7 @@ import ArrowIcon from "./arrow-icon";
 import Link from "next/link";
 import {useEffect,useRef,useState,useId} from "react";
 import Signature from "./signature";
+import MotionQualityControl from "./motion-quality-control";
 import ProjectEdition from "./project-edition";
 import {projects as portfolioProjects} from "./projects/data";
 import "./site-menu.css";
@@ -75,6 +76,7 @@ export default function SiteHeader({about=false,projects=false,achievements=fals
    <div className="zm-menu-right">
     <div className="zm-menu-index"><span>ZM / INDEX</span><span>01—06</span></div>
     <nav className="zm-menu-links" aria-label="Primary navigation" onMouseLeave={()=>setHovered(null)}>{pages.map((page,i)=><Link key={page.href} href={page.href} onClick={()=>close(false)} onMouseEnter={()=>setHovered(page.visual)} onFocus={()=>setHovered(page.visual)} onBlur={()=>setHovered(null)} aria-current={current===page.href?"page":undefined} style={{"--item":i} as React.CSSProperties}><span className="zm-menu-number" aria-hidden="true">{page.number}</span><span className="zm-menu-label" aria-label={page.label}>{Array.from(page.label).map((ch,index)=><span key={index} aria-hidden="true" className="zm-menu-letter" style={{"--letter":index} as React.CSSProperties}>{ch===" "?"\u00a0":ch}</span>)}<svg className="zm-menu-strike" viewBox="0 0 240 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10H45Q52 10 58 15H101Q108 15 115 5H163Q170 5 178 15H240" fill="none" stroke="currentColor" strokeWidth="2.8" vectorEffect="non-scaling-stroke" pathLength="1"/></svg></span><span className="zm-menu-link-arrow" aria-hidden="true"><ArrowIcon direction="up-right"/></span></Link>)}</nav>
+    <MotionQualityControl/>
     <div className="zm-menu-signoff"><Signature/><span>Curious by nature. / Uzbekistan</span></div>
     <div className="zm-menu-social">{current==="/"&&<button type="button" className="zm-reading-option" onClick={()=>{close(false);window.dispatchEvent(new Event("zm-film-mode"))}}>Switch reading mode</button>}<Link href="/contact" onClick={()=>close(false)}>Get in touch <ArrowIcon direction="up-right"/></Link><div><a href="https://t.me/Shoxruxbekovich" target="_blank" rel="noreferrer">Telegram</a><a href="https://www.instagram.com/the_zzsh/" target="_blank" rel="noreferrer">Instagram</a><a href="https://github.com/iblamezzsh-tech/zm" target="_blank" rel="noreferrer">GitHub</a></div></div>
    </div>

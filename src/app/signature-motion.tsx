@@ -77,6 +77,7 @@ export function RouteSignature(){
  }
  useEffect(()=>{
   function onClick(e:MouseEvent){
+   if(document.documentElement.dataset.motionTier==="lite"||document.documentElement.dataset.motionTier==="reduced")return;
    if(e.defaultPrevented||e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||matchMedia("(prefers-reduced-motion: reduce)").matches||!(e.target instanceof Element))return;
    const a=e.target.closest<HTMLAnchorElement>("a[href]");
    if(!a||a.target||a.hasAttribute("download")||a.hasAttribute("data-no-transition"))return;
@@ -95,7 +96,7 @@ export function RouteSignature(){
    router.prefetch(href);
    const dest=url.pathname;
    curtain.current.dataset.edit=dest==="/about"?"paper":dest==="/achievements"?"archive":dest==="/off-the-record"?"notebook":dest==="/projects/overthink"?"think":dest==="/projects/finance4youth"?"finance":dest==="/projects/rezamin"?"earth":dest==="/projects"?"project":dest==="/contact"?"letter":"signature";
-   if(dest.startsWith("/projects/")&&startMatch(a))curtain.current.dataset.edit="match";
+   if(document.documentElement.dataset.motionTier!=="balanced"&&dest.startsWith("/projects/")&&startMatch(a))curtain.current.dataset.edit="match";
    curtain.current.dataset.phase="cover";
    const label=curtain.current.querySelector<HTMLElement>("[data-destination]");if(label)label.textContent=names[url.pathname];
    coverTimer.current=setTimeout(()=>{pushed.current=true;router.push(href);coverTimer.current=null},timing.current.cover);

@@ -1,6 +1,7 @@
 "use client";
 import type Lenis from "lenis";
 import {scrollImpulseTarget,dampImpulse} from "./motion-impulse";
+import {getMotionTier,motionQualityEvent} from "./motion-quality-store";
 type Listener=()=>void;
 const listeners=new Set<Listener>();
 let raf=0,engine:Lenis|null=null,dirty=false;
@@ -15,7 +16,7 @@ function flush(now:number){
  raf=0;
  const work=dirty;dirty=false;
  const y=window.scrollY,dt=lastTime?now-lastTime:16.7;
- const motion=innerWidth<=899&&!document.hidden&&!(reduced?.matches??matchMedia("(prefers-reduced-motion: reduce)").matches)&&!document.querySelector("dialog[open]")&&!document.querySelector(".zm-route-curtain[data-phase=cover],.zm-route-curtain[data-phase=reveal]");
+ const motion=getMotionTier()==="cinematic"&&innerWidth<=899&&!document.hidden&&!(reduced?.matches??matchMedia("(prefers-reduced-motion: reduce)").matches)&&!document.querySelector("dialog[open]")&&!document.querySelector(".zm-route-curtain[data-phase=cover],.zm-route-curtain[data-phase=reveal]");
  const target=motion&&lastTime?scrollImpulseTarget(y-lastY,dt,innerHeight):0;
  impulse=motion?dampImpulse(impulse,target,dt):0;lastY=y;lastTime=now;
  const root=document.documentElement;
@@ -28,9 +29,9 @@ function flush(now:number){
 }
 export function requestMotionFrame(){dirty=true;if(!raf)raf=requestAnimationFrame(flush)}
 export function subscribeMotion(fn:Listener){
- if(!listeners.size){resetImpulse();reduced=matchMedia("(prefers-reduced-motion: reduce)");reduced.addEventListener("change",requestMotionFrame);document.addEventListener("visibilitychange",requestMotionFrame);window.addEventListener("scroll",requestMotionFrame,{passive:true});window.addEventListener("resize",requestMotionFrame,{passive:true})}
+ if(!listeners.size){resetImpulse();reduced=matchMedia("(prefers-reduced-motion: reduce)");reduced.addEventListener("change",requestMotionFrame);document.addEventListener("visibilitychange",requestMotionFrame);window.addEventListener("scroll",requestMotionFrame,{passive:true});window.addEventListener("resize",requestMotionFrame,{passive:true});window.addEventListener(motionQualityEvent,requestMotionFrame)}
  listeners.add(fn);requestMotionFrame();
- return()=>{listeners.delete(fn);if(!listeners.size){reduced?.removeEventListener("change",requestMotionFrame);reduced=null;document.removeEventListener("visibilitychange",requestMotionFrame);window.removeEventListener("scroll",requestMotionFrame);window.removeEventListener("resize",requestMotionFrame);if(raf)cancelAnimationFrame(raf);raf=0;dirty=false;resetImpulse()}};
+ return()=>{listeners.delete(fn);if(!listeners.size){reduced?.removeEventListener("change",requestMotionFrame);reduced=null;document.removeEventListener("visibilitychange",requestMotionFrame);window.removeEventListener("scroll",requestMotionFrame);window.removeEventListener("resize",requestMotionFrame);window.removeEventListener(motionQualityEvent,requestMotionFrame);if(raf)cancelAnimationFrame(raf);raf=0;dirty=false;resetImpulse()}};
 }
 export function setScrollEngine(value:Lenis|null){engine=value}
 export function scrollToFilm(top:number,instant=false){

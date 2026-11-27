@@ -8,6 +8,7 @@ import { RouteSignature } from "./signature-motion";
 import SmoothScroll from "./smooth-scroll";
 import SiteMotion from "./site-motion";
 import FlowMotion from "./flow-motion";
+import AdaptiveMotion from "./adaptive-motion";
 import "./flow-motion.css";
 import "./site-motion.css";
 import "./motion-polish.css";
@@ -30,6 +31,7 @@ import "./mobile-interiors-v104.css";
 import "./motion-score-v105.css";
 import "./mobile-qa-v106.css";
 import "./mobile-performance-v106-3.css";
+import "./adaptive-motion-v107.css";
 
 
 export const metadata: Metadata = {
@@ -41,8 +43,9 @@ export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
+        <AdaptiveMotion />
         {children}
         <SmoothScroll />
         <SiteMotion />
