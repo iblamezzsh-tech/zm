@@ -179,7 +179,17 @@ export default function EditorialFlow({children,phase0=false}:{children:ReactNod
     if(w<=899){write(s,"--m-scene-enter",ease(0,.72,edge));write(s,"--m-scene-exit",ease(.62,1,pass));}
     if(s.id==="film-present"){
      write(s,"--zm-v116-tail",ease(.76,.96,local));
-     if(mobileCinema){
+     if(phase0){
+      // One continuous, reversible original ink path; no timer or second SVG.
+      write(s,"--zm-ink-progress",.085+.915*ease(.025,.81,local));
+      write(s,"--zm-ink-travel",ease(.13,.76,local));
+      write(s,"--zm-copy-away",ease(.02,.32,local));
+      write(s,"--zm-face-away",ease(.25,.88,local));
+      write(s,"--ed-hero-exit",0);write(s,"--ed-hero-depart",0);write(s,"--ed-credit-away",0);
+      write(s,"--ed-credit",ease(.08,.80,local));
+      const creditStage=String(local>.34);if(s.dataset.creditStage!==creditStage)s.dataset.creditStage=creditStage;
+      if(lookButton){if(creditStage==="true"&&document.activeElement===lookButton)el!.focus({preventScroll:true});lookButton.inert=creditStage==="true";}
+     }else if(mobileCinema){
       // A single reversible scroll score: identity, portrait, signature,
       // hold, then a handoff into the next chapter. No timer or scroll lock.
       write(s,"--ed-hero-exit",ease(.04,.43,local));

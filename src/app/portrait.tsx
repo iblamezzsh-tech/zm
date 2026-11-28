@@ -9,7 +9,7 @@ import ContourField from "./contour-field";
 import {getNodeMotionTier,motionQualityEvent,sceneQualityEvent} from "./motion-quality-store";
 import {mobilePortraitScale,mobileCreditFrame,approachLook,lookAlpha} from "./mobile-portrait-geometry";
 
-export default function Portrait() {
+export default function Portrait({refined=false}:{refined?:boolean}={}) {
   const stage = useRef<HTMLDivElement>(null);
   const base = useRef<HTMLImageElement>(null);
   const overlay = useRef<HTMLImageElement>(null);
@@ -127,7 +127,7 @@ export default function Portrait() {
       if(matchMedia("(max-width:599px) and (min-height:500px) and (orientation:portrait)").matches){
         const brand=area!.querySelector<HTMLElement>(".zm-hero-brand");
         const titleBottom=brand?brand.offsetTop+brand.offsetHeight:0;
-        area!.style.setProperty("--portrait-scale",mobilePortraitScale(w,h,titleBottom).toFixed(4));
+        area!.style.setProperty("--portrait-scale",(refined?mobilePortraitScale(w,h,titleBottom)*.74:mobilePortraitScale(w,h,titleBottom)).toFixed(4));
       }else if(!mobile){
         // The wordmark now occupies its own left header lane. Scale to the
         // shared graduation silhouette, not the old centered title band.
@@ -190,14 +190,14 @@ export default function Portrait() {
       ready();
     }).catch(()=>{/* Keep the original portrait if the attire cannot be decoded. */if(alive)ready(false);});
     return()=>{alive=false;controller.abort();ro.disconnect();io.disconnect();creditObserver.disconnect();if(raf)cancelAnimationFrame(raf);heroFields.delete(area)};
-  }, []);
+  }, [refined]);
 
   return (
     <section aria-label="Interactive portrait">
       <link rel="preload" as="image" href="/images/portrait-present.webp" />
       <link rel="preload" as="image" href="/images/portrait-academic-attire.svg" />
       <div className="stage hero-composition hero-atmosphere" data-mobile-look={mobileLook?"future":"present"} ref={stage}>
-        <div className="hero-world" aria-hidden="true"><ContourField paused={false}/></div>
+        <div className="hero-world" aria-hidden="true"><ContourField paused={refined}/></div>
         <div className="zm-hero-brand">
           <img className="zm-mobile-brand-mark" src="/icon.svg" width="30" height="30" alt="" aria-hidden="true"/>
         <h1 className="hero-name" aria-label="ZiyoMuhammad">
@@ -234,16 +234,15 @@ export default function Portrait() {
           Portrait / 01
         </div>
         <div className="caption">
-          <div className="eyebrow">01 / The present</div>
-          <h2>Curious by<br /><em>nature.</em></h2>
+          <div className="eyebrow">{refined?"ANDIJON, UZBEKISTAN":"01 / The present"}</div>
+          <h2>{refined?"It starts with":"Curious by"}<br /><em>{refined?"a question.":"nature."}</em></h2>
         </div>
         <aside className="hero-note" aria-label="Personal introduction">
-          <span>Uzbekistan</span>
-          <p>Student. Founder.<br />Always learning.</p>
+          {refined?<p>Some questions become projects. Others stay in my notebook.</p>:<><span>Uzbekistan</span><p>Student. Founder.<br />Always learning.</p></>}
         </aside>
-        <HeroSignature />
+        {!refined&&<HeroSignature />}
         <button className="zm-mobile-look" type="button" disabled={!attireReady} aria-label={mobileLook?"Return to present portrait":"Reveal graduation portrait"} aria-pressed={mobileLook} onClick={toggleLook}><span>{mobileLook?"BACK TO NOW":"TAP TO LOOK"}</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5v4m0 9v4M3.5 12h4m9 0h4M6 6l2.5 2.5m7 7L18 18m0-12-2.5 2.5m-7 7L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="12" cy="12" r="2.5" stroke="currentColor" strokeWidth="1.5"/></svg></button>
-        <a className="hero-scroll" href="#introduction"><span aria-hidden="true"><ArrowIcon direction="down"/></span> Scroll to discover</a>
+        <a className="hero-scroll" href={refined?"#next-chapter":"#introduction"}><span aria-hidden="true"><ArrowIcon direction="down"/></span> Scroll to discover</a>
         <span className="corner tl" />
         <span className="corner tr" />
         <span className="corner bl" />

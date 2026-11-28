@@ -60,6 +60,7 @@ import "./cinematic-recovery.css";
 import "./signature-scene-v114.css";
 import "./question-thread-v116.css";
 import "./scroll-into-work.css";
+import "./opening-phase0-refinement.css";
 
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
@@ -70,12 +71,12 @@ export default function HomeChapters({phase0=true}:{phase0?:boolean}={}){
  const interests=["Economics","Psychology","Politics","Literature","Music"];
  return <EditorialFlow phase0={phase0}>
   {!phase0&&<MobileRecordViewer records={Array.from(new Map([...records,...archive].map(r=>[r.id,r])).values())}/>}
-  <section className="ed-opening" id="film-present" data-motion-scene="opening" data-ed-scene data-ed-theme="light">
+  <section className={"ed-opening"+(phase0?" zm-refined-opening":"")} id="film-present" data-motion-scene="opening" data-ed-scene data-ed-theme="light">
    <div className="ed-opening-sticky"><PageAtmosphere kind="story" dark/>
-    <OpeningMarquee/>
-    <div className="zm-lite-credit-portrait" aria-hidden="true"><img src="/images/portrait-present.webp" alt="" decoding="async"/></div>
-    <div className="ed-opening-credits" aria-hidden="true"><div className="zm-mobile-credit-kicker"><span>A PORTRAIT IN PROGRESS</span></div><div className="ed-opening-signature"><Signature continuation/></div><span className="ed-opening-credit-label">01 / THE ART OF BECOMING</span></div>
-    <div className="home-hero zm-opening-portrait"><Portrait/></div>
+    {!phase0&&<OpeningMarquee/>}
+    {!phase0&&<div className="zm-lite-credit-portrait" aria-hidden="true"><img src="/images/portrait-present.webp" alt="" decoding="async"/></div>}
+    <div className="ed-opening-credits" aria-hidden="true"><div className="zm-mobile-credit-kicker"><span>A PORTRAIT IN PROGRESS</span></div><div className="ed-opening-signature"><Signature continuation={!phase0}/></div><span className="ed-opening-credit-label">01 / THE ART OF BECOMING</span></div>
+    <div className="home-hero zm-opening-portrait"><Portrait refined={phase0}/></div>
    </div>
   </section>
   {!phase0&&<>
