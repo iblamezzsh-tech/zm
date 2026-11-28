@@ -11,8 +11,9 @@ export function advanceLens(s:LensState,t:LensState,dt:number):{state:LensState;
  return {state:settled?{...t}:state,settled};
 }
 export function installScene01Lens(area:HTMLDivElement,original:HTMLImageElement,attire:HTMLImageElement,onReady:()=>void,ready:(ok:boolean)=>void){
- const plane=area.querySelector<HTMLElement>(".hero-portrait-plane"),layer=attire.parentElement,opening=area.closest<HTMLElement>("#film-present");
- if(!plane||!layer){ready(false);return}
+ const foundPlane=area.querySelector<HTMLElement>(".hero-portrait-plane"),foundLayer=attire.parentElement,opening=area.closest<HTMLElement>("#film-present");
+ if(!foundPlane||!foundLayer){ready(false);return}
+ const plane:HTMLElement=foundPlane,layer:HTMLElement=foundLayer;
  const reduced=matchMedia("(prefers-reduced-motion: reduce)");
  const fine=matchMedia("(min-width:900px) and (hover:hover) and (pointer:fine)");
  const controller=new AbortController(),opts={signal:controller.signal,passive:true};
