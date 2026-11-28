@@ -1,6 +1,7 @@
 import ArrowIcon from "./arrow-icon";
 import Link from "next/link";
 import Portrait from "./portrait";
+import DeskSequence from "./desk-sequence";
 import Signature from "./signature";
 import ProjectEdition from "./project-edition";
 import ProjectStory from "./project-story-v115";
@@ -77,6 +78,7 @@ export default function HomeChapters(){
     <div className="home-hero zm-opening-portrait"><Portrait/></div>
    </div>
   </section>
+  <DeskSequence/>
   <section className="ed-manifesto" id="introduction" data-motion-scene="manifesto" data-ed-scene data-ed-theme="dark"><PageAtmosphere kind="story" dark/>
    <div className="ed-gutter ed-caption"><span>01 / ANDIJAN, UZBEKISTAN</span><span>A PORTRAIT IN PROGRESS</span></div>
    <div className="ed-manifesto-portrait" data-ed-reveal><img src="/images/portrait-present.webp" alt="ZiyoMuhammad" fetchPriority="low" decoding="async"/><span>FIG. 01 — THE PRESENT</span></div>

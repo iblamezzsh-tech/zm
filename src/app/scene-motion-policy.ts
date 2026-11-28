@@ -1,6 +1,6 @@
 // Every homepage chapter has its own independent performance history.
 import {frameHealth,nextTier,type Tier} from "./motion-quality-policy.ts";
-export const sceneNames={opening:"Portrait / signature",manifesto:"Introduction",memory:"Small moments",future:"Think / Learn / Build",worlds:"Two worlds",projects:"Projects",archive:"Milestones",personal:"Interests",social:"Social fan",finale:"Grand finale"} as const;
+export const sceneNames={opening:"Portrait / signature",desk:"Founder’s desk",manifesto:"Introduction",memory:"Small moments",future:"Think / Learn / Build",worlds:"Two worlds",projects:"Projects",archive:"Milestones",personal:"Interests",social:"Social fan",finale:"Grand finale"} as const;
 export type SceneKey=keyof typeof sceneNames;
 export type SceneReading={tier:Tier;frames:number;p90:number;poor:number;good:number;lastChange:number};
 export function initialReading(tier:Tier,now:number):SceneReading{return {tier,frames:0,p90:0,poor:0,good:0,lastChange:now}}
