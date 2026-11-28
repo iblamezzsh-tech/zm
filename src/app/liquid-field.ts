@@ -1,6 +1,9 @@
 // Original CPU velocity-field implementation using semi-Lagrangian transport and pressure projection.
 // Units are grid cells per simulation step. No third-party demo source is included.
 export const heroFields=new WeakMap<HTMLElement,LiquidField>();
+// Shared, read-only during the synchronous paint event; the background uploads
+// the exact same alpha bytes that were composited into the photo.
+export const heroMaskFrames=new WeakMap<HTMLElement,{width:number;height:number;data:Uint8ClampedArray;active:boolean}>();
 const clamp=(x:number,a:number,b:number)=>Math.max(a,Math.min(b,x));
 export class LiquidField{
  width=120;height=66;aspect=1.8;hasInk=false;

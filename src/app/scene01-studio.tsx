@@ -22,11 +22,11 @@ export default function Scene01Studio(){
   const camera={x:0,y:0};
   const moveX=gsap.quickTo(camera,"x",{duration:.68,ease:"power3.out",onUpdate:draw});
   const moveY=gsap.quickTo(camera,"y",{duration:.68,ease:"power3.out",onUpdate:draw});
-  function draw(){stage!.style.setProperty("--studio-pointer-x",camera.x.toFixed(2)+"px");stage!.style.setProperty("--studio-pointer-y",camera.y.toFixed(2)+"px")}
+  function draw(){stage!.style.setProperty("--studio-pointer-x",camera.x.toFixed(2)+"px");stage!.style.setProperty("--studio-pointer-y",camera.y.toFixed(2)+"px");layer!.style.setProperty("--studio-light-x",(-camera.x*2.7).toFixed(2)+"px");layer!.style.setProperty("--studio-light-y",(-camera.y*2.7).toFixed(2)+"px")}
   function permitted(){const tier=getNodeMotionTier(stage);return !disposed&&visible&&!document.hidden&&!reduced.matches&&tier!=="lite"&&tier!=="reduced"&&section!.dataset.creditStage!=="true"}
   function stop(){
    moveX.tween.pause();moveY.tween.pause();running=false;
-   layer!.dataset.running="false";stage!.dataset.studioPaused="true";
+   layer!.dataset.running="false";stage!.dataset.studioPaused="true";delete stage!.dataset.studioFocus;
    // Neutralize the pointer offset without disturbing the autonomous phase.
    camera.x=camera.y=0;draw();
   }
@@ -40,8 +40,8 @@ export default function Scene01Studio(){
   function move(e:PointerEvent){if(!running||!fine.matches||e.pointerType!=="mouse")return;
    const x=Math.max(-1,Math.min(1,((e.clientX-rect.left)/rect.width-.5)*2)),y=Math.max(-1,Math.min(1,((e.clientY-rect.top)/rect.height-.5)*2));
    moveX(x*21);moveY(y*12);
-   const inPhoto=Math.abs(x)<.34&&y>-.77;
-   stage!.dataset.studioFocus=inPhoto?"portrait":"paper";
+   const photo=plane.getBoundingClientRect();const aspect=1070/850;const width=Math.min(photo.width,photo.height*aspect);const inPhoto=Math.abs(e.clientX-(photo.left+photo.width/2))<width*.235&&e.clientY>photo.top+photo.height*.12;
+   stage!.dataset.studioFocus=e.target instanceof Element&&e.target.closest("a,button,.caption,.hero-note")?"copy":inPhoto?"portrait":"paper";
   }
   function leave(){delete stage!.dataset.studioFocus;if(running){moveX(0);moveY(0)}else{camera.x=camera.y=0;draw()}}
   const ro=new ResizeObserver(()=>{rect=stage.getBoundingClientRect()});ro.observe(stage);
@@ -68,7 +68,7 @@ export default function Scene01Studio(){
   <div className="studio-paper-shadow"/><div className="studio-paper-reflection"/>
   <div className="studio-paper-light"/>
   <PaperFlow/>
-  <div className="studio-type-window"><div className="studio-type-strip">{[0,1].map(i=><span key={i}>STAY CURIOUS. KEEP BECOMING.</span>)}</div></div>
+  <div className="studio-type-window"><div className="studio-type-plane"><div className="studio-type-strip">{[0,1].map(i=><span key={i}>STAY CURIOUS. KEEP BECOMING.</span>)}</div></div></div>
   <div className="studio-paper-grain"/>
  </div>;
 }

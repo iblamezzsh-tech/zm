@@ -2,7 +2,7 @@
 import ArrowIcon from "./arrow-icon";
 import { useEffect, useRef, useState } from "react";
 import { HeroSignature } from "./signature-motion";
-import { LiquidField, heroFields } from "./liquid-field";
+import { LiquidField, heroFields, heroMaskFrames } from "./liquid-field";
 import "./hero-atmosphere.css";
 import "./portrait-loading.css";
 import ContourField from "./contour-field";
@@ -70,10 +70,10 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       if(full&&lastFull)return;lastFull=full;
       ctx.setTransform(dpr,0,0,dpr,0,0);
       ctx.globalCompositeOperation="source-over";ctx.clearRect(0,0,w,h);
-      if(!field.hasInk&&lookMix<=0)return;
+      if(!field.hasInk&&lookMix<=0){if(refined)heroMaskFrames.delete(area!);return;}
       const fit=Math.min(w/attire.naturalWidth,h/attire.naturalHeight);
       const iw=attire.naturalWidth*fit,ih=attire.naturalHeight*fit;
-      if(mobile&&rasterCtx&&raster.width)ctx.drawImage(raster,0,0,w,h);else ctx.drawImage(attire,(w-iw)/2,h-ih,iw,ih);
+      if((refined||mobile)&&rasterCtx&&raster.width)ctx.drawImage(raster,0,0,w,h);else ctx.drawImage(attire,(w-iw)/2,h-ih,iw,ih);
       if(mobile&&lookMix>=1)return;
       // Alpha comes from the evolving density field, not a circular CSS mask.
       if(mobile){const data=imageData.data;for(let i=0;i<data.length;i+=4){data[i]=data[i+1]=data[i+2]=255;data[i+3]=0}}else field.writeMask(imageData.data);
@@ -86,6 +86,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
           data[k]=lookAlpha(i/(W-1),j/(H-1),lookMix);
         }
       }
+      if(refined&&!mobile)heroMaskFrames.set(area!,{width:field.width,height:field.height,data:imageData.data,active:field.hasInk});
       maskCtx.putImageData(imageData,0,0);
       ctx.globalCompositeOperation="destination-in";
       ctx.imageSmoothingEnabled=true;
@@ -128,7 +129,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
     function sync(){
       if(!alive)return;
       if(canMove()){if(!raf){last=0;acc=0;area!.dataset.studioInk="active";raf=requestAnimationFrame(frame)}}
-      else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;lastPoint=null;idleMix=0;lastPaint=0;lookMix=mobile&&lookTarget.current?1:0;depth();field.clear();if(refined){hadInk=false;paintedLook=-1;area!.dataset.studioInk="idle";area!.dispatchEvent(new Event("zm-studio-ink-frame"))}if(getNodeMotionTier(area)==="lite"||getNodeMotionTier(area)==="reduced"||(mobile&&getNodeMotionTier(area)!=="cinematic")){ctx!.clearRect(0,0,output!.width,output!.height);lastFull=false}else paint()}
+      else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;lastPoint=null;idleMix=0;lastPaint=0;lookMix=mobile&&lookTarget.current?1:0;depth();field.clear();if(refined){heroMaskFrames.delete(area!);hadInk=false;paintedLook=-1;area!.dataset.studioInk="idle";area!.dispatchEvent(new Event("zm-studio-ink-frame"))}if(getNodeMotionTier(area)==="lite"||getNodeMotionTier(area)==="reduced"||(mobile&&getNodeMotionTier(area)!=="cinematic")){ctx!.clearRect(0,0,output!.width,output!.height);lastFull=false}else paint()}
     }
     wakeLook.current=sync;
     function resize(){
@@ -162,7 +163,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       canvasW=w;canvasH=h;
       if(resized){output!.width=Math.round(w*dpr);output!.height=Math.round(h*dpr);field.resize(w,h);}
       lastFull=false;
-      if(mobile&&loaded&&rasterCtx&&getNodeMotionTier(area)==="cinematic"){raster.width=output!.width;raster.height=output!.height;rasterCtx.setTransform(dpr,0,0,dpr,0,0);const fit=Math.min(w/attire!.naturalWidth,h/attire!.naturalHeight);const iw=attire!.naturalWidth*fit,ih=attire!.naturalHeight*fit;rasterCtx.drawImage(attire!,(w-iw)/2,h-ih,iw,ih);}
+      if((refined||mobile)&&loaded&&rasterCtx&&getNodeMotionTier(area)==="cinematic"){raster.width=output!.width;raster.height=output!.height;rasterCtx.setTransform(dpr,0,0,dpr,0,0);const fit=Math.min(w/attire!.naturalWidth,h/attire!.naturalHeight);const iw=attire!.naturalWidth*fit,ih=attire!.naturalHeight*fit;rasterCtx.drawImage(attire!,(w-iw)/2,h-ih,iw,ih);}
       else raster.width=0;
       mask.width=field.width;mask.height=field.height;
       imageData=maskCtx!.createImageData(field.width,field.height);
@@ -213,7 +214,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       motion.addEventListener("change",sync,options);document.addEventListener("visibilitychange",sync,options);
       ready();
     }).catch(()=>{/* Keep the original portrait if the attire cannot be decoded. */if(alive)ready(false);});
-    return()=>{alive=false;wakeLook.current=null;controller.abort();ro.disconnect();io.disconnect();creditObserver.disconnect();if(raf)cancelAnimationFrame(raf);heroFields.delete(area)};
+    return()=>{alive=false;wakeLook.current=null;controller.abort();ro.disconnect();io.disconnect();creditObserver.disconnect();if(raf)cancelAnimationFrame(raf);heroFields.delete(area);heroMaskFrames.delete(area)};
   }, [refined]);
 
   return (

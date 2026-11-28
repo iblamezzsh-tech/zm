@@ -166,7 +166,7 @@ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening{
 }
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-composition{--studio-pointer-x:0px;--studio-pointer-y:0px}
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-world{
- background:#f2f0e7;overflow:hidden;
+ background:#f3f0e7;overflow:hidden;
 }
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-editorial-background{background:transparent!important;z-index:2}
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-editorial-background::after{z-index:2;background:radial-gradient(ellipse at 14% 63%,#f2f0e7db 0%,#f2f0e78c 17%,transparent 41%),radial-gradient(ellipse at 86% 60%,#f2f0e7db 0%,#f2f0e790 16%,transparent 41%)}
@@ -179,7 +179,8 @@ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-edito
 .studio-paper-flow{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;pointer-events:none}
 .studio-paper-flow[data-ready=true]{opacity:1}
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-world:has(.studio-paper-flow[data-ready=true]) .hero-editorial-lines{opacity:0!important;animation:none!important}
-.studio-type-window{position:absolute;inset:19% 0 auto;height:32%;overflow:hidden;opacity:calc(.26*(1 - var(--zm-copy-away)));mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.studio-type-window{position:absolute;inset:17% 0 auto;height:34%;overflow:hidden;opacity:calc(.30*(1 - var(--zm-copy-away)));mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.studio-type-plane{position:absolute;inset:0;transform:translate3d(calc(var(--studio-pointer-x,0px)*-1.4),calc(var(--studio-pointer-y,0px)*-.7),0)}
 .studio-type-strip{position:absolute;top:50%;left:0;display:flex;width:max-content;white-space:nowrap;align-items:center;transform:translate3d(0,-50%,0);font:400 clamp(82px,13.5vw,186px)/1 "Instrument Serif",Georgia,serif;letter-spacing:-.045em;color:#75836c}
 .studio-type-strip>span{flex:none;display:block;padding-right:.72em}
 .studio-paper-grain{position:absolute;inset:0;opacity:.09;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.83' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23000' filter='url(%23n)' d='M0 0h160v160H0z' opacity='.17'/%3E%3C/svg%3E")}
@@ -196,8 +197,9 @@ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-world
  }
  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-composition[data-studio-paused=true] :is(.studio-paper-light,.studio-paper-shadow,.studio-paper-reflection,.studio-type-strip,.hero-editorial-lines,.hero-portrait-plane){animation-play-state:paused!important}
  main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-world{
-  opacity:calc(1 - var(--studio-night));transform:scale(calc(1 + .12*var(--studio-dolly)));transform-origin:50% 45%;
+  opacity:calc(1 - var(--studio-night));transform:scale(calc(1 + .10*var(--studio-dolly)));transform-origin:50% 45%;
  }
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .ed-opening-sticky::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 52% 48%,#8c9a6b26,transparent 55%);opacity:var(--studio-ink-bed)}
  main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening :is(.zm-opening-portrait,.hero-composition){background:transparent!important}
  main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .caption{transform:translate3d(calc(-72px*var(--zm-copy-away)),calc(-12px*var(--zm-copy-away)),0)}
  main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-note{transform:translate3d(calc(72px*var(--zm-copy-away)),calc(-12px*var(--zm-copy-away)),0)}
@@ -219,16 +221,17 @@ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-world
  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening:is([data-scene-tier=lite],[data-scene-tier=reduced]) :is(.studio-paper-light,.studio-paper-shadow,.studio-paper-reflection,.studio-type-strip,.hero-editorial-lines,.hero-portrait-plane),
  main.zm-phase0-home .editorial-flow[data-ed-motion=false] #film-present.zm-refined-opening :is(.studio-paper-light,.studio-paper-shadow,.studio-paper-reflection,.studio-type-strip,.hero-editorial-lines,.hero-portrait-plane){animation:none!important;translate:none;scale:none}
 }
-@keyframes zm-world-light{from{transform:translate3d(-19%,6%,0) rotate(-6deg)}to{transform:translate3d(20%,-8%,0) rotate(8deg)}}
+@keyframes zm-world-light{from{transform:translate3d(calc(-19% + var(--studio-light-x,0px)),calc(6% + var(--studio-light-y,0px)),0) rotate(-6deg)}to{transform:translate3d(calc(20% + var(--studio-light-x,0px)),calc(-8% + var(--studio-light-y,0px)),0) rotate(8deg)}}
 @keyframes zm-world-shadow{from{transform:translate3d(12%,-5%,0)}to{transform:translate3d(-14%,9%,0)}}
 @keyframes zm-world-reflection{from{transform:translate3d(-11%,-6%,0)}to{transform:translate3d(13%,8%,0)}}
 @keyframes zm-world-map{from{translate:-28px 15px;scale:1.025}to{translate:31px -20px;scale:1.065}}
 @keyframes zm-world-type{from{transform:translate3d(0,-50%,0)}to{transform:translate3d(-50%,-50%,0)}}
-@keyframes zm-world-portrait{from{translate:-10px 3px;scale:1}to{translate:11px -9px;scale:1.022}}
+@keyframes zm-world-portrait{0%{translate:-7px 3px;scale:1}46%{translate:2px -5px;scale:1.017}100%{translate:10px -8px;scale:1.026}}
 @keyframes zm-world-portrait-mobile{from{translate:-2px 2px;scale:1}to{translate:3px -4px;scale:1.008}}
 @media(hover:hover) and (pointer:fine){
  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-composition{cursor:default}
- main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-composition:is([data-studio-focus=portrait],[data-studio-focus=paper]){cursor:url("/cursors/studio/reveal.svg") 16 16,crosshair}
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-composition[data-studio-focus=portrait]{cursor:url("/cursors/studio/reveal.svg") 16 16,crosshair}
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-composition[data-studio-focus=paper]{cursor:url("/cursors/studio/pen.svg") 4 3,auto}
  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening :is(.caption h2,.hero-note p,.caption .eyebrow){cursor:text}
  main.zm-phase0-home>.site-header :is(a[href],button:not(:disabled)){cursor:pointer!important}
  main.zm-phase0-home>.site-header .minimal-connect{position:relative;overflow:hidden;isolation:isolate;transition:color .35s,border-color .35s}
@@ -245,3 +248,12 @@ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-world
 }
 @media(prefers-reduced-motion:reduce){.studio-paper-flow,.studio-type-window{display:none!important}}
 @media(forced-colors:active){main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-composition{cursor:auto!important}}
+
+@media(max-width:899px){
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .studio-scene01{transition:background-color .65s ease}
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening [data-mobile-look=future] .studio-scene01{background-color:#b1ba9c}
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening [data-mobile-look=future] .studio-type-strip{color:#425239}
+}
+@media(prefers-reduced-motion:reduce){
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .studio-scene01{transition:none}
+}

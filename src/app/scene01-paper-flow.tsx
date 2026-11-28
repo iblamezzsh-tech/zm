@@ -1,6 +1,6 @@
 "use client";
 import {useEffect,useRef} from "react";
-import {heroFields} from "./liquid-field";
+import {heroMaskFrames} from "./liquid-field";
 import {getNodeMotionTier,motionQualityEvent,sceneQualityEvent} from "./motion-quality-store";
 
 // One field, two worlds. The very same density image that reveals the
@@ -16,39 +16,39 @@ uniform vec4 u_plane;
 uniform vec2 u_eye;
 uniform float u_time;
 uniform float u_active;
+uniform vec2 u_ink_texel;
 float mapInk(vec2 p){return texture2D(u_map,clamp(p,.001,.999)).a;}
+float inkAt(vec2 p){return texture2D(u_ink,clamp(p,0.,1.)).a;}
 void main(){
  vec2 uv=vec2(gl_FragCoord.x/u_size.x,1.-gl_FragCoord.y/u_size.y);
  vec2 q=uv-.5;
- // The original map slowly flows on a broad surface. This is not a
- // newly generated pattern, and the palette remains restrained.
- vec2 flow=vec2(.028*sin(u_time*.42+uv.y*4.7)+.013*cos(u_time*.31+uv.x*3.1),
-                .020*cos(u_time*.37+uv.x*4.3)+.009*sin(u_time*.29+uv.y*4.));
- vec2 d=uv-u_eye;
- float aspect=u_size.x/u_size.y;
- float r=length(d*vec2(aspect,1.));
+ float t=u_time;
+ vec2 flow=vec2(.022*sin(t*.42+uv.y*4.7)+.010*cos(t*.31+uv.x*3.1),.016*cos(t*.37+uv.x*4.3)+.007*sin(t*.29+uv.y*4.));
+ vec2 d=uv-u_eye;float aspect=u_size.x/u_size.y;float r=length(d*vec2(aspect,1.));
  float local=exp(-r*r*14.)*u_active;
- vec2 refraction=d/(r+.09)*sin(r*19.-u_time*2.1)*.019*local;
- vec2 tex=(q+flow+refraction)*u_fit+.5;
- float line=mapInk(tex);
  vec2 maskUV=(uv-u_plane.xy)/max(u_plane.zw,vec2(.001));
  float within=step(0.,maskUV.x)*step(maskUV.x,1.)*step(0.,maskUV.y)*step(maskUV.y,1.);
- float density=texture2D(u_ink,clamp(maskUV,0.,1.)).a*within;
- float reveal=smoothstep(.04,.91,density);
- // Keep the typography lanes light. The saturated forest material exists
- // only near the photograph, dissolving into a subtle translucent wash.
+ float density=inkAt(maskUV)*within;
+ vec2 grad=vec2(inkAt(maskUV+vec2(u_ink_texel.x,0.))-inkAt(maskUV-vec2(u_ink_texel.x,0.)),inkAt(maskUV+vec2(0.,u_ink_texel.y))-inkAt(maskUV-vec2(0.,u_ink_texel.y)))*within;
+ float reveal=density;
+ vec2 refract=d/(r+.09)*sin(r*19.-t*2.1)*.013*local+grad*.009;
+ vec2 tex=(q+flow+refract)*u_fit+.5;
+ float line=mapInk(tex);
  float centre=smoothstep(.17,.39,uv.x)*(1.-smoothstep(.61,.83,uv.x));
- float strength=reveal*(.22+.72*centre);
- vec2 futureTex=tex+vec2(.018,-.025)*reveal;
- float altLine=mapInk(futureTex);
- float l=.5+.5*sin(uv.x*3.7+uv.y*2.3+u_time*.27);
- vec3 green=mix(vec3(.26,.32,.25),vec3(.49,.55,.40),l);
- vec3 future=mix(green,vec3(.86,.79,.50),altLine*.62);
- float original=line*.32*(1.-strength);
+ float strength=reveal*(.24+.64*centre);
+ float altLine=mapInk(tex+vec2(.018,-.025)*reveal+grad*.009);
+ float l=.5+.5*sin(uv.x*3.7+uv.y*2.3+t*.27);
+ float key=exp(-dot(q-vec2(.09,-.20),q-vec2(.09,-.20))*6.);
+ vec3 green=mix(vec3(.19,.25,.20),vec3(.43,.49,.35),.65*l+.35*key);
+ vec3 future=mix(green,vec3(.87,.81,.58),altLine*.66);
+ float edge=clamp(length(grad)*.50,0.,.25)*smoothstep(.06,.27,reveal)*(1.-smoothstep(.72,1.,reveal));
+ future=mix(future,vec3(.94,.86,.64),edge);
+ float original=line*.31*(1.-strength);
  float a=strength+original*(1.-strength);
  vec3 color=(future*strength+vec3(.38,.43,.34)*original*(1.-strength))/max(a,.0001);
  gl_FragColor=vec4(color,a);
-}`;
+}
+`;
 export default function PaperFlow(){
  const ref=useRef<HTMLCanvasElement>(null);
  useEffect(()=>{
@@ -69,11 +69,11 @@ export default function PaperFlow(){
   gl.useProgram(program);gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
   const pos=gl.getAttribLocation(program,"a");gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
   const uniform=(key:string)=>gl.getUniformLocation(program,key);
-  const size=uniform("u_size"),fit=uniform("u_fit"),time=uniform("u_time"),planeUniform=uniform("u_plane"),eye=uniform("u_eye"),active=uniform("u_active");
+  const size=uniform("u_size"),fit=uniform("u_fit"),time=uniform("u_time"),planeUniform=uniform("u_plane"),eye=uniform("u_eye"),active=uniform("u_active"),texel=uniform("u_ink_texel");
   function initTex(unit:number,texture:WebGLTexture,key:string){gl!.activeTexture(unit);gl!.bindTexture(gl!.TEXTURE_2D,texture);gl!.texParameteri(gl!.TEXTURE_2D,gl!.TEXTURE_WRAP_S,gl!.CLAMP_TO_EDGE);gl!.texParameteri(gl!.TEXTURE_2D,gl!.TEXTURE_WRAP_T,gl!.CLAMP_TO_EDGE);gl!.texParameteri(gl!.TEXTURE_2D,gl!.TEXTURE_MIN_FILTER,gl!.LINEAR);gl!.texParameteri(gl!.TEXTURE_2D,gl!.TEXTURE_MAG_FILTER,gl!.LINEAR);gl!.texImage2D(gl!.TEXTURE_2D,0,gl!.RGBA,1,1,0,gl!.RGBA,gl!.UNSIGNED_BYTE,new Uint8Array(4));gl!.uniform1i(uniform(key),unit-gl!.TEXTURE0)}
   initTex(gl.TEXTURE0,map,"u_map");initTex(gl.TEXTURE1,ink,"u_ink");
   const image=new Image();let loaded=false,lost=false,disposed=false,visible=false,raf=0,last=0,t=0,lastDraw=0,rect=stage.getBoundingClientRect(),x=.5,y=.5,tx=.5,ty=.5,a=0,ta=0,dirty=true,hadInk=false;
-  let bytes:Uint8ClampedArray|null=null;
+  let uploadedW=1,uploadedH=1;
   const permit=()=>!disposed&&!lost&&loaded&&visible&&!document.hidden&&!reduced.matches&&desktop.matches&&getNodeMotionTier(stage)==="cinematic"&&opening.dataset.creditStage!=="true";
   function resize(){rect=stage!.getBoundingClientRect();const w=stage!.clientWidth,h=stage!.clientHeight;if(!w||!h)return;
    const d=Math.min(devicePixelRatio||1,1.2,Math.sqrt(1250000/(w*h)));
@@ -82,11 +82,18 @@ export default function PaperFlow(){
    const ratio=1500/940,view=w/h;gl!.uniform2f(fit,Math.min(1,view/ratio)*.85,Math.min(1,ratio/view)*.85);dirty=true;
   }
   function upload(){
-   const field=heroFields.get(stage!);
-   if(!field?.hasInk){if(hadInk){gl!.activeTexture(gl!.TEXTURE1);gl!.bindTexture(gl!.TEXTURE_2D,ink);gl!.texImage2D(gl!.TEXTURE_2D,0,gl!.RGBA,1,1,0,gl!.RGBA,gl!.UNSIGNED_BYTE,new Uint8Array(4));hadInk=false}dirty=false;return}
-   if(!bytes||bytes.length!==field.width*field.height*4)bytes=new Uint8ClampedArray(field.width*field.height*4);
-   field.writeMask(bytes);gl!.activeTexture(gl!.TEXTURE1);gl!.bindTexture(gl!.TEXTURE_2D,ink);
-   gl!.texImage2D(gl!.TEXTURE_2D,0,gl!.RGBA,field.width,field.height,0,gl!.RGBA,gl!.UNSIGNED_BYTE,bytes);hadInk=true;dirty=false;
+   const frame=heroMaskFrames.get(stage!);
+   gl!.activeTexture(gl!.TEXTURE1);gl!.bindTexture(gl!.TEXTURE_2D,ink);
+   if(!frame?.active){
+    if(hadInk){gl!.texImage2D(gl!.TEXTURE_2D,0,gl!.RGBA,1,1,0,gl!.RGBA,gl!.UNSIGNED_BYTE,new Uint8Array(4));uploadedW=uploadedH=1;hadInk=false}
+    gl!.uniform2f(texel,1,1);dirty=false;return;
+   }
+   const {width,height,data}=frame;
+   if(uploadedW!==width||uploadedH!==height){
+    gl!.texImage2D(gl!.TEXTURE_2D,0,gl!.RGBA,width,height,0,gl!.RGBA,gl!.UNSIGNED_BYTE,data);
+    uploadedW=width;uploadedH=height;
+   }else gl!.texSubImage2D(gl!.TEXTURE_2D,0,0,0,width,height,gl!.RGBA,gl!.UNSIGNED_BYTE,data);
+   gl!.uniform2f(texel,1/width,1/height);hadInk=true;dirty=false;
   }
   function tick(now:number){raf=0;if(!permit()){stop();return}
    const dt=last?Math.min(.05,(now-last)/1000):1/60;last=now;t+=dt;
