@@ -73,7 +73,7 @@ export default function HomeChapters({phase0=true}:{phase0?:boolean}={}){
   {!phase0&&<MobileRecordViewer records={Array.from(new Map([...records,...archive].map(r=>[r.id,r])).values())}/>}
   <section className={"ed-opening"+(phase0?" zm-refined-opening":"")} id="film-present" data-motion-scene="opening" data-ed-scene data-ed-theme="light">
    <div className="ed-opening-sticky"><PageAtmosphere kind="story" dark/>
-    {!phase0&&<OpeningMarquee/>}
+    <OpeningMarquee/>
     {!phase0&&<div className="zm-lite-credit-portrait" aria-hidden="true"><img src="/images/portrait-present.webp" alt="" decoding="async"/></div>}
     <div className="ed-opening-credits" aria-hidden="true"><div className="zm-mobile-credit-kicker"><span>A PORTRAIT IN PROGRESS</span></div><div className="ed-opening-signature"><Signature continuation={!phase0}/></div><span className="ed-opening-credit-label">01 / THE ART OF BECOMING</span></div>
     <div className="home-hero zm-opening-portrait"><Portrait refined={phase0}/></div>

@@ -12,13 +12,19 @@ export class LiquidField{
  private nextPressure=new Float32Array(120*66);
  private div=new Float32Array(120*66);
  private curl=new Float32Array(120*66);
+ private ink=new Float32Array(120*66);
+ private nextInk=new Float32Array(120*66);
+ private grain=new Float32Array(120*66);
+ constructor(private living=false){}
  resize(w:number,h:number){
   this.aspect=w/Math.max(h,1);this.height=66;this.width=Math.max(35,Math.min(150,Math.round(this.height*this.aspect)));
   const n=this.width*this.height;
   this.u=new Float32Array(n);this.v=new Float32Array(n);this.nextU=new Float32Array(n);this.nextV=new Float32Array(n);
-  this.pressure=new Float32Array(n);this.nextPressure=new Float32Array(n);this.div=new Float32Array(n);this.curl=new Float32Array(n);this.hasInk=false;
+  this.pressure=new Float32Array(n);this.nextPressure=new Float32Array(n);this.div=new Float32Array(n);this.curl=new Float32Array(n);this.ink=new Float32Array(n);this.nextInk=new Float32Array(n);this.grain=new Float32Array(n);
+ if(this.living)for(let j=0;j<this.height;j++)for(let i=0;i<this.width;i++)this.grain[j*this.width+i]=.5*Math.sin(i*.28+j*.39)+.28*Math.sin(i*.79-j*.51)+.13*Math.cos(i*1.31+j*.87);
+ this.hasInk=false;
  }
- clear(){for(const a of [this.u,this.v,this.nextU,this.nextV,this.pressure,this.nextPressure,this.div,this.curl])a.fill(0);this.hasInk=false}
+ clear(){for(const a of [this.u,this.v,this.nextU,this.nextV,this.pressure,this.nextPressure,this.div,this.curl,this.ink,this.nextInk])a.fill(0);this.hasInk=false}
  private read(a:Float32Array,x:number,y:number){
   const W=this.width,H=this.height;
   x=clamp(x,0,W-1.001);y=clamp(y,0,H-1.001);
@@ -42,6 +48,7 @@ export class LiquidField{
     for(let i=Math.max(1,Math.floor(cx-range));i<=Math.min(W-2,Math.ceil(cx+range));i++){
      const dx=i-cx,dy=j-cy,fall=Math.exp(-(dx*dx+dy*dy)/(radius*radius));
      const n=j*W+i;
+     if(this.living)this.ink[n]=Math.min(1.4,this.ink[n]+Math.min(.95,.34+speed*.17)*fall);
      // Tangential force seeds organic curl without drawing a circular reveal.
      const swirl=force*.13*fall/radius;
      this.u[n]=clamp(this.u[n]+(fx*fall-dy*swirl)/Math.sqrt(count),-5,5);
@@ -79,15 +86,16 @@ export class LiquidField{
    const swap=P;P=Q;Q=swap;
   }
   this.pressure=P;this.nextPressure=Q;
-  let peak=0;
+  let peak=0,inkPeak=0;const ink=this.ink,nextInk=this.nextInk;
   for(let j=1;j<H-1;j++)for(let i=1;i<W-1;i++){
    const k=j*W+i;
    NU[k]=clamp(NU[k]-(P[k+1]-P[k-1])*.5,-5,5);
    NV[k]=clamp(NV[k]-(P[k+W]-P[k-W])*.5,-5,5);
    peak=Math.max(peak,Math.abs(NU[k])+Math.abs(NV[k]));
+ if(this.living){nextInk[k]=Math.max(0,this.read(ink,i-NU[k]*.68,j-NV[k]*.68)*.986-.0012-.0015*Math.max(0,this.grain[k]));inkPeak=Math.max(inkPeak,nextInk[k]);}
   }
   this.u=NU;this.v=NV;this.nextU=U;this.nextV=V;
-  this.hasInk=peak>.075;
+  if(this.living){this.ink=nextInk;this.nextInk=ink;this.hasInk=peak>.19||inkPeak>.145;if(!this.hasInk)this.clear()}else this.hasInk=peak>.075;
  }
  sample(x:number,y:number){
   const gx=x*(this.width-1),gy=y*(this.height-1);
@@ -101,7 +109,7 @@ export class LiquidField{
    const u=this.u[i],v=this.v[i],speed=Math.hypot(u,v);
    const directional=.73-.27*Math.tanh(u*.65);
    const density=speed*directional;
-   const a=clamp((density-.19)/.27,0,1);
+   const a=this.living?Math.max(clamp((density-.19)/.27,0,1),clamp((this.ink[i]-(.19+this.grain[i]*.045))/.20,0,1)):clamp((density-.19)/.27,0,1);
    out[i*4]=out[i*4+1]=out[i*4+2]=255;out[i*4+3]=Math.round(a*a*(3-2*a)*255);
   }
  }
