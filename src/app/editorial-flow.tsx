@@ -4,7 +4,8 @@ import {subscribeMotion,requestMotionFrame,scrollToFilm} from "./motion-clock";
 import {advanceMotion,kineticEnvelope,mobileTextEnvelope} from "./motion-pacing";
 import {getNodeMotionTier,setActiveMotionScene,applySceneTiers,sceneQualityEvent,motionQualityEvent} from "./motion-quality-store";
 import {readingEmphasis} from "./reading-emphasis";
-import {questionThread} from "./question-thread";
+import {sheetFlight} from "./sheet-flight";
+import {QuestionSheetPreview} from "./question-sheet";
 import {signatureQuestionScore} from "./signature-question-score";
 import type {SceneKey} from "./scene-motion-policy";
 const clamp=(x:number)=>Math.min(1,Math.max(0,x));
@@ -42,32 +43,26 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   const finaleCta=el.querySelector<HTMLElement>(".finale-cta");
   const collage=el.querySelector<HTMLElement>(".ed-collage"),rail=el.querySelector<HTMLElement>(".ed-collage-grid");
   const collageWindow=el.querySelector<HTMLElement>(".ed-collage-sticky");
-  const threadSource=el.querySelector<HTMLElement>(".zm-v116-think-dot");
-  const threadDock=el.querySelector<HTMLElement>(".zm-v116-coin-dock");
-  const threadCarrier=el.querySelector<HTMLElement>(".zm-v116-carrier");
-  const threadWorlds=el.querySelector<HTMLElement>(".zm-worlds");
+  const threadSource=el.querySelector<HTMLElement>(".zm-question-source");
+  const threadTarget=el.querySelector<HTMLElement>(".zm-question-target");
+  const threadCarrier=el.querySelector<HTMLElement>(".zm-sheet-flight");
+  const carrierMarker=threadCarrier?.querySelector<HTMLElement>("[data-sheet-marker]");
+  const sourceMarker=threadSource?.querySelector<HTMLElement>("[data-sheet-marker]");
+  const targetMarker=threadTarget?.querySelector<HTMLElement>("[data-sheet-marker]");
   function paintThread(h:number,w:number){
-   if(!threadSource||!threadDock||!threadCarrier||!threadWorlds)return;
-   const hide=()=>{if(threadCarrier!.dataset.active!=="false")threadCarrier!.dataset.active="false";if(el!.hasAttribute("data-thread-flight"))el!.removeAttribute("data-thread-flight")};
-   if(!enabled||!railActive()||!["cinematic","balanced"].includes(getNodeMotionTier(threadSource))||!["cinematic","balanced"].includes(getNodeMotionTier(threadDock))||document.querySelector("dialog[open]")){hide();return}
-   const world=threadWorlds.getBoundingClientRect();
-   if(world.top>=h*.94){hide();return}
-   const b=threadDock.getBoundingClientRect();
-   // Release as the next act enters, keep the object in its margin, then
-   // dock into the real question header. No movement is driven by elapsed time.
-   const release=clamp((h*.94-world.top)/(h*(w<900?.30:.42)));
-   const landing=clamp((h*.84-(b.top+b.height/2))/(h*.38));
-   if(landing>=1){hide();return}
-   const a=threadSource.getBoundingClientRect();
-   const dot={x:a.left+a.width/2,y:a.top+a.height/2,size:Math.max(6,a.width)};
-   const rail={x:w-(w<900?19:34),y:h*.47,size:w<900?26:44};
-   const dock={x:b.left+b.width/2,y:b.top+b.height/2,size:b.width};
-   const frame=questionThread(dot,rail,dock,release,landing);
-   if(!frame.active||!a.width||!b.width){hide();return}
-   const {point,coin}=frame;if(threadCarrier.dataset.active!=="true")threadCarrier.dataset.active="true";if(!el!.hasAttribute("data-thread-flight"))el!.setAttribute("data-thread-flight","");
-   threadCarrier.style.transform=`translate3d(${point.x.toFixed(2)}px,${point.y.toFixed(2)}px,0) translate(-50%,-50%)`;
-   threadCarrier.style.width=threadCarrier.style.height=point.size.toFixed(2)+"px";
-   write(threadCarrier,"--coin-detail",coin);
+   if(!threadSource||!threadTarget||!threadCarrier||!sourceMarker||!targetMarker||!carrierMarker)return;
+   const hide=()=>{threadCarrier.dataset.active="false";el!.removeAttribute("data-sheet-flight");el!.style.removeProperty("--sheet-arrival")};
+   if(!enabled||!railActive()||!["cinematic","balanced"].includes(getNodeMotionTier(threadSource))||!["cinematic","balanced"].includes(getNodeMotionTier(threadTarget))||threadTarget.contains(document.activeElement)||document.querySelector("dialog[open]")){hide();return}
+   const a=threadSource.getBoundingClientRect(),b=threadTarget.getBoundingClientRect();
+   if(!a.width||!b.width||b.top>h*2||b.bottom<0){hide();return}
+   const f=sheetFlight(a,b,sourceMarker.getBoundingClientRect(),targetMarker.getBoundingClientRect(),scrollY,h,w<900);
+   if(!f.active){hide();return}
+   threadCarrier.dataset.active="true";el!.setAttribute("data-sheet-flight","");
+   threadCarrier.style.width=f.width.toFixed(2)+"px";threadCarrier.style.height=f.height.toFixed(2)+"px";
+   const cr=threadCarrier.getBoundingClientRect(),mr=carrierMarker.getBoundingClientRect();
+   const left=f.anchorX-(mr.left-cr.left+mr.width/2),top=f.anchorY-(mr.top-cr.top+mr.height/2);
+   threadCarrier.style.transform="translate3d("+left.toFixed(2)+"px,"+top.toFixed(2)+"px,0)";
+   threadCarrier.style.opacity=String(1-f.arrival);write(el!,"--sheet-arrival",f.arrival);
   }
   const documents=Array.from(el.querySelectorAll<HTMLElement>(".ed-document"));
   const kinetic=Array.from(el.querySelectorAll<HTMLElement>("[data-kinetic]")).map(node=>({node,horizontal:Boolean(node.closest(".ed-collage-grid")),compact:node.dataset.kinetic==="stamp"||node.dataset.kinetic==="caption"}));
@@ -340,7 +335,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   document.addEventListener("zm-boot-prepare",resize);
   mode();document.fonts.ready.then(()=>{if(alive)resize()});
   document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:true}}));
-  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();window.removeEventListener("resize",resize);reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,preferenceQuality);window.removeEventListener(sceneQualityEvent,quality);setActiveMotionScene(null);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);if(headerContact)headerContact.inert=false;main.classList.remove("ed-dark-header","film-at-finale","zm-v114-question-active","zm-v115-projects-active");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema;el.removeAttribute("data-thread-flight")};
+  return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();window.removeEventListener("resize",resize);reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,preferenceQuality);window.removeEventListener(sceneQualityEvent,quality);setActiveMotionScene(null);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);if(headerContact)headerContact.inert=false;main.classList.remove("ed-dark-header","film-at-finale","zm-v114-question-active","zm-v115-projects-active");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema;el.removeAttribute("data-sheet-flight");el.style.removeProperty("--sheet-arrival")};
  },[]);
- return <div ref={root} className="editorial-flow" id="main-content" tabIndex={-1}>{children}<div className="zm-v116-carrier" data-active="false" aria-hidden="true"><b>H</b></div></div>
+ return <div ref={root} className="editorial-flow" id="main-content" tabIndex={-1}>{children}<div className="zm-sheet-flight" data-active="false" aria-hidden="true" inert><QuestionSheetPreview/></div></div>
 }
