@@ -4,7 +4,7 @@ import {heroFields} from "./liquid-field";
 import {getNodeMotionTier,motionQualityEvent,sceneQualityEvent} from "./motion-quality-store";
 
 // Continuous contour backdrop plus the existing cursor-fluid color.
-export default function ContourField({paused}:{paused:boolean}){
+export default function ContourField({paused,sharedFrame=false}:{paused:boolean;sharedFrame?:boolean}){
  const root=useRef<HTMLDivElement>(null);
  const canvasRef=useRef<HTMLCanvasElement>(null);
  useEffect(()=>{
@@ -16,12 +16,17 @@ export default function ContourField({paused}:{paused:boolean}){
   const phone=matchMedia("(max-width:899px)");
   let visible=false,raf=0,disposed=false,lastPaint=0,dirty=false;
   let pixels:ImageData|null=null;
-  const running=()=>visible&&!paused&&!reduced.matches&&!document.hidden;
+  const opening=stage.closest<HTMLElement>("#film-present");
+  let lastInk=false;
+  const running=()=>visible&&!paused&&!reduced.matches&&!document.hidden&&(!sharedFrame||opening?.dataset.creditStage!=="true");
   function clear(){
    if(dirty&&ctx){ctx.clearRect(0,0,canvas!.width,canvas!.height);dirty=false}
   }
   function draw(now:number){
    raf=0;if(disposed||!running())return;
+   const hasInk=heroFields.get(stage!)?.hasInk===true;
+   if(sharedFrame&&!hasInk&&!lastInk)return;
+   lastInk=hasInk;
    // Reuse the small simulation grid for pointer interaction.
    if(ctx&&now-lastPaint>=1000/40){
     lastPaint=now;
@@ -45,20 +50,23 @@ export default function ContourField({paused}:{paused:boolean}){
      ctx.putImageData(pixels,0,0);dirty=true;
     }else clear();
    }
-   raf=requestAnimationFrame(draw);
+   if(!sharedFrame)raf=requestAnimationFrame(draw);
   }
+  const shared=()=>{if(phone.matches||getNodeMotionTier(stage)!=="cinematic")return;draw(performance.now())};
   function sync(){
    const active=running();el!.dataset.running=String(active);
-   if(active&&!phone.matches&&getNodeMotionTier(stage)==="cinematic"){if(!raf)raf=requestAnimationFrame(draw)}
+   if(active&&!phone.matches&&getNodeMotionTier(stage)==="cinematic"){if(!sharedFrame&&!raf)raf=requestAnimationFrame(draw)}
    else{if(raf)cancelAnimationFrame(raf);raf=0;clear()}
   }
   const observer=new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting??false;sync()},{threshold:.01});
   observer.observe(el);
+  const creditObserver=new MutationObserver(sync);if(sharedFrame&&opening)creditObserver.observe(opening,{attributes:true,attributeFilter:["data-credit-stage"]});
+  if(sharedFrame)stage.addEventListener("zm-hero-fluid-frame",shared);
   reduced.addEventListener("change",sync);phone.addEventListener("change",sync);window.addEventListener(motionQualityEvent,sync);window.addEventListener(sceneQualityEvent,sync);
   document.addEventListener("visibilitychange",sync);
   sync();
-  return()=>{disposed=true;if(raf)cancelAnimationFrame(raf);clear();observer.disconnect();reduced.removeEventListener("change",sync);phone.removeEventListener("change",sync);window.removeEventListener(motionQualityEvent,sync);window.removeEventListener(sceneQualityEvent,sync);document.removeEventListener("visibilitychange",sync)};
- },[paused]);
+  return()=>{disposed=true;if(raf)cancelAnimationFrame(raf);clear();observer.disconnect();creditObserver.disconnect();stage.removeEventListener("zm-hero-fluid-frame",shared);reduced.removeEventListener("change",sync);phone.removeEventListener("change",sync);window.removeEventListener(motionQualityEvent,sync);window.removeEventListener(sceneQualityEvent,sync);document.removeEventListener("visibilitychange",sync)};
+ },[paused,sharedFrame]);
  return <div ref={root} className="hero-editorial-background" data-running="false" aria-hidden="true">
   <div className="hero-editorial-light"/>
   <div className="hero-editorial-shadow"/>

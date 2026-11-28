@@ -158,3 +158,40 @@ main.zm-phase0-home .zm-wordmark-text{
 @media(prefers-reduced-motion:reduce){
  main.zm-phase0-home>.site-header.minimal-header .zm-opening-lockup .zm-wordmark-text{transition:none}
 }
+
+/* Scene 01 recovery: restore the original layered atmosphere without moving the
+   registered photographs or the cartographic linework. The color canvas shares
+   the existing portrait clock, and the marquee lives behind the portrait. */
+@media(prefers-reduced-motion:no-preference){
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-editorial-background :is(.hero-editorial-light,.hero-editorial-shadow){
+  display:block;animation-play-state:paused;pointer-events:none;
+ }
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-editorial-background[data-running=true] :is(.hero-editorial-light,.hero-editorial-shadow){animation-play-state:running}
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-editorial-light{
+  background:radial-gradient(ellipse at 30% 35%,#fffef6 0%,#fffdf2c0 23%,transparent 55%),radial-gradient(ellipse at 72% 64%,#b9c98ca8 0%,#c7d2a052 28%,transparent 58%);
+  animation-duration:10s;
+ }
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-editorial-shadow{
+  background:radial-gradient(ellipse at 23% 82%,#85976c77 0%,transparent 48%),radial-gradient(ellipse at 86% 16%,#c5d19a80 0%,transparent 43%);
+  animation-duration:15s;
+ }
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-fluid-color{opacity:.8}
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening[data-scene-tier=lite] :is(.hero-editorial-light,.hero-editorial-shadow){animation:none!important}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=false] #film-present.zm-refined-opening :is(.hero-editorial-light,.hero-editorial-shadow){animation:none!important}
+ main.zm-phase0-home .editorial-flow[data-ed-cinema=true] #film-present.zm-refined-opening .zm-opening-marquee{
+  opacity:calc(var(--zm-face-away)*.65);
+ }
+ main.zm-phase0-home .editorial-flow[data-ed-cinema=true] #film-present.zm-refined-opening .zm-opening-marquee-track{
+  color:#a1ac91;opacity:.62;animation-duration:19s;
+ }
+ @media(max-width:899px){
+  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-editorial-shadow{display:none}
+  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-editorial-light{opacity:.6;animation-duration:16s}
+ }
+}
+@media(hover:hover) and (pointer:fine){
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-composition{cursor:var(--zm-cursor-default)}
+ main.zm-phase0-home #film-present.zm-refined-opening :is(.hero-caption,.caption,.hero-note) :is(h2,p){cursor:var(--zm-cursor-text)}
+ main.zm-phase0-home>.site-header.minimal-header :is(a[href],button:not(:disabled)){cursor:var(--zm-cursor-link)!important}
+ main.zm-phase0-home>.site-header.minimal-header a[href="/"]{cursor:var(--zm-cursor-home)!important}
+}

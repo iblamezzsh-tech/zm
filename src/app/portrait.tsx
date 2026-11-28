@@ -102,19 +102,19 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       idleMix+=((idle?1:0)-idleMix)*(1-Math.exp(-dt*(idle?1.7:5.5)));
       if(idleMix>.005)idleAge+=dt;
       const amp=canvasW<600?1.5:3.5;
-      const driftX=Math.sin(idleAge*Math.PI*2/8)*amp*idleMix;
-      const driftY=(1-Math.cos(idleAge*Math.PI*2/10))*.9*idleMix;
+      const driftX=refined?0:Math.sin(idleAge*Math.PI*2/8)*amp*idleMix;
+      const driftY=refined?0:(1-Math.cos(idleAge*Math.PI*2/10))*.9*idleMix;
       const ease=1-Math.exp(-dt*6);
       dx+=(targetX+driftX-dx)*ease;dy+=(targetY+driftY-dy)*ease;depth();
       if(mobile)acc=0;else while(acc>=1/60){field.step();acc-=1/60}
       // Idle compositing at 30fps; pointer interaction stays at display cadence.
-      if(mobile||!idle||now-lastPaint>=1000/30){paint();lastPaint=now}
+      if(mobile||!idle||now-lastPaint>=1000/30){paint();lastPaint=now;if(refined&&!mobile)area!.dispatchEvent(new Event("zm-hero-fluid-frame"))}
       raf=requestAnimationFrame(frame);
     }
     function sync(){
       if(!alive)return;
       if(canMove()){if(!raf){last=0;raf=requestAnimationFrame(frame)}}
-      else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;lastPoint=null;idleMix=0;lastPaint=0;lookMix=mobile&&lookTarget.current?1:0;depth();field.clear();if(getNodeMotionTier(area)==="lite"||getNodeMotionTier(area)==="reduced"||(mobile&&getNodeMotionTier(area)!=="cinematic")){ctx!.clearRect(0,0,output!.width,output!.height);lastFull=false}else paint()}
+      else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;lastPoint=null;idleMix=0;lastPaint=0;lookMix=mobile&&lookTarget.current?1:0;depth();field.clear();if(refined)area!.dispatchEvent(new Event("zm-hero-fluid-frame"));if(getNodeMotionTier(area)==="lite"||getNodeMotionTier(area)==="reduced"||(mobile&&getNodeMotionTier(area)!=="cinematic")){ctx!.clearRect(0,0,output!.width,output!.height);lastFull=false}else paint()}
     }
     function resize(){
       bounds=area!.getBoundingClientRect();
@@ -162,7 +162,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       const y=Math.max(0,Math.min(1,(e.clientY-bounds.top)/Math.max(1,bounds.height)));
       const prev=lastPoint;lastPoint={x,y};
       if(canMove()){
-        if(e.pointerType==="mouse"){targetX=(x*2-1)*13;targetY=(y*2-1)*6}
+        if(e.pointerType==="mouse"&&!refined){targetX=(x*2-1)*13;targetY=(y*2-1)*6}
         if(prev)field.splat(x,y,prev.x,prev.y,1);
       }else{field.clear();field.splat(x,y,prev?.x??x-.012,prev?.y??y,1);paint()}
     }
@@ -197,7 +197,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       <link rel="preload" as="image" href="/images/portrait-present.webp" />
       <link rel="preload" as="image" href="/images/portrait-academic-attire.svg" />
       <div className="stage hero-composition hero-atmosphere" data-mobile-look={mobileLook?"future":"present"} ref={stage}>
-        <div className="hero-world" aria-hidden="true"><ContourField paused={refined}/></div>
+        <div className="hero-world" aria-hidden="true"><ContourField paused={false} sharedFrame={refined}/></div>
         <div className="zm-hero-brand">
           <img className="zm-mobile-brand-mark" src="/icon.svg" width="30" height="30" alt="" aria-hidden="true"/>
         <h1 className="hero-name" aria-label="ZiyoMuhammad">
