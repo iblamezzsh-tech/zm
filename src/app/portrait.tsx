@@ -181,8 +181,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       const prev=lastPoint;lastPoint={x,y};
       if(refined){
        if(!canMove()||e.target instanceof Element&&e.target.closest("a,button,.caption,.hero-note")){lastPoint=null;return}
-       const lane=Math.min(.34,Math.min(canvasW/1070,canvasH/850)*440/canvasW);
-       if(Math.abs(x-.5)>lane){lastPoint=null;return}
+       // The same field now drives the entire world, including the paper around the photograph.
        if(prev){field.splat(x,y,prev.x,prev.y,1.10);if(field.hasInk)sync()}else{field.splat(x,y,x-.004,y-.004,.85);if(field.hasInk)sync()}
        return;
       }

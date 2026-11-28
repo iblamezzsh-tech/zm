@@ -39,7 +39,7 @@ export default function Scene01Studio(){
   }
   function move(e:PointerEvent){if(!running||!fine.matches||e.pointerType!=="mouse")return;
    const x=Math.max(-1,Math.min(1,((e.clientX-rect.left)/rect.width-.5)*2)),y=Math.max(-1,Math.min(1,((e.clientY-rect.top)/rect.height-.5)*2));
-   moveX(x*15);moveY(y*9);
+   moveX(x*21);moveY(y*12);
    const inPhoto=Math.abs(x)<.34&&y>-.77;
    stage!.dataset.studioFocus=inPhoto?"portrait":"paper";
   }

@@ -183,11 +183,11 @@ export default function EditorialFlow({children,phase0=false}:{children:ReactNod
       // Keep the original ink fully drawn at rest and throughout the handoff.
       // The same SVG travels and scales with native scroll; no duplicate or timer.
       write(s,"--zm-ink-progress",1);
-      write(s,"--zm-ink-travel",ease(.16,.78,local));
+      write(s,"--zm-ink-travel",ease(.19,.78,local));
       write(s,"--zm-copy-away",ease(.02,.32,local));
-      write(s,"--zm-face-away",ease(.38,.88,local));
+      write(s,"--zm-face-away",ease(.43,.91,local));
       write(s,"--studio-dolly",ease(.08,.82,local));
-      write(s,"--studio-night",ease(.15,.77,local));
+      write(s,"--studio-night",ease(.12,.72,local));
       write(s,"--studio-opening-progress",local);
       write(s,"--studio-ink-bed",ease(.42,.83,local));
       write(s,"--ed-hero-exit",0);write(s,"--ed-hero-depart",0);write(s,"--ed-credit-away",0);
