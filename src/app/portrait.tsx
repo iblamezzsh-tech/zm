@@ -8,7 +8,6 @@ import "./portrait-loading.css";
 import ContourField from "./contour-field";
 import {getNodeMotionTier,motionQualityEvent,sceneQualityEvent} from "./motion-quality-store";
 import {mobilePortraitScale,mobileCreditFrame,approachLook,lookAlpha} from "./mobile-portrait-geometry";
-import {installScene01Lens} from "./scene01-lens";
 
 export default function Portrait({refined=false}:{refined?:boolean}={}) {
   const stage = useRef<HTMLDivElement>(null);
@@ -19,8 +18,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
   const [attireReady,setAttireReady]=useState(false);
   const [mobileLook,setMobileLook]=useState(false);
   const lookTarget=useRef(false);
-  const wakeReveal=useRef<(()=>void)|null>(null);
-  function toggleLook(){lookTarget.current=!lookTarget.current;setMobileLook(lookTarget.current);wakeReveal.current?.()}
+  function toggleLook(){lookTarget.current=!lookTarget.current;setMobileLook(lookTarget.current)}
   // Only an actually pending base image warrants an indicator. Never gate
   // the page, wait for other assets, or delay a cached/finished portrait.
   useEffect(() => {
@@ -42,9 +40,6 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
     const area=stage.current, original=base.current, attire=overlay.current, output=lens.current;
     const ready=(ok=true)=>document.dispatchEvent(new CustomEvent("zm-portrait-ready",{detail:{ok}}));
     if(!area||!original||!attire||!output){ready(false);return;}
-    // Scene 01 uses registered DOM artwork and a demand-driven CSS mask.
-    // Do not allocate or run the legacy velocity field / canvas for this scene.
-    if(refined)return installScene01Lens(area,original,attire,()=>setAttireReady(true),ready);
     const ctx=output.getContext("2d");
     if(!ctx){ready(false);return;}
     const mask=document.createElement("canvas");
@@ -107,15 +102,13 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       idleMix+=((idle?1:0)-idleMix)*(1-Math.exp(-dt*(idle?1.7:5.5)));
       if(idleMix>.005)idleAge+=dt;
       const amp=canvasW<600?1.5:3.5;
-      const driftX=refined?0:Math.sin(idleAge*Math.PI*2/8)*amp*idleMix;
-      const driftY=refined?0:(1-Math.cos(idleAge*Math.PI*2/10))*.9*idleMix;
+      const driftX=Math.sin(idleAge*Math.PI*2/8)*amp*idleMix;
+      const driftY=(1-Math.cos(idleAge*Math.PI*2/10))*.9*idleMix;
       const ease=1-Math.exp(-dt*6);
       dx+=(targetX+driftX-dx)*ease;dy+=(targetY+driftY-dy)*ease;depth();
       if(mobile)acc=0;else while(acc>=1/60){field.step();acc-=1/60}
       // Idle compositing at 30fps; pointer interaction stays at display cadence.
-      if(mobile||!idle||now-lastPaint>=1000/30||refined&&!field.hasInk){paint();lastPaint=now}
-      // The refined opening sleeps at rest. No permanent full-screen canvas loop.
-      if(refined&&(mobile?lookMix===(lookTarget.current?1:0):!field.hasInk)){last=0;acc=0;return}
+      if(mobile||!idle||now-lastPaint>=1000/30){paint();lastPaint=now}
       raf=requestAnimationFrame(frame);
     }
     function sync(){
@@ -123,7 +116,6 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       if(canMove()){if(!raf){last=0;raf=requestAnimationFrame(frame)}}
       else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;lastPoint=null;idleMix=0;lastPaint=0;lookMix=mobile&&lookTarget.current?1:0;depth();field.clear();if(getNodeMotionTier(area)==="lite"||getNodeMotionTier(area)==="reduced"||(mobile&&getNodeMotionTier(area)!=="cinematic")){ctx!.clearRect(0,0,output!.width,output!.height);lastFull=false}else paint()}
     }
-    wakeReveal.current=sync;
     function resize(){
       bounds=area!.getBoundingClientRect();
       const w=area!.clientWidth,h=area!.clientHeight;
@@ -159,7 +151,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       else raster.width=0;
       mask.width=field.width;mask.height=field.height;
       imageData=maskCtx!.createImageData(field.width,field.height);
-      if(canMove()){paint();if(refined)sync()}
+      if(canMove())paint();
     }
     function qualityChanged(){resize();sync()}
     function refresh(){if(mobile){lastScroll=performance.now();return}if(visible)bounds=area!.getBoundingClientRect()}
@@ -168,12 +160,10 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       lastInput=age;
       const x=Math.max(0,Math.min(1,(e.clientX-bounds.left)/Math.max(1,bounds.width)));
       const y=Math.max(0,Math.min(1,(e.clientY-bounds.top)/Math.max(1,bounds.height)));
-      // Only the photographic lane responds; typography and header stay quiet.
-      if(refined&&(x<.29||x>.71||y<.035)){lastPoint=null;return}
       const prev=lastPoint;lastPoint={x,y};
       if(canMove()){
-        if(e.pointerType==="mouse"&&!refined){targetX=(x*2-1)*13;targetY=(y*2-1)*6}
-        if(prev){field.splat(x,y,prev.x,prev.y,refined?1.25:1);if(refined&&field.hasInk)sync()}
+        if(e.pointerType==="mouse"){targetX=(x*2-1)*13;targetY=(y*2-1)*6}
+        if(prev)field.splat(x,y,prev.x,prev.y,1);
       }else{field.clear();field.splat(x,y,prev?.x??x-.012,prev?.y??y,1);paint()}
     }
     function enter(e:PointerEvent){refresh();track(e)}
@@ -199,14 +189,14 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       motion.addEventListener("change",sync,options);document.addEventListener("visibilitychange",sync,options);
       ready();
     }).catch(()=>{/* Keep the original portrait if the attire cannot be decoded. */if(alive)ready(false);});
-    return()=>{alive=false;wakeReveal.current=null;controller.abort();ro.disconnect();io.disconnect();creditObserver.disconnect();if(raf)cancelAnimationFrame(raf);heroFields.delete(area)};
+    return()=>{alive=false;controller.abort();ro.disconnect();io.disconnect();creditObserver.disconnect();if(raf)cancelAnimationFrame(raf);heroFields.delete(area)};
   }, [refined]);
 
   return (
     <section aria-label="Interactive portrait">
       <link rel="preload" as="image" href="/images/portrait-present.webp" />
       <link rel="preload" as="image" href="/images/portrait-academic-attire.svg" />
-      <div className="stage hero-composition hero-atmosphere" data-scene01-lens={refined?"true":undefined} data-mobile-look={mobileLook?"future":"present"} ref={stage}>
+      <div className="stage hero-composition hero-atmosphere" data-mobile-look={mobileLook?"future":"present"} ref={stage}>
         <div className="hero-world" aria-hidden="true"><ContourField paused={refined}/></div>
         <div className="zm-hero-brand">
           <img className="zm-mobile-brand-mark" src="/icon.svg" width="30" height="30" alt="" aria-hidden="true"/>
