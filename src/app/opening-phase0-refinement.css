@@ -158,3 +158,57 @@ main.zm-phase0-home .zm-wordmark-text{
 @media(prefers-reduced-motion:reduce){
  main.zm-phase0-home>.site-header.minimal-header .zm-opening-lockup .zm-wordmark-text{transition:none}
 }
+
+/* Scene 01: polish only the approved opening, not the finale or shared pages. */
+@media(min-width:900px){
+ main.zm-phase0-home>.site-header.minimal-header .zm-opening-lockup .zm-wordmark-text{
+  font-weight:700;letter-spacing:-.027em;font-size:clamp(25px,2.65vw,40px);
+ }
+}
+@media(prefers-reduced-motion:no-preference){
+ /* Entrance is intentionally restrained: content stays readable from first paint,
+    and the original complete signature never disappears or redraws. */
+ main.zm-phase0-home #film-present.zm-refined-opening :is(.caption .eyebrow,.caption h2,.hero-note span,.hero-note p){
+  animation:zm-scene01-settle .72s cubic-bezier(.22,1,.36,1) both;
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening .caption h2{animation-delay:.09s}
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-note p{animation-delay:.13s}
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-portrait-plane{
+  animation:zm-scene01-portrait .85s cubic-bezier(.22,1,.36,1) both;
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-editorial-background::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 48% 22%,#fffdf5 0%,transparent 65%);
+  opacity:.08;
+ }
+ @media(min-width:900px){
+  main.zm-phase0-home #film-present.zm-refined-opening[data-scene-tier=cinematic] .hero-editorial-background::before{
+   animation:zm-scene01-light 13s ease-in-out infinite alternate;
+  }
+  main.zm-phase0-home #film-present.zm-refined-opening[data-credit-stage=true] .hero-editorial-background::before{
+   animation-play-state:paused;
+  }
+ }
+ @keyframes zm-scene01-settle{from{translate:0 5px;opacity:.8}to{translate:0 0;opacity:1}}
+ @keyframes zm-scene01-portrait{from{opacity:.86}to{opacity:1}}
+ @keyframes zm-scene01-light{from{opacity:.06}to{opacity:.24}}
+ main.zm-phase0-home:not(.ed-dark-header)>.site-header.minimal-header :is(.minimal-connect,.minimal-menu-trigger){
+  transition:background-color .22s ease,border-color .22s ease,box-shadow .25s ease,scale .22s cubic-bezier(.22,1,.36,1);
+ }
+ main.zm-phase0-home:not(.ed-dark-header)>.site-header.minimal-header .minimal-connect .minimal-arrow{
+  transition:translate .3s cubic-bezier(.22,1,.36,1);
+ }
+ @media(hover:hover) and (pointer:fine){
+  main.zm-phase0-home:not(.ed-dark-header)>.site-header.minimal-header .minimal-connect:hover{
+   box-shadow:0 6px 18px #b69b2926;
+  }
+  main.zm-phase0-home:not(.ed-dark-header)>.site-header.minimal-header .minimal-connect:hover .minimal-arrow{translate:2px -2px}
+  main.zm-phase0-home:not(.ed-dark-header)>.site-header.minimal-header .minimal-menu-trigger:hover{background-color:#ffffff65}
+ }
+ main.zm-phase0-home:not(.ed-dark-header)>.site-header.minimal-header :is(.minimal-connect,.minimal-menu-trigger):active{scale:.97}
+ main.zm-phase0-home #film-present.zm-refined-opening:is([data-scene-tier=lite],[data-scene-tier=reduced]) :is(.caption .eyebrow,.caption h2,.hero-note span,.hero-note p,.hero-portrait-plane){animation:none!important}
+}
+main.zm-phase0-home:not(.ed-dark-header)>.site-header.minimal-header :is(.minimal-connect,.minimal-menu-trigger):focus-visible,
+main.zm-phase0-home #film-present.zm-refined-opening .zm-mobile-look:focus-visible{
+ outline:2px solid #33452d;outline-offset:4px;
+}
