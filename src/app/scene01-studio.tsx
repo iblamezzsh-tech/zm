@@ -15,18 +15,18 @@ export default function Scene01Studio(){
   const paper=layer.querySelector<HTMLElement>(".studio-paper-light"),shadow=layer.querySelector<HTMLElement>(".studio-paper-shadow"),word=layer.querySelector<HTMLElement>(".studio-type-strip");
   if(!paper||!shadow||!word)return;
   const reduced=matchMedia("(prefers-reduced-motion: reduce)"),fine=matchMedia("(min-width:900px) and (hover:hover) and (pointer:fine)");
-  let visible=false,disposed=false,running=false,rect=stage.getBoundingClientRect();
+  let rect=stage.getBoundingClientRect(),visible=rect.bottom>0&&rect.top<innerHeight,disposed=false,running=false;
   const ac=new AbortController(),opts={signal:ac.signal,passive:true};
   const context=gsap.context(()=>{},section);
-  let ambient:gsap.core.Timeline|null=null,drift:gsap.core.Timeline|null=null;
+  
   const camera={x:0,y:0};
   const moveX=gsap.quickTo(camera,"x",{duration:.68,ease:"power3.out",onUpdate:draw});
   const moveY=gsap.quickTo(camera,"y",{duration:.68,ease:"power3.out",onUpdate:draw});
   function draw(){stage!.style.setProperty("--studio-pointer-x",camera.x.toFixed(2)+"px");stage!.style.setProperty("--studio-pointer-y",camera.y.toFixed(2)+"px")}
   function permitted(){const tier=getNodeMotionTier(stage);return !disposed&&visible&&!document.hidden&&!reduced.matches&&tier!=="lite"&&tier!=="reduced"&&section!.dataset.creditStage!=="true"}
   function stop(){
-   ambient?.pause();drift?.pause();moveX.tween.pause();moveY.tween.pause();running=false;
-   layer!.dataset.running="false";
+   moveX.tween.pause();moveY.tween.pause();running=false;
+   layer!.dataset.running="false";stage!.dataset.studioPaused="true";
    // Neutralize the pointer offset without disturbing the autonomous phase.
    camera.x=camera.y=0;draw();
   }
@@ -34,21 +34,12 @@ export default function Scene01Studio(){
    if(!permitted()){stop();return}
    if(running)return;
    running=true;layer!.dataset.running="true";
-   if(!ambient){
-    context.add(()=>{
-     ambient=gsap.timeline({repeat:-1,yoyo:true,defaults:{ease:"sine.inOut"}});
-     ambient.fromTo(paper,{xPercent:-13,yPercent:4,rotation:-5},{xPercent:15,yPercent:-7,rotation:5,duration:11},0);
-     ambient.fromTo(shadow,{xPercent:8,yPercent:-4},{xPercent:-9,yPercent:5,duration:11},0);
-     const v={x:-8,y:0};
-     drift=gsap.timeline({repeat:-1,yoyo:true,defaults:{ease:"sine.inOut"}});
-     drift.to(v,{x:9,y:-8,duration:5.8,onUpdate:()=>{stage!.style.setProperty("--studio-breathe-x",v.x.toFixed(2)+"px");stage!.style.setProperty("--studio-breathe-y",v.y.toFixed(2)+"px")}},0);
-    });
-   }
-   ambient?.resume();drift?.resume();
+   stage!.dataset.studioPaused="false";
+
   }
   function move(e:PointerEvent){if(!running||!fine.matches||e.pointerType!=="mouse")return;
    const x=Math.max(-1,Math.min(1,((e.clientX-rect.left)/rect.width-.5)*2)),y=Math.max(-1,Math.min(1,((e.clientY-rect.top)/rect.height-.5)*2));
-   moveX(x*21);moveY(y*11);
+   moveX(x*15);moveY(y*9);
    const inPhoto=Math.abs(x)<.34&&y>-.77;
    stage!.dataset.studioFocus=inPhoto?"portrait":"paper";
   }
@@ -71,10 +62,10 @@ export default function Scene01Studio(){
    control.addEventListener("pointerleave",()=>{qx(0);qy(0)},opts);
   }
   sync();
-  return()=>{disposed=true;stop();ac.abort();ro.disconnect();io.disconnect();mo.disconnect();context.revert();moveX.tween.kill();moveY.tween.kill();magnets.forEach(t=>t.kill());stage.style.removeProperty("--studio-pointer-x");stage.style.removeProperty("--studio-pointer-y");stage.style.removeProperty("--studio-breathe-x");stage.style.removeProperty("--studio-breathe-y");delete stage.dataset.studioFocus}
+  return()=>{disposed=true;stop();ac.abort();ro.disconnect();io.disconnect();mo.disconnect();context.revert();moveX.tween.kill();moveY.tween.kill();magnets.forEach(t=>t.kill());stage.style.removeProperty("--studio-pointer-x");stage.style.removeProperty("--studio-pointer-y");stage.style.removeProperty("--studio-breathe-x");stage.style.removeProperty("--studio-breathe-y");delete stage.dataset.studioFocus;delete stage.dataset.studioPaused}
  },[]);
  return <div ref={root} className="studio-scene01" data-running="false" aria-hidden="true">
-  <div className="studio-paper-shadow"/>
+  <div className="studio-paper-shadow"/><div className="studio-paper-reflection"/>
   <div className="studio-paper-light"/>
   <PaperFlow/>
   <div className="studio-type-window"><div className="studio-type-strip">{[0,1].map(i=><span key={i}>STAY CURIOUS. KEEP BECOMING.</span>)}</div></div>

@@ -17,7 +17,7 @@ void main(){
  float aspect=u_size.x/u_size.y;
  vec2 metric=vec2(aspect,1.);
  vec2 p=uv*metric;
- vec2 q=p+vec2(.010*sin(u_time*.39+uv.y*3.1),.013*cos(u_time*.31+uv.x*4.2));
+ vec2 q=p+vec2(.025*sin(u_time*.43+uv.y*2.2),.017*cos(u_time*.37+uv.x*3.2));
  float wash=0.;
  for(int i=0;i<4;i++){
   vec4 w=u_wakes[i];
@@ -25,15 +25,15 @@ void main(){
   float r=length(d);
   float envelope=exp(-r*r/0.0196)*w.z;
   float wave=sin(r*24.-w.w*3.2);
-  q+=d/(r+.045)*(.023*wave+.014)*envelope;
+  q+=d/(r+.045)*(.017*wave+.012)*envelope;
   wash=max(wash,envelope*(.67+.33*wave));
  }
  vec2 tex=(q/metric-.5)*u_fit+.5;
  float line=texture2D(u_map,clamp(tex,0.,1.)).a;
  // Ink stays very fine. A transient neutral sage wash belongs to the
  // moving surface, not a colored blob or neon glow.
- float ink=line*(.26+.17*wash);
- float veil=wash*.075;
+ float ink=line*(.27+.12*wash);
+ float veil=wash*.045;
  float a=ink+veil*(1.-ink);
  vec3 rgb=(vec3(.38,.43,.35)*ink+vec3(.68,.71,.65)*veil*(1.-ink))/max(a,.0001);
  gl_FragColor=vec4(rgb,a);
@@ -78,7 +78,7 @@ export default function PaperFlow(){
    // Cap work at display cadence and use just one fullscreen texture pass.
    const dt=last?Math.min(.05,(now-last)/1000):1/60;last=now;elapsed+=dt;
    wakes.forEach((w,i)=>{w.age+=dt;w.strength*=Math.exp(-dt*1.55);if(w.strength<.003)w.strength=0;data.set([w.x,w.y,w.strength,w.age],i*4)});
-   if(now-drawn>=1000/60-1||!drawn){
+   if(now-drawn>=(wakes.some(w=>w.strength>.035)?1000/60-1:1000/30-1)||!drawn){
     drawn=now;gl!.uniform1f(time,elapsed);gl!.uniform4fv(wake,data);gl!.drawArrays(gl!.TRIANGLES,0,3);canvas!.dataset.ready="true";
    }
    raf=requestAnimationFrame(tick);

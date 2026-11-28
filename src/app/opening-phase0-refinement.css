@@ -241,3 +241,135 @@ main.zm-phase0-home #film-present.zm-refined-opening .hero-world:has(.studio-pap
 }
 @keyframes studio-paper-drift{from{translate:-9px 7px;scale:1.012}to{translate:12px -9px;scale:1.03}}
 @media(prefers-reduced-motion:reduce){.studio-paper-flow{display:none!important}}
+
+/* Scene 01 / FINAL ART DIRECTION: movement is a compositional feature, not
+   decoration. This block is scoped only to the two-scene preview. */
+main.zm-phase0-home #film-present.zm-refined-opening{
+ --studio-opening-progress:0;--studio-ink-bed:0;
+}
+main.zm-phase0-home #film-present.zm-refined-opening .hero-world{
+ background:#f4f2e9;
+}
+main.zm-phase0-home #film-present.zm-refined-opening .studio-paper-light{
+ background:linear-gradient(112deg,transparent 12%,#fffef62b 27%,#fffdf3b8 44%,#fffef8 50%,#fffdf454 63%,transparent 80%);
+ opacity:.73;transform-origin:center;
+}
+main.zm-phase0-home #film-present.zm-refined-opening .studio-paper-shadow{
+ background:radial-gradient(ellipse at 18% 65%,#9da78b6b 0%,#bdc6a435 26%,transparent 55%),radial-gradient(ellipse at 90% 20%,#a3aa8f58,transparent 52%);
+ opacity:.78;
+}
+.studio-paper-reflection{
+ position:absolute;inset:-24%;pointer-events:none;
+ background:radial-gradient(ellipse at 72% 75%,#d6c58a35,transparent 37%);
+ opacity:.63;
+}
+main.zm-phase0-home #film-present.zm-refined-opening .studio-paper-grain{opacity:.09}
+main.zm-phase0-home #film-present.zm-refined-opening .studio-type-window{
+ inset:19% 0 auto;height:26%;
+ opacity:calc(.23*(1 - var(--zm-copy-away)));
+}
+main.zm-phase0-home #film-present.zm-refined-opening .studio-type-strip{
+ color:#7b856d;animation-duration:22s;letter-spacing:-.034em;
+}
+main.zm-phase0-home #film-present.zm-refined-opening .hero-editorial-lines{opacity:.28}
+@media(prefers-reduced-motion:no-preference){
+ /* The primary motions do not wait for JS hydration, IO callbacks, image decode
+    or WebGL. Pause after a confirmed offscreen/low-motion state only. */
+ main.zm-phase0-home #film-present.zm-refined-opening .studio-paper-light{
+  animation:zm-final-light 12s cubic-bezier(.4,0,.6,1) infinite alternate;
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening .studio-paper-shadow{
+  animation:zm-final-shadow 15s ease-in-out infinite alternate;
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening .studio-paper-reflection{
+  animation:zm-final-reflection 17s ease-in-out infinite alternate;
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening .studio-type-strip{
+  animation-play-state:running!important;
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-editorial-lines{
+  animation:zm-final-map 14s ease-in-out infinite alternate!important;
+  animation-play-state:running!important;
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-portrait-plane{
+  animation:zm-final-portrait 7.5s ease-in-out infinite alternate;
+  animation-play-state:running;
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-composition[data-studio-paused=true] :is(.studio-paper-light,.studio-paper-shadow,.studio-paper-reflection,.studio-type-strip,.hero-editorial-lines,.hero-portrait-plane){
+  animation-play-state:paused!important;
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-world:has(.studio-paper-flow[data-ready=true]) .hero-editorial-lines{
+  animation:none!important;opacity:0!important;
+ }
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-portrait-plane{
+  transform:translate3d(calc(var(--studio-pointer-x,0px)*(1 - var(--studio-dolly))),calc(var(--studio-pointer-y,0px)*(1 - var(--studio-dolly)) - 3svh*var(--studio-dolly)),0) scale(calc(var(--portrait-scale,1)*(1 - .18*var(--studio-dolly))))!important;
+ }
+ /* Keep the same signature SVG, with a quieter coordinated exit instead of
+    an abrupt all-screen fade. The original positioning rules remain intact. */
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-world{
+  transform:scale(calc(1 + .07*var(--studio-dolly)));transform-origin:50% 45%;
+ }
+ main.zm-phase0-home .editorial-flow[data-ed-cinema=true] #film-present.zm-refined-opening .zm-opening-marquee{
+  opacity:calc(.52*var(--studio-ink-bed));
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening .ed-opening-sticky{
+  background:radial-gradient(ellipse at 52% 38%,#344033,#24291e 75%);
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening .caption{
+  animation:zm-final-copy-arrive .85s cubic-bezier(.22,1,.36,1) both;
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-note{
+  animation:zm-final-copy-arrive .95s cubic-bezier(.22,1,.36,1) both;
+ }
+ @media(max-width:899px){
+  main.zm-phase0-home #film-present.zm-refined-opening .studio-type-window{inset:29% 0 auto;height:18%;opacity:.19}
+  main.zm-phase0-home #film-present.zm-refined-opening .studio-type-strip{animation-duration:27s}
+  main.zm-phase0-home #film-present.zm-refined-opening .studio-paper-reflection{display:none}
+  main.zm-phase0-home #film-present.zm-refined-opening .hero-portrait-plane{animation-name:zm-final-portrait-mobile;animation-duration:8s}
+  main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-portrait-plane{
+   transform:translate3d(0,calc(-1*var(--zm-copy-height) - 2svh*var(--studio-dolly)),0) scale(calc(var(--portrait-scale,1)*(1 - .10*var(--studio-dolly))))!important;
+  }
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening:is([data-scene-tier=lite],[data-scene-tier=reduced]) :is(.studio-paper-light,.studio-paper-shadow,.studio-paper-reflection,.studio-type-strip,.hero-editorial-lines,.hero-portrait-plane),
+ main.zm-phase0-home .editorial-flow[data-ed-motion=false] #film-present.zm-refined-opening :is(.studio-paper-light,.studio-paper-shadow,.studio-paper-reflection,.studio-type-strip,.hero-editorial-lines,.hero-portrait-plane){
+  animation:none!important;translate:none;scale:none;
+ }
+}
+@keyframes zm-final-light{from{transform:translate3d(-19%,5%,0) rotate(-5deg)}to{transform:translate3d(20%,-7%,0) rotate(7deg)}}
+@keyframes zm-final-shadow{from{transform:translate3d(10%,-4%,0)}to{transform:translate3d(-13%,8%,0)}}
+@keyframes zm-final-reflection{from{transform:translate3d(-10%,-5%,0)}to{transform:translate3d(12%,7%,0)}}
+@keyframes zm-final-map{from{translate:-21px 12px;scale:1.015}to{translate:24px -16px;scale:1.052}}
+@keyframes zm-final-portrait{from{translate:-8px 3px;scale:1}to{translate:9px -7px;scale:1.013}}
+@keyframes zm-final-portrait-mobile{from{translate:-2px 2px;scale:1}to{translate:3px -4px;scale:1.008}}
+@keyframes zm-final-copy-arrive{from{translate:0 8px}to{translate:0 0}}
+/* Small optical cursor, no follower or orbit. Preserve native selection and
+   exact hit-testing. Header cursor and focus are normal browser affordances. */
+@media(hover:hover) and (pointer:fine){
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-composition[data-studio-focus=portrait]{
+  cursor:url("/cursors/studio/reveal.svg") 16 16,crosshair;
+ }
+ main.zm-phase0-home>.site-header .minimal-menu-trigger{
+  transition:background-color .26s ease,color .26s ease,border-color .26s ease;
+ }
+ main.zm-phase0-home:not(.ed-dark-header)>.site-header .minimal-menu-trigger:hover{
+  background:#2c3526;color:#f8f5ea;border-color:#2c3526;
+ }
+ main.zm-phase0-home>.site-header .minimal-connect:focus-visible,
+ main.zm-phase0-home>.site-header .minimal-menu-trigger:focus-visible{
+  outline:2px solid #65744d;outline-offset:4px;
+ }
+}
+/* Keep the touch reveal operational on balanced, lite, and reduced-motion
+   devices, without needing an active simulation. */
+@media(max-width:899px){
+ main.zm-phase0-home #film-present.zm-refined-opening:is([data-scene-tier=balanced],[data-scene-tier=lite],[data-scene-tier=reduced]) .hero-attire-source{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:2;pointer-events:none;
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening:is([data-scene-tier=balanced],[data-scene-tier=lite],[data-scene-tier=reduced]) .hero-attire-source .future-photo{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain;object-position:center bottom;transform:none!important;
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening:is([data-scene-tier=balanced],[data-scene-tier=lite],[data-scene-tier=reduced]) [data-mobile-look=future] .hero-attire-source{opacity:1!important}
+}
+@media(prefers-reduced-motion:reduce){
+ main.zm-phase0-home #film-present.zm-refined-opening :is(.studio-paper-light,.studio-paper-shadow,.studio-paper-reflection,.studio-type-strip,.hero-editorial-lines,.hero-portrait-plane,.caption,.hero-note){animation:none!important}
+}

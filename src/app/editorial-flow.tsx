@@ -187,7 +187,9 @@ export default function EditorialFlow({children,phase0=false}:{children:ReactNod
       write(s,"--zm-copy-away",ease(.02,.32,local));
       write(s,"--zm-face-away",ease(.38,.88,local));
       write(s,"--studio-dolly",ease(.08,.82,local));
-      write(s,"--studio-night",ease(.15,.72,local));
+      write(s,"--studio-night",ease(.15,.77,local));
+      write(s,"--studio-opening-progress",local);
+      write(s,"--studio-ink-bed",ease(.42,.83,local));
       write(s,"--ed-hero-exit",0);write(s,"--ed-hero-depart",0);write(s,"--ed-credit-away",0);
       write(s,"--ed-credit",ease(.08,.80,local));
       const creditStage=String(local>.34);if(s.dataset.creditStage!==creditStage)s.dataset.creditStage=creditStage;
