@@ -62,7 +62,7 @@ export default function LivingAtlas(){
   function permitted(){const tier=getNodeMotionTier(stage);return !disposed&&!lost&&visible&&!document.hidden&&!media.matches&&wide.matches&&tier==="cinematic"&&opening!.dataset.creditStage!=="true"}
   function resize(){rect=stage!.getBoundingClientRect();const w=stage!.clientWidth,h=stage!.clientHeight;if(!w||!h)return;const d=Math.min(.95,Math.sqrt(740000/(w*h)));canvas!.width=Math.max(1,Math.round(w*d));canvas!.height=Math.max(1,Math.round(h*d));gl!.viewport(0,0,canvas!.width,canvas!.height);gl!.uniform2f(res,canvas!.width,canvas!.height)}
   function tick(now:number){raf=0;if(!permitted()){stop();return}const dt=last?Math.min(.05,(now-last)/1000):1/60;last=now;elapsed+=dt;const k=1-Math.exp(-dt*6);x+=(tx-x)*k;y+=(ty-y)*k;a+=(ta-a)*k;
-   if(now-lastDraw>=1000/42||!lastDraw){lastDraw=now;gl!.uniform1f(time,elapsed);gl!.uniform2f(mouse,x,y);gl!.uniform1f(active,a);gl!.drawArrays(gl!.TRIANGLES,0,3);canvas!.dataset.ready="true";canvas!.dataset.running="true"}
+   if(now-lastDraw>=1000/60-1||!lastDraw){lastDraw=now;gl!.uniform1f(time,elapsed);gl!.uniform2f(mouse,x,y);gl!.uniform1f(active,a);gl!.drawArrays(gl!.TRIANGLES,0,3);canvas!.dataset.ready="true";canvas!.dataset.running="true"}
    raf=requestAnimationFrame(tick)
   }
   function stop(){if(raf)cancelAnimationFrame(raf);raf=0;last=0;lastDraw=0;canvas!.dataset.running="false";if(media.matches||!wide.matches||lost||getNodeMotionTier(stage)!=="cinematic")delete canvas!.dataset.ready}
