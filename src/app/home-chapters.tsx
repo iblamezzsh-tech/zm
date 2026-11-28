@@ -64,12 +64,12 @@ import "./scroll-into-work.css";
 function SurfaceSeam({tone}:{tone:"ink"|"paper"}){
  return <svg className={"ed-surface-seam seam-"+tone} viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 50C190 68 340 5 595 20S1000 75 1200 42V80H0Z"/></svg>
 }
-export default function HomeChapters(){
- const records=getFeaturedRecords();
- const archive=certificateRecords.filter(r=>r.document&&existsSync(join(process.cwd(),"public",r.document.src.replace(/^\//,"")))).slice(0,8);
+export default function HomeChapters({phase0=true}:{phase0?:boolean}={}){
+ const records=phase0?[]:getFeaturedRecords();
+ const archive=phase0?[]:certificateRecords.filter(r=>r.document&&existsSync(join(process.cwd(),"public",r.document.src.replace(/^\//,"")))).slice(0,8);
  const interests=["Economics","Psychology","Politics","Literature","Music"];
- return <EditorialFlow>
-  <MobileRecordViewer records={Array.from(new Map([...records,...archive].map(r=>[r.id,r])).values())}/>
+ return <EditorialFlow phase0={phase0}>
+  {!phase0&&<MobileRecordViewer records={Array.from(new Map([...records,...archive].map(r=>[r.id,r])).values())}/>}
   <section className="ed-opening" id="film-present" data-motion-scene="opening" data-ed-scene data-ed-theme="light">
    <div className="ed-opening-sticky"><PageAtmosphere kind="story" dark/>
     <OpeningMarquee/>
@@ -78,6 +78,7 @@ export default function HomeChapters(){
     <div className="home-hero zm-opening-portrait"><Portrait/></div>
    </div>
   </section>
+  {!phase0&&<>
   <DeskSequence/>
   <section className="ed-manifesto" id="introduction" data-motion-scene="manifesto" data-ed-scene data-ed-theme="dark"><PageAtmosphere kind="story" dark/>
    <div className="ed-gutter ed-caption"><span>01 / ANDIJAN, UZBEKISTAN</span><span>A PORTRAIT IN PROGRESS</span></div>
@@ -136,6 +137,7 @@ export default function HomeChapters(){
    <div className="ed-gutter ed-interest-list">{interests.map((s,i)=><Link href={"/off-the-record#"+s.toLowerCase()} data-ed-reveal key={s} style={{"--ed-i":i} as React.CSSProperties}><small>0{i+1}</small><span className="zm-interest-label"><span className="zm-interest-text">{s}</span></span><b><ArrowIcon direction="up-right"/></b></Link>)}</div>
    <div className="ed-gutter ed-personal-end"><Link href="/off-the-record" className="ed-link">Get to know me <span><ArrowIcon direction="up-right"/></span></Link></div>
   </section>
+  </>}
   <section className="film-shot film-shot-contact film-dark film-finale-shot" id="next-chapter" data-motion-scene="finale" data-ed-scene data-ed-theme="dark" aria-label="The next chapter">
    <div className="film-finale">
     <div className="finale-inner"><PageAtmosphere kind="earth" dark/>

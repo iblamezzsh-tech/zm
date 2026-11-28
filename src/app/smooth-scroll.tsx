@@ -12,7 +12,7 @@ export default function SmoothScroll(){
   let instance:Lenis|null=null;
   function sync(){
    if(instance){instance.destroy();instance=null;setScrollEngine(null)}
-   if(!query.matches||getMotionTier()==="lite"||getMotionTier()==="reduced")return;
+   if(pathname==="/"||!query.matches||getMotionTier()==="lite"||getMotionTier()==="reduced")return;
    instance=new Lenis({autoRaf:true,smoothWheel:true,syncTouch:false,lerp:.105,wheelMultiplier:1,anchors:false,prevent:node=>!!node.closest("dialog, [data-lenis-prevent]")});
    setScrollEngine(instance);instance.on("scroll",requestMotionFrame);
   }
@@ -28,7 +28,7 @@ export default function SmoothScroll(){
   }
   sync();document.dispatchEvent(new Event("zm-scroll-ready"));query.addEventListener("change",sync);window.addEventListener(motionQualityEvent,sync);document.addEventListener("click",click);
   return()=>{query.removeEventListener("change",sync);window.removeEventListener(motionQualityEvent,sync);document.removeEventListener("click",click);instance?.destroy();setScrollEngine(null)};
- },[]);
+ },[pathname]);
  useEffect(()=>{resetScrollMomentum();requestMotionFrame()},[pathname]);
  return null;
 }

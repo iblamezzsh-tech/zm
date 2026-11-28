@@ -19,7 +19,7 @@ function railProgress(x:number){
  if(t>1-r)return 1-(1-t)*(1-t)/(2*r*(1-r));
  return (t-r/2)/(1-r);
 }
-export default function EditorialFlow({children}:{children:ReactNode}){
+export default function EditorialFlow({children,phase0=false}:{children:ReactNode;phase0?:boolean}){
  const root=useRef<HTMLDivElement>(null);
  useLayoutEffect(()=>{
   const el=root.current,main=el?.closest<HTMLElement>("main");
@@ -50,6 +50,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   const sourceMarker=threadSource?.querySelector<HTMLElement>("[data-sheet-marker]");
   const targetMarker=threadTarget?.querySelector<HTMLElement>("[data-sheet-marker]");
   function paintThread(h:number,w:number){
+   if(phase0)return;
    if(!threadSource||!threadTarget||!threadCarrier||!sourceMarker||!targetMarker||!carrierMarker)return;
    const hide=()=>{threadCarrier.dataset.active="false";el!.removeAttribute("data-sheet-flight");el!.style.removeProperty("--sheet-arrival")};
    if(!enabled||!railActive()||!["cinematic","balanced"].includes(getNodeMotionTier(threadSource))||!["cinematic","balanced"].includes(getNodeMotionTier(threadTarget))||threadTarget.contains(document.activeElement)||document.querySelector("dialog[open]")){hide();return}
@@ -130,7 +131,7 @@ export default function EditorialFlow({children}:{children:ReactNode}){
    // beats as native scrolling approaches the actual bottom.
    const remaining=Math.max(0,(phone?documentHeightCache:document.documentElement.scrollHeight)-y-h);
    const mobileFinale=w<=899;
-   const finaleEnd=mobileFinale?1-ease(0,h*.24,remaining):0;
+   const finaleEnd=(mobileFinale||phase0)?1-ease(0,h*.24,remaining):0;
    const finaleEdge=(node:HTMLElement|null,fallback:number)=>mobileFinale&&node?Math.max(finaleEnd,clamp((h-finaleTop-(phone?(finaleOffsets.get(node)??0):node.offsetTop))/h)):fallback;
    // The outer scene wrappers are stationary on mobile. Read their layout
    // once per resize/content change; scroll progress comes from scrollY.
@@ -187,14 +188,14 @@ export default function EditorialFlow({children}:{children:ReactNode}){
       write(s,"--ed-credit",ease(.30,.70,local));
       write(s,"--ed-credit-in",ease(.23,.40,local));
       write(s,"--ed-hero-depart",ease(.83,1,local));
-      write(s,"--ed-credit-away",ease(.90,1,local));
+      write(s,"--ed-credit-away",phase0?0:ease(.90,1,local));
       const creditStage=String(local>.25);if(s.dataset.creditStage!==creditStage)s.dataset.creditStage=creditStage;
       if(lookButton&&lookButton.inert!==(creditStage==="true")){if(creditStage==="true"&&document.activeElement===lookButton)el!.focus({preventScroll:true});lookButton.inert=creditStage==="true";}
      }else{
       write(s,"--ed-hero-exit",ease(.08,.65,local));
       write(s,"--ed-credit",ease(.22,.66,local));
       write(s,"--ed-hero-depart",ease(.78,1,local));
-      write(s,"--ed-credit-away",ease(.88,1,local));
+      write(s,"--ed-credit-away",phase0?0:ease(.88,1,local));
       delete s.dataset.creditStage;if(lookButton)lookButton.inert=false;
      }
     }
@@ -336,6 +337,6 @@ export default function EditorialFlow({children}:{children:ReactNode}){
   mode();document.fonts.ready.then(()=>{if(alive)resize()});
   document.dispatchEvent(new CustomEvent("zm-film-ready",{detail:{ok:true}}));
   return()=>{alive=false;stopPacing();for(const list of channels.values())for(const c of list.values())c.node.style.removeProperty(c.key);channels.clear();unsub();ro.disconnect();window.removeEventListener("resize",resize);reduced.removeEventListener("change",mode);desktop.removeEventListener("change",mode);mobile.removeEventListener("change",mode);window.removeEventListener("zm-film-mode",change);window.removeEventListener(motionQualityEvent,preferenceQuality);window.removeEventListener(sceneQualityEvent,quality);setActiveMotionScene(null);el.removeEventListener("focusin",focus);document.removeEventListener("zm-boot-prepare",resize);if(headerContact)headerContact.inert=false;main.classList.remove("ed-dark-header","film-at-finale","zm-v114-question-active","zm-v115-projects-active");delete el.dataset.edMotion;delete el.dataset.edCinema;delete el.dataset.edMobileCinema;el.removeAttribute("data-sheet-flight");el.style.removeProperty("--sheet-arrival")};
- },[]);
- return <div ref={root} className="editorial-flow" id="main-content" tabIndex={-1}>{children}<div className="zm-sheet-flight" data-active="false" aria-hidden="true" inert><QuestionSheetPreview/></div></div>
+ },[phase0]);
+ return <div ref={root} className="editorial-flow" id="main-content" tabIndex={-1}>{children}{!phase0&&<div className="zm-sheet-flight" data-active="false" aria-hidden="true" inert><QuestionSheetPreview/></div>}</div>
 }
