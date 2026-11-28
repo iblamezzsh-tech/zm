@@ -1,6 +1,7 @@
 "use client";
 import {useEffect,useRef} from "react";
 import {heroFields} from "./liquid-field";
+import LivingAtlas from "./living-atlas";
 import {getNodeMotionTier,motionQualityEvent,sceneQualityEvent} from "./motion-quality-store";
 
 // Continuous contour backdrop plus the existing cursor-fluid color.
@@ -70,6 +71,7 @@ export default function ContourField({paused,sharedFrame=false}:{paused:boolean;
  return <div ref={root} className="hero-editorial-background" data-running="false" aria-hidden="true">
   <div className="hero-editorial-light"/>
   <div className="hero-editorial-shadow"/>
+  {sharedFrame&&<LivingAtlas/>}
   <canvas ref={canvasRef} className="hero-fluid-color" aria-hidden="true"/>
   <div className="hero-editorial-lines" aria-hidden="true"/>
  {sharedFrame&&<><div className="zm-scene01-sunlight"/><div className="zm-scene01-atlas-type"><div className="zm-scene01-atlas-track">{[0,1].map(i=><span key={i}>STAY CURIOUS. KEEP BECOMING.</span>)}</div></div><div className="zm-scene01-pointer-light"/></>}

@@ -243,3 +243,44 @@ main.zm-phase0-home #film-present.zm-refined-opening .hero-composition{--zm-poin
 @keyframes zm-atlas-light{from{transform:translate3d(-6%,3%,0)}to{transform:translate3d(8%,-4%,0)}}
 @keyframes zm-atlas-belt{from{transform:translate3d(0,-50%,0)}to{transform:translate3d(-50%,-50%,0)}}
 @media(forced-colors:active){.zm-field-cursor{display:none!important}}
+
+/* Living Field: contour geometry and light evolve in real time; the original
+   contour artwork remains the graceful CSS fallback for mobile/unsupported GPU. */
+.zm-atlas-webgl{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;opacity:0}
+.zm-atlas-webgl[data-ready=true]{opacity:1}
+main.zm-phase0-home #film-present .hero-editorial-background:has(.zm-atlas-webgl[data-ready=true]) .hero-editorial-lines{opacity:0!important}
+main.zm-phase0-home #film-present .hero-editorial-background:has(.zm-atlas-webgl[data-ready=true]) .zm-scene01-sunlight{display:none!important}
+main.zm-phase0-home #film-present .zm-field-cursor{display:none!important}
+@media(prefers-reduced-motion:no-preference){
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-editorial-lines{
+  animation:zm-field-contours 13s ease-in-out infinite alternate!important;animation-play-state:paused!important;
+ }
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-editorial-background[data-running=true] .hero-editorial-lines{animation-play-state:running!important}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-editorial-background:has(.zm-atlas-webgl[data-ready=true]) .hero-editorial-lines{animation:none!important}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-portrait-plane{
+  transform:translate3d(calc(var(--hero-dx,0px)*(1 - var(--zm-camera))),calc(var(--hero-dy,0px)*(1 - var(--zm-camera)) - 3svh*var(--zm-camera)),0) scale(calc(var(--portrait-scale,1)*(1 - .20*var(--zm-camera))))!important;
+  animation:zm-portrait-breathe 7.2s cubic-bezier(.42,0,.58,1) infinite alternate;
+  animation-play-state:paused;will-change:transform,translate,scale;
+ }
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening:not([data-credit-stage=true]) .hero-composition:has(.hero-editorial-background[data-running=true]) .hero-portrait-plane{animation-play-state:running}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .zm-scene01-atlas-track{animation-duration:18s;-webkit-text-stroke:1.15px #687b56}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .zm-scene01-atlas-type{inset:16% 0 auto;height:30%;opacity:calc(.39*(1 - var(--zm-copy-away)))}
+ main.zm-phase0-home #film-present.zm-refined-opening[data-scene-tier=lite] .hero-portrait-plane{animation:none!important}
+ @media(max-width:899px){
+  main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-portrait-plane{
+   transform:translate3d(0,calc(-1*var(--zm-copy-height) - 2svh*var(--zm-camera)),0) scale(calc(var(--portrait-scale,1)*(1 - .12*var(--zm-camera))))!important;
+   animation-name:zm-portrait-breathe-mobile;animation-duration:8.5s;
+  }
+  main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .zm-scene01-atlas-type{inset:29% 0 auto;height:17%;opacity:calc(.25*(1 - var(--zm-copy-away)))}
+ }
+}
+@keyframes zm-field-contours{from{transform:translate3d(-30px,-20px,0) scale(1.02)}to{transform:translate3d(45px,30px,0) scale(1.1)}}
+@keyframes zm-portrait-breathe{0%{translate:-8px 5px;scale:1}55%{translate:3px -3px;scale:1.018}100%{translate:10px -10px;scale:1.032}}
+@keyframes zm-portrait-breathe-mobile{from{translate:-3px 2px;scale:1}to{translate:3px -5px;scale:1.018}}
+@media(hover:hover) and (pointer:fine){
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-composition{cursor:url("/cursors/scene01/ink.svg") 4 3,auto}
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-composition[data-zm-pointer=portrait]{cursor:url("/cursors/scene01/reveal.svg") 4 3,auto}
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-composition :is(.caption h2,.hero-note p,.caption .eyebrow){cursor:text}
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-composition button{cursor:pointer!important}
+}
+@media(forced-colors:active){main.zm-phase0-home #film-present.zm-refined-opening .hero-composition{cursor:auto!important}}

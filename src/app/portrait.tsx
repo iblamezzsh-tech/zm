@@ -106,9 +106,9 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
        if(Math.abs(lookMix-targetLook)<.002)lookMix=targetLook;
        const k=1-Math.exp(-dt*13),a=1-Math.exp(-dt*9);
        px+=(tx-px)*k;py+=(ty-py)*k;pointerAlpha+=(alphaTarget-pointerAlpha)*a;
-       const moving=Math.abs(px-tx)+Math.abs(py-ty)>.001||Math.abs(pointerAlpha-alphaTarget)>.003;
+       const moving=Math.abs(px-tx)+Math.abs(py-ty)>.001||Math.abs(pointerAlpha-alphaTarget)>.003||Math.abs(dx-targetX)+Math.abs(dy-targetY)>.08;
        if(!moving){px=tx;py=ty;pointerAlpha=alphaTarget}
-       if(!mobile)writePointer();
+       if(!mobile){const follow=1-Math.exp(-dt*6.5);dx+=(targetX-dx)*follow;dy+=(targetY-dy)*follow;if(!moving){dx=targetX;dy=targetY}depth();writePointer()}
        if(!mobile){let steps=0;while(acc>=1/60&&steps++<3){field.step();acc-=1/60}}else acc=0;
        const ink=field.hasInk,lookMoving=mobile&&lookMix!==targetLook;
        if(ink||wasInk||mobile){paint();lastPaint=now;if(!mobile)area!.dispatchEvent(new Event("zm-hero-fluid-frame"))}
@@ -182,7 +182,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       const prev=lastPoint;lastPoint={x,y};
       if(refined){
        if(!canMove()||e.target instanceof Element&&e.target.closest("a,button,.caption,.hero-note")){leave();return}
-       tx=x;ty=y;if(alphaTarget===0){px=x;py=y}alphaTarget=1;
+       tx=x;ty=y;if(alphaTarget===0){px=x;py=y}alphaTarget=1;targetX=(x-.5)*38;targetY=(y-.5)*16;
        const fit=Math.min(canvasW/1070,canvasH/850)*scale;
        area!.dataset.zmPointer=Math.abs(x-.5)<Math.min(.23,fit*310/canvasW)&&y>.12?"portrait":"field";
        field.splat(x,y,prev?.x??x-.007,prev?.y??y-.005,1.12);sync();return;
@@ -224,7 +224,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       <link rel="preload" as="image" href="/images/portrait-academic-attire.svg" />
       <div className="stage hero-composition hero-atmosphere" data-mobile-look={mobileLook?"future":"present"} ref={stage}>
         <div className="hero-world" aria-hidden="true"><ContourField paused={false} sharedFrame={refined}/></div>
- {refined&&<div className="zm-field-cursor" aria-hidden="true"><span className="zm-field-orbit"/><span className="zm-field-caption">POSSIBLE FUTURE</span></div>}
+ 
         <div className="zm-hero-brand">
           <img className="zm-mobile-brand-mark" src="/icon.svg" width="30" height="30" alt="" aria-hidden="true"/>
         <h1 className="hero-name" aria-label="ZiyoMuhammad">
