@@ -1,6 +1,7 @@
 "use client";
 import {useEffect,useRef} from "react";
 import gsap from "gsap";
+import PaperFlow from "./scene01-paper-flow";
 import {getNodeMotionTier,motionQualityEvent,sceneQualityEvent} from "./motion-quality-store";
 
 // Art-directed movement, separate from the expensive liquid raster.
@@ -36,8 +37,8 @@ export default function Scene01Studio(){
    if(!ambient){
     context.add(()=>{
      ambient=gsap.timeline({repeat:-1,yoyo:true,defaults:{ease:"sine.inOut"}});
-     ambient.fromTo(paper,{xPercent:-20,yPercent:8,rotation:-11},{xPercent:22,yPercent:-10,rotation:9,duration:11},0);
-     ambient.fromTo(shadow,{xPercent:12,yPercent:-5},{xPercent:-14,yPercent:8,duration:11},0);
+     ambient.fromTo(paper,{xPercent:-13,yPercent:4,rotation:-5},{xPercent:15,yPercent:-7,rotation:5,duration:11},0);
+     ambient.fromTo(shadow,{xPercent:8,yPercent:-4},{xPercent:-9,yPercent:5,duration:11},0);
      const v={x:-8,y:0};
      drift=gsap.timeline({repeat:-1,yoyo:true,defaults:{ease:"sine.inOut"}});
      drift.to(v,{x:9,y:-8,duration:5.8,onUpdate:()=>{stage!.style.setProperty("--studio-breathe-x",v.x.toFixed(2)+"px");stage!.style.setProperty("--studio-breathe-y",v.y.toFixed(2)+"px")}},0);
@@ -75,7 +76,8 @@ export default function Scene01Studio(){
  return <div ref={root} className="studio-scene01" data-running="false" aria-hidden="true">
   <div className="studio-paper-shadow"/>
   <div className="studio-paper-light"/>
-  <div className="studio-type-window"><div className="studio-type-strip">{[0,1].map(i=><span key={i}>STAY CURIOUS. KEEP BECOMING. <i>✳</i></span>)}</div></div>
+  <PaperFlow/>
+  <div className="studio-type-window"><div className="studio-type-strip">{[0,1].map(i=><span key={i}>STAY CURIOUS. KEEP BECOMING.</span>)}</div></div>
   <div className="studio-paper-grain"/>
  </div>;
 }

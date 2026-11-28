@@ -209,3 +209,35 @@ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-compo
  main.zm-phase0-home:not(.ed-dark-header)>.site-header .minimal-connect:hover::before{transform:translateY(0)}
 }
 @media(forced-colors:active){main.zm-phase0-home #film-present .hero-composition[data-studio-focus=portrait]{cursor:crosshair}}
+
+/* Paper Flow / Background-only pass. Norris reference: restrained resting
+   contrast, local response to movement. ZM uses its own map and palette. */
+main.zm-phase0-home #film-present.zm-refined-opening .hero-world{background:#f5f3ec}
+main.zm-phase0-home #film-present.zm-refined-opening .studio-paper-light{
+ background:linear-gradient(111deg,transparent 18%,#fffdf6a0 38%,#fffef9 48%,#fffdf650 63%,transparent 83%);opacity:.60
+}
+main.zm-phase0-home #film-present.zm-refined-opening .studio-paper-shadow{
+ background:radial-gradient(ellipse at 24% 73%,#9ca28c37,transparent 48%),radial-gradient(ellipse at 85% 28%,#b2b6a032,transparent 50%);opacity:.84
+}
+main.zm-phase0-home #film-present.zm-refined-opening .studio-paper-grain{opacity:.08}
+main.zm-phase0-home #film-present.zm-refined-opening .hero-editorial-lines{opacity:.25}
+main.zm-phase0-home #film-present.zm-refined-opening .studio-type-window{opacity:calc(.20*(1 - var(--zm-copy-away)))}
+main.zm-phase0-home #film-present.zm-refined-opening .studio-type-strip{color:#7a8271;animation-duration:25s}
+.studio-paper-flow{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none;display:block}
+.studio-paper-flow[data-ready=true]{opacity:1}
+main.zm-phase0-home #film-present.zm-refined-opening .hero-world:has(.studio-paper-flow[data-ready=true]) .hero-editorial-lines{opacity:0!important;animation:none!important}
+@media(prefers-reduced-motion:no-preference){
+ /* Guaranteed lightweight motion when WebGL is not available. Existing
+    contour artwork drifts as a single composited layer. */
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-editorial-lines{
+  animation:studio-paper-drift 10s ease-in-out infinite alternate!important;animation-play-state:paused!important;
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-world:has(.studio-scene01[data-running=true]) .hero-editorial-lines{animation-play-state:running!important}
+ main.zm-phase0-home #film-present.zm-refined-opening .hero-world:has(.studio-paper-flow[data-ready=true]) .hero-editorial-lines{animation:none!important}
+ @media(max-width:899px){
+  main.zm-phase0-home #film-present.zm-refined-opening .studio-type-window{opacity:calc(.16*(1 - var(--zm-copy-away)))}
+  main.zm-phase0-home #film-present.zm-refined-opening .hero-editorial-lines{opacity:.24;animation-duration:13s!important}
+ }
+}
+@keyframes studio-paper-drift{from{translate:-9px 7px;scale:1.012}to{translate:12px -9px;scale:1.03}}
+@media(prefers-reduced-motion:reduce){.studio-paper-flow{display:none!important}}
