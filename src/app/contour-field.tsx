@@ -25,7 +25,7 @@ export default function ContourField({paused,sharedFrame=false}:{paused:boolean;
   function draw(now:number){
    raf=0;if(disposed||!running())return;
    const hasInk=heroFields.get(stage!)?.hasInk===true;
-   if(sharedFrame&&!hasInk&&!lastInk)return;
+   if(sharedFrame&&!hasInk){if(lastInk||dirty)clear();lastInk=false;return}
    lastInk=hasInk;
    // Reuse the small simulation grid for pointer interaction.
    if(ctx&&now-lastPaint>=1000/40){
@@ -42,9 +42,9 @@ export default function ContourField({paused,sharedFrame=false}:{paused:boolean;
       const i=(y*W+x)*4;
       // The alternate palette is warm lime and sage, not blue water or neon.
       const t=.5+.5*Math.sin(x/W*2.9+y/H*2.2);
-      data[i]=Math.round(162+35*t);
-      data[i+1]=Math.round(180+29*t);
-      data[i+2]=Math.round(112+18*t);
+      data[i]=Math.round(sharedFrame?138+93*t:162+35*t);
+      data[i+1]=Math.round(sharedFrame?157+42*t:180+29*t);
+      data[i+2]=Math.round(sharedFrame?106+11*t:112+18*t);
       data[i+3]=Math.round(data[i+3]*.74);
      }
      ctx.putImageData(pixels,0,0);dirty=true;
@@ -72,5 +72,6 @@ export default function ContourField({paused,sharedFrame=false}:{paused:boolean;
   <div className="hero-editorial-shadow"/>
   <canvas ref={canvasRef} className="hero-fluid-color" aria-hidden="true"/>
   <div className="hero-editorial-lines" aria-hidden="true"/>
+ {sharedFrame&&<><div className="zm-scene01-sunlight"/><div className="zm-scene01-atlas-type"><div className="zm-scene01-atlas-track">{[0,1].map(i=><span key={i}>STAY CURIOUS. KEEP BECOMING.</span>)}</div></div><div className="zm-scene01-pointer-light"/></>}
  </div>;
 }

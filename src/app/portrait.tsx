@@ -18,7 +18,8 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
   const [attireReady,setAttireReady]=useState(false);
   const [mobileLook,setMobileLook]=useState(false);
   const lookTarget=useRef(false);
-  function toggleLook(){lookTarget.current=!lookTarget.current;setMobileLook(lookTarget.current)}
+ const wakeLook=useRef<(()=>void)|null>(null);
+  function toggleLook(){lookTarget.current=!lookTarget.current;setMobileLook(lookTarget.current);wakeLook.current?.()}
   // Only an actually pending base image warrants an indicator. Never gate
   // the page, wait for other assets, or delay a cached/finished portrait.
   useEffect(() => {
@@ -47,7 +48,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
     if(!maskCtx){ready(false);return;}
     const motion=matchMedia("(prefers-reduced-motion: reduce)");
     const opening=area.closest<HTMLElement>("#film-present");
-    const field=new LiquidField();
+    const field=new LiquidField(refined);
     heroFields.set(area,field);
     let bounds=area.getBoundingClientRect(), scale=1, dpr=1, alive=true, loaded=false, visible=false;
     let pointer:number|null=null, lastPoint:{x:number;y:number}|null=null;
@@ -58,6 +59,8 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
     let lookMix=0,mobile=false;
     let targetX=0,targetY=0,dx=0,dy=0;
     let imageData:ImageData|null=null;
+ let px=.5,py=.4,tx=.5,ty=.4,pointerAlpha=0,alphaTarget=0,wasInk=false;
+ const writePointer=()=>{area!.style.setProperty('--zm-point-x',(px*canvasW).toFixed(1)+'px');area!.style.setProperty('--zm-point-y',(py*canvasH).toFixed(1)+'px');area!.style.setProperty('--zm-point-alpha',pointerAlpha.toFixed(3));};
     const canMove=()=>getNodeMotionTier(area)!=="lite"&&getNodeMotionTier(area)!=="reduced"&&(!mobile||getNodeMotionTier(area)==="cinematic")&&loaded&&visible&&!motion.matches&&!document.hidden&&opening?.dataset.creditStage!=="true";
     function paint(){
       if(!loaded||!ctx||!maskCtx||!output||!attire||!imageData)return;
@@ -98,6 +101,21 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       if(mobile&&(now-lastScroll<100||now-lastPaint<1000/30)){if(now-lastScroll<100)last=0;raf=requestAnimationFrame(frame);return}
       const dt=last?Math.min(.05,(now-last)/1000):1/60;last=now;age+=dt;acc+=dt;
       lookMix=mobile?approachLook(lookMix,lookTarget.current?1:0,dt):0;
+      if(refined){
+       const targetLook=mobile&&lookTarget.current?1:0;
+       if(Math.abs(lookMix-targetLook)<.002)lookMix=targetLook;
+       const k=1-Math.exp(-dt*13),a=1-Math.exp(-dt*9);
+       px+=(tx-px)*k;py+=(ty-py)*k;pointerAlpha+=(alphaTarget-pointerAlpha)*a;
+       const moving=Math.abs(px-tx)+Math.abs(py-ty)>.001||Math.abs(pointerAlpha-alphaTarget)>.003;
+       if(!moving){px=tx;py=ty;pointerAlpha=alphaTarget}
+       if(!mobile)writePointer();
+       if(!mobile){let steps=0;while(acc>=1/60&&steps++<3){field.step();acc-=1/60}}else acc=0;
+       const ink=field.hasInk,lookMoving=mobile&&lookMix!==targetLook;
+       if(ink||wasInk||mobile){paint();lastPaint=now;if(!mobile)area!.dispatchEvent(new Event("zm-hero-fluid-frame"))}
+       wasInk=ink;
+       if(ink||moving||lookMoving){raf=requestAnimationFrame(frame)}else{last=0;acc=0;area!.dataset.zmFrame="idle"}
+       return;
+      }
       const idle=pointer===null&&age-lastInput>1.25&&!(mobile&&(lookTarget.current||lookMix>0));
       idleMix+=((idle?1:0)-idleMix)*(1-Math.exp(-dt*(idle?1.7:5.5)));
       if(idleMix>.005)idleAge+=dt;
@@ -113,9 +131,10 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
     }
     function sync(){
       if(!alive)return;
-      if(canMove()){if(!raf){last=0;raf=requestAnimationFrame(frame)}}
-      else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;lastPoint=null;idleMix=0;lastPaint=0;lookMix=mobile&&lookTarget.current?1:0;depth();field.clear();if(refined)area!.dispatchEvent(new Event("zm-hero-fluid-frame"));if(getNodeMotionTier(area)==="lite"||getNodeMotionTier(area)==="reduced"||(mobile&&getNodeMotionTier(area)!=="cinematic")){ctx!.clearRect(0,0,output!.width,output!.height);lastFull=false}else paint()}
+      if(canMove()){if(!raf){last=0;acc=0;area!.dataset.zmFrame="active";raf=requestAnimationFrame(frame)}}
+      else{if(raf)cancelAnimationFrame(raf);raf=0;last=0;acc=0;targetX=targetY=dx=dy=0;lastPoint=null;idleMix=0;lastPaint=0;lookMix=mobile&&lookTarget.current?1:0;depth();field.clear();if(refined)area!.dispatchEvent(new Event("zm-hero-fluid-frame"));if(getNodeMotionTier(area)==="lite"||getNodeMotionTier(area)==="reduced"||(mobile&&getNodeMotionTier(area)!=="cinematic")){ctx!.clearRect(0,0,output!.width,output!.height);lastFull=false}else paint();if(refined){pointerAlpha=alphaTarget=0;wasInk=false;area!.dataset.zmFrame="idle";delete area!.dataset.zmPointer;writePointer()}}
     }
+    wakeLook.current=sync;
     function resize(){
       bounds=area!.getBoundingClientRect();
       const w=area!.clientWidth,h=area!.clientHeight;
@@ -161,13 +180,20 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       const x=Math.max(0,Math.min(1,(e.clientX-bounds.left)/Math.max(1,bounds.width)));
       const y=Math.max(0,Math.min(1,(e.clientY-bounds.top)/Math.max(1,bounds.height)));
       const prev=lastPoint;lastPoint={x,y};
+      if(refined){
+       if(!canMove()||e.target instanceof Element&&e.target.closest("a,button,.caption,.hero-note")){leave();return}
+       tx=x;ty=y;if(alphaTarget===0){px=x;py=y}alphaTarget=1;
+       const fit=Math.min(canvasW/1070,canvasH/850)*scale;
+       area!.dataset.zmPointer=Math.abs(x-.5)<Math.min(.23,fit*310/canvasW)&&y>.12?"portrait":"field";
+       field.splat(x,y,prev?.x??x-.007,prev?.y??y-.005,1.12);sync();return;
+      }
       if(canMove()){
         if(e.pointerType==="mouse"&&!refined){targetX=(x*2-1)*13;targetY=(y*2-1)*6}
         if(prev)field.splat(x,y,prev.x,prev.y,1);
       }else{field.clear();field.splat(x,y,prev?.x??x-.012,prev?.y??y,1);paint()}
     }
     function enter(e:PointerEvent){refresh();track(e)}
-    function leave(){lastPoint=null;targetX=targetY=0;if(!canMove()){field.clear();paint()}}
+    function leave(){lastPoint=null;targetX=targetY=0;if(refined){alphaTarget=0;delete area!.dataset.zmPointer;if(canMove())sync();else{pointerAlpha=0;writePointer()}}if(!canMove()){field.clear();paint()}}
     function down(e:PointerEvent){if(mobile||!e.isPrimary||e.pointerType==="mouse"||(e.target instanceof Element&&e.target.closest("a,button")))return;pointer=e.pointerId;area!.setPointerCapture(e.pointerId);enter(e)}
     function up(e:PointerEvent){if(e.pointerId===pointer){pointer=null;leave()}}
     const controller=new AbortController(),options={signal:controller.signal,passive:true};
@@ -189,7 +215,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       motion.addEventListener("change",sync,options);document.addEventListener("visibilitychange",sync,options);
       ready();
     }).catch(()=>{/* Keep the original portrait if the attire cannot be decoded. */if(alive)ready(false);});
-    return()=>{alive=false;controller.abort();ro.disconnect();io.disconnect();creditObserver.disconnect();if(raf)cancelAnimationFrame(raf);heroFields.delete(area)};
+    return()=>{alive=false;wakeLook.current=null;controller.abort();ro.disconnect();io.disconnect();creditObserver.disconnect();if(raf)cancelAnimationFrame(raf);heroFields.delete(area)};
   }, [refined]);
 
   return (
@@ -198,6 +224,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
       <link rel="preload" as="image" href="/images/portrait-academic-attire.svg" />
       <div className="stage hero-composition hero-atmosphere" data-mobile-look={mobileLook?"future":"present"} ref={stage}>
         <div className="hero-world" aria-hidden="true"><ContourField paused={false} sharedFrame={refined}/></div>
+ {refined&&<div className="zm-field-cursor" aria-hidden="true"><span className="zm-field-orbit"/><span className="zm-field-caption">POSSIBLE FUTURE</span></div>}
         <div className="zm-hero-brand">
           <img className="zm-mobile-brand-mark" src="/icon.svg" width="30" height="30" alt="" aria-hidden="true"/>
         <h1 className="hero-name" aria-label="ZiyoMuhammad">

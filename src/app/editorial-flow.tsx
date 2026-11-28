@@ -183,12 +183,15 @@ export default function EditorialFlow({children,phase0=false}:{children:ReactNod
       // Keep the original ink fully drawn at rest and throughout the handoff.
       // The same SVG travels and scales with native scroll; no duplicate or timer.
       write(s,"--zm-ink-progress",1);
-      write(s,"--zm-ink-travel",ease(.13,.76,local));
-      write(s,"--zm-copy-away",ease(.02,.32,local));
-      write(s,"--zm-face-away",ease(.25,.88,local));
+      write(s,"--zm-ink-travel",ease(.18,.81,local));
+      write(s,"--zm-copy-away",ease(.025,.30,local));
+      write(s,"--zm-face-away",ease(.42,.90,local));
+ write(s,"--zm-camera",ease(.10,.78,local));
+ write(s,"--zm-paper-away",ease(.19,.67,local));
+ write(s,"--zm-credit-belt",ease(.51,.83,local));
       write(s,"--ed-hero-exit",0);write(s,"--ed-hero-depart",0);write(s,"--ed-credit-away",0);
       write(s,"--ed-credit",ease(.08,.80,local));
-      const creditStage=String(local>.34);if(s.dataset.creditStage!==creditStage)s.dataset.creditStage=creditStage;
+      const creditStage=String(local>.10);if(s.dataset.creditStage!==creditStage)s.dataset.creditStage=creditStage;
       if(lookButton){if(creditStage==="true"&&document.activeElement===lookButton)el!.focus({preventScroll:true});lookButton.inert=creditStage==="true";}
      }else if(mobileCinema){
       // A single reversible scroll score: identity, portrait, signature,

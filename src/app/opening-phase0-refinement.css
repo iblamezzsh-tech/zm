@@ -195,3 +195,51 @@ main.zm-phase0-home .zm-wordmark-text{
  main.zm-phase0-home>.site-header.minimal-header :is(a[href],button:not(:disabled)){cursor:var(--zm-cursor-link)!important}
  main.zm-phase0-home>.site-header.minimal-header a[href="/"]{cursor:var(--zm-cursor-home)!important}
 }
+
+/* Scene 01 / Living Atlas. Separate living atmosphere, original registered art,
+   native pointer and fluid field, single reversible scroll score. */
+main.zm-phase0-home #film-present.zm-refined-opening{--zm-camera:0;--zm-paper-away:0;--zm-credit-belt:0}
+main.zm-phase0-home #film-present.zm-refined-opening .hero-composition{--zm-point-x:50%;--zm-point-y:40%;--zm-point-alpha:0}
+.zm-scene01-sunlight,.zm-scene01-atlas-type,.zm-scene01-pointer-light,.zm-field-cursor{display:none;pointer-events:none}
+@media(prefers-reduced-motion:no-preference){
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .zm-scene01-sunlight{
+ display:block;position:absolute;inset:-25%;opacity:.64;background:radial-gradient(ellipse at 30% 42%,#d3dba688,transparent 44%),radial-gradient(ellipse at 76% 65%,#ebd48170,transparent 40%);transform:translate3d(-6%,3%,0);animation:zm-atlas-light 16s ease-in-out infinite alternate;animation-play-state:paused}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .zm-scene01-atlas-type{
+ display:block;position:absolute;inset:18% 0 auto;height:26%;overflow:hidden;mask-image:linear-gradient(0deg,transparent,#000 22%,#000 78%,transparent);opacity:calc(.32*(1 - var(--zm-copy-away)))}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .zm-scene01-atlas-track{
+ position:absolute;top:50%;left:0;display:flex;width:max-content;font:700 clamp(65px,9.5vw,154px)/1 "DM Sans Variable",Arial,sans-serif;letter-spacing:-.055em;color:transparent;-webkit-text-stroke:1px #788765;white-space:nowrap;animation:zm-atlas-belt 30s linear infinite;animation-play-state:paused}
+ .zm-scene01-atlas-track>span{flex:none;padding-right:.65em}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-editorial-background[data-running=true] :is(.zm-scene01-sunlight,.zm-scene01-atlas-track){animation-play-state:running}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-world{opacity:calc(1 - var(--zm-paper-away))}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening :is(.zm-opening-portrait,.hero-composition){background:transparent!important}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .caption{transform:translate3d(calc(-64px * var(--zm-copy-away)),0,0)}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-note{transform:translate3d(calc(64px * var(--zm-copy-away)),0,0)}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-portrait-plane{transform:translate3d(0,calc(-3svh * var(--zm-camera)),0) scale(calc(var(--portrait-scale,1)*(1 - .20*var(--zm-camera))))!important}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .zm-opening-marquee{opacity:calc(var(--zm-credit-belt)*.68)}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .zm-opening-marquee-track{color:#9aa589;top:72%}
+ @media(min-width:900px) and (hover:hover) and (pointer:fine){
+ main.zm-phase0-home #film-present.zm-refined-opening .zm-scene01-pointer-light{display:block;position:absolute;left:0;top:0;width:clamp(260px,33vw,510px);aspect-ratio:1;transform:translate3d(var(--zm-point-x),var(--zm-point-y),0) translate(-50%,-50%);opacity:calc(.75*var(--zm-point-alpha));background:radial-gradient(circle,#f8e19a9e 0%,#b6c78c55 28%,transparent 68%)}
+ main.zm-phase0-home #film-present.zm-refined-opening .zm-field-cursor{display:block;position:absolute;left:0;top:0;z-index:6;width:0;height:0;transform:translate3d(var(--zm-point-x),var(--zm-point-y),0);opacity:var(--zm-point-alpha)}
+ .zm-field-orbit{position:absolute;inset:-24px;width:48px;height:48px;border:1px solid #65734b;border-radius:50%;opacity:.75;transition:scale .35s cubic-bezier(.2,.75,.2,1),border-color .25s;box-sizing:border-box}
+ .zm-field-orbit::after{content:"";position:absolute;inset:6px;border:1px solid #c3a200;border-radius:50%;opacity:.8}
+ .zm-field-caption{position:absolute;left:29px;top:18px;font:650 8px/1 "DM Sans Variable",Arial,sans-serif;letter-spacing:.13em;color:#283628;background:#f7f4e8eb;padding:6px 8px;white-space:nowrap;opacity:0;translate:-5px 0;transition:opacity .2s,translate .3s}
+ [data-zm-pointer=portrait] .zm-field-orbit{scale:1.32;border-color:#e1b900}
+ [data-zm-pointer=portrait] .zm-field-caption{opacity:1;translate:0}
+ }
+ @media(max-width:899px){
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .zm-scene01-atlas-type{inset:29% 0 auto;height:17%;opacity:calc(.25*(1 - var(--zm-copy-away)))}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .zm-scene01-atlas-track{font-size:clamp(46px,14vw,82px);animation-duration:34s}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-portrait-plane{transform:translate3d(0,calc(-1*var(--zm-copy-height) - 2svh*var(--zm-camera)),0) scale(calc(var(--portrait-scale,1)*(1 - .12*var(--zm-camera))))!important}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .caption{transform:translate3d(calc(-18px*var(--zm-copy-away)),0,0)}
+ main.zm-phase0-home .editorial-flow[data-ed-motion=true] #film-present.zm-refined-opening .hero-note{transform:translate3d(calc(18px*var(--zm-copy-away)),0,0)}
+ }
+ main.zm-phase0-home #film-present.zm-refined-opening:is([data-scene-tier=lite],[data-scene-tier=reduced]) :is(.zm-scene01-sunlight,.zm-scene01-atlas-type,.zm-scene01-pointer-light,.zm-field-cursor){display:none!important}
+ @media(hover:hover) and (pointer:fine){
+ main.zm-phase0-home:not(.ed-dark-header)>.site-header.minimal-header .minimal-connect:hover{background:#24291e;color:#ffda24;border-color:#24291e}
+ main.zm-phase0-home:not(.ed-dark-header)>.site-header.minimal-header .minimal-menu-trigger:hover{background:#24291e;color:#f6f3e8}
+ main.zm-phase0-home>.site-header.minimal-header .zm-opening-lockup:hover .zm-wordmark-text{color:#6b7954}
+ }
+}
+@keyframes zm-atlas-light{from{transform:translate3d(-6%,3%,0)}to{transform:translate3d(8%,-4%,0)}}
+@keyframes zm-atlas-belt{from{transform:translate3d(0,-50%,0)}to{transform:translate3d(-50%,-50%,0)}}
+@media(forced-colors:active){.zm-field-cursor{display:none!important}}
