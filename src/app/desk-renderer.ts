@@ -33,7 +33,7 @@ function surface(w:number,h:number,color:[number,number,number],kind:"wood"|"pap
  ctx.putImageData(im,0,0);return {c,ctx};
 }
 function labelTexture(){
- const {c,ctx}=surface(512,512,[226,177,56],"paper");ctx.fillStyle="#28251c";ctx.font="bold 45px Arial";ctx.fillText("OverThink",24,76);ctx.font="bold 68px Arial";ctx.textAlign="right";ctx.fillText("01",477,463);ctx.textAlign="left";ctx.strokeStyle="#3d3324";ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(275,224,43,21,-.65,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.ellipse(246,338,43,12,-.1,0,Math.PI*2);ctx.stroke();ctx.setLineDash([7,10]);ctx.beginPath();ctx.moveTo(269,250);ctx.quadraticCurveTo(220,280,246,324);ctx.stroke();ctx.setLineDash([]);ctx.beginPath();ctx.moveTo(386,281);ctx.lineTo(403,304);ctx.lineTo(451,246);ctx.stroke();return c;
+ const {c,ctx}=surface(512,512,[226,177,56],"paper");ctx.fillStyle="#28251c";ctx.font="bold 36px Arial";ctx.fillText("OverThink",226,76);ctx.font="bold 68px Arial";ctx.textAlign="right";ctx.fillText("01",477,463);ctx.textAlign="left";ctx.strokeStyle="#3d3324";ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(275,224,43,21,-.65,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.ellipse(246,338,43,12,-.1,0,Math.PI*2);ctx.stroke();ctx.setLineDash([7,10]);ctx.beginPath();ctx.moveTo(269,250);ctx.quadraticCurveTo(220,280,246,324);ctx.stroke();ctx.setLineDash([]);ctx.beginPath();ctx.moveTo(386,281);ctx.lineTo(403,304);ctx.lineTo(451,246);ctx.stroke();return c;
 }
 function laptopTexture(){
  const {c,ctx}=surface(1024,1024,[170,173,172],"metal");const g=ctx.createLinearGradient(0,0,1024,640);g.addColorStop(0,"#ffffff38");g.addColorStop(.5,"#ffffff00");g.addColorStop(1,"#232d3530");ctx.fillStyle=g;ctx.fillRect(0,0,1024,1024);ctx.scale(1,1.6);
@@ -62,7 +62,7 @@ export function createDeskRenderer(canvasEl:HTMLCanvasElement,onTexture:()=>void
  const wood=texture(surface(1024,1024,[105,91,79],"wood").c),metal=solid([114,120,119],"metal"),black=solid([29,31,29]),leather=solid([39,42,39],"leather"),edge=texture(pageEdges()),yellow=texture(labelTexture()),shadow=texture(shadowTexture()),silver=solid([171,178,178],"metal"),barrel=solid([72,78,78],"metal");
  // All texture dimensions are powers of two for WebGL 1 mipmaps.
  const paper=surface(1024,1024,[234,222,197],"paper");const paperTex=texture(paper.c);
- const signature=new Image();signature.onload=()=>{if(disposed)return;paper.ctx.drawImage(signature,105,325,814,272);gl.bindTexture(gl.TEXTURE_2D,paperTex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,paper.c);gl.generateMipmap(gl.TEXTURE_2D);onTexture()};signature.src="/brand/signature.svg";
+ let signed=false;const signature=new Image();signature.onerror=()=>{if(!disposed)onTexture()};signature.onload=()=>{if(disposed)return;paper.ctx.drawImage(signature,105,306,814,401);gl.bindTexture(gl.TEXTURE_2D,paperTex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,paper.c);gl.generateMipmap(gl.TEXTURE_2D);signed=true;onTexture()};signature.src="/brand/signature.svg";
  function mesh(data:number[],tex:WebGLTexture,mode=0){const b=gl!.createBuffer();if(!b)throw Error("buffer");gl!.bindBuffer(gl!.ARRAY_BUFFER,b);gl!.bufferData(gl!.ARRAY_BUFFER,new Float32Array(data),gl!.STATIC_DRAW);meshes.push({buffer:b,count:data.length/8,texture:tex,mode})}
  function tri(data:number[],a:Vertex,b:Vertex,c:Vertex,normal?:V3){const n=normal||unit(cross(sub(b.p,a.p),sub(c.p,a.p)));for(const v of [a,b,c])data.push(...v.p,...n,...v.uv)}
  function quad(data:number[],a:Vertex,b:Vertex,c:Vertex,d:Vertex,normal?:V3){tri(data,a,b,c,normal);tri(data,a,c,d,normal)}
@@ -83,7 +83,7 @@ export function createDeskRenderer(canvasEl:HTMLCanvasElement,onTexture:()=>void
  function rod(cx:number,cz:number,y:number,angle:number,start:number,end:number,r0:number,r1:number,tex:WebGLTexture,mode=2){
   const co=Math.cos(angle),si=Math.sin(angle),data:number[]=[];
   const p=(l:number,r:number,t:number,u:number):Vertex=>({p:[cx+l*co-r*Math.cos(t)*si,y+r*Math.sin(t),cz+l*si+r*Math.cos(t)*co],uv:[u,t/(2*Math.PI)]});
-  for(let i=0;i<20;i++){const a=i/20*2*Math.PI,b=(i+1)/20*2*Math.PI;quad(data,p(start,r0,a,0),p(start,r0,b,0),p(end,r1,b,1),p(end,r1,a,1))}
+  for(let i=0;i<20;i++){const a=i/20*2*Math.PI,b=(i+1)/20*2*Math.PI;quad(data,p(start,r0,a,0),p(end,r1,a,1),p(end,r1,b,1),p(start,r0,b,0))}
   mesh(data,tex,mode);
  }
  // A single fixed arrangement, front edge is positive Z.
@@ -114,5 +114,5 @@ export function createDeskRenderer(canvasEl:HTMLCanvasElement,onTexture:()=>void
  gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.clearColor(.35,.30,.25,1);
  function render(p:number,w:number,h:number,portrait:boolean,balanced:boolean){if(disposed||gl!.isContextLost())return;const ratio=Math.min(window.devicePixelRatio||1,balanced?1.15:1.65,1500/Math.max(w,h));const W=Math.max(1,Math.round(w*ratio)),H=Math.max(1,Math.round(h*ratio));if(canvasEl.width!==W||canvasEl.height!==H){canvasEl.width=W;canvasEl.height=H}gl!.viewport(0,0,W,H);gl!.clear(gl!.COLOR_BUFFER_BIT|gl!.DEPTH_BUFFER_BIT);const cam=deskCamera(p,w/h,portrait);gl!.uniform3fv(uniforms.uEye,cam.eye);gl!.uniform3fv(uniforms.uRight,cam.right);gl!.uniform3fv(uniforms.uUp,cam.up);gl!.uniform3fv(uniforms.uForward,cam.forward);gl!.uniform1f(uniforms.uTan,cam.tan);gl!.uniform1f(uniforms.uAspect,w/h);gl!.uniform1i(uniforms.uTex,0);
  for(const m of meshes){gl!.depthMask(m.mode!==1);gl!.uniform1i(uniforms.uMode,m.mode);gl!.bindTexture(gl!.TEXTURE_2D,m.texture);gl!.bindBuffer(gl!.ARRAY_BUFFER,m.buffer);gl!.enableVertexAttribArray(aPos);gl!.vertexAttribPointer(aPos,3,gl!.FLOAT,false,32,0);gl!.enableVertexAttribArray(aNormal);gl!.vertexAttribPointer(aNormal,3,gl!.FLOAT,false,32,12);gl!.enableVertexAttribArray(aUV);gl!.vertexAttribPointer(aUV,2,gl!.FLOAT,false,32,24);gl!.drawArrays(gl!.TRIANGLES,0,m.count)}gl!.depthMask(true)}
- return {render,dispose(){disposed=true;signature.onload=null;for(const m of meshes)gl.deleteBuffer(m.buffer);for(const t of textures)gl.deleteTexture(t);gl.deleteProgram(program)}};
+ return {render,isSigned:()=>signed,dispose(){disposed=true;signature.onload=null;for(const m of meshes)gl.deleteBuffer(m.buffer);for(const t of textures)gl.deleteTexture(t);gl.deleteProgram(program)}};
 }
