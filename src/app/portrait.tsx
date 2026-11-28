@@ -8,6 +8,7 @@ import "./portrait-loading.css";
 import ContourField from "./contour-field";
 import {getNodeMotionTier,motionQualityEvent,sceneQualityEvent} from "./motion-quality-store";
 import {mobilePortraitScale,mobileCreditFrame,approachLook,lookAlpha} from "./mobile-portrait-geometry";
+import {installScene01Lens} from "./scene01-lens";
 
 export default function Portrait({refined=false}:{refined?:boolean}={}) {
   const stage = useRef<HTMLDivElement>(null);
@@ -41,6 +42,9 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
     const area=stage.current, original=base.current, attire=overlay.current, output=lens.current;
     const ready=(ok=true)=>document.dispatchEvent(new CustomEvent("zm-portrait-ready",{detail:{ok}}));
     if(!area||!original||!attire||!output){ready(false);return;}
+    // Scene 01 uses registered DOM artwork and a demand-driven CSS mask.
+    // Do not allocate or run the legacy velocity field / canvas for this scene.
+    if(refined)return installScene01Lens(area,original,attire,()=>setAttireReady(true),ready);
     const ctx=output.getContext("2d");
     if(!ctx){ready(false);return;}
     const mask=document.createElement("canvas");
@@ -202,7 +206,7 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
     <section aria-label="Interactive portrait">
       <link rel="preload" as="image" href="/images/portrait-present.webp" />
       <link rel="preload" as="image" href="/images/portrait-academic-attire.svg" />
-      <div className="stage hero-composition hero-atmosphere" data-mobile-look={mobileLook?"future":"present"} ref={stage}>
+      <div className="stage hero-composition hero-atmosphere" data-scene01-lens={refined?"true":undefined} data-mobile-look={mobileLook?"future":"present"} ref={stage}>
         <div className="hero-world" aria-hidden="true"><ContourField paused={refined}/></div>
         <div className="zm-hero-brand">
           <img className="zm-mobile-brand-mark" src="/icon.svg" width="30" height="30" alt="" aria-hidden="true"/>

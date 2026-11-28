@@ -212,3 +212,50 @@ main.zm-phase0-home:not(.ed-dark-header)>.site-header.minimal-header :is(.minima
 main.zm-phase0-home #film-present.zm-refined-opening .zm-mobile-look:focus-visible{
  outline:2px solid #33452d;outline-offset:4px;
 }
+
+/* Scene 01 / interaction lab: a static, hand-shaped feathered aperture.
+   The browser composites the registered photo; no CPU fluid grid or raster copy. */
+main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening [data-scene01-lens] .hero-liquid-reveal{display:none!important}
+main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening [data-scene01-lens] .hero-attire-source{
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:2;
+ overflow:hidden;pointer-events:none;opacity:0!important;transition:none!important;mask:none;
+}
+main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening [data-scene01-lens] .hero-attire-source .future-photo{
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ object-fit:contain;object-position:center bottom;opacity:1!important;transform:none!important;
+}
+main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening [data-zm-lens-ready=true][data-zm-lens-mode=hover][data-mobile-look=present] .hero-attire-source{
+ opacity:var(--zm-lens-alpha,0)!important;
+ --zm-aperture:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cfilter id='f'%3E%3CfeGaussianBlur stdDeviation='7'/%3E%3C/filter%3E%3C/defs%3E%3Cpath filter='url(%23f)' fill='white' d='M201 30C265 14 301 66 313 109C337 144 371 172 358 220C348 279 313 284 280 325C248 370 196 365 160 341C117 324 71 332 52 287C31 244 58 212 36 177C14 139 54 95 102 91C145 88 158 40 201 30Z'/%3E%3C/svg%3E");
+ -webkit-mask-image:var(--zm-aperture);mask-image:var(--zm-aperture);
+ -webkit-mask-size:var(--zm-lens-width,0px) var(--zm-lens-height,0px);mask-size:var(--zm-lens-width,0px) var(--zm-lens-height,0px);
+ -webkit-mask-position:var(--zm-lens-x,0px) var(--zm-lens-y,0px);mask-position:var(--zm-lens-x,0px) var(--zm-lens-y,0px);
+ -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;mask-mode:alpha;
+}
+main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening [data-zm-lens-ready=true][data-mobile-look=future] .hero-attire-source{
+ opacity:1!important;-webkit-mask:none;mask:none;
+}
+@media(prefers-reduced-motion:no-preference){
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening [data-zm-lens-ready=true][data-zm-lens-mode=toggle] .hero-attire-source{
+  transition:opacity .4s cubic-bezier(.22,1,.36,1)!important;
+ }
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening[data-scene-tier=cinematic] [data-zm-lens-ready=true][data-zm-lens-mode=toggle] .hero-attire-source{
+  clip-path:polygon(0 0,100% 0,100% 0,75% 0,50% 0,25% 0,0 0);
+  transition:opacity .32s ease,clip-path .85s cubic-bezier(.45,.03,.22,1)!important;
+ }
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening[data-scene-tier=cinematic] [data-zm-lens-ready=true][data-zm-lens-mode=toggle][data-mobile-look=future] .hero-attire-source{
+  clip-path:polygon(0 0,100% 0,100% 100%,75% 100%,50% 100%,25% 100%,0 100%);
+ }
+}
+@media(min-width:900px){
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening [data-scene01-lens] .zm-mobile-look{
+  display:inline-flex!important;position:absolute!important;bottom:24px;left:50%;right:auto;top:auto;translate:-50% 0;z-index:6;
+  align-items:center;gap:8px;min-height:44px;padding:8px 13px;background:#24291e;color:#fffdf7;border:1px solid #fffdf7;border-radius:7px;
+  opacity:0;pointer-events:none;
+ }
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening [data-scene01-lens] .zm-mobile-look:focus-visible,
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening [data-scene01-lens] .zm-mobile-look[aria-pressed=true],
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening [data-zm-lens-mode=toggle] .zm-mobile-look{opacity:1!important;pointer-events:auto}
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening [data-scene01-lens] .zm-mobile-look>svg{width:22px;height:22px}
+}
+main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening:has([data-zm-lens-visible=false]) .hero-editorial-background::before{animation-play-state:paused!important}
