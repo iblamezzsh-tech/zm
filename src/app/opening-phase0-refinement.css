@@ -1,12 +1,8 @@
 /* Phase 0: one photographic opening, one continuous real signature.
    All rules scoped to the preview opening. No finale or interior changes. */
-main.zm-phase0-home>.site-header.minimal-header .minimal-connect{
- min-height:44px;height:44px;padding-inline:14px;gap:7px;font-size:12px;box-shadow:none;
-}
-main.zm-phase0-home>.site-header.minimal-header .minimal-connect .minimal-arrow{font-size:15px}
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening{
- --zm-ink-progress:.085;--zm-ink-travel:0;--zm-copy-away:0;--zm-face-away:0;
- --ink-start-x:85%;--ink-start-y:85%;--ink-start-w:clamp(145px,17vw,260px);
+ --zm-ink-progress:1;--zm-ink-travel:0;--zm-copy-away:0;--zm-face-away:0;
+ --ink-start-right:3.3%;--ink-start-bottom:12%;--ink-start-w:clamp(105px,17.5vw,260px);
  --ink-end-w:min(63vw,110svh,840px);
 }
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .ed-opening-sticky{isolation:isolate;background:#24291e}
@@ -32,28 +28,28 @@ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .caption h2
 }
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .caption h2 em{font-style:italic}
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-note{
- display:block;left:auto;right:4.2%;top:auto;bottom:34%;width:min(23vw,310px);max-width:none;
+ display:block;left:auto;right:3.3%;top:auto;bottom:29%;width:auto;max-width:none;text-align:right;
  opacity:calc(1 - var(--zm-copy-away));transform:translateY(calc(-10px * var(--zm-copy-away)));transition:none!important;
 }
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-note p{
- font-size:clamp(16px,1.45vw,21px);line-height:1.48;margin:0;color:#354431;text-wrap:pretty;
+ font-size:clamp(13px,1.35vw,20px);line-height:1.45;margin:10px 0 0;color:#24291e;
 }
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .ed-opening-credits{
  display:block!important;position:absolute;inset:0;z-index:12!important;pointer-events:none;opacity:1!important;overflow:hidden;
 }
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .ed-opening-signature{
- position:absolute;inset:auto;display:block;left:calc(var(--ink-start-x) + (50% - var(--ink-start-x))*var(--zm-ink-travel));
- top:calc(var(--ink-start-y) + (48% - var(--ink-start-y))*var(--zm-ink-travel));
+ position:absolute;inset:auto;display:block;right:calc(var(--ink-start-right) + (50% - var(--ink-end-w)/2 - var(--ink-start-right))*var(--zm-ink-travel));
+ bottom:calc(var(--ink-start-bottom) + (52% - var(--ink-end-w)*80/478 - var(--ink-start-bottom))*var(--zm-ink-travel));
  width:calc(var(--ink-start-w) + (var(--ink-end-w) - var(--ink-start-w))*var(--zm-ink-travel));
- height:auto;transform:translate(-50%,-50%);pointer-events:none;
+ height:auto;transform:none;pointer-events:none;
 }
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .ed-opening-signature .signature{
  display:block;width:100%;height:auto;max-height:none;
  transform:rotate(calc(-7deg * var(--zm-ink-travel)));transform-origin:center;
- color:color-mix(in srgb,#817025,#ffda24 calc(var(--zm-face-away)*100%));
+ color:color-mix(in srgb,#d8ac00,#ffda24 calc(var(--zm-face-away)*100%));
 }
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .ed-opening-signature .pen{
- stroke-dasharray:1;stroke-dashoffset:calc(1 - clamp(0,(var(--zm-ink-progress) - var(--pen-start,0))/var(--pen-duration,.42),1));
+ stroke-dasharray:none!important;stroke-dashoffset:0!important;
  animation:none!important;transition:none!important;
 }
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .pen-z{--pen-start:0;--pen-duration:.42}
@@ -72,14 +68,13 @@ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-portr
  transform:translate3d(var(--hero-dx,0px),var(--hero-dy,0px),0) scale(var(--portrait-scale,1))!important;
 }
 main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-name{transform:none!important}
-main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-scroll:focus-visible{opacity:1!important}
 @media(min-width:900px) and (max-height:700px){
  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .caption{bottom:24%}
- main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-note{bottom:32%}
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-note{bottom:29%}
 }
 @media(max-width:899px){
  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening{
-  --ink-start-x:78%;--ink-start-y:94%;--ink-start-w:clamp(90px,29vw,150px);--ink-end-w:min(83vw,440px);
+  --ink-start-right:20px;--ink-start-bottom:18px;--ink-start-w:clamp(88px,28vw,150px);--ink-end-w:min(83vw,440px);
   --zm-copy-height:clamp(150px,24svh,212px);
  }
  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-editorial-background::after{
@@ -99,9 +94,9 @@ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-scrol
  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .caption br{display:initial}
  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .caption em::before{content:none}
  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-note{
-  display:block!important;position:absolute;inset:auto 20px 42px 20px;width:auto;max-width:34ch;text-align:left;z-index:5;
+  display:block!important;position:absolute;inset:auto 20px 64px auto;width:42%;max-width:180px;text-align:right;z-index:5;
  }
- main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-note p{font-size:14px;line-height:1.4}
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-note p{font-size:13px;line-height:1.35;margin-top:5px}
  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .zm-mobile-look{
   bottom:calc(var(--zm-copy-height) + 10px);right:12px;
  }
@@ -120,4 +115,46 @@ main.zm-phase0-home .editorial-flow[data-ed-motion=false] #film-present.zm-refin
  main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening{
   --zm-ink-progress:1!important;--zm-ink-travel:0!important;--zm-face-away:0!important;--zm-copy-away:0!important;
  }
+}
+
+/* Header lockup: native type proportions, optical spacing, no SVG stretch. */
+main.zm-phase0-home .zm-wordmark-text{
+ font-family:Georgia,"Times New Roman",serif;font-weight:700;letter-spacing:-.042em;
+ font-kerning:normal;font-feature-settings:"kern" 1;white-space:nowrap;line-height:1.05;
+}
+@media(min-width:900px){
+ main.zm-phase0-home>.site-header.minimal-header .zm-opening-lockup{
+  display:inline-flex;align-items:center;justify-content:flex-start;gap:9px;color:#24291e;
+ }
+ main.zm-phase0-home>.site-header.minimal-header .zm-opening-lockup .zm-wordmark-text{
+  display:block;font-size:clamp(25px,2.8vw,42px);margin-top:-2px;
+  opacity:1;transition:opacity .22s ease;
+ }
+ main.zm-phase0-home.ed-dark-header>.site-header.minimal-header .zm-opening-lockup .zm-wordmark-text{
+  opacity:0;
+ }
+ /* Header carries the visual wordmark; retain the hero H1 for document structure. */
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-name{
+  position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;
+  clip-path:inset(50%);white-space:nowrap;inset:0 auto auto 0!important;
+ }
+}
+@media(max-width:899px){
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .zm-hero-brand{
+  left:7%;right:7%;gap:3px;min-height:calc(clamp(23px,6.5vw,34px) + 10.387vw + 25px);
+ }
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .zm-mobile-brand-mark{margin-bottom:0}
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-name .zm-wordmark-text{
+  display:block;font-size:clamp(25px,8.4vw,42px);line-height:1.05;letter-spacing:-.035em;
+ }
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-note span{
+  font-size:9px;letter-spacing:.12em;
+ }
+}
+@media(max-width:359px){
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-note{right:12px;width:39%}
+ main.zm-phase0-home .editorial-flow #film-present.zm-refined-opening .hero-note p{font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){
+ main.zm-phase0-home>.site-header.minimal-header .zm-opening-lockup .zm-wordmark-text{transition:none}
 }

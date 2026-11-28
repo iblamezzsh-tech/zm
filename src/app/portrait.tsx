@@ -201,9 +201,9 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
         <div className="zm-hero-brand">
           <img className="zm-mobile-brand-mark" src="/icon.svg" width="30" height="30" alt="" aria-hidden="true"/>
         <h1 className="hero-name" aria-label="ZiyoMuhammad">
-          <svg viewBox="0 0 1200 164" role="presentation" aria-hidden="true">
+          {refined?<span className="zm-wordmark-text" aria-hidden="true">ZiyoMuhammad</span>:<svg viewBox="0 0 1200 164" role="presentation" aria-hidden="true">
             <text x="10" y="124" textLength="1180" lengthAdjust="spacingAndGlyphs">ZiyoMuhammad</text>
-          </svg>
+          </svg>}
         </h1>
           <span className="zm-mobile-hero-kicker">STUDENT / FOUNDER / UZBEKISTAN</span>
         </div>
@@ -238,11 +238,11 @@ export default function Portrait({refined=false}:{refined?:boolean}={}) {
           <h2>{refined?"It starts with":"Curious by"}<br /><em>{refined?"a question.":"nature."}</em></h2>
         </div>
         <aside className="hero-note" aria-label="Personal introduction">
-          {refined?<p>Some questions become projects. Others stay in my notebook.</p>:<><span>Uzbekistan</span><p>Student. Founder.<br />Always learning.</p></>}
+          <span>UZBEKISTAN</span><p>Student. Founder.<br />Always learning.</p>
         </aside>
         {!refined&&<HeroSignature />}
         <button className="zm-mobile-look" type="button" disabled={!attireReady} aria-label={mobileLook?"Return to present portrait":"Reveal graduation portrait"} aria-pressed={mobileLook} onClick={toggleLook}><span>{mobileLook?"BACK TO NOW":"TAP TO LOOK"}</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5v4m0 9v4M3.5 12h4m9 0h4M6 6l2.5 2.5m7 7L18 18m0-12-2.5 2.5m-7 7L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="12" cy="12" r="2.5" stroke="currentColor" strokeWidth="1.5"/></svg></button>
-        <a className="hero-scroll" href={refined?"#next-chapter":"#introduction"}><span aria-hidden="true"><ArrowIcon direction="down"/></span> Scroll to discover</a>
+        {!refined&&<a className="hero-scroll" href="#introduction"><span aria-hidden="true"><ArrowIcon direction="down"/></span> Scroll to discover</a>}
         <span className="corner tl" />
         <span className="corner tr" />
         <span className="corner bl" />

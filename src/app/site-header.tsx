@@ -40,7 +40,7 @@ function GalleryTile({tile,active}:{tile:Tile;active:boolean}){
   <span className="zm-tile-label">{tile.label}</span>
  </div>
 }
-export default function SiteHeader({about=false,projects=false,achievements=false,personal=false,contact=false}:{about?:boolean;projects?:boolean;achievements?:boolean;personal?:boolean;contact?:boolean}){
+export default function SiteHeader({about=false,projects=false,achievements=false,personal=false,contact=false,openingBrand=false}:{about?:boolean;projects?:boolean;achievements?:boolean;personal?:boolean;contact?:boolean;openingBrand?:boolean}){
  const current=about?"/about":projects?"/projects":achievements?"/achievements":personal?"/off-the-record":contact?"/contact":"/";
  const dialog=useRef<HTMLDialogElement>(null);
  const trigger=useRef<HTMLButtonElement>(null);
@@ -58,7 +58,7 @@ export default function SiteHeader({about=false,projects=false,achievements=fals
  return <>
  <a className="skip-link" href="#main-content">Skip to content</a>
  <header className="site-header minimal-header">
-  <Link className="identity minimal-identity" href="/" aria-label="ZiyoMuhammad home"><img src="/icon.svg" alt="" width="50" height="50"/></Link>
+  <Link className={"identity minimal-identity"+(openingBrand?" zm-opening-lockup":"")} href="/" aria-label="ZiyoMuhammad home"><img src="/icon.svg" alt="" width="50" height="50"/>{openingBrand&&<span className="zm-wordmark-text" aria-hidden="true">ZiyoMuhammad</span>}</Link>
   <div className="minimal-actions">
    <Link className="minimal-connect" href="/contact" aria-current={contact?"page":undefined}>Let&apos;s Connect <span className="minimal-arrow" aria-hidden="true"><ArrowIcon direction="up-right"/></span></Link>
    <button ref={trigger} className="minimal-menu-trigger" type="button" onClick={show} aria-label="Open navigation menu" aria-haspopup="dialog" aria-expanded={open} aria-controls={menuId}><span className="minimal-menu-glyph" aria-hidden="true"><i/><i/></span></button>

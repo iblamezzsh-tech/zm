@@ -180,8 +180,9 @@ export default function EditorialFlow({children,phase0=false}:{children:ReactNod
     if(s.id==="film-present"){
      write(s,"--zm-v116-tail",ease(.76,.96,local));
      if(phase0){
-      // One continuous, reversible original ink path; no timer or second SVG.
-      write(s,"--zm-ink-progress",.085+.915*ease(.025,.81,local));
+      // Keep the original ink fully drawn at rest and throughout the handoff.
+      // The same SVG travels and scales with native scroll; no duplicate or timer.
+      write(s,"--zm-ink-progress",1);
       write(s,"--zm-ink-travel",ease(.13,.76,local));
       write(s,"--zm-copy-away",ease(.02,.32,local));
       write(s,"--zm-face-away",ease(.25,.88,local));
